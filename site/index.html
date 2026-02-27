@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Digest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root {
+  --bg:         #F0F4FF;
+  --surface:    #FFFFFF;
+  --surface2:   #F8FAFF;
+  --border:     #E4E9F5;
+  --primary:    #4F46E5;
+  --primary-lt: #EEF2FF;
+  --primary-dk: #3730A3;
+  --green:      #10B981;
+  --green-lt:   #ECFDF5;
+  --red:        #EF4444;
+  --red-lt:     #FEF2F2;
+  --amber:      #F59E0B;
+  --text:       #1E293B;
+  --text-muted: #64748B;
+  --text-dim:   #94A3B8;
+  --shadow-sm:  0 1px 3px rgba(79,70,229,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:  0 4px 16px rgba(79,70,229,.08), 0 2px 6px rgba(0,0,0,.04);
+  --shadow-lg:  0 12px 40px rgba(79,70,229,.12), 0 4px 12px rgba(0,0,0,.06);
+  --radius:     12px;
+  --radius-sm:  8px;
+  --sans:       'Inter', 'Noto Sans TC', 'PingFang TC', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+header {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+.logo-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--primary), #7C3AED);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.logo-text {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.logo-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.header-right {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ── Layout ── */
+.layout {
+  display: grid;
+  grid-template-columns: 268px 1fr;
+  min-height: calc(100vh - 60px);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
+  position: sticky;
+  top: 60px;
+}
+
+.sidebar-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 0 20px 10px;
+}
+
+.channel-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.channel-item:hover { background: var(--surface2); }
+.channel-item.active { background: var(--primary-lt); }
+.channel-item.active .channel-name { color: var(--primary); font-weight: 600; }
+.channel-item.active .channel-meta { color: var(--primary); opacity: 0.7; }
+
+.channel-avatar {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--primary-lt);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  border: 1px solid var(--border);
+}
+.channel-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.channel-info { min-width: 0; flex: 1; }
+.channel-name {
+  font-size: 14px; font-weight: 500; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.channel-meta { font-size: 12px; color: var(--text-dim); margin-top: 1px; }
+
+.sidebar-divider { height: 1px; background: var(--border); margin: 12px 0; }
+
+/* ── Main Content ── */
+.main { padding: 28px 32px; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.stat-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.stat-chip strong { color: var(--text); }
+
+/* ── Episodes Grid ── */
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.episode-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.episode-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  border-color: rgba(79,70,229,0.3);
+}
+
+.episode-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.episode-channel-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--primary-lt);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.episode-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.episode-date {
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex; align-items: center; gap: 4px;
+}
+
+.episode-arrow {
+  color: var(--primary);
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  align-self: flex-end;
+  margin-top: auto;
+}
+.episode-card:hover .episode-arrow { opacity: 1; transform: translateX(3px); }
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+}
+.empty-icon { font-size: 56px; margin-bottom: 16px; display: block; }
+.empty-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.empty-text { font-size: 15px; color: var(--text-muted); line-height: 1.8; }
+
+/* ── Loading ── */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+  color: var(--text-muted);
+  font-size: 15px;
+  gap: 10px;
+}
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Summary Modal ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.6);
+  z-index: 200;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.modal-overlay.open {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 860px;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.22s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.99); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.modal-header {
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.modal-title-block { flex: 1; }
+.modal-channel {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--primary-lt);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.modal-title { font-size: 22px; font-weight: 700; line-height: 1.4; letter-spacing: -0.3px; }
+.modal-meta { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+
+.modal-close {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px 10px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.modal-close:hover { background: var(--red-lt); color: var(--red); border-color: var(--red); }
+
+.modal-body {
+  padding: 32px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.modal-body h1 { display: none; }
+.modal-body h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 28px 0 12px;
+  padding: 8px 14px;
+  background: var(--primary-lt);
+  border-radius: var(--radius-sm);
+}
+.modal-body h2:first-of-type { margin-top: 0; }
+.modal-body p { font-size: 15px; line-height: 1.9; color: var(--text); margin-bottom: 10px; }
+.modal-body ul, .modal-body ol { padding-left: 22px; margin-bottom: 14px; }
+.modal-body li { font-size: 15px; line-height: 1.9; color: var(--text); margin-bottom: 6px; }
+.modal-body strong { color: var(--primary-dk); font-weight: 600; }
+.modal-body a { color: var(--primary); text-decoration: none; }
+.modal-body a:hover { text-decoration: underline; }
+.modal-body code {
+  font-family: 'SF Mono', monospace;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.modal-footer {
+  padding: 20px 32px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: var(--surface2);
+  border-radius: 0 0 16px 16px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  border: none;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(79,70,229,0.3);
+}
+.btn-primary:hover { background: var(--primary-dk); color: white; }
+.btn-ghost {
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+
+/* ── Mobile ── */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px 8px;
+}
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+
+  .mobile-menu-btn { display: block; }
+
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: -268px;
+    width: 268px;
+    height: calc(100vh - 60px);
+    transition: left 0.25s ease;
+    z-index: 150;
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar.open { left: 0; }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 60px;
+    background: rgba(15,23,42,0.4);
+    z-index: 140;
+  }
+  .sidebar-backdrop.open { display: block; }
+
+  .main { padding: 20px 16px; }
+
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal {
+    border-radius: 16px 16px 0 0;
+    max-height: 90vh;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  .modal-body { max-height: 55vh; }
+  .modal-header { padding: 20px 20px 16px; }
+  .modal-body { padding: 20px; }
+  .modal-footer { padding: 16px 20px; }
+  .modal-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#/">
+    <div class="logo-icon">📈</div>
+    <div>
+      <div class="logo-text">Investment Digest</div>
+      <div class="logo-sub">投資重點摘要</div>
+    </div>
+  </a>
+  <div class="header-right" id="lastUpdated"></div>
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="選單">☰</button>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-label">頻道</div>
+    <div id="channelList"></div>
+  </aside>
+
+  <main class="main">
+    <div id="mainContent">
+      <div class="loading"><div class="spinner"></div> 載入中…</div>
+    </div>
+  </main>
+</div>
+
+<!-- Summary Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title-block">
+        <div class="modal-channel" id="modalChannel"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-meta" id="modalMeta"></div>
+      </div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="loading"><div class="spinner"></div> 載入中…</div>
+    </div>
+    <div class="modal-footer">
+      <a class="btn btn-primary" id="modalYtLink" href="#" target="_blank" rel="noopener">
+        ▶ YouTube 觀看原片
+      </a>
+      <button class="btn btn-ghost" id="modalCloseBtn">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ─────────────────────────────────────────────────
+
+const BASE = (() => {
+  // Works for both GitHub Pages sub-path and local http-server
+  const path = location.pathname.replace(/\/[^/]*$/, '/');
+  return path.endsWith('/') ? path : path + '/';
+})();
+
+// ── State ──────────────────────────────────────────────────
+
+let allEpisodes = [];
+let generatedAt = '';
+
+// ── Helpers ────────────────────────────────────────────────
+
+function stripFrontmatter(md) {
+  if (!md.startsWith('---')) return md;
+  const end = md.indexOf('---', 3);
+  if (end === -1) return md;
+  return md.slice(end + 3).replace(/^\n+/, '');
+}
+
+function fmt(dateStr) {
+  if (!dateStr) return '';
+  // If it's already a relative string (not YYYY-MM-DD), return as-is
+  if (!/^\d{4}-\d{2}-\d{2}/.test(dateStr)) return dateStr;
+  try {
+    return new Date(dateStr).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+  } catch { return dateStr; }
+}
+
+function channelEmoji(name) {
+  if (!name) return '📺';
+  const n = name.toLowerCase();
+  if (n.includes('股癌') || n.includes('gooaye')) return '📈';
+  return '📺';
+}
+
+// ── Data Fetch ─────────────────────────────────────────────
+
+async function loadData() {
+  const resp = await fetch(BASE + 'data/episodes.json');
+  if (!resp.ok) throw new Error('Failed to load episodes.json');
+  const data = await resp.json();
+  allEpisodes = data.episodes || [];
+  generatedAt = data.generated_at || '';
+
+  const el = document.getElementById('lastUpdated');
+  if (generatedAt) {
+    const d = new Date(generatedAt + 'Z');
+    el.textContent = '更新：' + d.toLocaleDateString('zh-TW');
+  }
+}
+
+// ── Routing ────────────────────────────────────────────────
+
+function getRoute() {
+  const hash = location.hash || '#/';
+  if (hash.startsWith('#/channel/')) {
+    return { type: 'channel', id: decodeURIComponent(hash.slice(10)) };
+  }
+  return { type: 'all' };
+}
+
+// ── Sidebar ────────────────────────────────────────────────
+
+function renderSidebar(episodes, activeChannelId) {
+  const channelMap = new Map();
+  for (const ep of episodes) {
+    if (!channelMap.has(ep.channel_id)) {
+      channelMap.set(ep.channel_id, { name: ep.channel_name, count: 0, thumbnail: ep.channel_thumbnail });
+    }
+    channelMap.get(ep.channel_id).count++;
+  }
+
+  const allActive = !activeChannelId;
+  let html = `
+    <div class="channel-item ${allActive ? 'active' : ''}" data-channel="">
+      <div class="channel-avatar">${channelEmoji('')}</div>
+      <div class="channel-info">
+        <div class="channel-name">全部頻道</div>
+        <div class="channel-meta">${episodes.length} 集</div>
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+  `;
+
+  for (const [cid, info] of channelMap) {
+    const active = cid === activeChannelId;
+    const thumb = info.thumbnail
+      ? `<img src="${info.thumbnail}" alt="${info.name}" loading="lazy">`
+      : channelEmoji(info.name);
+    html += `
+      <div class="channel-item ${active ? 'active' : ''}" data-channel="${cid}">
+        <div class="channel-avatar">${thumb}</div>
+        <div class="channel-info">
+          <div class="channel-name">${info.name || cid}</div>
+          <div class="channel-meta">${info.count} 集</div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('channelList').innerHTML = html;
+
+  document.querySelectorAll('.channel-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const cid = el.dataset.channel;
+      location.hash = cid ? `#/channel/${encodeURIComponent(cid)}` : '#/';
+      closeSidebar();
+    });
+  });
+}
+
+// ── Main Content ───────────────────────────────────────────
+
+function renderEpisodes(episodes, title) {
+  if (!episodes.length) {
+    document.getElementById('mainContent').innerHTML = `
+      <div class="page-header"><h1 class="page-title">${title}</h1></div>
+      <div class="episodes-grid">
+        <div class="empty-state">
+          <span class="empty-icon">📭</span>
+          <div class="empty-title">還沒有摘要</div>
+          <div class="empty-text">在本機執行 <code>python3 runner.py run</code> 後再部署即可。</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  let cards = '';
+  for (const ep of episodes) {
+    const date = fmt(ep.published_at || ep.processed_at);
+    cards += `
+      <div class="episode-card" data-video-id="${ep.video_id}"
+           data-channel-name="${ep.channel_name || ''}"
+           data-channel-id="${ep.channel_id || ''}"
+           data-date="${date}"
+           data-summary-url="${ep.summary_url}">
+        <div class="episode-card-top">
+          <span class="episode-channel-badge">${ep.channel_name || ep.channel_id}</span>
+        </div>
+        <div class="episode-title">${ep.title}</div>
+        <div class="episode-date">📅 ${date}</div>
+        <div class="episode-arrow">→</div>
+      </div>
+    `;
+  }
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="page-header">
+      <h1 class="page-title">${title}</h1>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-chip">📝 <strong>${episodes.length}</strong> 集摘要</div>
+    </div>
+    <div class="episodes-grid">${cards}</div>
+  `;
+
+  document.querySelectorAll('.episode-card').forEach(card => {
+    card.addEventListener('click', () => {
+      openModal({
+        videoId: card.dataset.videoId,
+        channelName: card.dataset.channelName,
+        title: card.querySelector('.episode-title').textContent,
+        date: card.dataset.date,
+        summaryUrl: card.dataset.summaryUrl,
+      });
+    });
+  });
+}
+
+// ── Modal ──────────────────────────────────────────────────
+
+async function openModal({ videoId, channelName, title, date, summaryUrl }) {
+  const overlay = document.getElementById('modalOverlay');
+  const body = document.getElementById('modalBody');
+
+  document.getElementById('modalChannel').textContent = channelName;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalMeta').textContent = date ? `📅 ${date}` : '';
+  document.getElementById('modalYtLink').href = `https://youtube.com/watch?v=${videoId}`;
+  body.innerHTML = '<div class="loading"><div class="spinner"></div> 載入中…</div>';
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const resp = await fetch(BASE + summaryUrl);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const md = await resp.text();
+    const bodyMd = stripFrontmatter(md);
+    body.innerHTML = marked.parse(bodyMd);
+    // Open links in new tab
+    body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+  } catch (e) {
+    body.innerHTML = `<p style="color:var(--red)">⚠️ 載入摘要失敗：${e.message}</p>`;
+  }
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Mobile Sidebar ─────────────────────────────────────────
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Router ─────────────────────────────────────────────────
+
+function route() {
+  const r = getRoute();
+  let filtered;
+  let title;
+
+  if (r.type === 'channel') {
+    filtered = allEpisodes.filter(e => e.channel_id === r.id);
+    const ch = allEpisodes.find(e => e.channel_id === r.id);
+    title = ch ? ch.channel_name : r.id;
+  } else {
+    filtered = allEpisodes;
+    title = '全部節目';
+  }
+
+  renderSidebar(allEpisodes, r.type === 'channel' ? r.id : null);
+  renderEpisodes(filtered, title);
+}
+
+// ── Init ───────────────────────────────────────────────────
+
+(async () => {
+  try {
+    await loadData();
+    route();
+  } catch (e) {
+    document.getElementById('mainContent').innerHTML = `
+      <div class="empty-state">
+        <span class="empty-icon">⚠️</span>
+        <div class="empty-title">載入失敗</div>
+        <div class="empty-text">${e.message}</div>
+      </div>
+    `;
+  }
+})();
+
+// Event listeners
+window.addEventListener('hashchange', route);
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
+document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+</script>
+</body>
+</html>

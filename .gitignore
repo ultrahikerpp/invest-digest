@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# macOS
+.DS_Store
+
+# Local-only data (large files, not needed on GitHub)
+data/transcripts/
+data/cards/
+data/videos/
+data/runner.log
+data/subscriptions.db
+
+# Keep data/summaries/ tracked (source of truth)
+# Keep site/ tracked (GitHub Pages)
