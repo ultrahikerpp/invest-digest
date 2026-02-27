@@ -83,17 +83,18 @@ def _fallback_points(content: str) -> list[str]:
             points.append(cleaned[:25] + "…" if len(cleaned) > 25 else cleaned)
     return points[:5]
 
-# Dimensions (1:1 square — fits content of 5 bullet points)
+# Dimensions (1:1 square — good for Instagram / TikTok)
 W, H = 1080, 1080
 PAD = 90
 
-# Color palette
-C_BG     = (10, 14, 26)
-C_CARD   = (18, 25, 45)
-C_ACCENT = (52, 199, 142)
-C_WHITE  = (245, 245, 250)
-C_GRAY   = (160, 165, 180)
-C_DIM    = (80, 88, 110)
+# Morandi blue palette — muted, dusty, social-media aesthetic
+C_BG      = (45, 62, 78)    # deep muted navy
+C_BG_GRAD = (60, 80, 98)    # gradient bottom (subtle depth)
+C_ACCENT  = (138, 168, 186) # classic Morandi sky-blue
+C_WHITE   = (237, 233, 228) # warm cream / ivory
+C_GRAY    = (178, 196, 210) # light muted blue-gray
+C_DIM     = (100, 118, 134) # medium muted (footer / progress)
+C_DIVIDER = (72, 94, 113)   # subtle divider line
 
 SECTION_ORDER = ["核心觀點", "提及標的", "關鍵數據", "投資機會", "風險提示", "個人行動建議"]
 
@@ -198,55 +199,63 @@ def _make_section_card(
     img = Image.new("RGB", (W, H), C_BG)
     draw = ImageDraw.Draw(img)
 
-    # Top accent bar
-    draw.rectangle([0, 0, W, 8], fill=C_ACCENT)
+    # Subtle top-to-bottom gradient background
+    for gy in range(H):
+        t = gy / H
+        r = int(C_BG[0] + (C_BG_GRAD[0] - C_BG[0]) * t)
+        g = int(C_BG[1] + (C_BG_GRAD[1] - C_BG[1]) * t)
+        b = int(C_BG[2] + (C_BG_GRAD[2] - C_BG[2]) * t)
+        draw.line([(0, gy), (W, gy)], fill=(r, g, b))
+
+    # Top accent bar (thin, Morandi blue)
+    draw.rectangle([0, 0, W, 5], fill=C_ACCENT)
 
     # Channel | Episode header
     ep_match = re.search(r'EP\d+', video_title, re.IGNORECASE)
     ep_text = ep_match.group(0).upper() if ep_match else video_title[:10]
     header_text = f"{channel_name}｜{ep_text}"
     font_header = _load_font(FS_BRAND)
-    draw.text((PAD, 30), header_text, font=font_header, fill=C_GRAY)
+    draw.text((PAD, 32), header_text, font=font_header, fill=C_GRAY)
 
     # Progress indicator (top-right)
     font_prog = _load_font(FS_PROGRESS)
     progress_text = f"{index} / {total}"
     prog_w = int(draw.textlength(progress_text, font=font_prog))
-    draw.text((W - PAD - prog_w, 30), progress_text, font=font_prog, fill=C_DIM)
+    draw.text((W - PAD - prog_w, 32), progress_text, font=font_prog, fill=C_DIM)
 
-    # Section label pill (green badge)
+    # Section label pill (Morandi blue badge)
     font_label = _load_font(FS_LABEL)
     label_w = int(draw.textlength(section_title, font=font_label)) + 52
     draw.rounded_rectangle([PAD, 100, PAD + label_w, 163], radius=32, fill=C_ACCENT)
     draw.text((PAD + 26, 111), section_title, font=font_label, fill=C_BG)
 
     # Divider
-    draw.rectangle([PAD, 186, W - PAD, 189], fill=C_CARD)
+    draw.rectangle([PAD, 186, W - PAD, 188], fill=C_DIVIDER)
 
-    # Draw bullet list (points already prepared by caller)
+    # Draw bullet list
     font_content = _load_font(FS_CONTENT)
-    content_w = W - PAD * 2 - 30   # indent room for bullet
+    content_w = W - PAD * 2 - 30
     line_h = FS_CONTENT + 20
     y = 230
     for pt in points:
         wrapped = _wrap_text(pt, font_content, content_w - 60, draw)
-        # First line with bullet
-        draw.text((PAD, y), "•", font=font_content, fill=C_ACCENT)
+        # First line with bullet dot
+        draw.text((PAD, y), "·", font=font_content, fill=C_ACCENT)
         draw.text((PAD + 55, y), wrapped[0] if wrapped else pt, font=font_content, fill=C_WHITE)
         y += line_h
-        # Continuation lines (indented, no bullet)
+        # Continuation lines (indented)
         for cont in wrapped[1:]:
             draw.text((PAD + 55, y), cont, font=font_content, fill=C_WHITE)
             y += line_h
-        y += 10  # extra spacing between points
+        y += 12
 
-    # Footer separator
-    draw.rectangle([0, H - 130, W, H - 128], fill=C_DIM)
+    # Footer separator (thin, subtle)
+    draw.rectangle([PAD, H - 110, W - PAD, H - 109], fill=C_DIVIDER)
 
     # Footer: video title
     font_footer = _load_font(FS_FOOTER)
     footer_text = video_title if len(video_title) <= 32 else video_title[:31] + "…"
-    draw.text((PAD, H - 100), footer_text, font=font_footer, fill=C_GRAY)
+    draw.text((PAD, H - 88), footer_text, font=font_footer, fill=C_DIM)
 
     img.save(output_path)
     return output_path
