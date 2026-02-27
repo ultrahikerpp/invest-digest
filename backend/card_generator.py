@@ -291,8 +291,8 @@ def generate_cards(md_path: Path, channel_name: str, output_dir: Path) -> list[P
 
     cards: list[Path] = []
 
-    # Section cards only (no title card), first 5 sections in fixed order
-    ordered = [(k, sections[k]) for k in SECTION_ORDER[:5] if k in sections]
+    # Section cards only (no title card), all 6 sections in fixed order
+    ordered = [(k, sections[k]) for k in SECTION_ORDER if k in sections]
     for i, (section_title, content) in enumerate(ordered, start=1):
         print(f"  [card] 生成金句：{section_title}...")
         points = _gemini_points(section_title, content)

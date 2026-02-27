@@ -1,746 +1,1009 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Investment Digest</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<style>
-:root {
-  --bg:         #F0F4FF;
-  --surface:    #FFFFFF;
-  --surface2:   #F8FAFF;
-  --border:     #E4E9F5;
-  --primary:    #4F46E5;
-  --primary-lt: #EEF2FF;
-  --primary-dk: #3730A3;
-  --green:      #10B981;
-  --green-lt:   #ECFDF5;
-  --red:        #EF4444;
-  --red-lt:     #FEF2F2;
-  --amber:      #F59E0B;
-  --text:       #1E293B;
-  --text-muted: #64748B;
-  --text-dim:   #94A3B8;
-  --shadow-sm:  0 1px 3px rgba(79,70,229,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:  0 4px 16px rgba(79,70,229,.08), 0 2px 6px rgba(0,0,0,.04);
-  --shadow-lg:  0 12px 40px rgba(79,70,229,.12), 0 4px 12px rgba(0,0,0,.06);
-  --radius:     12px;
-  --radius-sm:  8px;
-  --sans:       'Inter', 'Noto Sans TC', 'PingFang TC', sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Digest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg: #F0F4FF;
+      --surface: #FFFFFF;
+      --surface2: #F8FAFF;
+      --border: #E4E9F5;
+      --primary: #4F46E5;
+      --primary-lt: #EEF2FF;
+      --primary-dk: #3730A3;
+      --green: #10B981;
+      --green-lt: #ECFDF5;
+      --red: #EF4444;
+      --red-lt: #FEF2F2;
+      --amber: #F59E0B;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --text-dim: #94A3B8;
+      --shadow-sm: 0 1px 3px rgba(79, 70, 229, .06), 0 1px 2px rgba(0, 0, 0, .04);
+      --shadow-md: 0 4px 16px rgba(79, 70, 229, .08), 0 2px 6px rgba(0, 0, 0, .04);
+      --shadow-lg: 0 12px 40px rgba(79, 70, 229, .12), 0 4px 12px rgba(0, 0, 0, .06);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --sans: 'Inter', 'Noto Sans TC', 'PingFang TC', sans-serif;
+    }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.6;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* ── Disclaimer bar ── */
-.disclaimer-bar {
-  background: #fffbeb;
-  border-bottom: 1px solid #fde68a;
-  padding: 8px 28px;
-  font-size: 13px;
-  color: #92400e;
-  text-align: center;
-  line-height: 1.5;
-}
+    /* ── Disclaimer bar ── */
+    .disclaimer-bar {
+      background: #fffbeb;
+      border-bottom: 1px solid #fde68a;
+      padding: 8px 28px;
+      font-size: 13px;
+      color: #92400e;
+      text-align: center;
+      line-height: 1.5;
+    }
 
-/* ── Header ── */
-header {
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+    /* ── Header ── */
+    header {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: inherit;
-}
-.logo-icon {
-  width: 32px; height: 32px;
-  background: linear-gradient(135deg, var(--primary), #7C3AED);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  color: white;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.logo-text {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.3px;
-}
-.logo-sub {
-  font-size: 12px;
-  color: var(--text-dim);
-  font-weight: 400;
-}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
 
-.header-right {
-  font-size: 13px;
-  color: var(--text-dim);
-}
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), #7C3AED);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
 
-/* ── Layout ── */
-.layout {
-  display: grid;
-  grid-template-columns: 268px 1fr;
-  min-height: calc(100vh - 60px);
-}
+    .logo-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
 
-/* ── Sidebar ── */
-.sidebar {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 20px 0;
-  overflow-y: auto;
-  max-height: calc(100vh - 60px);
-  position: sticky;
-  top: 60px;
-}
+    .logo-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 400;
+    }
 
-.sidebar-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  padding: 0 20px 10px;
-}
+    .header-right {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
 
-.channel-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.channel-item:hover { background: var(--surface2); }
-.channel-item.active { background: var(--primary-lt); }
-.channel-item.active .channel-name { color: var(--primary); font-weight: 600; }
-.channel-item.active .channel-meta { color: var(--primary); opacity: 0.7; }
+    /* ── Layout ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 268px 1fr;
+      min-height: calc(100vh - 60px);
+    }
 
-.channel-avatar {
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  background: var(--primary-lt);
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-  border: 1px solid var(--border);
-}
-.channel-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      overflow-y: auto;
+      max-height: calc(100vh - 60px);
+      position: sticky;
+      top: 60px;
+    }
 
-.channel-info { min-width: 0; flex: 1; }
-.channel-name {
-  font-size: 14px; font-weight: 500; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.channel-meta { font-size: 12px; color: var(--text-dim); margin-top: 1px; }
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0 20px 10px;
+    }
 
-.sidebar-divider { height: 1px; background: var(--border); margin: 12px 0; }
+    .channel-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
 
-/* ── Main Content ── */
-.main { padding: 28px 32px; }
+    .channel-item:hover {
+      background: var(--surface2);
+    }
 
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  gap: 16px;
-}
+    .channel-item.active {
+      background: var(--primary-lt);
+    }
 
-.page-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.5px;
-}
+    .channel-item.active .channel-name {
+      color: var(--primary);
+      font-weight: 600;
+    }
 
-.stats-bar {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-.stat-chip {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-.stat-chip strong { color: var(--text); }
+    .channel-item.active .channel-meta {
+      color: var(--primary);
+      opacity: 0.7;
+    }
 
-/* ── Episodes Grid ── */
-.episodes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-}
+    .channel-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--primary-lt);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      border: 1px solid var(--border);
+    }
 
-.episode-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.episode-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-  border-color: rgba(79,70,229,0.3);
-}
+    .channel-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-.episode-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+    .channel-info {
+      min-width: 0;
+      flex: 1;
+    }
 
-.episode-channel-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: var(--primary-lt);
-  color: var(--primary);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.3px;
-}
+    .channel-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-.episode-title {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--text);
-  letter-spacing: -0.2px;
-}
+    .channel-meta {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 1px;
+    }
 
-.episode-date {
-  font-size: 12px;
-  color: var(--text-dim);
-  display: flex; align-items: center; gap: 4px;
-}
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 0;
+    }
 
-.episode-arrow {
-  color: var(--primary);
-  font-size: 18px;
-  opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
-  align-self: flex-end;
-  margin-top: auto;
-}
-.episode-card:hover .episode-arrow { opacity: 1; transform: translateX(3px); }
+    /* ── Main Content ── */
+    .main {
+      padding: 28px 32px;
+    }
 
-.empty-state {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 80px 20px;
-}
-.empty-icon { font-size: 56px; margin-bottom: 16px; display: block; }
-.empty-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-.empty-text { font-size: 15px; color: var(--text-muted); line-height: 1.8; }
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 16px;
+    }
 
-/* ── Loading ── */
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 80px;
-  color: var(--text-muted);
-  font-size: 15px;
-  gap: 10px;
-}
-.spinner {
-  width: 20px; height: 20px;
-  border: 2px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
 
-/* ── Summary Modal ── */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(15,23,42,0.6);
-  z-index: 200;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-.modal-overlay.open {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 40px 20px;
-  overflow-y: auto;
-}
+    .stats-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
 
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  width: 100%;
-  max-width: 860px;
-  box-shadow: var(--shadow-lg);
-  animation: slideIn 0.22s ease;
-}
+    .stat-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(16px) scale(0.99); }
-  to   { opacity: 1; transform: translateY(0)   scale(1); }
-}
+    .stat-chip strong {
+      color: var(--text);
+    }
 
-.modal-header {
-  padding: 28px 32px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
+    /* ── Episodes Grid ── */
+    .episodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
 
-.modal-title-block { flex: 1; }
-.modal-channel {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: var(--primary-lt);
-  color: var(--primary);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  margin-bottom: 10px;
-}
-.modal-title { font-size: 22px; font-weight: 700; line-height: 1.4; letter-spacing: -0.3px; }
-.modal-meta { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+    .episode-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-.modal-close {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-muted);
-  font-size: 18px;
-  cursor: pointer;
-  padding: 6px 10px;
-  line-height: 1;
-  flex-shrink: 0;
-  transition: all 0.15s;
-}
-.modal-close:hover { background: var(--red-lt); color: var(--red); border-color: var(--red); }
+    .episode-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      border-color: rgba(79, 70, 229, 0.3);
+    }
 
-.modal-body {
-  padding: 32px;
-  max-height: 60vh;
-  overflow-y: auto;
-}
-.modal-body h1 { display: none; }
-.modal-body h2 {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--primary);
-  margin: 28px 0 12px;
-  padding: 8px 14px;
-  background: var(--primary-lt);
-  border-radius: var(--radius-sm);
-}
-.modal-body h2:first-of-type { margin-top: 0; }
-.modal-body p { font-size: 15px; line-height: 1.9; color: var(--text); margin-bottom: 10px; }
-.modal-body ul, .modal-body ol { padding-left: 22px; margin-bottom: 14px; }
-.modal-body li { font-size: 15px; line-height: 1.9; color: var(--text); margin-bottom: 6px; }
-.modal-body strong { color: var(--primary-dk); font-weight: 600; }
-.modal-body a { color: var(--primary); text-decoration: none; }
-.modal-body a:hover { text-decoration: underline; }
-.modal-body code {
-  font-family: 'SF Mono', monospace;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  padding: 2px 6px;
-  font-size: 13px;
-  border-radius: 4px;
-}
+    .episode-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-/* ── Cards Strip ── */
-.cards-strip {
-  padding: 20px 32px 0;
-  border-bottom: 1px solid var(--border);
-}
-.cards-strip-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 12px;
-}
-.cards-scroll {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 16px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-.cards-scroll::-webkit-scrollbar { height: 4px; }
-.cards-scroll::-webkit-scrollbar-track { background: var(--border); border-radius: 2px; }
-.cards-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
-.card-thumb {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  width: 90px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 2px solid var(--border);
-  cursor: pointer;
-  transition: border-color 0.15s, transform 0.15s;
-}
-.card-thumb:hover { border-color: var(--primary); transform: translateY(-2px); }
-.card-thumb img { width: 100%; display: block; }
+    .episode-channel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--primary-lt);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
 
-/* ── Lightbox ── */
-.lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  z-index: 400;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  cursor: zoom-out;
-}
-.lightbox.open { display: flex; }
-.lightbox img {
-  max-height: 92vh;
-  max-width: 92vw;
-  object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 0 60px rgba(0,0,0,0.6);
-  cursor: default;
-  animation: lbIn 0.18s ease;
-}
-@keyframes lbIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.lightbox-close {
-  position: fixed;
-  top: 16px;
-  right: 20px;
-  background: rgba(255,255,255,0.12);
-  border: none;
-  color: white;
-  font-size: 22px;
-  line-height: 1;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.lightbox-close:hover { background: rgba(255,255,255,0.25); }
-.lightbox-nav {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,0.12);
-  border: none;
-  color: white;
-  font-size: 28px;
-  line-height: 1;
-  padding: 12px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.lightbox-nav:hover { background: rgba(255,255,255,0.25); }
-.lightbox-prev { left: 16px; }
-.lightbox-next { right: 16px; }
-.lightbox-counter {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255,255,255,0.6);
-  font-size: 14px;
-  font-family: var(--sans);
-}
+    .episode-title {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
 
-.modal-footer {
-  padding: 20px 32px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  background: var(--surface2);
-  border-radius: 0 0 16px 16px;
-}
+    .episode-date {
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
-.btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--sans);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 9px 18px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.15s;
-  text-decoration: none;
-  border: none;
-}
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 2px 8px rgba(79,70,229,0.3);
-}
-.btn-primary:hover { background: var(--primary-dk); color: white; }
-.btn-ghost {
-  background: var(--surface);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+    .episode-arrow {
+      color: var(--primary);
+      font-size: 18px;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      align-self: flex-end;
+      margin-top: auto;
+    }
 
-/* ── Mobile ── */
-.mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: var(--text-muted);
-  padding: 4px 8px;
-}
+    .episode-card:hover .episode-arrow {
+      opacity: 1;
+      transform: translateX(3px);
+    }
 
-@media (max-width: 768px) {
-  .layout { grid-template-columns: 1fr; }
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 20px;
+    }
 
-  .mobile-menu-btn { display: block; }
+    .empty-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+      display: block;
+    }
 
-  .sidebar {
-    position: fixed;
-    top: 60px;
-    left: -268px;
-    width: 268px;
-    height: calc(100vh - 60px);
-    transition: left 0.25s ease;
-    z-index: 150;
-    box-shadow: var(--shadow-lg);
-  }
-  .sidebar.open { left: 0; }
+    .empty-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
 
-  .sidebar-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    top: 60px;
-    background: rgba(15,23,42,0.4);
-    z-index: 140;
-  }
-  .sidebar-backdrop.open { display: block; }
+    .empty-text {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
 
-  .main { padding: 20px 16px; }
+    /* ── Loading ── */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px;
+      color: var(--text-muted);
+      font-size: 15px;
+      gap: 10px;
+    }
 
-  .modal-overlay { padding: 0; align-items: flex-end; }
-  .modal {
-    border-radius: 16px 16px 0 0;
-    max-height: 90vh;
-    animation: slideUp 0.25s ease;
-  }
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to   { transform: translateY(0); }
-  }
-  .modal-body { max-height: 55vh; }
-  .modal-header { padding: 20px 20px 16px; }
-  .cards-strip { padding: 16px 20px 0; }
-  .modal-body { padding: 20px; }
-  .modal-footer { padding: 16px 20px; }
-  .modal-title { font-size: 18px; }
-}
-</style>
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── Summary Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 200;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 20px;
+      overflow-y: auto;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 860px;
+      box-shadow: var(--shadow-lg);
+      animation: slideIn 0.22s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.99);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 28px 32px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .modal-title-block {
+      flex: 1;
+    }
+
+    .modal-channel {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--primary-lt);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: -0.3px;
+    }
+
+    .modal-meta {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    .modal-close {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 6px 10px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .modal-close:hover {
+      background: var(--red-lt);
+      color: var(--red);
+      border-color: var(--red);
+    }
+
+    .modal-body {
+      padding: 32px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .modal-body h1 {
+      display: none;
+    }
+
+    .modal-body h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 28px 0 12px;
+      padding: 8px 14px;
+      background: var(--primary-lt);
+      border-radius: var(--radius-sm);
+    }
+
+    .modal-body h2:first-of-type {
+      margin-top: 0;
+    }
+
+    .modal-body p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .modal-body ul,
+    .modal-body ol {
+      padding-left: 22px;
+      margin-bottom: 14px;
+    }
+
+    .modal-body li {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .modal-body strong {
+      color: var(--primary-dk);
+      font-weight: 600;
+    }
+
+    .modal-body a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .modal-body a:hover {
+      text-decoration: underline;
+    }
+
+    .modal-body code {
+      font-family: 'SF Mono', monospace;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+
+    /* ── Cards Strip ── */
+    .cards-strip {
+      padding: 20px 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cards-strip-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .cards-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .cards-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .cards-scroll::-webkit-scrollbar-track {
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .cards-scroll::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .card-thumb {
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      width: 90px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+
+    .card-thumb:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .card-thumb img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 400;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      cursor: zoom-out;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-height: 92vh;
+      max-width: 92vw;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+      cursor: default;
+      animation: lbIn 0.18s ease;
+    }
+
+    @keyframes lbIn {
+      from {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: white;
+      font-size: 22px;
+      line-height: 1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: white;
+      font-size: 28px;
+      line-height: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .lightbox-prev {
+      left: 16px;
+    }
+
+    .lightbox-next {
+      right: 16px;
+    }
+
+    .lightbox-counter {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      font-family: var(--sans);
+    }
+
+    .modal-footer {
+      padding: 20px 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--surface2);
+      border-radius: 0 0 16px 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dk);
+      color: white;
+    }
+
+    .btn-ghost {
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    /* ── Mobile ── */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px 8px;
+    }
+
+    @media (max-width: 768px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 60px;
+        left: -268px;
+        width: 268px;
+        height: calc(100vh - 60px);
+        transition: left 0.25s ease;
+        z-index: 150;
+        box-shadow: var(--shadow-lg);
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        top: 60px;
+        background: rgba(15, 23, 42, 0.4);
+        z-index: 140;
+      }
+
+      .sidebar-backdrop.open {
+        display: block;
+      }
+
+      .main {
+        padding: 20px 16px;
+      }
+
+      .modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+      }
+
+      .modal {
+        border-radius: 16px 16px 0 0;
+        max-height: 90vh;
+        animation: slideUp 0.25s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+        }
+
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      .modal-body {
+        max-height: 55vh;
+      }
+
+      .modal-header {
+        padding: 20px 20px 16px;
+      }
+
+      .cards-strip {
+        padding: 16px 20px 0;
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .modal-footer {
+        padding: 16px 20px;
+      }
+
+      .modal-title {
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header>
-  <a class="logo" href="#/">
-    <div class="logo-icon">📈</div>
-    <div>
-      <div class="logo-text">Investment Digest</div>
-      <div class="logo-sub">投資重點摘要</div>
-    </div>
-  </a>
-  <div class="header-right" id="lastUpdated"></div>
-  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="選單">☰</button>
-</header>
-
-<div class="disclaimer-bar">
-  聲明：本摘要網頁由 AI 生成，僅供複習筆記之用，建議聽完整部影片，並產出自身觀點，謝謝
-</div>
-
-<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-
-<div class="layout">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-label">頻道</div>
-    <div id="channelList"></div>
-  </aside>
-
-  <main class="main">
-    <div id="mainContent">
-      <div class="loading"><div class="spinner"></div> 載入中…</div>
-    </div>
-  </main>
-</div>
-
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lbClose">✕</button>
-  <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
-  <img id="lbImg" src="" alt="字卡">
-  <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
-  <div class="lightbox-counter" id="lbCounter"></div>
-</div>
-
-<!-- Summary Modal -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <div class="modal-title-block">
-        <div class="modal-channel" id="modalChannel"></div>
-        <div class="modal-title" id="modalTitle"></div>
-        <div class="modal-meta" id="modalMeta"></div>
+  <header>
+    <a class="logo" href="#/">
+      <div class="logo-icon">📈</div>
+      <div>
+        <div class="logo-text">Investment Digest</div>
+        <div class="logo-sub">投資重點摘要</div>
       </div>
-      <button class="modal-close" id="modalClose">✕</button>
-    </div>
-    <div class="cards-strip" id="cardsStrip" style="display:none">
-      <div class="cards-strip-label">精華字卡</div>
-      <div class="cards-scroll" id="cardsScroll"></div>
-    </div>
-    <div class="modal-body" id="modalBody">
-      <div class="loading"><div class="spinner"></div> 載入中…</div>
-    </div>
-    <div class="modal-footer">
-      <a class="btn btn-primary" id="modalYtLink" href="#" target="_blank" rel="noopener">
-        ▶ YouTube 觀看原片
-      </a>
-      <button class="btn btn-ghost" id="modalCloseBtn">關閉</button>
+    </a>
+    <div class="header-right" id="lastUpdated"></div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="選單">☰</button>
+  </header>
+
+  <div class="disclaimer-bar">
+    聲明：本摘要網頁由 AI 生成，僅供複習筆記之用，建議聽完整部影片，並以自身觀點評估股市，謝謝
+  </div>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-label">頻道</div>
+      <div id="channelList"></div>
+    </aside>
+
+    <main class="main">
+      <div id="mainContent">
+        <div class="loading">
+          <div class="spinner"></div> 載入中…
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
+    <img id="lbImg" src="" alt="字卡">
+    <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
+    <div class="lightbox-counter" id="lbCounter"></div>
+  </div>
+
+  <!-- Summary Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <div class="modal-title-block">
+          <div class="modal-channel" id="modalChannel"></div>
+          <div class="modal-title" id="modalTitle"></div>
+          <div class="modal-meta" id="modalMeta"></div>
+        </div>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <div class="cards-strip" id="cardsStrip" style="display:none">
+        <div class="cards-strip-label">精華字卡</div>
+        <div class="cards-scroll" id="cardsScroll"></div>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <div class="loading">
+          <div class="spinner"></div> 載入中…
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary" id="modalYtLink" href="#" target="_blank" rel="noopener">
+          ▶ YouTube 觀看原片
+        </a>
+        <button class="btn btn-ghost" id="modalCloseBtn">關閉</button>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-// ── Config ─────────────────────────────────────────────────
+  <script>
+    // ── Config ─────────────────────────────────────────────────
 
-const BASE = (() => {
-  // Works for both GitHub Pages sub-path and local http-server
-  const path = location.pathname.replace(/\/[^/]*$/, '/');
-  return path.endsWith('/') ? path : path + '/';
-})();
+    const BASE = (() => {
+      // Works for both GitHub Pages sub-path and local http-server
+      const path = location.pathname.replace(/\/[^/]*$/, '/');
+      return path.endsWith('/') ? path : path + '/';
+    })();
 
-// ── State ──────────────────────────────────────────────────
+    // ── State ──────────────────────────────────────────────────
 
-let allEpisodes = [];
-let generatedAt = '';
+    let allEpisodes = [];
+    let generatedAt = '';
 
-// ── Helpers ────────────────────────────────────────────────
+    // ── Helpers ────────────────────────────────────────────────
 
-function stripFrontmatter(md) {
-  if (!md.startsWith('---')) return md;
-  const end = md.indexOf('---', 3);
-  if (end === -1) return md;
-  return md.slice(end + 3).replace(/^\n+/, '');
-}
-
-function fmt(dateStr) {
-  if (!dateStr) return '';
-  // If it's already a relative string (not YYYY-MM-DD), return as-is
-  if (!/^\d{4}-\d{2}-\d{2}/.test(dateStr)) return dateStr;
-  try {
-    return new Date(dateStr).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
-  } catch { return dateStr; }
-}
-
-function channelEmoji(name) {
-  if (!name) return '📺';
-  const n = name.toLowerCase();
-  if (n.includes('股癌') || n.includes('gooaye')) return '📈';
-  return '📺';
-}
-
-// ── Data Fetch ─────────────────────────────────────────────
-
-async function loadData() {
-  const resp = await fetch(BASE + 'data/episodes.json');
-  if (!resp.ok) throw new Error('Failed to load episodes.json');
-  const data = await resp.json();
-  allEpisodes = data.episodes || [];
-  generatedAt = data.generated_at || '';
-
-  const el = document.getElementById('lastUpdated');
-  if (generatedAt) {
-    const d = new Date(generatedAt + 'Z');
-    el.textContent = '更新：' + d.toLocaleDateString('zh-TW');
-  }
-}
-
-// ── Routing ────────────────────────────────────────────────
-
-function getRoute() {
-  const hash = location.hash || '#/';
-  if (hash.startsWith('#/channel/')) {
-    return { type: 'channel', id: decodeURIComponent(hash.slice(10)) };
-  }
-  return { type: 'all' };
-}
-
-// ── Sidebar ────────────────────────────────────────────────
-
-function renderSidebar(episodes, activeChannelId) {
-  const channelMap = new Map();
-  for (const ep of episodes) {
-    if (!channelMap.has(ep.channel_id)) {
-      channelMap.set(ep.channel_id, { name: ep.channel_name, count: 0, thumbnail: ep.channel_thumbnail });
+    function stripFrontmatter(md) {
+      if (!md.startsWith('---')) return md;
+      const end = md.indexOf('---', 3);
+      if (end === -1) return md;
+      return md.slice(end + 3).replace(/^\n+/, '');
     }
-    channelMap.get(ep.channel_id).count++;
-  }
 
-  const allActive = !activeChannelId;
-  let html = `
+    function fmt(dateStr) {
+      if (!dateStr) return '';
+      // If it's already a relative string (not YYYY-MM-DD), return as-is
+      if (!/^\d{4}-\d{2}-\d{2}/.test(dateStr)) return dateStr;
+      try {
+        return new Date(dateStr).toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+      } catch { return dateStr; }
+    }
+
+    function channelEmoji(name) {
+      if (!name) return '📺';
+      const n = name.toLowerCase();
+      if (n.includes('股癌') || n.includes('gooaye')) return '📈';
+      return '📺';
+    }
+
+    // ── Data Fetch ─────────────────────────────────────────────
+
+    async function loadData() {
+      const resp = await fetch(BASE + 'data/episodes.json');
+      if (!resp.ok) throw new Error('Failed to load episodes.json');
+      const data = await resp.json();
+      allEpisodes = data.episodes || [];
+      generatedAt = data.generated_at || '';
+
+      const el = document.getElementById('lastUpdated');
+      if (generatedAt) {
+        const d = new Date(generatedAt + 'Z');
+        el.textContent = '更新：' + d.toLocaleDateString('zh-TW');
+      }
+    }
+
+    // ── Routing ────────────────────────────────────────────────
+
+    function getRoute() {
+      const hash = location.hash || '#/';
+      if (hash.startsWith('#/channel/')) {
+        return { type: 'channel', id: decodeURIComponent(hash.slice(10)) };
+      }
+      return { type: 'all' };
+    }
+
+    // ── Sidebar ────────────────────────────────────────────────
+
+    function renderSidebar(episodes, activeChannelId) {
+      const channelMap = new Map();
+      for (const ep of episodes) {
+        if (!channelMap.has(ep.channel_id)) {
+          channelMap.set(ep.channel_id, { name: ep.channel_name, count: 0, thumbnail: ep.channel_thumbnail });
+        }
+        channelMap.get(ep.channel_id).count++;
+      }
+
+      const allActive = !activeChannelId;
+      let html = `
     <div class="channel-item ${allActive ? 'active' : ''}" data-channel="">
       <div class="channel-avatar">${channelEmoji('')}</div>
       <div class="channel-info">
@@ -751,12 +1014,12 @@ function renderSidebar(episodes, activeChannelId) {
     <div class="sidebar-divider"></div>
   `;
 
-  for (const [cid, info] of channelMap) {
-    const active = cid === activeChannelId;
-    const thumb = info.thumbnail
-      ? `<img src="${info.thumbnail}" alt="${info.name}" loading="lazy">`
-      : channelEmoji(info.name);
-    html += `
+      for (const [cid, info] of channelMap) {
+        const active = cid === activeChannelId;
+        const thumb = info.thumbnail
+          ? `<img src="${info.thumbnail}" alt="${info.name}" loading="lazy">`
+          : channelEmoji(info.name);
+        html += `
       <div class="channel-item ${active ? 'active' : ''}" data-channel="${cid}">
         <div class="channel-avatar">${thumb}</div>
         <div class="channel-info">
@@ -765,24 +1028,24 @@ function renderSidebar(episodes, activeChannelId) {
         </div>
       </div>
     `;
-  }
+      }
 
-  document.getElementById('channelList').innerHTML = html;
+      document.getElementById('channelList').innerHTML = html;
 
-  document.querySelectorAll('.channel-item').forEach(el => {
-    el.addEventListener('click', () => {
-      const cid = el.dataset.channel;
-      location.hash = cid ? `#/channel/${encodeURIComponent(cid)}` : '#/';
-      closeSidebar();
-    });
-  });
-}
+      document.querySelectorAll('.channel-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const cid = el.dataset.channel;
+          location.hash = cid ? `#/channel/${encodeURIComponent(cid)}` : '#/';
+          closeSidebar();
+        });
+      });
+    }
 
-// ── Main Content ───────────────────────────────────────────
+    // ── Main Content ───────────────────────────────────────────
 
-function renderEpisodes(episodes, title) {
-  if (!episodes.length) {
-    document.getElementById('mainContent').innerHTML = `
+    function renderEpisodes(episodes, title) {
+      if (!episodes.length) {
+        document.getElementById('mainContent').innerHTML = `
       <div class="page-header"><h1 class="page-title">${title}</h1></div>
       <div class="episodes-grid">
         <div class="empty-state">
@@ -792,14 +1055,14 @@ function renderEpisodes(episodes, title) {
         </div>
       </div>
     `;
-    return;
-  }
+        return;
+      }
 
-  let cards = '';
-  for (const ep of episodes) {
-    const date = fmt(ep.published_at || ep.processed_at);
-    const cardsJson = JSON.stringify(ep.cards || []).replace(/"/g, '&quot;');
-    cards += `
+      let cards = '';
+      for (const ep of episodes) {
+        const date = fmt(ep.published_at || ep.processed_at);
+        const cardsJson = JSON.stringify(ep.cards || []).replace(/"/g, '&quot;');
+        cards += `
       <div class="episode-card" data-video-id="${ep.video_id}"
            data-channel-name="${ep.channel_name || ''}"
            data-channel-id="${ep.channel_id || ''}"
@@ -814,9 +1077,9 @@ function renderEpisodes(episodes, title) {
         <div class="episode-arrow">→</div>
       </div>
     `;
-  }
+      }
 
-  document.getElementById('mainContent').innerHTML = `
+      document.getElementById('mainContent').innerHTML = `
     <div class="page-header">
       <h1 class="page-title">${title}</h1>
     </div>
@@ -826,181 +1089,182 @@ function renderEpisodes(episodes, title) {
     <div class="episodes-grid">${cards}</div>
   `;
 
-  document.querySelectorAll('.episode-card').forEach(card => {
-    card.addEventListener('click', () => {
-      openModal({
-        videoId: card.dataset.videoId,
-        channelName: card.dataset.channelName,
-        title: card.querySelector('.episode-title').textContent,
-        date: card.dataset.date,
-        summaryUrl: card.dataset.summaryUrl,
-        cards: card.dataset.cards ? JSON.parse(card.dataset.cards) : [],
+      document.querySelectorAll('.episode-card').forEach(card => {
+        card.addEventListener('click', () => {
+          openModal({
+            videoId: card.dataset.videoId,
+            channelName: card.dataset.channelName,
+            title: card.querySelector('.episode-title').textContent,
+            date: card.dataset.date,
+            summaryUrl: card.dataset.summaryUrl,
+            cards: card.dataset.cards ? JSON.parse(card.dataset.cards) : [],
+          });
+        });
       });
-    });
-  });
-}
+    }
 
-// ── Modal ──────────────────────────────────────────────────
+    // ── Modal ──────────────────────────────────────────────────
 
-async function openModal({ videoId, channelName, title, date, summaryUrl, cards }) {
-  const overlay = document.getElementById('modalOverlay');
-  const body = document.getElementById('modalBody');
-  const strip = document.getElementById('cardsStrip');
-  const scroll = document.getElementById('cardsScroll');
+    async function openModal({ videoId, channelName, title, date, summaryUrl, cards }) {
+      const overlay = document.getElementById('modalOverlay');
+      const body = document.getElementById('modalBody');
+      const strip = document.getElementById('cardsStrip');
+      const scroll = document.getElementById('cardsScroll');
 
-  document.getElementById('modalChannel').textContent = channelName;
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalMeta').textContent = date ? `📅 ${date}` : '';
-  document.getElementById('modalYtLink').href = `https://youtube.com/watch?v=${videoId}`;
-  body.innerHTML = '<div class="loading"><div class="spinner"></div> 載入中…</div>';
+      document.getElementById('modalChannel').textContent = channelName;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMeta').textContent = date ? `📅 ${date}` : '';
+      document.getElementById('modalYtLink').href = `https://youtube.com/watch?v=${videoId}`;
+      body.innerHTML = '<div class="loading"><div class="spinner"></div> 載入中…</div>';
 
-  // Render cards strip
-  if (cards && cards.length) {
-    scroll.innerHTML = cards.map((url, i) =>
-      `<div class="card-thumb" data-index="${i}">
+      // Render cards strip
+      if (cards && cards.length) {
+        scroll.innerHTML = cards.map((url, i) =>
+          `<div class="card-thumb" data-index="${i}">
         <img src="${BASE + url}" alt="字卡 ${i + 1}" loading="lazy">
       </div>`
-    ).join('');
-    strip.style.display = 'block';
-    // Bind lightbox on each thumb
-    scroll.querySelectorAll('.card-thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => openLightbox(cards, +thumb.dataset.index));
-    });
-  } else {
-    strip.style.display = 'none';
-    scroll.innerHTML = '';
-  }
+        ).join('');
+        strip.style.display = 'block';
+        // Bind lightbox on each thumb
+        scroll.querySelectorAll('.card-thumb').forEach(thumb => {
+          thumb.addEventListener('click', () => openLightbox(cards, +thumb.dataset.index));
+        });
+      } else {
+        strip.style.display = 'none';
+        scroll.innerHTML = '';
+      }
 
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
 
-  try {
-    const resp = await fetch(BASE + summaryUrl);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const md = await resp.text();
-    const bodyMd = stripFrontmatter(md);
-    body.innerHTML = marked.parse(bodyMd);
-    body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
-  } catch (e) {
-    body.innerHTML = `<p style="color:var(--red)">⚠️ 載入摘要失敗：${e.message}</p>`;
-  }
-}
+      try {
+        const resp = await fetch(BASE + summaryUrl);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const md = await resp.text();
+        const bodyMd = stripFrontmatter(md);
+        body.innerHTML = marked.parse(bodyMd);
+        body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+      } catch (e) {
+        body.innerHTML = `<p style="color:var(--red)">⚠️ 載入摘要失敗：${e.message}</p>`;
+      }
+    }
 
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
 
-// ── Mobile Sidebar ─────────────────────────────────────────
+    // ── Mobile Sidebar ─────────────────────────────────────────
 
-function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebarBackdrop').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarBackdrop').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarBackdrop').classList.remove('open');
-  document.body.style.overflow = '';
-}
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarBackdrop').classList.remove('open');
+      document.body.style.overflow = '';
+    }
 
-// ── Router ─────────────────────────────────────────────────
+    // ── Router ─────────────────────────────────────────────────
 
-function route() {
-  const r = getRoute();
-  let filtered;
-  let title;
+    function route() {
+      const r = getRoute();
+      let filtered;
+      let title;
 
-  if (r.type === 'channel') {
-    filtered = allEpisodes.filter(e => e.channel_id === r.id);
-    const ch = allEpisodes.find(e => e.channel_id === r.id);
-    title = ch ? ch.channel_name : r.id;
-  } else {
-    filtered = allEpisodes;
-    title = '全部節目';
-  }
+      if (r.type === 'channel') {
+        filtered = allEpisodes.filter(e => e.channel_id === r.id);
+        const ch = allEpisodes.find(e => e.channel_id === r.id);
+        title = ch ? ch.channel_name : r.id;
+      } else {
+        filtered = allEpisodes;
+        title = '全部節目';
+      }
 
-  renderSidebar(allEpisodes, r.type === 'channel' ? r.id : null);
-  renderEpisodes(filtered, title);
-}
+      renderSidebar(allEpisodes, r.type === 'channel' ? r.id : null);
+      renderEpisodes(filtered, title);
+    }
 
-// ── Init ───────────────────────────────────────────────────
+    // ── Init ───────────────────────────────────────────────────
 
-(async () => {
-  try {
-    await loadData();
-    route();
-  } catch (e) {
-    document.getElementById('mainContent').innerHTML = `
+    (async () => {
+      try {
+        await loadData();
+        route();
+      } catch (e) {
+        document.getElementById('mainContent').innerHTML = `
       <div class="empty-state">
         <span class="empty-icon">⚠️</span>
         <div class="empty-title">載入失敗</div>
         <div class="empty-text">${e.message}</div>
       </div>
     `;
-  }
-})();
+      }
+    })();
 
-// ── Lightbox ──────────────────────────────────────────────
+    // ── Lightbox ──────────────────────────────────────────────
 
-let lbCards = [];
-let lbIndex = 0;
+    let lbCards = [];
+    let lbIndex = 0;
 
-function openLightbox(cards, index) {
-  lbCards = cards;
-  lbIndex = index;
-  _lbShow();
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+    function openLightbox(cards, index) {
+      lbCards = cards;
+      lbIndex = index;
+      _lbShow();
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
 
-function _lbShow() {
-  document.getElementById('lbImg').src = BASE + lbCards[lbIndex];
-  document.getElementById('lbCounter').textContent = `${lbIndex + 1} / ${lbCards.length}`;
-  document.getElementById('lbPrev').style.visibility = lbIndex > 0 ? 'visible' : 'hidden';
-  document.getElementById('lbNext').style.visibility = lbIndex < lbCards.length - 1 ? 'visible' : 'hidden';
-}
+    function _lbShow() {
+      document.getElementById('lbImg').src = BASE + lbCards[lbIndex];
+      document.getElementById('lbCounter').textContent = `${lbIndex + 1} / ${lbCards.length}`;
+      document.getElementById('lbPrev').style.visibility = lbIndex > 0 ? 'visible' : 'hidden';
+      document.getElementById('lbNext').style.visibility = lbIndex < lbCards.length - 1 ? 'visible' : 'hidden';
+    }
 
-document.getElementById('lbClose').addEventListener('click', closeLightbox);
-document.getElementById('lightbox').addEventListener('click', e => {
-  if (e.target === document.getElementById('lightbox')) closeLightbox();
-});
-document.getElementById('lbPrev').addEventListener('click', e => {
-  e.stopPropagation();
-  if (lbIndex > 0) { lbIndex--; _lbShow(); }
-});
-document.getElementById('lbNext').addEventListener('click', e => {
-  e.stopPropagation();
-  if (lbIndex < lbCards.length - 1) { lbIndex++; _lbShow(); }
-});
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox').addEventListener('click', e => {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    });
+    document.getElementById('lbPrev').addEventListener('click', e => {
+      e.stopPropagation();
+      if (lbIndex > 0) { lbIndex--; _lbShow(); }
+    });
+    document.getElementById('lbNext').addEventListener('click', e => {
+      e.stopPropagation();
+      if (lbIndex < lbCards.length - 1) { lbIndex++; _lbShow(); }
+    });
 
-// ── Event listeners ────────────────────────────────────────
-window.addEventListener('hashchange', route);
+    // ── Event listeners ────────────────────────────────────────
+    window.addEventListener('hashchange', route);
 
-document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
-document.getElementById('modalOverlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
-    else closeModal();
-  }
-  if (document.getElementById('lightbox').classList.contains('open')) {
-    if (e.key === 'ArrowLeft' && lbIndex > 0) { lbIndex--; _lbShow(); }
-    if (e.key === 'ArrowRight' && lbIndex < lbCards.length - 1) { lbIndex++; _lbShow(); }
-  }
-});
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
+        else closeModal();
+      }
+      if (document.getElementById('lightbox').classList.contains('open')) {
+        if (e.key === 'ArrowLeft' && lbIndex > 0) { lbIndex--; _lbShow(); }
+        if (e.key === 'ArrowRight' && lbIndex < lbCards.length - 1) { lbIndex++; _lbShow(); }
+      }
+    });
 
-document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
-document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
-</script>
+    document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
+    document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+  </script>
 </body>
+
 </html>
