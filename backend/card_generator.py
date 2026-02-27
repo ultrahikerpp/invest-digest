@@ -62,7 +62,7 @@ def _wrap_text(text: str, font: ImageFont.FreeTypeFont, max_width: int, draw: Im
         current = ""
         for char in paragraph:
             test = current + char
-            if draw.textlength(test, font=font) <= max_width:
+            if draw.textlength(test, font=font) <= max_width and len(test) <= 20:
                 current = test
             else:
                 if current:
