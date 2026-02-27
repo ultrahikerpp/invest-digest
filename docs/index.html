@@ -384,6 +384,43 @@ header {
   border-radius: 4px;
 }
 
+/* ── Cards Strip ── */
+.cards-strip {
+  padding: 20px 32px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cards-strip-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.cards-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.cards-scroll::-webkit-scrollbar { height: 4px; }
+.cards-scroll::-webkit-scrollbar-track { background: var(--border); border-radius: 2px; }
+.cards-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
+.card-thumb {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  width: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.card-thumb:hover { border-color: var(--primary); transform: translateY(-2px); }
+.card-thumb img { width: 100%; display: block; }
+
 .modal-footer {
   padding: 20px 32px;
   border-top: 1px solid var(--border);
@@ -471,6 +508,7 @@ header {
   }
   .modal-body { max-height: 55vh; }
   .modal-header { padding: 20px 20px 16px; }
+  .cards-strip { padding: 16px 20px 0; }
   .modal-body { padding: 20px; }
   .modal-footer { padding: 16px 20px; }
   .modal-title { font-size: 18px; }
@@ -516,6 +554,10 @@ header {
         <div class="modal-meta" id="modalMeta"></div>
       </div>
       <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="cards-strip" id="cardsStrip" style="display:none">
+      <div class="cards-strip-label">字卡預覽</div>
+      <div class="cards-scroll" id="cardsScroll"></div>
     </div>
     <div class="modal-body" id="modalBody">
       <div class="loading"><div class="spinner"></div> 載入中…</div>
@@ -664,12 +706,14 @@ function renderEpisodes(episodes, title) {
   let cards = '';
   for (const ep of episodes) {
     const date = fmt(ep.published_at || ep.processed_at);
+    const cardsJson = JSON.stringify(ep.cards || []).replace(/"/g, '&quot;');
     cards += `
       <div class="episode-card" data-video-id="${ep.video_id}"
            data-channel-name="${ep.channel_name || ''}"
            data-channel-id="${ep.channel_id || ''}"
            data-date="${date}"
-           data-summary-url="${ep.summary_url}">
+           data-summary-url="${ep.summary_url}"
+           data-cards="${cardsJson}">
         <div class="episode-card-top">
           <span class="episode-channel-badge">${ep.channel_name || ep.channel_id}</span>
         </div>
@@ -698,6 +742,7 @@ function renderEpisodes(episodes, title) {
         title: card.querySelector('.episode-title').textContent,
         date: card.dataset.date,
         summaryUrl: card.dataset.summaryUrl,
+        cards: card.dataset.cards ? JSON.parse(card.dataset.cards) : [],
       });
     });
   });
@@ -705,15 +750,30 @@ function renderEpisodes(episodes, title) {
 
 // ── Modal ──────────────────────────────────────────────────
 
-async function openModal({ videoId, channelName, title, date, summaryUrl }) {
+async function openModal({ videoId, channelName, title, date, summaryUrl, cards }) {
   const overlay = document.getElementById('modalOverlay');
   const body = document.getElementById('modalBody');
+  const strip = document.getElementById('cardsStrip');
+  const scroll = document.getElementById('cardsScroll');
 
   document.getElementById('modalChannel').textContent = channelName;
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalMeta').textContent = date ? `📅 ${date}` : '';
   document.getElementById('modalYtLink').href = `https://youtube.com/watch?v=${videoId}`;
   body.innerHTML = '<div class="loading"><div class="spinner"></div> 載入中…</div>';
+
+  // Render cards strip
+  if (cards && cards.length) {
+    scroll.innerHTML = cards.map(url =>
+      `<div class="card-thumb">
+        <img src="${BASE + url}" alt="字卡" loading="lazy">
+      </div>`
+    ).join('');
+    strip.style.display = 'block';
+  } else {
+    strip.style.display = 'none';
+    scroll.innerHTML = '';
+  }
 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -724,7 +784,6 @@ async function openModal({ videoId, channelName, title, date, summaryUrl }) {
     const md = await resp.text();
     const bodyMd = stripFrontmatter(md);
     body.innerHTML = marked.parse(bodyMd);
-    // Open links in new tab
     body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
   } catch (e) {
     body.innerHTML = `<p style="color:var(--red)">⚠️ 載入摘要失敗：${e.message}</p>`;

@@ -16,9 +16,11 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent
 SUMMARIES_DIR = BASE_DIR / "data" / "summaries"
+CARDS_DIR = BASE_DIR / "data" / "cards"
 CHANNELS_FILE = BASE_DIR / "channels.json"
 SITE_DIR = BASE_DIR / "docs"
 SITE_SUMMARIES_DIR = SITE_DIR / "summaries"
+SITE_CARDS_DIR = SITE_DIR / "cards"
 SITE_DATA_DIR = SITE_DIR / "data"
 
 
@@ -66,10 +68,18 @@ def _normalize_date(raw: str) -> str:
         return raw
 
 
+def _episode_sort_key(episode: dict) -> tuple:
+    """Sort by EP number desc (EP639 > EP638...), fallback to processed_at desc."""
+    m = re.search(r'EP(\d+)', episode.get("title", ""), re.IGNORECASE)
+    ep_num = int(m.group(1)) if m else 0
+    return (ep_num, episode.get("processed_at") or "")
+
+
 def build():
     channels = _load_channels()
 
     SITE_SUMMARIES_DIR.mkdir(parents=True, exist_ok=True)
+    SITE_CARDS_DIR.mkdir(parents=True, exist_ok=True)
     SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     md_files = sorted(SUMMARIES_DIR.glob("*.md"))
@@ -98,6 +108,15 @@ def build():
             published_at = _normalize_date(meta.get("published", ""))
             processed_at = _normalize_date(meta.get("processed", ""))
 
+            # Collect card URLs if cards exist for this video
+            card_src_dir = CARDS_DIR / video_id
+            card_urls: list[str] = []
+            if card_src_dir.exists():
+                card_files = sorted(card_src_dir.glob("card_*.png"))
+                card_urls = [f"cards/{video_id}/{p.name}" for p in card_files]
+                dest_card_dir = SITE_CARDS_DIR / video_id
+                shutil.copytree(card_src_dir, dest_card_dir, dirs_exist_ok=True)
+
             episodes.append({
                 "video_id": video_id,
                 "channel_id": channel_id,
@@ -107,6 +126,7 @@ def build():
                 "published_at": published_at,
                 "processed_at": processed_at,
                 "summary_url": f"summaries/{video_id}.md",
+                "cards": card_urls,
             })
 
             # Copy summary file to site/
@@ -114,8 +134,8 @@ def build():
             shutil.copy2(md_path, dest)
             print(f"  Copied {md_path.name}")
 
-        # Sort newest processed first (fall back to video_id for stable order)
-        episodes.sort(key=lambda e: (e["processed_at"] or "", e["video_id"]), reverse=True)
+        # Sort by EP number desc, fallback to processed_at desc
+        episodes.sort(key=_episode_sort_key, reverse=True)
 
     index = {
         "episodes": episodes,

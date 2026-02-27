@@ -182,7 +182,7 @@ def parse_summary(md_path: Path) -> dict:
 
     # Extract ## sections
     sections: dict[str, str] = {}
-    for m in re.finditer(r"^## (.+)\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL):
+    for m in re.finditer(r"^## ([^\n]+)\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL):
         key = m.group(1).strip()
         val = m.group(2).strip()
         if val:
