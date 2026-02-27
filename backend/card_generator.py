@@ -83,8 +83,8 @@ def _fallback_points(content: str) -> list[str]:
             points.append(cleaned[:25] + "…" if len(cleaned) > 25 else cleaned)
     return points[:5]
 
-# Dimensions (9:16 vertical)
-W, H = 1080, 1920
+# Dimensions (1:1 square — fits content of 5 bullet points)
+W, H = 1080, 1080
 PAD = 90
 
 # Color palette
