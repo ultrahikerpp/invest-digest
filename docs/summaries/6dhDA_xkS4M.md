@@ -5,7 +5,10 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-02-23T01:05:49+00:00
 processed: 2026-02-27
+hashtags: #關稅政策 #新興市場 #美國經濟 #AI衝擊 #勞動力市場 #游庭皓的財經皓角
 ---
+
+
 
 # 2026/2/23(一)台積電ADR續漲 馬年開紅盤?關稅推翻!美股繼續漲?【早晨財經速解讀】
 

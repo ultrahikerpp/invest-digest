@@ -5,7 +5,10 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 5 天前
 processed: 2026-02-27
+hashtags: #台股 #美股 #地緣政治 #短期展望 #心理調適 #Gooaye股癌
 ---
+
+
 
 # EP638 | 🐈‍⬛
 

@@ -5,7 +5,10 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 1 天前
 processed: 2026-02-27
+hashtags: #市場輪動 #AI電力 #能源基礎建設 #台股日股 #獨立思考 #Gooaye股癌
 ---
+
+
 
 # EP639 | 🐗
 

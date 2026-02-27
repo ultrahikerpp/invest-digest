@@ -5,7 +5,10 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-02-24T01:04:53+00:00
 processed: 2026-02-27
+hashtags: #AI敘事轉變 #軟體股衝擊 #能源瓶頸 #中國AI #股災 #游庭皓的財經皓角
 ---
+
+
 
 # 2026/2/24(二)軟體股股災!AI受害股 為何越來越多?【早晨財經速解讀】
 

@@ -5,7 +5,10 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2 週前
 processed: 2026-02-27
+hashtags: #長期投資 #記憶體產業 #衛星產業 #基本面 #風險管理 #Gooaye股癌
 ---
+
+
 
 # EP635 | 🌴
 

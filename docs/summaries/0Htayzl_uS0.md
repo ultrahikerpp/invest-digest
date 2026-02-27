@@ -5,7 +5,10 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 12 天前
 processed: 2026-02-27
+hashtags: #半導體 #HBM #未來展望 #應材 #無塵室 #Gooaye股癌
 ---
+
+
 
 # EP636 | 🐚
 

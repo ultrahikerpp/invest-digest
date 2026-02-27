@@ -367,6 +367,37 @@
       letter-spacing: -0.2px;
     }
 
+    .episode-hashtags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 6px 0 2px;
+    }
+
+    .hashtag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--vibe2);
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.22);
+      border-radius: 20px;
+      padding: 2px 8px;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .modal-hashtags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .modal-hashtags .hashtag {
+      font-size: 12px;
+      padding: 3px 10px;
+    }
+
     .episode-date {
       font-size: 13px;
       color: var(--text-dim);
@@ -1037,6 +1068,7 @@
         <div class="modal-title-block">
           <div class="modal-channel" id="modalChannel"></div>
           <div class="modal-title" id="modalTitle"></div>
+          <div class="modal-hashtags" id="modalHashtags" style="display:none"></div>
           <div class="modal-meta" id="modalMeta"></div>
         </div>
         <button class="modal-close" id="modalClose" aria-label="關閉">
@@ -1214,17 +1246,21 @@
       for (const ep of episodes) {
         const date = fmt(ep.published_at || ep.processed_at);
         const cardsJson = JSON.stringify(ep.cards || []).replace(/"/g, '&quot;');
+        const hashtagsHtml = (ep.hashtags || '').split(/\s+/).filter(t => t)
+          .map(t => `<span class="hashtag">${t}</span>`).join('');
         cards += `
       <div class="episode-card" data-video-id="${ep.video_id}"
            data-channel-name="${ep.channel_name || ''}"
            data-channel-id="${ep.channel_id || ''}"
            data-date="${date}"
            data-summary-url="${ep.summary_url}"
-           data-cards="${cardsJson}">
+           data-cards="${cardsJson}"
+           data-hashtags="${(ep.hashtags || '').replace(/"/g, '&quot;')}">
         <div class="episode-card-top">
           <span class="episode-channel-badge">${ep.channel_name || ep.channel_id}</span>
         </div>
         <div class="episode-title">${ep.title}</div>
+        ${hashtagsHtml ? `<div class="episode-hashtags">${hashtagsHtml}</div>` : ''}
         <div class="episode-date">${ICONS.calendar} ${date}</div>
         <div class="episode-arrow">${ICONS.arrowRight}</div>
       </div>
@@ -1250,6 +1286,7 @@
             date: card.dataset.date,
             summaryUrl: card.dataset.summaryUrl,
             cards: card.dataset.cards ? JSON.parse(card.dataset.cards) : [],
+            hashtags: card.dataset.hashtags || '',
           });
         });
       });
@@ -1257,7 +1294,7 @@
 
     // ── Modal ──────────────────────────────────────────────────
 
-    async function openModal({ videoId, channelName, title, date, summaryUrl, cards }) {
+    async function openModal({ videoId, channelName, title, date, summaryUrl, cards, hashtags }) {
       const overlay = document.getElementById('modalOverlay');
       const body = document.getElementById('modalBody');
       const strip = document.getElementById('cardsStrip');
@@ -1265,6 +1302,17 @@
 
       document.getElementById('modalChannel').textContent = channelName;
       document.getElementById('modalTitle').textContent = title;
+
+      const hashtagsEl = document.getElementById('modalHashtags');
+      if (hashtags) {
+        hashtagsEl.innerHTML = hashtags.split(/\s+/).filter(t => t)
+          .map(t => `<span class="hashtag">${t}</span>`).join('');
+        hashtagsEl.style.display = 'flex';
+      } else {
+        hashtagsEl.innerHTML = '';
+        hashtagsEl.style.display = 'none';
+      }
+
       const metaEl = document.getElementById('modalMeta');
       metaEl.innerHTML = date ? `${ICONS.calendar} ${date}` : '';
       document.getElementById('modalYtLink').href = `https://youtube.com/watch?v=${videoId}`;
