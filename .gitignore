@@ -1,19 +1,10 @@
-# Python
-venv/
-__pycache__/
-*.pyc
-*.pyo
-.env
+# Ignore everything by default
+*
+.*
 
-# macOS
-.DS_Store
+# Allow only docs/ (GitHub Pages static site)
+!docs/
+!docs/**
 
-# Local-only data (large files, not needed on GitHub)
-data/transcripts/
-data/cards/
-data/videos/
-data/runner.log
-data/subscriptions.db
-
-# Keep data/summaries/ tracked (source of truth)
-# Keep site/ tracked (GitHub Pages)
+# Keep .gitignore itself
+!.gitignore
