@@ -225,7 +225,7 @@ def cmd_cards(video_id: str):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     from backend.card_generator import generate_cards
-    card_paths = generate_cards(str(summary_path), channel_name, str(output_dir))
+    card_paths = generate_cards(summary_path, channel_name, output_dir)
     print(f"Generated {len(card_paths)} cards in {output_dir}")
     for p in card_paths:
         print(f"  {p}")

@@ -192,6 +192,7 @@ def _make_section_card(
     index: int,
     total: int,
     video_title: str,
+    channel_name: str,
     output_path: Path,
 ) -> Path:
     img = Image.new("RGB", (W, H), C_BG)
@@ -200,17 +201,24 @@ def _make_section_card(
     # Top accent bar
     draw.rectangle([0, 0, W, 8], fill=C_ACCENT)
 
+    # Channel | Episode header
+    ep_match = re.search(r'EP\d+', video_title, re.IGNORECASE)
+    ep_text = ep_match.group(0).upper() if ep_match else video_title[:10]
+    header_text = f"{channel_name}｜{ep_text}"
+    font_header = _load_font(FS_BRAND)
+    draw.text((PAD, 30), header_text, font=font_header, fill=C_GRAY)
+
     # Progress indicator (top-right)
     font_prog = _load_font(FS_PROGRESS)
     progress_text = f"{index} / {total}"
     prog_w = int(draw.textlength(progress_text, font=font_prog))
-    draw.text((W - PAD - prog_w, 38), progress_text, font=font_prog, fill=C_DIM)
+    draw.text((W - PAD - prog_w, 30), progress_text, font=font_prog, fill=C_DIM)
 
     # Section label pill (green badge)
     font_label = _load_font(FS_LABEL)
     label_w = int(draw.textlength(section_title, font=font_label)) + 52
-    draw.rounded_rectangle([PAD, 95, PAD + label_w, 158], radius=32, fill=C_ACCENT)
-    draw.text((PAD + 26, 106), section_title, font=font_label, fill=C_BG)
+    draw.rounded_rectangle([PAD, 100, PAD + label_w, 163], radius=32, fill=C_ACCENT)
+    draw.text((PAD + 26, 111), section_title, font=font_label, fill=C_BG)
 
     # Divider
     draw.rectangle([PAD, 186, W - PAD, 189], fill=C_CARD)
@@ -283,18 +291,13 @@ def generate_cards(md_path: Path, channel_name: str, output_dir: Path) -> list[P
 
     cards: list[Path] = []
 
-    # Title card
-    title_card = output_dir / "card_00.png"
-    _make_title_card(title, channel_name, title_card)
-    cards.append(title_card)
-
-    # Section cards (in fixed order, skip missing sections)
-    ordered = [(k, sections[k]) for k in SECTION_ORDER if k in sections]
+    # Section cards only (no title card), first 5 sections in fixed order
+    ordered = [(k, sections[k]) for k in SECTION_ORDER[:5] if k in sections]
     for i, (section_title, content) in enumerate(ordered, start=1):
         print(f"  [card] 生成金句：{section_title}...")
         points = _gemini_points(section_title, content)
         card_path = output_dir / f"card_{i:02d}.png"
-        _make_section_card(section_title, points, i, len(ordered), title, card_path)
+        _make_section_card(section_title, points, i, len(ordered), title, channel_name, card_path)
         cards.append(card_path)
 
     return cards
