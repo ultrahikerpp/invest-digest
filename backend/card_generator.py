@@ -138,19 +138,26 @@ def _make_section_card(
     # Divider
     draw.rectangle([PAD, 186, W - PAD, 189], fill=C_CARD)
 
-    # Truncate content to 20 characters
-    stripped = re.sub(r"\*+", "", content).strip()
-    display = stripped[:20] + "…" if len(stripped) > 20 else stripped
+    # Parse bullet points from content (strip markdown bold markers)
+    raw_points = []
+    for raw in content.split("\n"):
+        cleaned = re.sub(r"\*+", "", raw).strip()
+        cleaned = re.sub(r"^[-•·]\s*", "", cleaned).strip()
+        # Skip sub-items that start with spaces or are empty
+        if cleaned:
+            raw_points.append(cleaned)
 
-    # Content
+    # Max 5 points, each truncated to 20 characters
+    points = []
+    for pt in raw_points[:5]:
+        points.append(pt[:20] + "…" if len(pt) > 20 else pt)
+
+    # Draw bullet list
     font_content = _load_font(FS_CONTENT)
-    content_w = W - PAD * 2
-    lines = _wrap_text(display, font_content, content_w, draw)
-
-    y = 220
-    line_h = FS_CONTENT + 18
-    for line in lines:
-        draw.text((PAD, y), line, font=font_content, fill=C_WHITE)
+    y = 230
+    line_h = FS_CONTENT + 36
+    for pt in points:
+        draw.text((PAD, y), f"• {pt}", font=font_content, fill=C_WHITE)
         y += line_h
 
     # Footer separator
