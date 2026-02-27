@@ -421,6 +421,74 @@ header {
 .card-thumb:hover { border-color: var(--primary); transform: translateY(-2px); }
 .card-thumb img { width: 100%; display: block; }
 
+/* ── Lightbox ── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 400;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: zoom-out;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-height: 92vh;
+  max-width: 92vw;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 0 60px rgba(0,0,0,0.6);
+  cursor: default;
+  animation: lbIn 0.18s ease;
+}
+@keyframes lbIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.lightbox-close {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: white;
+  font-size: 22px;
+  line-height: 1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.25); }
+.lightbox-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: white;
+  font-size: 28px;
+  line-height: 1;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+.lightbox-counter {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  font-family: var(--sans);
+}
+
 .modal-footer {
   padding: 20px 32px;
   border-top: 1px solid var(--border);
@@ -542,6 +610,15 @@ header {
       <div class="loading"><div class="spinner"></div> 載入中…</div>
     </div>
   </main>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
+  <img id="lbImg" src="" alt="字卡">
+  <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
+  <div class="lightbox-counter" id="lbCounter"></div>
 </div>
 
 <!-- Summary Modal -->
@@ -764,12 +841,16 @@ async function openModal({ videoId, channelName, title, date, summaryUrl, cards 
 
   // Render cards strip
   if (cards && cards.length) {
-    scroll.innerHTML = cards.map(url =>
-      `<div class="card-thumb">
-        <img src="${BASE + url}" alt="字卡" loading="lazy">
+    scroll.innerHTML = cards.map((url, i) =>
+      `<div class="card-thumb" data-index="${i}">
+        <img src="${BASE + url}" alt="字卡 ${i + 1}" loading="lazy">
       </div>`
     ).join('');
     strip.style.display = 'block';
+    // Bind lightbox on each thumb
+    scroll.querySelectorAll('.card-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => openLightbox(cards, +thumb.dataset.index));
+    });
   } else {
     strip.style.display = 'none';
     scroll.innerHTML = '';
@@ -846,7 +927,45 @@ function route() {
   }
 })();
 
-// Event listeners
+// ── Lightbox ──────────────────────────────────────────────
+
+let lbCards = [];
+let lbIndex = 0;
+
+function openLightbox(cards, index) {
+  lbCards = cards;
+  lbIndex = index;
+  _lbShow();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function _lbShow() {
+  document.getElementById('lbImg').src = BASE + lbCards[lbIndex];
+  document.getElementById('lbCounter').textContent = `${lbIndex + 1} / ${lbCards.length}`;
+  document.getElementById('lbPrev').style.visibility = lbIndex > 0 ? 'visible' : 'hidden';
+  document.getElementById('lbNext').style.visibility = lbIndex < lbCards.length - 1 ? 'visible' : 'hidden';
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+document.getElementById('lbPrev').addEventListener('click', e => {
+  e.stopPropagation();
+  if (lbIndex > 0) { lbIndex--; _lbShow(); }
+});
+document.getElementById('lbNext').addEventListener('click', e => {
+  e.stopPropagation();
+  if (lbIndex < lbCards.length - 1) { lbIndex++; _lbShow(); }
+});
+
+// ── Event listeners ────────────────────────────────────────
 window.addEventListener('hashchange', route);
 
 document.getElementById('modalClose').addEventListener('click', closeModal);
@@ -854,7 +973,16 @@ document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
 document.getElementById('modalOverlay').addEventListener('click', e => {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
+    else closeModal();
+  }
+  if (document.getElementById('lightbox').classList.contains('open')) {
+    if (e.key === 'ArrowLeft' && lbIndex > 0) { lbIndex--; _lbShow(); }
+    if (e.key === 'ArrowRight' && lbIndex < lbCards.length - 1) { lbIndex++; _lbShow(); }
+  }
+});
 
 document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
 document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
