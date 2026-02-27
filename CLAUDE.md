@@ -33,7 +33,7 @@ cd docs && python3 -m http.server 8000
 # 0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
 ```
 
-**Required environment variable:** `GEMINI_API_KEY` for AI summary generation.
+**API Key setup:** Copy `.env.example` to `.env` and set `GEMINI_API_KEY`. The `.env` file is gitignored and never committed.
 
 ## Architecture
 
