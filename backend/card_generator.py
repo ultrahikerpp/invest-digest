@@ -4,7 +4,84 @@ Each section becomes one card (9:16 vertical for YouTube Shorts / TikTok).
 """
 from PIL import Image, ImageDraw, ImageFont
 import re
+import os
+import json
+import urllib.request
 from pathlib import Path
+
+# ── Gemini helper ─────────────────────────────────────────
+
+def _load_dotenv():
+    env_path = Path(__file__).parent.parent / ".env"
+    if not env_path.exists():
+        return
+    with open(env_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, _, v = line.partition("=")
+            k = k.strip(); v = v.strip().strip('"').strip("'")
+            if k and k not in os.environ:
+                os.environ[k] = v
+
+_load_dotenv()
+
+
+def _gemini_points(section_title: str, content: str) -> list[str]:
+    """Call Gemini to generate 5 金句 bullet points for a card section.
+    Each point is a complete sentence, 20-30 Traditional Chinese characters.
+    Falls back to simple parsing if API unavailable.
+    """
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        return _fallback_points(content)
+
+    prompt = f"""你是投資內容精華整理編輯。根據以下「{section_title}」章節內容，整理出 5 條重點金句。
+
+嚴格要求：
+- 每條金句必須是完整的一句話，有清楚的主詞與結論
+- 每條金句長度必須剛好在 20 到 30 個繁體中文字之間（只計算中文字數，不計標點）
+- 如果超過 30 字，請縮短；如果不足 20 字，請補充完整
+- 偏向精闢、直接、有觀點的金句陳述
+- 不加任何前綴符號（不要加 1. 或 • 或 - 或空格）
+- 只輸出 5 行金句，每行一條，不輸出任何其他文字或說明
+
+章節內容：
+{content}
+"""
+    try:
+        payload = json.dumps({
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"maxOutputTokens": 2048, "temperature": 0.5}
+        }).encode("utf-8")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+        req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        raw = data["candidates"][0]["content"]["parts"][0]["text"]
+        # Clean lines: remove numbering prefixes, blank lines
+        lines = []
+        for l in raw.strip().splitlines():
+            l = re.sub(r"^[\d]+[.、。\)）]\s*", "", l.strip())
+            l = re.sub(r"^[-•·]\s*", "", l).strip()
+            if l:
+                lines.append(l)
+        return lines[:5] if lines else _fallback_points(content)
+    except Exception as e:
+        print(f"  [card] Gemini 金句生成失敗 ({section_title}): {e}")
+        return _fallback_points(content)
+
+
+def _fallback_points(content: str) -> list[str]:
+    """Simple fallback: extract bullet points from content."""
+    points = []
+    for raw in content.split("\n"):
+        cleaned = re.sub(r"\*+", "", raw).strip()
+        cleaned = re.sub(r"^[-•·]\s*", "", cleaned).strip()
+        if cleaned:
+            points.append(cleaned[:25] + "…" if len(cleaned) > 25 else cleaned)
+    return points[:5]
 
 # Dimensions (9:16 vertical)
 W, H = 1080, 1920
@@ -25,7 +102,7 @@ FS_BRAND   = 32
 FS_CHANNEL = 38
 FS_TITLE   = 68
 FS_LABEL   = 36
-FS_CONTENT = 46
+FS_CONTENT = 40
 FS_FOOTER  = 30
 FS_PROGRESS = 30
 
@@ -111,7 +188,7 @@ def _make_title_card(title: str, channel: str, output_path: Path) -> Path:
 
 def _make_section_card(
     section_title: str,
-    content: str,
+    points: list[str],
     index: int,
     total: int,
     video_title: str,
@@ -138,27 +215,22 @@ def _make_section_card(
     # Divider
     draw.rectangle([PAD, 186, W - PAD, 189], fill=C_CARD)
 
-    # Parse bullet points from content (strip markdown bold markers)
-    raw_points = []
-    for raw in content.split("\n"):
-        cleaned = re.sub(r"\*+", "", raw).strip()
-        cleaned = re.sub(r"^[-•·]\s*", "", cleaned).strip()
-        # Skip sub-items that start with spaces or are empty
-        if cleaned:
-            raw_points.append(cleaned)
-
-    # Max 5 points, each truncated to 20 characters
-    points = []
-    for pt in raw_points[:5]:
-        points.append(pt[:20] + "…" if len(pt) > 20 else pt)
-
-    # Draw bullet list
+    # Draw bullet list (points already prepared by caller)
     font_content = _load_font(FS_CONTENT)
+    content_w = W - PAD * 2 - 30   # indent room for bullet
+    line_h = FS_CONTENT + 20
     y = 230
-    line_h = FS_CONTENT + 36
     for pt in points:
-        draw.text((PAD, y), f"• {pt}", font=font_content, fill=C_WHITE)
+        wrapped = _wrap_text(pt, font_content, content_w - 60, draw)
+        # First line with bullet
+        draw.text((PAD, y), "•", font=font_content, fill=C_ACCENT)
+        draw.text((PAD + 55, y), wrapped[0] if wrapped else pt, font=font_content, fill=C_WHITE)
         y += line_h
+        # Continuation lines (indented, no bullet)
+        for cont in wrapped[1:]:
+            draw.text((PAD + 55, y), cont, font=font_content, fill=C_WHITE)
+            y += line_h
+        y += 10  # extra spacing between points
 
     # Footer separator
     draw.rectangle([0, H - 130, W, H - 128], fill=C_DIM)
@@ -219,8 +291,10 @@ def generate_cards(md_path: Path, channel_name: str, output_dir: Path) -> list[P
     # Section cards (in fixed order, skip missing sections)
     ordered = [(k, sections[k]) for k in SECTION_ORDER if k in sections]
     for i, (section_title, content) in enumerate(ordered, start=1):
+        print(f"  [card] 生成金句：{section_title}...")
+        points = _gemini_points(section_title, content)
         card_path = output_dir / f"card_{i:02d}.png"
-        _make_section_card(section_title, content, i, len(ordered), title, card_path)
+        _make_section_card(section_title, points, i, len(ordered), title, card_path)
         cards.append(card_path)
 
     return cards
