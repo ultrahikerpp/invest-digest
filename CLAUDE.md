@@ -27,7 +27,7 @@ python3 runner.py cards <video_id>
 python3 runner.py video <video_id>
 
 # Preview static site locally
-cd site && python3 -m http.server 8000
+cd docs && python3 -m http.server 8000
 
 # Crontab (daily at 8am)
 # 0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
@@ -57,11 +57,11 @@ Local-only Python scripts + GitHub Pages static site. No web server required.
 - **`card_generator.py`** — Generates PNG summary cards (Pillow)
 - **`video_maker.py`** — Assembles PNG cards into MP4
 
-### Static Site (`site/`)
+### Static Site (`docs/`)
 
-- **`site/index.html`** — Vanilla JS SPA for GitHub Pages. Fetches `data/episodes.json` and `summaries/*.md` statically. Hash routing (`#/channel/<id>`). No backend calls.
-- **`site/data/episodes.json`** — Generated episode index (by `build_site.py`)
-- **`site/summaries/*.md`** — Copied summary files
+- **`docs/index.html`** — Vanilla JS SPA for GitHub Pages. Fetches `data/episodes.json` and `summaries/*.md` statically. Hash routing (`#/channel/<id>`). No backend calls.
+- **`docs/data/episodes.json`** — Generated episode index (by `build_site.py`)
+- **`docs/summaries/*.md`** — Copied summary files
 
 ### Data Layer (`data/`)
 

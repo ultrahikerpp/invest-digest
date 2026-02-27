@@ -17,7 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent
 SUMMARIES_DIR = BASE_DIR / "data" / "summaries"
 CHANNELS_FILE = BASE_DIR / "channels.json"
-SITE_DIR = BASE_DIR / "site"
+SITE_DIR = BASE_DIR / "docs"
 SITE_SUMMARIES_DIR = SITE_DIR / "summaries"
 SITE_DATA_DIR = SITE_DIR / "data"
 
@@ -124,8 +124,8 @@ def build():
     out_path = SITE_DATA_DIR / "episodes.json"
     out_path.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"\n✓ site/data/episodes.json — {len(episodes)} episodes")
-    print(f"✓ site/summaries/ — {len(episodes)} files")
+    print(f"\n✓ docs/data/episodes.json — {len(episodes)} episodes")
+    print(f"✓ docs/summaries/ — {len(episodes)} files")
     print(f"✓ Build complete → {SITE_DIR}")
 
 

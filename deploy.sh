@@ -9,15 +9,15 @@ echo "=== Building static site ==="
 python3 build_site.py
 
 # Step 2: Verify site was built
-if [ ! -f "site/data/episodes.json" ]; then
-  echo "ERROR: site/data/episodes.json not found — build may have failed." >&2
+if [ ! -f "docs/data/episodes.json" ]; then
+  echo "ERROR: docs/data/episodes.json not found — build may have failed." >&2
   exit 1
 fi
 
 # Step 3: Stage site output and channel config
 echo ""
 echo "=== Staging files ==="
-git add site/ channels.json
+git add docs/ channels.json
 
 # Step 4: Check if there is anything to commit
 if git diff --cached --quiet; then
