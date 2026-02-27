@@ -62,7 +62,7 @@ def _wrap_text(text: str, font: ImageFont.FreeTypeFont, max_width: int, draw: Im
         current = ""
         for char in paragraph:
             test = current + char
-            if draw.textlength(test, font=font) <= max_width and len(test) <= 20:
+            if draw.textlength(test, font=font) <= max_width:
                 current = test
             else:
                 if current:
@@ -138,15 +138,14 @@ def _make_section_card(
     # Divider
     draw.rectangle([PAD, 186, W - PAD, 189], fill=C_CARD)
 
+    # Truncate content to 20 characters
+    stripped = re.sub(r"\*+", "", content).strip()
+    display = stripped[:20] + "…" if len(stripped) > 20 else stripped
+
     # Content
     font_content = _load_font(FS_CONTENT)
     content_w = W - PAD * 2
-    lines = _wrap_text(content, font_content, content_w, draw)
-
-    # Max lines before footer area
-    max_lines = int((H - 280 - 160) / (FS_CONTENT + 18))
-    if len(lines) > max_lines:
-        lines = lines[: max_lines - 1] + ["…"]
+    lines = _wrap_text(display, font_content, content_w, draw)
 
     y = 220
     line_h = FS_CONTENT + 18
