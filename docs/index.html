@@ -549,10 +549,9 @@
 
     .modal-overlay.open {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      padding: 44px 20px;
-      overflow-y: auto;
+      padding: 24px 20px;
     }
 
     .modal {
@@ -560,7 +559,10 @@
       border: 1px solid var(--border);
       border-radius: 18px;
       width: 100%;
-      max-width: 880px;
+      max-width: 960px;
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
       box-shadow: var(--shadow-lg);
       animation: slideIn 0.24s ease;
       position: relative;
@@ -656,13 +658,14 @@
     }
 
     .modal-body {
-      padding: 36px;
-      max-height: 60vh;
+      padding: 36px 48px;
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
     }
 
     .modal-body::-webkit-scrollbar {
-      width: 5px;
+      width: 7px;
     }
 
     .modal-body::-webkit-scrollbar-track {
@@ -694,23 +697,23 @@
     }
 
     .modal-body p {
-      font-size: 16px;
-      line-height: 1.9;
+      font-size: 17px;
+      line-height: 2.0;
       color: var(--text);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .modal-body ul,
     .modal-body ol {
-      padding-left: 24px;
-      margin-bottom: 16px;
+      padding-left: 26px;
+      margin-bottom: 18px;
     }
 
     .modal-body li {
-      font-size: 16px;
-      line-height: 1.9;
+      font-size: 17px;
+      line-height: 2.0;
       color: var(--text);
-      margin-bottom: 7px;
+      margin-bottom: 8px;
     }
 
     .modal-body strong {
@@ -1006,7 +1009,7 @@
 
       .modal {
         border-radius: 18px 18px 0 0;
-        max-height: 91vh;
+        max-height: 94vh;
         animation: slideUp 0.26s ease;
       }
 
@@ -1020,10 +1023,6 @@
         }
       }
 
-      .modal-body {
-        max-height: 56vh;
-      }
-
       .modal-header {
         padding: 22px 22px 18px;
       }
@@ -1033,7 +1032,7 @@
       }
 
       .modal-body {
-        padding: 22px;
+        padding: 22px 24px;
       }
 
       .modal-footer {
