@@ -117,16 +117,43 @@ def _get_claude_cookies() -> list[dict]:
 # ── Browser helpers ───────────────────────────────────────
 
 def _extract_last_response(page) -> str:
-    """Extract the last assistant message text from the Claude page."""
+    """Extract the last assistant message text from the Claude page as markdown."""
     return page.evaluate("""() => {
+        // Convert a DOM node to markdown text, preserving headings, lists, etc.
+        function nodeToMd(node) {
+            if (node.nodeType === 3) return node.textContent;
+            const tag = (node.tagName || '').toLowerCase();
+            const children = () => Array.from(node.childNodes).map(nodeToMd).join('');
+            if (tag === 'h1') return '# ' + children() + '\\n\\n';
+            if (tag === 'h2') return '## ' + children() + '\\n\\n';
+            if (tag === 'h3') return '### ' + children() + '\\n\\n';
+            if (tag === 'h4') return '#### ' + children() + '\\n\\n';
+            if (tag === 'li') return '- ' + children().trim() + '\\n';
+            if (tag === 'ul' || tag === 'ol') return children() + '\\n';
+            if (tag === 'p') return children() + '\\n\\n';
+            if (tag === 'strong' || tag === 'b') return '**' + children() + '**';
+            if (tag === 'em' || tag === 'i') return '*' + children() + '*';
+            if (tag === 'br') return '\\n';
+            if (tag === 'code') return '`' + children() + '`';
+            if (tag === 'pre') return '```\\n' + children() + '\\n```\\n\\n';
+            if (tag === 'a') return children();
+            if (tag === 'hr') return '\\n---\\n\\n';
+            if (tag === 'table') return children() + '\\n';
+            if (tag === 'thead' || tag === 'tbody') return children();
+            if (tag === 'tr') {
+                const cells = Array.from(node.querySelectorAll('td, th'));
+                return '| ' + cells.map(c => c.innerText.trim()).join(' | ') + ' |\\n';
+            }
+            return children();
+        }
+
         // Primary: claude.ai uses div[class*="font-claude-response"] for response body
         let els = document.querySelectorAll('div[class*="font-claude-response"]');
-        if (els.length) return els[els.length - 1].innerText.trim();
+        if (els.length) return nodeToMd(els[els.length - 1]).trim();
 
         // Fallback: paragraph-level response class
         els = document.querySelectorAll('p[class*="font-claude-response-body"]');
         if (els.length) {
-            // Collect all paragraphs (in case of multi-paragraph response)
             return Array.from(els).map(el => el.innerText.trim()).join('\\n\\n');
         }
 
