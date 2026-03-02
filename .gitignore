@@ -9,3 +9,21 @@
 # Keep .gitignore itself
 !.gitignore
 
+# Allow core scripts and config
+!runner.py
+!build_site.py
+!deploy.sh
+!find_channel_id.py
+!channels.json
+!requirements.txt
+!CLAUDE.md
+!README.md
+!backend/
+!backend/**
+
+# But ignore compiled Python files
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
