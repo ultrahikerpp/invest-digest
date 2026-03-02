@@ -210,15 +210,38 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             page.goto(CLAUDE_NEW_CHAT_URL, wait_until="domcontentloaded", timeout=60000)
 
             # ── Verify session is valid ───────────────────
-            print("  [claude] 等待介面載入...", end="", flush=True)
+            # First check for Cloudflare challenge (appears before the chat UI)
+            cloudflare_detected = False
             try:
-                page.wait_for_selector('[contenteditable="true"]', timeout=15000)
-                print(" 完成")
+                page.wait_for_selector('text=Verify you are human', timeout=4000)
+                cloudflare_detected = True
             except PWTimeout:
-                raise RuntimeError(
-                    "Claude 登入狀態已過期。請在 Chrome 中重新登入 claude.ai，"
-                    "然後重新執行 runner.py"
+                pass  # No Cloudflare challenge, proceed normally
+
+            if cloudflare_detected:
+                print(
+                    "\n  [claude] ⚠️  偵測到 Cloudflare 驗證，"
+                    "請在瀏覽器視窗中手動勾選核取方塊...",
+                    flush=True,
                 )
+                try:
+                    page.wait_for_selector('[contenteditable="true"]', timeout=120000)
+                    print("  [claude] Cloudflare 驗證完成，繼續執行")
+                except PWTimeout:
+                    raise RuntimeError(
+                        "等待 Cloudflare 驗證逾時（120 秒）。"
+                        "請在 Chrome 中重新登入 claude.ai 後再試。"
+                    )
+            else:
+                print("  [claude] 等待介面載入...", end="", flush=True)
+                try:
+                    page.wait_for_selector('[contenteditable="true"]', timeout=15000)
+                    print(" 完成")
+                except PWTimeout:
+                    raise RuntimeError(
+                        "Claude 登入狀態已過期。請在 Chrome 中重新登入 claude.ai，"
+                        "然後重新執行 runner.py"
+                    )
 
             # ── Input prompt ──────────────────────────────
             input_el = page.locator('[contenteditable="true"]').first
