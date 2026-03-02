@@ -35,11 +35,9 @@ cp .env.example .env
 ## 日常工作流程
 
 ```
-runner.py run       →  新集數轉錄 + 摘要，寄送審閱通知信
+runner.py run      →  新集數轉錄 + 摘要，寄送審閱通知信（僅此一次）
      ↓ （收到信後人工確認摘要內容）
-runner.py approve   →  產生 hashtags + 字卡 + 影片，寄送完成通知信
-     ↓
-runner.py deploy    →  更新靜態網站並推送 GitHub Pages
+runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 ```
 
 ---
@@ -55,7 +53,7 @@ runner.py deploy    →  更新靜態網站並推送 GitHub Pages
 # 只抓取特定頻道
 ./venv/bin/python runner.py run --channel <channel_id>
 
-# 處理所有待審閱集數：產生 hashtags、字卡、影片，並寄送完成通知信
+# 處理所有待審閱集數：產生 hashtags、字卡、影片，並自動部署網站
 ./venv/bin/python runner.py approve
 
 # 重新產生靜態網站（docs/）
@@ -131,7 +129,7 @@ investment-digest/
 │   └── data/
 │       └── episodes.json  # 集數索引（由 build_site.py 產生）
 └── data/
-    ├── subscriptions.db   # SQLite（處理狀態追蹤與去重）
+    ├── subscriptions.db   # SQLite（處理狀態追蹤：pending_review / done）
     ├── summaries/         # Markdown 摘要（原始資料，依頻道分資料夾）
     ├── transcripts/       # Whisper 逐字稿（本機，不上傳）
     ├── cards/             # PNG 字卡（本機，不上傳）
@@ -146,8 +144,8 @@ investment-digest/
 - **無 YouTube Data API**：透過 RSS feed 抓取影片清單
 - **無 Gemini / OpenAI API**：透過 Playwright 自動化操作 Chrome，讀取 Chrome 本機的 claude.ai session cookies，直接使用 Claude.ai 網頁介面產生摘要與金句
 - **無 Web Server**：靜態 GitHub Pages；所有資料於建置時預先產生
-- **摘要審閱流程**：`run` 產出摘要後進入 `pending_review` 狀態，人工確認後執行 `approve` 才產出字卡與影片
-- **SQLite 去重**：`data/subscriptions.db` 追蹤每集處理狀態（`pending_review` / `done`）
+- **兩階段工作流程**：`run` 產出摘要進入 `pending_review`，人工確認後執行 `approve` 產出字卡與影片並自動部署
+- **SQLite 狀態追蹤**：`data/subscriptions.db` 記錄每集狀態（`pending_review` / `done`）
 
 ---
 
