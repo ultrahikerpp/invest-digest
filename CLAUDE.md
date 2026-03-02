@@ -8,13 +8,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Install dependencies
 pip3 install -r requirements.txt
 
-# Fetch new episodes, transcribe, and summarize
+# Fetch new episodes, transcribe, and summarize → sends review notification email
 python3 runner.py run
 
 # Fetch a single channel only
 python3 runner.py run --channel <channel_id>
 
-# Regenerate the static site (site/)
+# Approve all pending episodes: hashtags + cards + video + auto-deploy
+python3 runner.py approve
+
+# Regenerate the static site (docs/)
 python3 runner.py build
 
 # Build + commit + push to GitHub Pages
@@ -37,7 +40,9 @@ cd docs && python3 -m http.server 8000
 # 0 9 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py notify >> data/runner.log 2>&1
 ```
 
-**API Key setup:** Copy `.env.example` to `.env` and set `GEMINI_API_KEY`. The `.env` file is gitignored and never committed.
+**Workflow:** `run` fetches + summarises → sends review email → user reviews → `approve` generates hashtags/cards/video + auto-deploys to GitHub Pages.
+
+**API Key setup:** Copy `.env.example` to `.env` and set `GMAIL_APP_PASSWORD`. The `.env` file is gitignored and never committed.
 
 ## Architecture
 
@@ -45,9 +50,9 @@ Local-only Python scripts + GitHub Pages static site. No web server required.
 
 ### Local Scripts (project root)
 
-- **`runner.py`** — Main CLI. Commands: `run`, `build`, `cards`, `video`, `deploy`. Reads channels from `channels.json`, uses SQLite DB for deduplication, imports functions from `backend/worker.py`.
+- **`runner.py`** — Main CLI. Commands: `run`, `approve`, `build`, `cards`, `video`, `deploy`, `notify`, `setup-browser`. Reads channels from `channels.json`, uses SQLite DB for status tracking, imports functions from `backend/`.
 
-- **`build_site.py`** — Static site generator. Reads `data/summaries/*.md` → writes `site/data/episodes.json` + copies `site/summaries/*.md`.
+- **`build_site.py`** — Static site generator. Reads `data/summaries/**/*.md` → writes `docs/data/episodes.json` + copies `docs/summaries/*.md`.
 
 - **`channels.json`** — Channel configuration. Add new channels here.
 
@@ -56,7 +61,13 @@ Local-only Python scripts + GitHub Pages static site. No web server required.
 - **`worker.py`** — Core functions imported by `runner.py`:
   1. `get_latest_videos(channel_id)` — YouTube RSS feed
   2. `get_youtube_transcript(video_id)` — Downloads audio + Whisper transcription
-  3. `generate_summary(transcript, title)` — Gemini 2.5 Flash API
+  3. `generate_summary(transcript, title)` — delegates to `claude_browser`
+  4. `send_notification_email(subject, body)` — Gmail SMTP
+
+- **`claude_browser.py`** — Claude AI via browser automation (Playwright + Chrome cookies):
+  - `generate_summary()` — investment summary from transcript
+  - `generate_hashtags()` — 5 keyword hashtags
+  - `generate_card_points()` — bullet points for each card section
 
 - **`card_generator.py`** — Generates PNG summary cards (Pillow)
 - **`video_maker.py`** — Assembles PNG cards into MP4
@@ -92,6 +103,7 @@ processed: 2026-02-27
 
 - **No web server**: Static GitHub Pages site; all data pre-generated at build time.
 - **No YouTube Data API key**: RSS feeds for video listing.
-- **No Python SDK for Gemini**: Raw `urllib.request` HTTP calls.
+- **No Gemini/OpenAI API**: Uses Claude.ai web UI via Playwright browser automation; reads Chrome's local session cookies.
 - **Summaries as files**: Markdown files are the source of truth; `episodes.json` is derived.
-- **Deduplication via SQLite**: `data/subscriptions.db` tracks processed video_ids.
+- **Two-phase workflow**: `run` → `pending_review`; `approve` → `done` + auto-deploy.
+- **Status tracking via SQLite**: `data/subscriptions.db` tracks `pending_review` / `done` per episode.

@@ -478,6 +478,16 @@ def cmd_approve():
 
     print(f"\n共完成 {n} 集")
 
+    # Auto-deploy: build static site + git commit + push
+    deploy_script = BASE_DIR / "deploy.sh"
+    if deploy_script.exists():
+        print("\n自動部署網站...")
+        result = subprocess.run(["bash", str(deploy_script)], cwd=BASE_DIR)
+        if result.returncode != 0:
+            print("❌ 部署失敗，請手動執行 runner.py deploy")
+    else:
+        print("❌ 找不到 deploy.sh，請手動執行 runner.py deploy")
+
 
 # ── Notify Latest command ─────────────────────────────────
 
