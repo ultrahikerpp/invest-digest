@@ -82,7 +82,7 @@ def build():
     SITE_CARDS_DIR.mkdir(parents=True, exist_ok=True)
     SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    md_files = sorted(SUMMARIES_DIR.glob("**/*.md"))
+    md_files = sorted(SUMMARIES_DIR.glob("*/*.md"))
     if not md_files:
         print("No summaries found in data/summaries/")
         episodes = []

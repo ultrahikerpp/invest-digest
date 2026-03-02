@@ -210,13 +210,8 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             page.goto(CLAUDE_NEW_CHAT_URL, wait_until="domcontentloaded", timeout=60000)
 
             # ── Verify session is valid ───────────────────
-            # First check for Cloudflare challenge (appears before the chat UI)
-            cloudflare_detected = False
-            try:
-                page.wait_for_selector('text=Verify you are human', timeout=4000)
-                cloudflare_detected = True
-            except PWTimeout:
-                pass  # No Cloudflare challenge, proceed normally
+            # Cloudflare renders with the page; query_selector is synchronous.
+            cloudflare_detected = page.query_selector('text=Verify you are human') is not None
 
             if cloudflare_detected:
                 print(
