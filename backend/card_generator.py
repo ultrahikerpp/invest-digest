@@ -37,6 +37,13 @@ C_CARD  = (16,   18,  42)  # card surface      #10122A
 
 SECTION_ORDER = ["核心觀點", "提及標的", "關鍵數據", "創作者點出的機會", "風險提示", "創作者建議的觀察方向"]
 
+# Backwards-compatible aliases: map old section names → new section names
+# so that summaries generated before the prompt update still render correctly
+_SECTION_ALIASES: dict[str, str] = {
+    "投資機會": "創作者點出的機會",
+    "個人行動建議": "創作者建議的觀察方向",
+}
+
 # ── Font sizes ────────────────────────────────────────────
 FS_BRAND    = 30
 FS_CHANNEL  = 38
@@ -264,7 +271,7 @@ def parse_summary(md_path: Path) -> dict:
     # browser innerText rendering — Claude.ai renders ## headings as <h2> HTML,
     # so innerText returns the section name without the ## prefix)
     if not sections:
-        known = set(SECTION_ORDER)
+        known = set(SECTION_ORDER) | set(_SECTION_ALIASES.keys())
         current_section: str | None = None
         current_lines: list[str] = []
         for line in text.splitlines():
@@ -278,6 +285,11 @@ def parse_summary(md_path: Path) -> dict:
                 current_lines.append(line)
         if current_section and current_lines:
             sections[current_section] = "\n".join(current_lines).strip()
+
+    # Apply backwards-compatible aliases (old name → new name)
+    for old, new in _SECTION_ALIASES.items():
+        if old in sections and new not in sections:
+            sections[new] = sections.pop(old)
 
     return {"title": title, "sections": sections}
 
