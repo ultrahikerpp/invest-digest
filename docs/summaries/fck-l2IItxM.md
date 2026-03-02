@@ -5,7 +5,8 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2 週前
 processed: 2026-02-28
-hashtags: #台灣經濟 #AI供應鏈 #內資崛起 #美台貿易 #ETF投資 #游庭皓的財經皓角
+hashtags: #台灣經濟 #AI #台積電 #半導體 #ETF #游庭皓的財經皓角
+hashtags: #台灣經濟 #AI #台積電 #半導體 #ETF #游庭皓的財經皓角
 ---
 
 # 【市場觀察】2026台灣人如何 迎接AI時代?

@@ -5,7 +5,8 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 8 天前
 processed: 2026-02-27
-hashtags: #美股 #軟體股 #AI趨勢 #光通股 #投資策略 #Gooaye股癌
+hashtags: #美股 #AI受惠股 #軟體股 #光通股 #Cloudflare #Gooaye股癌
+hashtags: #美股 #AI受惠股 #軟體股 #光通股 #Cloudflare #Gooaye股癌
 ---
 
 

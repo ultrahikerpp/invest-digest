@@ -5,7 +5,8 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-02-26T01:04:34+00:00
 processed: 2026-02-27
-hashtags: #AI投資 #NVIDIA #台積電 #美股分化 #長期投資 #游庭皓的財經皓角
+hashtags: #NVIDIA #台積電 #AI投資 #美股 #半導體 #游庭皓的財經皓角
+hashtags: #NVIDIA #台積電 #AI投資 #美股 #半導體 #游庭皓的財經皓角
 ---
 
 
