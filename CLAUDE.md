@@ -17,6 +17,9 @@ python3 runner.py run --channel <channel_id>
 # Approve all pending episodes: hashtags + cards + video + auto-deploy
 python3 runner.py approve
 
+# Re-generate ALL episode summaries with current prompt, then approve + deploy
+python3 runner.py reprocess
+
 # Regenerate the static site (docs/)
 python3 runner.py build
 

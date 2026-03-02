@@ -376,6 +376,96 @@ def _update_frontmatter_hashtags(md_path: Path, hashtags: str):
     md_path.write_text(new_content, encoding="utf-8")
 
 
+# ── Reprocess command ─────────────────────────────────────
+
+def _find_transcript_path(video_id: str) -> Path | None:
+    """Find a transcript file by video_id, searching channel subdirectories."""
+    for p in TRANSCRIPTS_DIR.glob(f"*/{video_id}.txt"):
+        return p
+    flat = TRANSCRIPTS_DIR / f"{video_id}.txt"
+    return flat if flat.exists() else None
+
+
+def cmd_reprocess():
+    """Re-generate summaries for all episodes using the current prompt, then approve all."""
+    _ensure_dirs()
+    channels = _load_channels()
+    worker = _import_worker()
+    conn = _get_db()
+
+    episodes = conn.execute("SELECT * FROM episodes").fetchall()
+    if not episodes:
+        print("資料庫中沒有集數")
+        conn.close()
+        return
+
+    print(f"找到 {len(episodes)} 集，依序重新產製摘要（使用最新 Prompt）...\n")
+
+    regenerated = 0
+    for ep in episodes:
+        video_id = ep["video_id"]
+        title = ep["title"] or video_id
+        channel_id = ep["channel_id"]
+
+        # Locate transcript
+        t_path = (Path(ep["transcript_path"]) if ep["transcript_path"] else None)
+        if t_path is None or not t_path.exists():
+            t_path = _find_transcript_path(video_id)
+        if t_path is None or not t_path.exists():
+            print(f"  ❌ 找不到逐字稿，略過：{title[:50]}")
+            continue
+
+        print(f"=== {title[:60]} ===")
+
+        transcript = t_path.read_text(encoding="utf-8")
+
+        # Preserve existing frontmatter fields
+        existing_path = (Path(ep["summary_path"]) if ep["summary_path"] else None) or _find_summary_path(video_id)
+        meta = _parse_summary_meta(existing_path) if existing_path and existing_path.exists() else {}
+        channel_name = meta.get("channel_name", "") or _get_channel_name(channel_id, channels)
+        published = meta.get("published", ep["published_at"] or "")
+        processed = meta.get("processed", datetime.now().strftime("%Y-%m-%d"))
+
+        # Re-generate summary with new prompt
+        print(f"  重新產製摘要...")
+        summary_body = worker.generate_summary(transcript, title)
+
+        frontmatter = (
+            f"---\n"
+            f"title: {title}\n"
+            f"video_id: {video_id}\n"
+            f"channel_id: {channel_id}\n"
+            f"channel_name: {channel_name}\n"
+            f"published: {published}\n"
+            f"processed: {processed}\n"
+            f"---\n\n"
+            f"# {title}\n\n"
+            f"🔗 [YouTube 觀看原片](https://youtube.com/watch?v={video_id})\n\n"
+        )
+        full_md = frontmatter + summary_body
+
+        s_path = _summary_path(video_id, channel_name)
+        s_path.write_text(full_md, encoding="utf-8")
+
+        # Reset status so approve will pick it up
+        conn.execute(
+            "UPDATE episodes SET status='pending_review', processed=0, summary_path=? WHERE video_id=?",
+            (str(s_path), video_id),
+        )
+        conn.commit()
+        print(f"  ✓ 摘要已更新，重置為 pending_review\n")
+        regenerated += 1
+
+    conn.close()
+    print(f"共重新產製 {regenerated} 集摘要\n")
+
+    if regenerated == 0:
+        return
+
+    print("開始執行 approve（產出 hashtags、字卡、影片、部署）...\n")
+    cmd_approve()
+
+
 # ── Approve command ────────────────────────────────────────
 
 def cmd_approve():
@@ -623,6 +713,9 @@ def main():
 
     elif cmd == "approve":
         cmd_approve()
+
+    elif cmd == "reprocess":
+        cmd_reprocess()
 
     elif cmd == "build":
         cmd_build()
