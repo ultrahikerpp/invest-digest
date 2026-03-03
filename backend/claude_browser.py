@@ -197,8 +197,12 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False,   # headless=True after confirmed working
-            args=["--no-first-run"],
+            channel="chrome",  # use installed Chrome to reduce bot detection
+            headless=False,
+            args=[
+                "--no-first-run",
+                "--disable-blink-features=AutomationControlled",
+            ],
         )
         ctx = browser.new_context(
             viewport={"width": 1280, "height": 900},
@@ -208,10 +212,19 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
         try:
             page = ctx.new_page()
             page.goto(CLAUDE_NEW_CHAT_URL, wait_until="domcontentloaded", timeout=60000)
+            time.sleep(1)  # let JS redirect settle before checking URL
 
             # ── Verify session is valid ───────────────────
-            # Cloudflare renders with the page; query_selector is synchronous.
-            cloudflare_detected = page.query_selector('text=Verify you are human') is not None
+            # Cloudflare can appear as: challenge_redirect, __cf_chl_rt_tk param,
+            # an iframe, or plain text on the page.
+            url = page.url
+            cloudflare_detected = (
+                "challenge_redirect" in url
+                or "__cf_chl_rt_tk" in url
+                or "challenges.cloudflare.com" in url
+                or page.query_selector('text=Verify you are human') is not None
+                or page.query_selector('iframe[src*="challenges.cloudflare.com"]') is not None
+            )
 
             if cloudflare_detected:
                 print(
