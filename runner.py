@@ -5,6 +5,7 @@ Usage:
   python3 runner.py run                    # fetch all channels → transcribe → summarize → email review notice
   python3 runner.py run --channel <id>     # single channel
   python3 runner.py approve                # process all pending_review episodes: hashtags + cards + video + email
+  python3 runner.py retry <video_id>       # retry failed summary for a single episode
   python3 runner.py build                  # regenerate static site
   python3 runner.py cards <video_id>       # generate PNG cards
   python3 runner.py video <video_id>       # generate MP4 from cards
@@ -376,6 +377,91 @@ def _update_frontmatter_hashtags(md_path: Path, hashtags: str):
     md_path.write_text(new_content, encoding="utf-8")
 
 
+# ── Retry command ─────────────────────────────────────────
+
+def cmd_retry(video_id: str):
+    """Retry summary generation for a single failed episode."""
+    _ensure_dirs()
+    channels = _load_channels()
+    worker = _import_worker()
+    conn = _get_db()
+
+    # Look up existing DB record
+    ep = conn.execute("SELECT * FROM episodes WHERE video_id=?", (video_id,)).fetchone()
+
+    if ep:
+        channel_id = ep["channel_id"]
+        title = ep["title"] or video_id
+        channel_name = _get_channel_name(channel_id, channels)
+        published_at = ep["published_at"] or ""
+        print(f"找到記錄：{title[:60]}")
+
+        # Remove old summary file if exists
+        summary_path = (Path(ep["summary_path"]) if ep["summary_path"] else None) or _find_summary_path(video_id)
+        if summary_path and summary_path.exists():
+            summary_path.unlink()
+            print(f"  已刪除舊摘要：{summary_path.name}")
+
+        # Remove DB entry so we can re-insert cleanly
+        conn.execute("DELETE FROM episodes WHERE video_id=?", (video_id,))
+        conn.commit()
+        print(f"  已清除資料庫記錄")
+    else:
+        print(f"資料庫中找不到 {video_id}，將嘗試直接下載並產製摘要")
+        channel_id = None
+        channel_name = "unknown"
+        title = video_id
+        published_at = ""
+
+    # Re-use existing transcript if available, otherwise re-download
+    t_path = _find_transcript_path(video_id)
+    if t_path and t_path.exists():
+        print(f"  使用已存在的逐字稿：{t_path}")
+        transcript = t_path.read_text(encoding="utf-8")
+    else:
+        print(f"  下載並轉錄音訊...")
+        transcript = worker.get_youtube_transcript(video_id)
+        if not transcript:
+            print(f"❌ 無法取得逐字稿，請確認 video_id 是否正確")
+            conn.close()
+            return
+        # Save transcript (need channel_name for path)
+        t_path = _transcript_path(video_id, channel_name)
+        t_path.write_text(transcript, encoding="utf-8")
+        print(f"  ✓ 逐字稿已儲存")
+
+    # Generate summary
+    print(f"  產生摘要（透過 Claude 瀏覽器）...")
+    summary_body = worker.generate_summary(transcript, title)
+
+    now = datetime.now().strftime("%Y-%m-%d")
+    frontmatter = (
+        f"---\n"
+        f"title: {title}\n"
+        f"video_id: {video_id}\n"
+        f"channel_id: {channel_id or ''}\n"
+        f"channel_name: {channel_name}\n"
+        f"published: {published_at}\n"
+        f"processed: {now}\n"
+        f"---\n\n"
+        f"# {title}\n\n"
+        f"🔗 [YouTube 觀看原片](https://youtube.com/watch?v={video_id})\n\n"
+    )
+    full_md = frontmatter + summary_body
+
+    s_path = _summary_path(video_id, channel_name)
+    s_path.write_text(full_md, encoding="utf-8")
+
+    # Re-insert as pending_review
+    video_dict = {"video_id": video_id, "title": title, "published_at": published_at}
+    _mark_pending_review(conn, channel_id or "", video_dict, str(t_path), str(s_path))
+
+    conn.close()
+    print(f"  ✓ 摘要已儲存：{s_path}")
+    print(f"\n完成！執行以下指令審閱並發布：")
+    print(f"  python3 runner.py approve")
+
+
 # ── Reprocess command ─────────────────────────────────────
 
 def _find_transcript_path(video_id: str) -> Path | None:
@@ -713,6 +799,12 @@ def main():
 
     elif cmd == "approve":
         cmd_approve()
+
+    elif cmd == "retry":
+        if len(args) < 2:
+            print("Usage: runner.py retry <video_id>", file=sys.stderr)
+            sys.exit(1)
+        cmd_retry(args[1])
 
     elif cmd == "reprocess":
         cmd_reprocess()

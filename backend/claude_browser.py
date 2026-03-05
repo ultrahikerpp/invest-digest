@@ -83,15 +83,18 @@ def _build_hashtag_prompt(summary_body: str) -> str:
 
 def _get_claude_cookies() -> list[dict]:
     """
-    Extract claude.ai session cookies from the user's Chrome browser.
+    Extract claude.ai and Google account cookies from the user's Chrome browser.
+    Google cookies are needed so that if claude.ai redirects to Google OAuth,
+    the Playwright session can re-authenticate silently without prompting for login.
+
     macOS: Chrome encrypts cookies with a key stored in the system Keychain.
            On first run, macOS will ask 'python3 wants to access your keychain' — click Allow.
     """
     try:
         import browser_cookie3
-        cj = browser_cookie3.chrome(domain_name="claude.ai")
-        cookies = [
-            {
+
+        def _convert(c) -> dict:
+            return {
                 "name": c.name,
                 "value": c.value,
                 "domain": c.domain,
@@ -100,18 +103,26 @@ def _get_claude_cookies() -> list[dict]:
                 "httpOnly": False,
                 "sameSite": "Lax",
             }
-            for c in cj
-        ]
-        if not cookies:
-            raise RuntimeError("未找到 claude.ai cookies")
-        return cookies
+
+        claude_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="claude.ai")]
+        google_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="google.com")]
+
+        if not claude_cookies:
+            raise RuntimeError(
+                "未找到 claude.ai cookies，請確認已在 Chrome 中登入 claude.ai"
+            )
+
+        return claude_cookies + google_cookies
+
     except ImportError:
         raise RuntimeError(
             "請安裝 browser-cookie3：pip install browser-cookie3"
         )
+    except RuntimeError:
+        raise
     except Exception as e:
         raise RuntimeError(
-            f"無法從 Chrome 取得 claude.ai 登入狀態：{e}\n"
+            f"無法從 Chrome 取得登入狀態：{e}\n"
             "請確認：\n"
             "  1. Chrome 已安裝且曾登入過 claude.ai\n"
             "  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」"
@@ -215,21 +226,40 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             time.sleep(1)  # let JS redirect settle before checking URL
 
             # ── Verify session is valid ───────────────────
-            # Cloudflare can appear as: challenge_redirect, __cf_chl_rt_tk param,
-            # an iframe, or plain text on the page.
+            # Give the page a moment to settle before checking state
+            time.sleep(2)
             url = page.url
-            cloudflare_detected = (
-                "challenge_redirect" in url
-                or "__cf_chl_rt_tk" in url
-                or "challenges.cloudflare.com" in url
-                or page.query_selector('text=Verify you are human') is not None
-                or page.query_selector('iframe[src*="challenges.cloudflare.com"]') is not None
-            )
+            page_title = page.title().lower()
 
-            if cloudflare_detected:
+            def _is_cloudflare() -> bool:
+                if any(k in url for k in ("challenge_redirect", "__cf_chl_rt_tk", "challenges.cloudflare.com")):
+                    return True
+                if any(k in page_title for k in ("just a moment", "security verification", "verify you are human")):
+                    return True
+                if page.query_selector('[class*="cf-turnstile"], [id*="cf-chl"], [name="cf-turnstile-response"]') is not None:
+                    return True
+                return False
+
+            # Google OAuth redirect: cookies should handle it silently,
+            # but wait up to 15s for the redirect back to claude.ai.
+            if "accounts.google.com" in url or "google.com/signin" in url:
+                print(
+                    "\n  [claude] ⚠️  偵測到 Google 登入重導，等待自動驗證...",
+                    flush=True,
+                )
+                try:
+                    page.wait_for_url("**/claude.ai/**", timeout=15000)
+                    page.wait_for_selector('[contenteditable="true"]', timeout=15000)
+                    print("  [claude] Google 驗證完成，繼續執行")
+                except PWTimeout:
+                    raise RuntimeError(
+                        "Google 登入驗證逾時。請在 Chrome 中確認已登入 Google 帳號，"
+                        "然後重新執行 runner.py"
+                    )
+            elif _is_cloudflare():
                 print(
                     "\n  [claude] ⚠️  偵測到 Cloudflare 驗證，"
-                    "請在瀏覽器視窗中手動勾選核取方塊...",
+                    "請在瀏覽器視窗中手動勾選核取方塊後等待...",
                     flush=True,
                 )
                 try:
@@ -243,7 +273,7 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             else:
                 print("  [claude] 等待介面載入...", end="", flush=True)
                 try:
-                    page.wait_for_selector('[contenteditable="true"]', timeout=15000)
+                    page.wait_for_selector('[contenteditable="true"]', timeout=30000)
                     print(" 完成")
                 except PWTimeout:
                     raise RuntimeError(
