@@ -20,6 +20,7 @@
     })();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <style>
     /* ─────────────────────────────────────────────────────────
        Design System: Gen Z Dark Gradient
@@ -1098,6 +1099,62 @@
     body, header, .sidebar, .episode-card, .modal, .stat-chip, .hashtag {
       transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
+
+    /* ── Site Footer ── */
+    .site-footer {
+      text-align: center;
+      padding: 24px 20px 28px;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+    }
+
+    .footer-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-dim);
+      font-family: var(--sans);
+    }
+
+    .footer-stat svg {
+      color: var(--vibe2);
+      flex-shrink: 0;
+    }
+
+    .footer-stat strong {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .footer-sep {
+      color: var(--border-hover);
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* ── Modal view count ── */
+    .modal-view-count {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    .modal-view-count svg {
+      color: var(--vibe2);
+      flex-shrink: 0;
+    }
   </style>
 </head>
 
@@ -1205,6 +1262,10 @@
           <div class="modal-title" id="modalTitle"></div>
           <div class="modal-hashtags" id="modalHashtags" style="display:none"></div>
           <div class="modal-meta" id="modalMeta"></div>
+          <div class="modal-view-count" id="modalViewCount">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span id="modalViewCountText"></span>
+          </div>
         </div>
         <button class="modal-close" id="modalClose" aria-label="關閉">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1234,6 +1295,20 @@
       </div>
     </div>
   </div>
+
+  <footer class="site-footer">
+    <div class="footer-stats">
+      <span id="busuanzi_container_site_pv" class="footer-stat">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        總訪問 <strong><span id="busuanzi_value_site_pv">--</span></strong> 次
+      </span>
+      <span class="footer-sep">·</span>
+      <span id="busuanzi_container_site_uv" class="footer-stat">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        訪客 <strong><span id="busuanzi_value_site_uv">--</span></strong> 人
+      </span>
+    </div>
+  </footer>
 
   <script>
     // ── Config ─────────────────────────────────────────────────
@@ -1471,6 +1546,18 @@
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
 
+      // Track & display per-article view count
+      const viewEl = document.getElementById('modalViewCount');
+      const viewTextEl = document.getElementById('modalViewCountText');
+      viewEl.style.display = 'none';
+      const articleUrl = `${location.origin}${location.pathname}#/article/${videoId}`;
+      fetchArticleViews(articleUrl).then(count => {
+        if (count !== null) {
+          viewTextEl.textContent = `${Number(count).toLocaleString('zh-TW')} 次瀏覽`;
+          viewEl.style.display = 'flex';
+        }
+      });
+
       try {
         const resp = await fetch(BASE + summaryUrl);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -1596,6 +1683,41 @@
 
     document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
     document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+
+    // ── Article View Counter (Busuanzi JSONP) ──────────────────
+
+    function fetchArticleViews(articleUrl) {
+      return new Promise((resolve) => {
+        const cbName = `_bzcb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement('script');
+        let settled = false;
+
+        const cleanup = () => {
+          settled = true;
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+        };
+
+        window[cbName] = (data) => {
+          cleanup();
+          resolve(data?.page?.pv ?? null);
+        };
+
+        const params = new URLSearchParams({
+          jsonpCallback: cbName,
+          t: Date.now(),
+          sl: navigator.language || 'zh-TW',
+          sdl: `${screen.width}x${screen.height}`,
+          su: articleUrl,
+        });
+
+        script.src = `https://busuanzi.ibruce.info/busuanzi?${params}`;
+        script.onerror = () => { cleanup(); resolve(null); };
+        document.head.appendChild(script);
+
+        setTimeout(() => { if (!settled) { cleanup(); resolve(null); } }, 6000);
+      });
+    }
 
     // ── Theme Toggle ───────────────────────────────────────────
 
