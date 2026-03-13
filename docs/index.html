@@ -1436,6 +1436,28 @@
     .stance-mini-bar .seg-r { background: var(--red); }
     .stance-mini-bar .seg-n { background: var(--text-dim); }
 
+    /* ── Region divider ────────────────────────────────── */
+
+    .region-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 22px 0 14px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .region-divider::before,
+    .region-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
     .sidebar-analysis-item {
       display: flex;
       align-items: center;
@@ -1997,33 +2019,62 @@
       const industries = mentionsData.industries || [];
       const maxCount = Math.max(...industries.map(i => i.count), 1);
 
-      // Trending table
-      let trendingRows = '';
-      for (const e of trending) {
-        const total = (e.bullish || 0) + (e.bearish || 0) + (e.neutral || 0);
-        const bPct = total ? Math.round((e.bullish / total) * 100) : 0;
-        const rPct = total ? Math.round((e.bearish / total) * 100) : 0;
-        const nPct = 100 - bPct - rPct;
-        trendingRows += `
-          <tr>
-            <td>
-              <div class="entity-name">${e.name}</div>
-              ${e.ticker ? `<div class="entity-ticker">${e.ticker}</div>` : ''}
-            </td>
-            <td style="text-align:right;font-weight:600;color:var(--vibe2)">${e.count}</td>
-            <td style="min-width:140px">
-              <div class="sentiment-bar">
-                ${bPct > 0 ? `<div class="seg-bullish" style="width:${bPct}%"></div>` : ''}
-                ${rPct > 0 ? `<div class="seg-bearish" style="width:${rPct}%"></div>` : ''}
-                ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
-              </div>
-              <div class="sentiment-counts">
-                <span class="bull">▲ ${e.bullish || 0}</span>
-                <span class="bear">▼ ${e.bearish || 0}</span>
-                <span>→ ${e.neutral || 0}</span>
-              </div>
-            </td>
-          </tr>`;
+      // Build trending table rows for a given entity list
+      function _trendingRows(list) {
+        return list.map(e => {
+          const total = (e.bullish || 0) + (e.bearish || 0) + (e.neutral || 0);
+          const bPct = total ? Math.round((e.bullish / total) * 100) : 0;
+          const rPct = total ? Math.round((e.bearish / total) * 100) : 0;
+          const nPct = 100 - bPct - rPct;
+          return `
+            <tr>
+              <td>
+                <div class="entity-name">${e.name}</div>
+                ${e.ticker ? `<div class="entity-ticker">${e.ticker}</div>` : ''}
+              </td>
+              <td style="text-align:right;font-weight:600;color:var(--vibe2)">${e.count}</td>
+              <td style="min-width:140px">
+                <div class="sentiment-bar">
+                  ${bPct > 0 ? `<div class="seg-bullish" style="width:${bPct}%"></div>` : ''}
+                  ${rPct > 0 ? `<div class="seg-bearish" style="width:${rPct}%"></div>` : ''}
+                  ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
+                </div>
+                <div class="sentiment-counts">
+                  <span class="bull">▲ ${e.bullish || 0}</span>
+                  <span class="bear">▼ ${e.bearish || 0}</span>
+                  <span>→ ${e.neutral || 0}</span>
+                </div>
+              </td>
+            </tr>`;
+        }).join('');
+      }
+
+      function _trendingTable(list) {
+        if (!list.length) return '';
+        return `
+          <table class="trending-table">
+            <thead><tr>
+              <th>名稱</th>
+              <th style="text-align:right">提及次數</th>
+              <th>多空比例</th>
+            </tr></thead>
+            <tbody>${_trendingRows(list)}</tbody>
+          </table>`;
+      }
+
+      const twTrending = trending.filter(e =>  _isTwEntity(e.name, e.ticker));
+      const usTrending = trending.filter(e => !_isTwEntity(e.name, e.ticker));
+
+      let trendingHtml = '';
+      if (!trending.length) {
+        trendingHtml = '<div style="color:var(--text-dim);font-size:14px">尚無資料</div>';
+      } else {
+        if (twTrending.length) trendingHtml += `
+          <div class="region-divider"><span>🇹🇼 台灣</span></div>
+          ${_trendingTable(twTrending)}`;
+        if (usTrending.length) trendingHtml += `
+          <div class="region-divider"><span>🌐 美國及其他</span></div>
+          ${_trendingTable(usTrending)}`;
       }
 
       // Industry bars
@@ -2046,23 +2097,25 @@
         <div class="page-header"><h1 class="page-title">📊 標的追蹤</h1></div>
         <div class="trending-section">
           <div class="trending-section-title">熱門標的</div>
-          ${trending.length ? `
-            <table class="trending-table">
-              <thead>
-                <tr>
-                  <th>名稱</th>
-                  <th style="text-align:right">提及次數</th>
-                  <th>多空比例</th>
-                </tr>
-              </thead>
-              <tbody>${trendingRows}</tbody>
-            </table>` : '<div style="color:var(--text-dim);font-size:14px">尚無資料</div>'}
+          ${trendingHtml}
         </div>
         <div class="trending-section">
           <div class="trending-section-title">產業熱度</div>
           ${industries.length ? `<div class="industry-bars">${industryBars}</div>`
             : '<div style="color:var(--text-dim);font-size:14px">尚無資料</div>'}
         </div>`;
+    }
+
+    // ── Region classifier ─────────────────────────────────────
+
+    function _isTwEntity(name, ticker) {
+      // Purely numeric ticker = Taiwan stock/ETF (e.g. 2330, 0050, 00878)
+      if (ticker && /^\d+$/.test(ticker)) return true;
+      // Alphabetic/mixed ticker = US or other market
+      if (ticker && /^[A-Za-z]/.test(ticker)) return false;
+      // No ticker: use Chinese character ratio (>40% → Taiwan)
+      const chLen = (name.match(/[\u4e00-\u9fff]/g) || []).length;
+      return name.length > 0 && chLen / name.length > 0.4;
     }
 
     // ── Divergence view ───────────────────────────────────────
@@ -2122,12 +2175,10 @@
             return `<span class="divergence-filter-chip ${active ? 'active' : ''}" data-filter="${f === '全部' ? 'all' : f}">${label}</span>`;
           }).join('');
 
-        let cards = '';
-        for (const e of filtered) {
+        function _buildCard(e) {
           const meta = CONSENSUS_META[e.consensus] || { cls: 'neutral', label: e.consensus };
           const ticker = e.ticker ? `<span class="divergence-entity-ticker">${e.ticker}</span>` : '';
           const isDiverge = e.consensus === '多空分歧';
-
           let channelRows = '';
           for (const ch of e.channels) {
             const sm = STANCE_META[ch.stance] || { cls: 'neutral', icon: '?' };
@@ -2148,8 +2199,7 @@
                 <span class="stance-count">${ch.mentions}次</span>
               </div>`;
           }
-
-          cards += `
+          return `
             <div class="divergence-card ${isDiverge ? 'is-diverge' : ''}">
               <div class="divergence-card-header">
                 <span class="divergence-entity-name">${e.name}</span>
@@ -2161,8 +2211,20 @@
             </div>`;
         }
 
-        const emptyMsg = filtered.length === 0
-          ? `<div style="color:var(--text-dim);font-size:14px;padding:20px 0">此類別暫無資料</div>` : '';
+        const twFiltered = filtered.filter(e =>  _isTwEntity(e.name, e.ticker));
+        const usFiltered = filtered.filter(e => !_isTwEntity(e.name, e.ticker));
+
+        let cards = '';
+        if (filtered.length === 0) {
+          cards = `<div style="color:var(--text-dim);font-size:14px;padding:20px 0">此類別暫無資料</div>`;
+        } else {
+          if (twFiltered.length) cards += `
+            <div class="region-divider"><span>🇹🇼 台灣</span></div>
+            ${twFiltered.map(_buildCard).join('')}`;
+          if (usFiltered.length) cards += `
+            <div class="region-divider"><span>🌐 美國及其他</span></div>
+            ${usFiltered.map(_buildCard).join('')}`;
+        }
 
         mc.innerHTML = `
           <div class="page-header"><h1 class="page-title">🔀 多空分歧</h1></div>
@@ -2170,7 +2232,7 @@
             近 90 天內被 2 個以上頻道同時提及的標的，比較各頻道的多空立場
           </div>
           <div class="divergence-filter-bar">${filterBtns}</div>
-          <div class="divergence-list">${cards}${emptyMsg}</div>`;
+          <div class="divergence-list">${cards}</div>`;
 
         document.querySelectorAll('.divergence-filter-chip').forEach(chip => {
           chip.addEventListener('click', () => _render(chip.dataset.filter));
