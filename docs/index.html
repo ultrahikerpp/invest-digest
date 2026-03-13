@@ -2109,10 +2109,14 @@
     // ── Region classifier ─────────────────────────────────────
 
     function _isTwEntity(name, ticker) {
-      // Purely numeric ticker = Taiwan stock/ETF (e.g. 2330, 0050, 00878)
-      if (ticker && /^\d+$/.test(ticker)) return true;
-      // Alphabetic/mixed ticker = US or other market
-      if (ticker && /^[A-Za-z]/.test(ticker)) return false;
+      if (ticker) {
+        // Taiwan stock: 4-digit (2330, 1101, 0050)
+        if (/^\d{4}$/.test(ticker)) return true;
+        // Taiwan ETF: 5-digit starting with 0 (00878, 00631)
+        if (/^0\d{4}$/.test(ticker)) return true;
+        // Anything else with a ticker (6-digit Korean, US alphabetic, etc.) = non-Taiwan
+        return false;
+      }
       // No ticker: use Chinese character ratio (>40% → Taiwan)
       const chLen = (name.match(/[\u4e00-\u9fff]/g) || []).length;
       return name.length > 0 && chLen / name.length > 0.4;
