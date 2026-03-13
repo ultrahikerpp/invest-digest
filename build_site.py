@@ -149,8 +149,9 @@ def build():
     out_path = SITE_DATA_DIR / "episodes.json"
     out_path.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # Generate mentions.json from analysis DB
+    # Generate mentions.json and divergence.json from analysis DB
     _build_mentions_json(SITE_DATA_DIR, generated_at)
+    _build_divergence_json(SITE_DATA_DIR, channels, generated_at)
 
     print(f"\n✓ docs/data/episodes.json — {len(episodes)} episodes")
     print(f"✓ docs/summaries/ — {len(episodes)} files")
@@ -243,6 +244,48 @@ def _build_mentions_json(site_data_dir: Path, generated_at: str) -> None:
 
     except Exception as e:
         print(f"  ⚠️ mentions.json 產生失敗：{e}")
+
+
+def _build_divergence_json(
+    site_data_dir: Path,
+    channels: dict[str, dict],
+    generated_at: str,
+) -> None:
+    """Generate docs/data/divergence.json with cross-channel sentiment comparison."""
+    if not DB_PATH.exists():
+        print("  (skipping divergence.json — DB not found)")
+        return
+
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+
+        tables = {r[0] for r in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        ).fetchall()}
+        if "mentions" not in tables:
+            print("  (skipping divergence.json — mentions table not yet created)")
+            conn.close()
+            return
+
+        from backend.analyzer import get_cross_channel_divergence
+
+        channel_names = {cid: info["name"] for cid, info in channels.items()}
+        entities = get_cross_channel_divergence(
+            conn, days=90, min_channels=2, channel_names=channel_names
+        )
+        conn.close()
+
+        out = {
+            "entities": entities,
+            "generated_at": generated_at,
+        }
+        out_path = site_data_dir / "divergence.json"
+        out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"✓ docs/data/divergence.json — {len(entities)} cross-channel entities")
+
+    except Exception as e:
+        print(f"  ⚠️ divergence.json 產生失敗：{e}")
 
 
 if __name__ == "__main__":

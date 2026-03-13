@@ -94,6 +94,12 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 # 查詢特定標的的所有提及紀錄
 ./venv/bin/python runner.py track --name 台積電
 ./venv/bin/python runner.py track --name NVDA
+
+# 查看各頻道對同一標的的多空立場比較（近 90 天，2+ 頻道）
+./venv/bin/python runner.py divergence
+
+# 調整時間範圍與最低頻道數
+./venv/bin/python runner.py divergence --days 180 --min-channels 2
 ```
 
 `build` / `deploy` 時會同步產生 `docs/data/mentions.json`，靜態網站的「📊 標的追蹤」頁面會顯示：

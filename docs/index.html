@@ -1297,6 +1297,145 @@
       border-color: var(--vibe1);
     }
 
+    /* ── Divergence view ────────────────────────────────── */
+
+    .divergence-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .divergence-filter-chip {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--surface2);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .divergence-filter-chip:hover,
+    .divergence-filter-chip.active {
+      background: var(--vibe1-lt);
+      color: var(--vibe1);
+      border-color: var(--vibe1);
+    }
+
+    .divergence-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .divergence-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      transition: border-color 0.18s;
+    }
+
+    .divergence-card.is-diverge {
+      border-color: rgba(236, 72, 153, 0.35);
+    }
+
+    .divergence-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .divergence-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .divergence-entity-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .divergence-entity-ticker {
+      font-size: 11px;
+      color: var(--text-dim);
+      background: var(--surface2);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .consensus-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 10px;
+      letter-spacing: 0.02em;
+      flex-shrink: 0;
+    }
+
+    .consensus-badge.bull    { background: var(--green-lt);  color: var(--green); }
+    .consensus-badge.bear    { background: var(--red-lt);    color: var(--red); }
+    .consensus-badge.diverge { background: rgba(236,72,153,0.12); color: #EC4899; }
+    .consensus-badge.neutral { background: var(--surface2);  color: var(--text-dim); }
+    .consensus-badge.lean    { background: var(--vibe1-lt);  color: var(--vibe2); }
+
+    .divergence-total {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+
+    .channel-stances {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .channel-stance-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--surface2);
+      font-size: 13px;
+    }
+
+    .channel-stance-row.bull { border-left: 3px solid var(--green); }
+    .channel-stance-row.bear { border-left: 3px solid var(--red); }
+    .channel-stance-row.neutral { border-left: 3px solid var(--text-dim); }
+
+    .stance-icon { font-size: 12px; flex-shrink: 0; }
+    .stance-channel { flex: 1; color: var(--text-muted); }
+    .stance-label { font-weight: 600; flex-shrink: 0; }
+    .stance-label.bull { color: var(--green); }
+    .stance-label.bear { color: var(--red); }
+    .stance-label.neutral { color: var(--text-dim); }
+    .stance-count {
+      font-size: 11px;
+      color: var(--text-dim);
+      min-width: 32px;
+      text-align: right;
+    }
+
+    .stance-mini-bar {
+      display: flex;
+      height: 4px;
+      border-radius: 2px;
+      overflow: hidden;
+      width: 48px;
+      gap: 1px;
+      flex-shrink: 0;
+    }
+    .stance-mini-bar .seg-b { background: var(--green); }
+    .stance-mini-bar .seg-r { background: var(--red); }
+    .stance-mini-bar .seg-n { background: var(--text-dim); }
+
     .sidebar-analysis-item {
       display: flex;
       align-items: center;
@@ -1515,7 +1654,8 @@
 
     let allEpisodes = [];
     let generatedAt = '';
-    let mentionsData = null;  // loaded from mentions.json (may be null if not generated)
+    let mentionsData = null;    // loaded from mentions.json
+    let divergenceData = null;  // loaded from divergence.json
 
     // ── Helpers ────────────────────────────────────────────────
 
@@ -1556,11 +1696,15 @@
         el.textContent = '更新：' + d.toLocaleDateString('zh-TW');
       }
 
-      // Load mentions.json (best-effort — may not exist yet)
+      // Load analysis data (best-effort — may not exist yet)
       try {
         const mResp = await fetch(BASE + 'data/mentions.json');
         if (mResp.ok) mentionsData = await mResp.json();
       } catch (_) { /* no mentions data yet */ }
+      try {
+        const dResp = await fetch(BASE + 'data/divergence.json');
+        if (dResp.ok) divergenceData = await dResp.json();
+      } catch (_) { /* no divergence data yet */ }
     }
 
     // ── Routing ────────────────────────────────────────────────
@@ -1572,6 +1716,9 @@
       }
       if (hash === '#/trending') {
         return { type: 'trending' };
+      }
+      if (hash === '#/divergence') {
+        return { type: 'divergence' };
       }
       if (hash.startsWith('#/industry/')) {
         return { type: 'industry', name: decodeURIComponent(hash.slice(11)) };
@@ -1631,6 +1778,7 @@
       // Analysis section
       const r = getRoute();
       const trendingActive = r.type === 'trending';
+      const divergenceActive = r.type === 'divergence';
       document.getElementById('analysisList').innerHTML = `
         <div class="sidebar-analysis-item ${trendingActive ? 'active' : ''}" id="trendingNavBtn">
           <div class="analysis-item-icon">
@@ -1638,9 +1786,19 @@
           </div>
           <div class="analysis-item-name">標的追蹤</div>
         </div>
+        <div class="sidebar-analysis-item ${divergenceActive ? 'active' : ''}" id="divergenceNavBtn">
+          <div class="analysis-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </div>
+          <div class="analysis-item-name">多空分歧</div>
+        </div>
       `;
       document.getElementById('trendingNavBtn').addEventListener('click', () => {
         location.hash = '#/trending';
+        closeSidebar();
+      });
+      document.getElementById('divergenceNavBtn').addEventListener('click', () => {
+        location.hash = '#/divergence';
         closeSidebar();
       });
     }
@@ -1907,6 +2065,121 @@
         </div>`;
     }
 
+    // ── Divergence view ───────────────────────────────────────
+
+    const CONSENSUS_META = {
+      '多空分歧': { cls: 'diverge', label: '🔥 多空分歧' },
+      '看多共識': { cls: 'bull',    label: '▲ 看多共識'  },
+      '看空共識': { cls: 'bear',    label: '▼ 看空共識'  },
+      '中立共識': { cls: 'neutral', label: '→ 中立共識'  },
+      '偏多':    { cls: 'lean',    label: '↗ 偏多'      },
+      '偏空':    { cls: 'lean',    label: '↘ 偏空'      },
+    };
+
+    const STANCE_META = {
+      '看多': { cls: 'bull',    icon: '▲' },
+      '看空': { cls: 'bear',    icon: '▼' },
+      '中立': { cls: 'neutral', icon: '→' },
+    };
+
+    function renderDivergence() {
+      const mc = document.getElementById('mainContent');
+
+      if (!divergenceData) {
+        mc.innerHTML = `
+          <div class="page-header"><h1 class="page-title">🔀 多空分歧</h1></div>
+          <div class="empty-state">
+            <div class="empty-icon">${ICONS.alertCircle}</div>
+            <div class="empty-title">尚無跨頻道分析資料</div>
+            <div class="empty-text">執行 <code>python3 runner.py backfill-analysis</code> 後再部署即可。</div>
+          </div>`;
+        return;
+      }
+
+      const all = divergenceData.entities || [];
+      if (!all.length) {
+        mc.innerHTML = `
+          <div class="page-header"><h1 class="page-title">🔀 多空分歧</h1></div>
+          <div class="empty-state">
+            <div class="empty-icon">${ICONS.inbox}</div>
+            <div class="empty-title">還沒有跨頻道提及的標的</div>
+            <div class="empty-text">需要 2 個以上頻道同時提及同一標的才會出現在此頁。</div>
+          </div>`;
+        return;
+      }
+
+      // Render with active filter
+      function _render(filter) {
+        const filtered = filter === 'all' ? all
+          : filter === '多空分歧' ? all.filter(e => e.consensus === '多空分歧')
+          : all.filter(e => e.consensus === filter);
+
+        const filterBtns = ['全部', '多空分歧', '看多共識', '看空共識', '中立共識', '偏多', '偏空']
+          .filter(f => f === '全部' || all.some(e => e.consensus === f))
+          .map(f => {
+            const label = f === '全部' ? `全部 (${all.length})` : (CONSENSUS_META[f]?.label || f);
+            const active = (filter === 'all' && f === '全部') || filter === f;
+            return `<span class="divergence-filter-chip ${active ? 'active' : ''}" data-filter="${f === '全部' ? 'all' : f}">${label}</span>`;
+          }).join('');
+
+        let cards = '';
+        for (const e of filtered) {
+          const meta = CONSENSUS_META[e.consensus] || { cls: 'neutral', label: e.consensus };
+          const ticker = e.ticker ? `<span class="divergence-entity-ticker">${e.ticker}</span>` : '';
+          const isDiverge = e.consensus === '多空分歧';
+
+          let channelRows = '';
+          for (const ch of e.channels) {
+            const sm = STANCE_META[ch.stance] || { cls: 'neutral', icon: '?' };
+            const tot = ch.bullish + ch.bearish + ch.neutral || 1;
+            const bPct = Math.round(ch.bullish / tot * 100);
+            const rPct = Math.round(ch.bearish / tot * 100);
+            const nPct = 100 - bPct - rPct;
+            channelRows += `
+              <div class="channel-stance-row ${sm.cls}">
+                <span class="stance-icon">${sm.icon}</span>
+                <span class="stance-channel">${ch.channel_name}</span>
+                <div class="stance-mini-bar">
+                  ${bPct > 0 ? `<div class="seg-b" style="width:${bPct}%"></div>` : ''}
+                  ${rPct > 0 ? `<div class="seg-r" style="width:${rPct}%"></div>` : ''}
+                  ${nPct > 0 ? `<div class="seg-n" style="width:${nPct}%"></div>` : ''}
+                </div>
+                <span class="stance-label ${sm.cls}">${ch.stance}</span>
+                <span class="stance-count">${ch.mentions}次</span>
+              </div>`;
+          }
+
+          cards += `
+            <div class="divergence-card ${isDiverge ? 'is-diverge' : ''}">
+              <div class="divergence-card-header">
+                <span class="divergence-entity-name">${e.name}</span>
+                ${ticker}
+                <span class="consensus-badge ${meta.cls}">${meta.label}</span>
+                <span class="divergence-total">${e.total_mentions} 次提及 · ${e.channel_count} 頻道</span>
+              </div>
+              <div class="channel-stances">${channelRows}</div>
+            </div>`;
+        }
+
+        const emptyMsg = filtered.length === 0
+          ? `<div style="color:var(--text-dim);font-size:14px;padding:20px 0">此類別暫無資料</div>` : '';
+
+        mc.innerHTML = `
+          <div class="page-header"><h1 class="page-title">🔀 多空分歧</h1></div>
+          <div style="font-size:13px;color:var(--text-dim);margin-bottom:16px">
+            近 90 天內被 2 個以上頻道同時提及的標的，比較各頻道的多空立場
+          </div>
+          <div class="divergence-filter-bar">${filterBtns}</div>
+          <div class="divergence-list">${cards}${emptyMsg}</div>`;
+
+        document.querySelectorAll('.divergence-filter-chip').forEach(chip => {
+          chip.addEventListener('click', () => _render(chip.dataset.filter));
+        });
+      }
+
+      _render('all');
+    }
+
     // ── Industry filter helper ─────────────────────────────────
 
     function _getEpisodesForIndustry(industryName) {
@@ -1935,6 +2208,11 @@
       if (r.type === 'trending') {
         renderSidebar(allEpisodes, null);
         renderTrending();
+        return;
+      }
+      if (r.type === 'divergence') {
+        renderSidebar(allEpisodes, null);
+        renderDivergence();
         return;
       }
 

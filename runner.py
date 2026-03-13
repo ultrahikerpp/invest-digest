@@ -928,6 +928,51 @@ def cmd_track(name: str):
         print(f"     處理日：{r['processed_at']}  https://youtube.com/watch?v={r['video_id']}\n")
 
 
+# ── Divergence command ────────────────────────────────────
+
+def cmd_divergence(days: int = 90, min_channels: int = 2):
+    """Print cross-channel sentiment divergence analysis."""
+    from backend.analyzer import get_cross_channel_divergence
+
+    channels = _load_channels()
+    channel_names = {ch["channel_id"]: ch["name"] for ch in channels}
+
+    conn = _get_db()
+    entities = get_cross_channel_divergence(
+        conn, days=days, min_channels=min_channels, channel_names=channel_names
+    )
+    conn.close()
+
+    if not entities:
+        print(f"近 {days} 天內沒有被 {min_channels}+ 頻道同時提及的標的")
+        return
+
+    diverged = [e for e in entities if e["consensus"] == "多空分歧"]
+    consensus = [e for e in entities if e["consensus"] != "多空分歧"]
+
+    print(f"\n🔀 多空觀點比較（近 {days} 天，{min_channels}+ 頻道）")
+    print(f"共 {len(entities)} 個標的  ·  分歧 {len(diverged)} 個  ·  共識 {len(consensus)} 個\n")
+
+    icons = {"看多": "▲", "看空": "▼", "中立": "→"}
+    badge = {
+        "多空分歧": "🔥 多空分歧",
+        "看多共識": "✅ 看多共識",
+        "看空共識": "❌ 看空共識",
+        "中立共識": "➖ 中立共識",
+        "偏多": "↗ 偏多",
+        "偏空": "↘ 偏空",
+    }
+
+    for e in entities:
+        ticker_str = f" ({e['ticker']})" if e["ticker"] else ""
+        label = badge.get(e["consensus"], e["consensus"])
+        print(f"{label}  {e['name']}{ticker_str}  —  {e['total_mentions']} 次提及")
+        for ch in e["channels"]:
+            icon = icons.get(ch["stance"], "?")
+            print(f"  {icon}  {ch['channel_name']:<20} {ch['stance']}  ({ch['mentions']} 次)")
+        print()
+
+
 # ── Deploy command ────────────────────────────────────────
 
 def cmd_deploy():
@@ -1010,6 +1055,19 @@ def main():
             print("Usage: runner.py track --name <entity_name>", file=sys.stderr)
             sys.exit(1)
         cmd_track(args[2])
+
+    elif cmd == "divergence":
+        days = 90
+        min_channels = 2
+        i = 1
+        while i < len(args):
+            if args[i] == "--days" and i + 1 < len(args):
+                days = int(args[i + 1]); i += 2
+            elif args[i] == "--min-channels" and i + 1 < len(args):
+                min_channels = int(args[i + 1]); i += 2
+            else:
+                i += 1
+        cmd_divergence(days, min_channels)
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)

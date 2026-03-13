@@ -165,6 +165,127 @@ def get_entity_track(conn: sqlite3.Connection, name: str) -> list[dict]:
     return [dict(r) for r in rows]
 
 
+def _channel_stance(bullish: int, bearish: int, neutral: int) -> str:
+    """Determine a channel's dominant stance from raw mention counts."""
+    if bullish > bearish and bullish > neutral:
+        return "看多"
+    if bearish > bullish and bearish > neutral:
+        return "看空"
+    return "中立"
+
+
+def _consensus_label(bull_ch: int, bear_ch: int, neutral_ch: int) -> str:
+    """Classify overall consensus/divergence across channels."""
+    total = bull_ch + bear_ch + neutral_ch
+    if bull_ch > 0 and bear_ch > 0:
+        return "多空分歧"
+    if bull_ch == total:
+        return "看多共識"
+    if bear_ch == total:
+        return "看空共識"
+    if neutral_ch == total:
+        return "中立共識"
+    # Mixed with neutral: lean toward whichever side dominates
+    return "偏多" if bull_ch > bear_ch else "偏空"
+
+
+def get_cross_channel_divergence(
+    conn: sqlite3.Connection,
+    days: int = 90,
+    min_channels: int = 2,
+    channel_names: dict[str, str] | None = None,
+) -> list[dict]:
+    """
+    Find entities mentioned by ≥ min_channels channels within the last N days.
+    Returns entities sorted by divergence first (多空分歧 at top), then by total mentions.
+
+    channel_names: optional {channel_id: channel_name} mapping for display.
+    """
+    rows = conn.execute(
+        """
+        SELECT
+            m.entity_name,
+            MAX(m.ticker)                                               AS ticker,
+            m.channel_id,
+            COUNT(*)                                                    AS mentions,
+            SUM(CASE WHEN m.sentiment='看多' THEN 1 ELSE 0 END)        AS bullish,
+            SUM(CASE WHEN m.sentiment='看空' THEN 1 ELSE 0 END)        AS bearish,
+            SUM(CASE WHEN m.sentiment='中立' THEN 1 ELSE 0 END)        AS neutral
+        FROM mentions m
+        WHERE m.processed_at >= DATE('now', :offset)
+        GROUP BY m.entity_name, m.channel_id
+        ORDER BY m.entity_name, mentions DESC
+        """,
+        {"offset": f"-{days} days"},
+    ).fetchall()
+
+    # Aggregate by entity
+    entity_map: dict[str, dict] = {}
+    for row in rows:
+        name = row["entity_name"]
+        if name not in entity_map:
+            entity_map[name] = {
+                "ticker": None,
+                "channels": [],
+                "total_bullish": 0,
+                "total_bearish": 0,
+                "total_neutral": 0,
+            }
+        e = entity_map[name]
+        if not e["ticker"]:
+            e["ticker"] = row["ticker"]
+
+        b, r, n = row["bullish"], row["bearish"], row["neutral"]
+        cnames = channel_names or {}
+        e["channels"].append({
+            "channel_id": row["channel_id"],
+            "channel_name": cnames.get(row["channel_id"], row["channel_id"]),
+            "mentions": row["mentions"],
+            "bullish": b,
+            "bearish": r,
+            "neutral": n,
+            "stance": _channel_stance(b, r, n),
+        })
+        e["total_bullish"] += b
+        e["total_bearish"] += r
+        e["total_neutral"] += n
+
+    result = []
+    for name, e in entity_map.items():
+        channel_count = len(e["channels"])
+        if channel_count < min_channels:
+            continue
+
+        total_mentions = e["total_bullish"] + e["total_bearish"] + e["total_neutral"]
+        bull_ch = sum(1 for c in e["channels"] if c["stance"] == "看多")
+        bear_ch = sum(1 for c in e["channels"] if c["stance"] == "看空")
+        neutral_ch = channel_count - bull_ch - bear_ch
+
+        consensus = _consensus_label(bull_ch, bear_ch, neutral_ch)
+        # Divergence score: 0 = full consensus, 1 = maximum opposition
+        divergence_score = round(2 * min(bull_ch, bear_ch) / channel_count, 3)
+
+        result.append({
+            "name": name,
+            "ticker": e["ticker"],
+            "total_mentions": total_mentions,
+            "channel_count": channel_count,
+            "total_bullish": e["total_bullish"],
+            "total_bearish": e["total_bearish"],
+            "total_neutral": e["total_neutral"],
+            "bull_channels": bull_ch,
+            "bear_channels": bear_ch,
+            "neutral_channels": neutral_ch,
+            "consensus": consensus,
+            "divergence_score": divergence_score,
+            "channels": e["channels"],
+        })
+
+    # Sort: 多空分歧 first (highest divergence_score), then by total_mentions desc
+    result.sort(key=lambda x: (-x["divergence_score"], -x["total_mentions"]))
+    return result
+
+
 def get_by_episode(conn: sqlite3.Connection) -> dict[str, dict]:
     """Return mentions and industries grouped by video_id for static site export."""
     mentions_rows = conn.execute(
