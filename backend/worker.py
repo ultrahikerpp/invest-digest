@@ -181,7 +181,7 @@ def _videos_from_page(channel_id: str, max_results: int) -> list[dict]:
     return videos
 
 
-def get_latest_videos(channel_id: str, max_results: int = 5) -> list[dict]:
+def get_latest_videos(channel_id: str, max_results: int = 10) -> list[dict]:
     """Get latest videos from a YouTube channel (RSS first, page scrape as fallback)."""
     try:
         videos = _videos_from_rss(channel_id, max_results)
