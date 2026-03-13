@@ -1360,6 +1360,8 @@
       font-weight: 700;
       color: var(--text);
     }
+    .divergence-entity-name.bull { color: var(--green); }
+    .divergence-entity-name.bear { color: var(--red); }
 
     .divergence-entity-ticker {
       font-size: 11px;
@@ -2193,6 +2195,8 @@
           const meta = CONSENSUS_META[e.consensus] || { cls: 'neutral', label: e.consensus };
           const ticker = e.ticker ? `<span class="divergence-entity-ticker">${e.ticker}</span>` : '';
           const isDiverge = e.consensus === '多空分歧';
+          const nameColorCls = ['看多共識', '偏多'].includes(e.consensus) ? 'bull'
+            : ['看空共識', '偏空'].includes(e.consensus) ? 'bear' : '';
           let channelRows = '';
           for (const ch of e.channels) {
             const sm = STANCE_META[ch.stance] || { cls: 'neutral', icon: '?' };
@@ -2216,7 +2220,7 @@
           return `
             <div class="divergence-card ${isDiverge ? 'is-diverge' : ''}">
               <div class="divergence-card-header">
-                <span class="divergence-entity-name">${e.name}</span>
+                <span class="divergence-entity-name ${nameColorCls}">${e.name}</span>
                 ${ticker}
                 <span class="consensus-badge ${meta.cls}">${meta.label}</span>
                 <span class="divergence-total">${e.total_mentions} 次提及 · ${e.channel_count} 頻道</span>
@@ -2225,8 +2229,10 @@
             </div>`;
         }
 
-        const twFiltered = filtered.filter(e =>  _isTwEntity(e.name, e.ticker));
-        const usFiltered = filtered.filter(e => !_isTwEntity(e.name, e.ticker));
+        const CONSENSUS_ORDER = { '看多共識': 0, '偏多': 1, '中立共識': 2, '偏空': 3, '看空共識': 4, '多空分歧': 5 };
+        const _sortConsensus = (a, b) => (CONSENSUS_ORDER[a.consensus] ?? 99) - (CONSENSUS_ORDER[b.consensus] ?? 99);
+        const twFiltered = filtered.filter(e =>  _isTwEntity(e.name, e.ticker)).sort(_sortConsensus);
+        const usFiltered = filtered.filter(e => !_isTwEntity(e.name, e.ticker)).sort(_sortConsensus);
 
         let cards = '';
         if (filtered.length === 0) {

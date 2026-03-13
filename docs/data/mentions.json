@@ -3,18 +3,34 @@
     {
       "name": "費城半導體指數",
       "ticker": "SOX",
-      "count": 9,
-      "bullish": 3,
-      "bearish": 3,
-      "neutral": 3
+      "count": 12,
+      "bullish": 4,
+      "bearish": 4,
+      "neutral": 4
     },
     {
       "name": "Google",
       "ticker": "GOOGL",
-      "count": 9,
+      "count": 11,
       "bullish": 0,
       "bearish": 0,
-      "neutral": 9
+      "neutral": 11
+    },
+    {
+      "name": "道瓊工業指數",
+      "ticker": "DJIA",
+      "count": 10,
+      "bullish": 1,
+      "bearish": 5,
+      "neutral": 4
+    },
+    {
+      "name": "台積電",
+      "ticker": "TSM",
+      "count": 9,
+      "bullish": 9,
+      "bearish": 0,
+      "neutral": 0
     },
     {
       "name": "標普500",
@@ -33,14 +49,6 @@
       "neutral": 7
     },
     {
-      "name": "道瓊工業指數",
-      "ticker": "DJIA",
-      "count": 7,
-      "bullish": 1,
-      "bearish": 3,
-      "neutral": 3
-    },
-    {
       "name": "西德州原油",
       "ticker": "WTI",
       "count": 7,
@@ -49,24 +57,72 @@
       "neutral": 1
     },
     {
-      "name": "台積電",
-      "ticker": "2330",
-      "count": 7,
-      "bullish": 7,
-      "bearish": 0,
-      "neutral": 0
-    },
-    {
       "name": "Anthropic",
       "ticker": null,
+      "count": 7,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
+      "name": "道瓊指數",
+      "ticker": "DJI",
+      "count": 6,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 5
+    },
+    {
+      "name": "輝達",
+      "ticker": "NVDA",
       "count": 6,
       "bullish": 2,
       "bearish": 0,
       "neutral": 4
     },
     {
-      "name": "輝達",
-      "ticker": "NVDA",
+      "name": "S&P 500",
+      "ticker": "SPX",
+      "count": 6,
+      "bullish": 1,
+      "bearish": 1,
+      "neutral": 4
+    },
+    {
+      "name": "AMD",
+      "ticker": "AMD",
+      "count": 6,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
+      "name": "蘋果",
+      "ticker": "AAPL",
+      "count": 5,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
+      "name": "美光",
+      "ticker": "MU",
+      "count": 5,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "羅素2000",
+      "ticker": "RUT",
+      "count": 5,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 2
+    },
+    {
+      "name": "微軟",
+      "ticker": "MSFT",
       "count": 5,
       "bullish": 1,
       "bearish": 0,
@@ -97,98 +153,50 @@
       "neutral": 1
     },
     {
-      "name": "OpenAI",
-      "ticker": null,
+      "name": "亞馬遜",
+      "ticker": "AMZN",
       "count": 5,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 3
-    },
-    {
-      "name": "Nvidia",
-      "ticker": "NVDA",
-      "count": 5,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
-      "name": "AMD",
-      "ticker": "AMD",
-      "count": 5,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 3
-    },
-    {
-      "name": "道瓊指數",
-      "ticker": "DJI",
-      "count": 4,
-      "bullish": 0,
-      "bearish": 1,
-      "neutral": 3
-    },
-    {
-      "name": "蘋果",
-      "ticker": "AAPL",
-      "count": 4,
-      "bullish": 0,
+      "bullish": 1,
       "bearish": 0,
       "neutral": 4
-    },
-    {
-      "name": "比特幣",
-      "ticker": "BTC",
-      "count": 4,
-      "bullish": 0,
-      "bearish": 2,
-      "neutral": 2
-    },
-    {
-      "name": "Tesla",
-      "ticker": "TSLA",
-      "count": 4,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 4
-    },
-    {
-      "name": "SpaceX",
-      "ticker": null,
-      "count": 4,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 1
     }
   ],
   "industries": [
     {
       "name": "AI",
-      "count": 20
+      "count": 23
     },
     {
       "name": "美股",
-      "count": 14
+      "count": 19
     },
     {
       "name": "半導體",
-      "count": 14
-    },
-    {
-      "name": "台股",
-      "count": 11
-    },
-    {
-      "name": "能源",
-      "count": 10
+      "count": 16
     },
     {
       "name": "總體經濟",
-      "count": 10
+      "count": 14
+    },
+    {
+      "name": "能源",
+      "count": 12
+    },
+    {
+      "name": "台股",
+      "count": 12
     },
     {
       "name": "科技",
-      "count": 5
+      "count": 7
+    },
+    {
+      "name": "新興市場",
+      "count": 1
+    },
+    {
+      "name": "ETF",
+      "count": 1
     }
   ],
   "by_episode": {
@@ -203,6 +211,64 @@
         "Google（Alphabet）",
         "Intel",
         "台積電"
+      ]
+    },
+    "38mgaX0gU0I": {
+      "industries": [
+        "美股",
+        "AI",
+        "科技"
+      ],
+      "mentions": [
+        "Salesforce",
+        "Palantir",
+        "Accenture",
+        "IBM",
+        "Costco",
+        "Anthropic",
+        "Tesla"
+      ]
+    },
+    "46hmTUicOf8": {
+      "industries": [
+        "半導體",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "台積電",
+        "NVIDIA",
+        "蘋果",
+        "特斯拉",
+        "亞馬遜",
+        "微軟",
+        "Google",
+        "Salesforce",
+        "SOXX",
+        "QQQ",
+        "納斯達克指數",
+        "道瓊指數",
+        "標普500指數",
+        "MSCI全球指數"
+      ]
+    },
+    "6dhDA_xkS4M": {
+      "industries": [
+        "美股",
+        "總體經濟",
+        "新興市場"
+      ],
+      "mentions": [
+        "台積電ADR",
+        "亞馬遜",
+        "Google",
+        "微軟",
+        "軟銀",
+        "道瓊指數",
+        "那斯達克指數",
+        "標普500指數",
+        "羅素2000指數",
+        "新興市場ETF"
       ]
     },
     "Ap3abhMhHRs": {
@@ -327,6 +393,71 @@
         "Google",
         "Apple",
         "Klarna"
+      ]
+    },
+    "N_rrkFBsbB0": {
+      "industries": [
+        "總體經濟",
+        "ETF",
+        "美股"
+      ],
+      "mentions": [
+        "貝萊德收益優化投資等級債主動式ETF",
+        "美國政府公債",
+        "投資等級公司債",
+        "非投資等級債（高收益債）",
+        "華納兄弟",
+        "波音公司",
+        "太平洋瓦斯電力公司",
+        "Netflix"
+      ]
+    },
+    "PWsS8sN2syo": {
+      "industries": [
+        "美股",
+        "半導體",
+        "AI"
+      ],
+      "mentions": [
+        "甲骨文",
+        "亞馬遜",
+        "台積電",
+        "輝達",
+        "美光",
+        "AMD",
+        "Intel",
+        "洛克希德·馬丁",
+        "雷神",
+        "S&P 500",
+        "那斯達克100",
+        "費城半導體指數",
+        "道瓊工業指數",
+        "羅素2000"
+      ]
+    },
+    "WY0nMNsCTVU": {
+      "industries": [
+        "能源",
+        "總體經濟",
+        "科技"
+      ],
+      "mentions": [
+        "道瓊工業指數",
+        "S&P 500指數",
+        "納斯達克100指數",
+        "費城半導體指數",
+        "羅素2000指數",
+        "Palantir",
+        "Adobe",
+        "艾克森美孚",
+        "雪佛龍",
+        "西方石油",
+        "高盛",
+        "Morgan Stanley",
+        "BlackRock",
+        "SPY",
+        "VTI",
+        "QQQ"
       ]
     },
     "WuPn7ig2dno": {
@@ -484,6 +615,27 @@
         "Google",
         "Meta",
         "Perplexity AI"
+      ]
+    },
+    "eJklz32rDOo": {
+      "industries": [
+        "美股",
+        "能源",
+        "總體經濟"
+      ],
+      "mentions": [
+        "AVAV（Aero Environment）",
+        "美光",
+        "Uber",
+        "特斯拉",
+        "比亞迪",
+        "道瓊工業指數",
+        "S&P 500",
+        "那斯達克100",
+        "費城半導體指數",
+        "羅素2000",
+        "布蘭特原油期貨",
+        "WTI原油期貨"
       ]
     },
     "ebP-UdL1290": {
@@ -796,5 +948,5 @@
       ]
     }
   },
-  "generated_at": "2026-03-13T17:01:26"
+  "generated_at": "2026-03-13T17:45:30"
 }

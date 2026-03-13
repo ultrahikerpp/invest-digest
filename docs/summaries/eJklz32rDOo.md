@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-12T01:08:48+00:00
 processed: 2026-03-13
+industries: 美股, 能源, 總體經濟
 hashtags: #油價 #通膨 #伊朗戰爭 #關稅調查 #AVAV #JC趨勢財經觀點
 ---
 
