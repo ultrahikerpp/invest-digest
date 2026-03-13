@@ -86,7 +86,10 @@ def _build_analysis_prompt(summary_body: str) -> str:
 - industries 最多 3 個，只能從以下清單選擇：
   台股、美股、中港股、半導體、AI、科技、金融、房地產、能源、原物料、
   生技醫療、ETF、總體經濟、加密貨幣、新興市場
-- 只輸出 JSON，不要任何其他說明文字或 markdown 格式
+重要格式要求：
+- 直接輸出裸 JSON（不要用 ``` 或 ```json 包覆）
+- 不要任何說明文字、標題、換行前綴
+- 第一個字元必須是 {{，最後一個字元必須是 }}
 
 [摘要內容]
 {summary_body[:4000]}"""
@@ -453,29 +456,80 @@ def generate_card_points(sections: dict[str, str]) -> dict[str, list[str]]:
     return result
 
 
+def _clean_json_raw(raw: str) -> str:
+    """
+    Best-effort cleanup of Claude's response before JSON parsing.
+
+    Handles several edge cases:
+    - ```json ... ``` code fences
+    - Nested backtick wrapping from nodeToMd pre/code conversion: ```\\n`{...}`\\n```
+    - Leading/trailing whitespace or explanation text
+    """
+    raw = raw.strip()
+
+    # Strip outer triple-backtick code fences (with or without language tag)
+    raw = re.sub(r'^```(?:json)?\s*', '', raw)
+    raw = re.sub(r'\s*```\s*$', '', raw)
+    raw = raw.strip()
+
+    # Strip single backtick wrapping produced by nodeToMd's pre/code handling
+    if raw.startswith('`') and raw.endswith('`'):
+        raw = raw[1:-1].strip()
+
+    # If there's still surrounding noise, extract the first {...} JSON object
+    if not raw.startswith('{'):
+        match = re.search(r'\{[\s\S]*\}', raw)
+        if match:
+            raw = match.group(0)
+
+    return raw
+
+
 def extract_analysis(summary_body: str) -> dict:
     """
     Extract structured mentions and industries from a summary via Claude.
     Returns {"mentions": [...], "industries": [...]} or empty lists on failure.
+    Retries once on transient errors (empty response, JSON parse failure).
     """
     import json
 
     prompt = _build_analysis_prompt(summary_body)
-    try:
-        raw = chat(prompt, timeout_secs=60)
-        # Strip markdown code fences if present
+
+    for attempt in range(2):
+        try:
+            raw = chat(prompt, timeout_secs=60)
+        except RuntimeError as e:
+            if attempt == 0:
+                print(f"  [claude] 回應擷取失敗，重試... ({e})")
+                continue
+            print(f"  [claude] 分析萃取失敗：{e}")
+            return {"mentions": [], "industries": []}
+
         raw = raw.strip()
-        if raw.startswith("```"):
-            raw = re.sub(r'^```(?:json)?\s*', '', raw)
-            raw = re.sub(r'\s*```$', '', raw)
-        data = json.loads(raw.strip())
-        return {
-            "mentions": data.get("mentions", []),
-            "industries": data.get("industries", []),
-        }
-    except Exception as e:
-        print(f"  [claude] 分析萃取失敗：{e}")
-        return {"mentions": [], "industries": []}
+        if not raw:
+            if attempt == 0:
+                print(f"  [claude] 回應為空，重試...")
+                continue
+            print(f"  [claude] 分析萃取失敗：回應為空")
+            return {"mentions": [], "industries": []}
+
+        try:
+            cleaned = _clean_json_raw(raw)
+            if not cleaned:
+                raise ValueError("清理後內容為空")
+            data = json.loads(cleaned)
+            return {
+                "mentions": data.get("mentions", []),
+                "industries": data.get("industries", []),
+            }
+        except Exception as e:
+            if attempt == 0:
+                print(f"  [claude] JSON 解析失敗，重試... ({e})")
+                continue
+            print(f"  [claude] 分析萃取失敗：{e}")
+            print(f"  [claude] 原始回應前 200 字：{raw[:200]!r}")
+
+    return {"mentions": [], "industries": []}
 
 
 def setup_login() -> None:
