@@ -1458,6 +1458,19 @@
       background: var(--border);
     }
 
+    .region-header-row td {
+      padding: 18px 12px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .region-header-row:not(:first-child) td {
+      padding-top: 28px;
+    }
+
     .sidebar-analysis-item {
       display: flex;
       align-items: center;
@@ -2049,19 +2062,6 @@
         }).join('');
       }
 
-      function _trendingTable(list) {
-        if (!list.length) return '';
-        return `
-          <table class="trending-table">
-            <thead><tr>
-              <th>名稱</th>
-              <th style="text-align:right">提及次數</th>
-              <th>多空比例</th>
-            </tr></thead>
-            <tbody>${_trendingRows(list)}</tbody>
-          </table>`;
-      }
-
       const twTrending = trending.filter(e =>  _isTwEntity(e.name, e.ticker));
       const usTrending = trending.filter(e => !_isTwEntity(e.name, e.ticker));
 
@@ -2069,12 +2069,24 @@
       if (!trending.length) {
         trendingHtml = '<div style="color:var(--text-dim);font-size:14px">尚無資料</div>';
       } else {
-        if (twTrending.length) trendingHtml += `
-          <div class="region-divider"><span>🇹🇼 台灣</span></div>
-          ${_trendingTable(twTrending)}`;
-        if (usTrending.length) trendingHtml += `
-          <div class="region-divider"><span>🌐 美國及其他</span></div>
-          ${_trendingTable(usTrending)}`;
+        let bodyRows = '';
+        if (twTrending.length) {
+          bodyRows += `<tr class="region-header-row"><td colspan="3"><span>🇹🇼 台灣</span></td></tr>`;
+          bodyRows += _trendingRows(twTrending);
+        }
+        if (usTrending.length) {
+          bodyRows += `<tr class="region-header-row"><td colspan="3"><span>🌐 美國及其他</span></td></tr>`;
+          bodyRows += _trendingRows(usTrending);
+        }
+        trendingHtml = `
+          <table class="trending-table">
+            <thead><tr>
+              <th>名稱</th>
+              <th style="text-align:right">提及次數</th>
+              <th>多空比例</th>
+            </tr></thead>
+            <tbody>${bodyRows}</tbody>
+          </table>`;
       }
 
       // Industry bars
