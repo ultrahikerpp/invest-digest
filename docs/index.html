@@ -1155,6 +1155,184 @@
       color: var(--vibe2);
       flex-shrink: 0;
     }
+
+    /* ── Trending / Analysis view ───────────────────────── */
+
+    .trending-section {
+      margin-bottom: 32px;
+    }
+
+    .trending-section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .trending-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .trending-table th {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 0 10px 8px;
+    }
+
+    .trending-table td {
+      padding: 10px 10px;
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .trending-table tr:hover td {
+      background: var(--vibe1-lt);
+    }
+
+    .entity-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .entity-ticker {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .sentiment-bar {
+      display: flex;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      gap: 1px;
+      min-width: 80px;
+    }
+
+    .sentiment-bar .seg-bullish { background: var(--green); }
+    .sentiment-bar .seg-bearish { background: var(--red); }
+    .sentiment-bar .seg-neutral { background: var(--text-dim); }
+
+    .sentiment-counts {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 3px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .sentiment-counts .bull { color: var(--green); }
+    .sentiment-counts .bear { color: var(--red); }
+
+    .industry-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .industry-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .industry-bar-label {
+      font-size: 13px;
+      color: var(--text);
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .industry-bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .industry-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--vibe1), var(--vibe2));
+    }
+
+    .industry-bar-count {
+      font-size: 12px;
+      color: var(--text-dim);
+      min-width: 28px;
+      text-align: right;
+    }
+
+    .industry-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .industry-chip {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--surface2);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .industry-chip:hover, .industry-chip.active {
+      background: var(--vibe1-lt);
+      color: var(--vibe1);
+      border-color: var(--vibe1);
+    }
+
+    .sidebar-analysis-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+
+    .sidebar-analysis-item:hover,
+    .sidebar-analysis-item.active {
+      background: var(--vibe1-lt);
+    }
+
+    .sidebar-analysis-item.active .analysis-item-name {
+      color: var(--vibe1);
+    }
+
+    .analysis-item-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--vibe1-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--vibe1);
+    }
+
+    .analysis-item-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
   </style>
 </head>
 
@@ -1217,6 +1395,9 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-label">頻道</div>
       <div id="channelList"></div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">分析</div>
+      <div id="analysisList"></div>
     </aside>
 
     <main class="main">
@@ -1334,6 +1515,7 @@
 
     let allEpisodes = [];
     let generatedAt = '';
+    let mentionsData = null;  // loaded from mentions.json (may be null if not generated)
 
     // ── Helpers ────────────────────────────────────────────────
 
@@ -1373,6 +1555,12 @@
         const d = new Date(generatedAt + 'Z');
         el.textContent = '更新：' + d.toLocaleDateString('zh-TW');
       }
+
+      // Load mentions.json (best-effort — may not exist yet)
+      try {
+        const mResp = await fetch(BASE + 'data/mentions.json');
+        if (mResp.ok) mentionsData = await mResp.json();
+      } catch (_) { /* no mentions data yet */ }
     }
 
     // ── Routing ────────────────────────────────────────────────
@@ -1381,6 +1569,12 @@
       const hash = location.hash || '#/';
       if (hash.startsWith('#/channel/')) {
         return { type: 'channel', id: decodeURIComponent(hash.slice(10)) };
+      }
+      if (hash === '#/trending') {
+        return { type: 'trending' };
+      }
+      if (hash.startsWith('#/industry/')) {
+        return { type: 'industry', name: decodeURIComponent(hash.slice(11)) };
       }
       return { type: 'all' };
     }
@@ -1433,14 +1627,33 @@
           closeSidebar();
         });
       });
+
+      // Analysis section
+      const r = getRoute();
+      const trendingActive = r.type === 'trending';
+      document.getElementById('analysisList').innerHTML = `
+        <div class="sidebar-analysis-item ${trendingActive ? 'active' : ''}" id="trendingNavBtn">
+          <div class="analysis-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div class="analysis-item-name">標的追蹤</div>
+        </div>
+      `;
+      document.getElementById('trendingNavBtn').addEventListener('click', () => {
+        location.hash = '#/trending';
+        closeSidebar();
+      });
     }
 
     // ── Main Content ───────────────────────────────────────────
 
-    function renderEpisodes(episodes, title) {
+    function renderEpisodes(episodes, title, activeIndustry = null) {
+      const industryFilterHtml = _renderIndustryFilterBar(activeIndustry);
+
       if (!episodes.length) {
         document.getElementById('mainContent').innerHTML = `
       <div class="page-header"><h1 class="page-title">${title}</h1></div>
+      ${industryFilterHtml}
       <div class="episodes-grid">
         <div class="empty-state">
           <div class="empty-icon">${ICONS.inbox}</div>
@@ -1449,6 +1662,7 @@
         </div>
       </div>
     `;
+        _bindIndustryChips();
         return;
       }
 
@@ -1481,11 +1695,14 @@
     <div class="page-header">
       <h1 class="page-title">${title}</h1>
     </div>
+    ${industryFilterHtml}
     <div class="stats-bar">
       <div class="stat-chip">${ICONS.doc} <strong>${episodes.length}</strong> 集摘要</div>
     </div>
     <div class="episodes-grid">${cards}</div>
   `;
+
+      _bindIndustryChips();
 
       document.querySelectorAll('.episode-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -1498,6 +1715,19 @@
             cards: card.dataset.cards ? JSON.parse(card.dataset.cards) : [],
             hashtags: card.dataset.hashtags || '',
           });
+        });
+      });
+    }
+
+    function _bindIndustryChips() {
+      document.querySelectorAll('.industry-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const ind = chip.dataset.industry;
+          if (chip.classList.contains('active')) {
+            location.hash = '#/';  // deselect → show all
+          } else {
+            location.hash = '#/industry/' + encodeURIComponent(ind);
+          }
         });
       });
     }
@@ -1589,13 +1819,129 @@
       document.body.style.overflow = '';
     }
 
+    // ── Trending / Analysis view ───────────────────────────────
+
+    function renderTrending() {
+      const mc = document.getElementById('mainContent');
+
+      if (!mentionsData) {
+        mc.innerHTML = `
+          <div class="page-header"><h1 class="page-title">📊 標的追蹤</h1></div>
+          <div class="empty-state">
+            <div class="empty-icon">${ICONS.alertCircle}</div>
+            <div class="empty-title">尚無分析資料</div>
+            <div class="empty-text">執行 <code>python3 runner.py backfill-analysis</code> 後再部署即可。</div>
+          </div>`;
+        return;
+      }
+
+      const trending = mentionsData.trending || [];
+      const industries = mentionsData.industries || [];
+      const maxCount = Math.max(...industries.map(i => i.count), 1);
+
+      // Trending table
+      let trendingRows = '';
+      for (const e of trending) {
+        const total = (e.bullish || 0) + (e.bearish || 0) + (e.neutral || 0);
+        const bPct = total ? Math.round((e.bullish / total) * 100) : 0;
+        const rPct = total ? Math.round((e.bearish / total) * 100) : 0;
+        const nPct = 100 - bPct - rPct;
+        trendingRows += `
+          <tr>
+            <td>
+              <div class="entity-name">${e.name}</div>
+              ${e.ticker ? `<div class="entity-ticker">${e.ticker}</div>` : ''}
+            </td>
+            <td style="text-align:right;font-weight:600;color:var(--vibe2)">${e.count}</td>
+            <td style="min-width:140px">
+              <div class="sentiment-bar">
+                ${bPct > 0 ? `<div class="seg-bullish" style="width:${bPct}%"></div>` : ''}
+                ${rPct > 0 ? `<div class="seg-bearish" style="width:${rPct}%"></div>` : ''}
+                ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
+              </div>
+              <div class="sentiment-counts">
+                <span class="bull">▲ ${e.bullish || 0}</span>
+                <span class="bear">▼ ${e.bearish || 0}</span>
+                <span>→ ${e.neutral || 0}</span>
+              </div>
+            </td>
+          </tr>`;
+      }
+
+      // Industry bars
+      let industryBars = '';
+      for (const ind of industries) {
+        const pct = Math.round((ind.count / maxCount) * 100);
+        industryBars += `
+          <div class="industry-bar-row">
+            <div class="industry-bar-label">
+              <a href="#/industry/${encodeURIComponent(ind.name)}" style="color:inherit;text-decoration:none">${ind.name}</a>
+            </div>
+            <div class="industry-bar-track">
+              <div class="industry-bar-fill" style="width:${pct}%"></div>
+            </div>
+            <div class="industry-bar-count">${ind.count}</div>
+          </div>`;
+      }
+
+      mc.innerHTML = `
+        <div class="page-header"><h1 class="page-title">📊 標的追蹤</h1></div>
+        <div class="trending-section">
+          <div class="trending-section-title">熱門標的</div>
+          ${trending.length ? `
+            <table class="trending-table">
+              <thead>
+                <tr>
+                  <th>名稱</th>
+                  <th style="text-align:right">提及次數</th>
+                  <th>多空比例</th>
+                </tr>
+              </thead>
+              <tbody>${trendingRows}</tbody>
+            </table>` : '<div style="color:var(--text-dim);font-size:14px">尚無資料</div>'}
+        </div>
+        <div class="trending-section">
+          <div class="trending-section-title">產業熱度</div>
+          ${industries.length ? `<div class="industry-bars">${industryBars}</div>`
+            : '<div style="color:var(--text-dim);font-size:14px">尚無資料</div>'}
+        </div>`;
+    }
+
+    // ── Industry filter helper ─────────────────────────────────
+
+    function _getEpisodesForIndustry(industryName) {
+      if (!mentionsData || !mentionsData.by_episode) return [];
+      const videoIds = Object.entries(mentionsData.by_episode)
+        .filter(([, v]) => (v.industries || []).includes(industryName))
+        .map(([vid]) => vid);
+      return allEpisodes.filter(e => videoIds.includes(e.video_id));
+    }
+
+    function _renderIndustryFilterBar(activeIndustry) {
+      if (!mentionsData || !mentionsData.industries || !mentionsData.industries.length) return '';
+      const chips = mentionsData.industries.map(ind => `
+        <span class="industry-chip ${ind.name === activeIndustry ? 'active' : ''}"
+              data-industry="${ind.name}">${ind.name} <small>${ind.count}</small></span>
+      `).join('');
+      return `<div class="industry-filter-bar">${chips}</div>`;
+    }
+
     // ── Router ─────────────────────────────────────────────────
 
     function route() {
       const r = getRoute();
       let filtered, title;
 
-      if (r.type === 'channel') {
+      if (r.type === 'trending') {
+        renderSidebar(allEpisodes, null);
+        renderTrending();
+        return;
+      }
+
+      if (r.type === 'industry') {
+        filtered = _getEpisodesForIndustry(r.name);
+        title = `🏭 ${r.name}`;
+      } else if (r.type === 'channel') {
         filtered = allEpisodes.filter(e => e.channel_id === r.id);
         const ch = allEpisodes.find(e => e.channel_id === r.id);
         title = ch ? ch.channel_name : r.id;
@@ -1605,7 +1951,7 @@
       }
 
       renderSidebar(allEpisodes, r.type === 'channel' ? r.id : null);
-      renderEpisodes(filtered, title);
+      renderEpisodes(filtered, title, r.type === 'industry' ? r.name : null);
     }
 
     // ── Init ───────────────────────────────────────────────────

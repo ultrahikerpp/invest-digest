@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import sqlite3
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,6 +19,7 @@ BASE_DIR = Path(__file__).parent
 SUMMARIES_DIR = BASE_DIR / "data" / "summaries"
 CARDS_DIR = BASE_DIR / "data" / "cards"
 CHANNELS_FILE = BASE_DIR / "channels.json"
+DB_PATH = BASE_DIR / "data" / "subscriptions.db"
 SITE_DIR = BASE_DIR / "docs"
 SITE_SUMMARIES_DIR = SITE_DIR / "summaries"
 SITE_CARDS_DIR = SITE_DIR / "cards"
@@ -139,16 +141,108 @@ def build():
         # Sort by EP number desc, fallback to processed_at desc
         episodes.sort(key=_episode_sort_key, reverse=True)
 
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
     index = {
         "episodes": episodes,
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
+        "generated_at": generated_at,
     }
     out_path = SITE_DATA_DIR / "episodes.json"
     out_path.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    # Generate mentions.json from analysis DB
+    _build_mentions_json(SITE_DATA_DIR, generated_at)
+
     print(f"\n✓ docs/data/episodes.json — {len(episodes)} episodes")
     print(f"✓ docs/summaries/ — {len(episodes)} files")
     print(f"✓ Build complete → {SITE_DIR}")
+
+
+def _build_mentions_json(site_data_dir: Path, generated_at: str) -> None:
+    """Generate docs/data/mentions.json from the analysis DB tables."""
+    if not DB_PATH.exists():
+        print("  (skipping mentions.json — DB not found)")
+        return
+
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+
+        # Check that analysis tables exist
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        if "mentions" not in tables or "episode_industries" not in tables:
+            print("  (skipping mentions.json — analysis tables not yet created)")
+            conn.close()
+            return
+
+        # Trending: top entities across all time for static export
+        trending_rows = conn.execute("""
+            SELECT
+                entity_name  AS name,
+                MAX(ticker)  AS ticker,
+                COUNT(*)                                            AS count,
+                SUM(CASE WHEN sentiment='看多' THEN 1 ELSE 0 END) AS bullish,
+                SUM(CASE WHEN sentiment='看空' THEN 1 ELSE 0 END) AS bearish,
+                SUM(CASE WHEN sentiment='中立' THEN 1 ELSE 0 END) AS neutral
+            FROM mentions
+            GROUP BY entity_name
+            ORDER BY count DESC
+            LIMIT 20
+        """).fetchall()
+
+        industry_rows = conn.execute("""
+            SELECT industry AS name, COUNT(*) AS count
+            FROM episode_industries
+            GROUP BY industry
+            ORDER BY count DESC
+        """).fetchall()
+
+        # By-episode index
+        mentions_rows = conn.execute(
+            "SELECT video_id, entity_name FROM mentions ORDER BY video_id"
+        ).fetchall()
+        industries_rows = conn.execute(
+            "SELECT video_id, industry FROM episode_industries ORDER BY video_id"
+        ).fetchall()
+
+        conn.close()
+
+        by_episode: dict = {}
+        for row in mentions_rows:
+            vid = row["video_id"]
+            if vid not in by_episode:
+                by_episode[vid] = {"industries": [], "mentions": []}
+            by_episode[vid]["mentions"].append(row["entity_name"])
+        for row in industries_rows:
+            vid = row["video_id"]
+            if vid not in by_episode:
+                by_episode[vid] = {"industries": [], "mentions": []}
+            if row["industry"] not in by_episode[vid]["industries"]:
+                by_episode[vid]["industries"].append(row["industry"])
+
+        mentions_index = {
+            "trending": [
+                {
+                    "name": r["name"],
+                    "ticker": r["ticker"],
+                    "count": r["count"],
+                    "bullish": r["bullish"],
+                    "bearish": r["bearish"],
+                    "neutral": r["neutral"],
+                }
+                for r in trending_rows
+            ],
+            "industries": [{"name": r["name"], "count": r["count"]} for r in industry_rows],
+            "by_episode": by_episode,
+            "generated_at": generated_at,
+        }
+
+        out_path = site_data_dir / "mentions.json"
+        out_path.write_text(json.dumps(mentions_index, ensure_ascii=False, indent=2), encoding="utf-8")
+        trending_count = len(mentions_index["trending"])
+        print(f"✓ docs/data/mentions.json — {trending_count} trending entities")
+
+    except Exception as e:
+        print(f"  ⚠️ mentions.json 產生失敗：{e}")
 
 
 if __name__ == "__main__":

@@ -63,6 +63,35 @@ def _build_summary_prompt(transcript: str, title: str) -> str:
 （創作者明確建議投資人後續追蹤或留意的指標、事件、行動；若未提及請寫「本集未提及」）"""
 
 
+def _build_analysis_prompt(summary_body: str) -> str:
+    return f"""你是一位專業的投資內容分析師。請分析以下投資摘要，萃取結構化資料。
+
+請用 JSON 格式輸出，格式如下：
+{{
+  "mentions": [
+    {{
+      "name": "台積電",
+      "type": "股票",
+      "ticker": "2330",
+      "sentiment": "看多"
+    }}
+  ],
+  "industries": ["半導體", "AI", "台股"]
+}}
+
+說明：
+- type 只能是：股票 | ETF | 公司 | 指數 | 加密貨幣
+- ticker：若有則填股票代號或英文代碼，無則填 null
+- sentiment 只能是：看多 | 看空 | 中立
+- industries 最多 3 個，只能從以下清單選擇：
+  台股、美股、中港股、半導體、AI、科技、金融、房地產、能源、原物料、
+  生技醫療、ETF、總體經濟、加密貨幣、新興市場
+- 只輸出 JSON，不要任何其他說明文字或 markdown 格式
+
+[摘要內容]
+{summary_body[:4000]}"""
+
+
 def _build_hashtag_prompt(summary_body: str) -> str:
     return f"""根據以下投資摘要內容，產出 5 個最重要的關鍵字 hashtag。
 
@@ -422,6 +451,31 @@ def generate_card_points(sections: dict[str, str]) -> dict[str, list[str]]:
         result[current_name] = current_lines[:5]
 
     return result
+
+
+def extract_analysis(summary_body: str) -> dict:
+    """
+    Extract structured mentions and industries from a summary via Claude.
+    Returns {"mentions": [...], "industries": [...]} or empty lists on failure.
+    """
+    import json
+
+    prompt = _build_analysis_prompt(summary_body)
+    try:
+        raw = chat(prompt, timeout_secs=60)
+        # Strip markdown code fences if present
+        raw = raw.strip()
+        if raw.startswith("```"):
+            raw = re.sub(r'^```(?:json)?\s*', '', raw)
+            raw = re.sub(r'\s*```$', '', raw)
+        data = json.loads(raw.strip())
+        return {
+            "mentions": data.get("mentions", []),
+            "industries": data.get("industries", []),
+        }
+    except Exception as e:
+        print(f"  [claude] 分析萃取失敗：{e}")
+        return {"mentions": [], "industries": []}
 
 
 def setup_login() -> None:

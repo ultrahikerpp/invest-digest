@@ -90,6 +90,11 @@ def _get_db():
     # Data fix: existing processed rows should be 'done', not 'pending_review'
     conn.execute("UPDATE episodes SET status='done' WHERE processed=1 AND status='pending_review'")
     conn.commit()
+
+    # Init analysis tables (mentions + episode_industries)
+    from backend.analyzer import init_tables as _init_analysis_tables
+    _init_analysis_tables(conn)
+
     return conn
 
 
@@ -202,6 +207,22 @@ def cmd_run(channel_id: str | None = None):
 
             s_path = _summary_path(v["video_id"], cname)
             s_path.write_text(full_md, encoding="utf-8")
+
+            # Extract structured analysis (mentions + industries)
+            print(f"  萃取標的與產業分析...")
+            try:
+                from backend.claude_browser import extract_analysis
+                from backend.analyzer import save_mentions, save_industries
+                analysis = extract_analysis(summary_body)
+                save_mentions(conn, v["video_id"], cid, analysis["mentions"])
+                save_industries(conn, v["video_id"], cid, analysis["industries"])
+                if analysis["industries"]:
+                    _update_frontmatter_field(s_path, "industries", ", ".join(analysis["industries"]))
+                    print(f"  ✓ 產業：{', '.join(analysis['industries'])}")
+                if analysis["mentions"]:
+                    print(f"  ✓ 標的：{', '.join(m['name'] for m in analysis['mentions'][:5])}")
+            except Exception as e:
+                print(f"  ⚠️ 分析萃取失敗（不影響主流程）：{e}")
 
             _mark_pending_review(conn, cid, v, str(t_path), str(s_path))
             new_count += 1
@@ -344,6 +365,37 @@ def cmd_video(video_id: str):
 
 
 # ── Frontmatter helpers ───────────────────────────────────
+
+def _update_frontmatter_field(md_path: Path, field: str, value: str):
+    """Insert or update a single field in a summary's YAML frontmatter."""
+    content = md_path.read_text(encoding="utf-8")
+    if not content.startswith("---"):
+        return
+    end = content.find("---", 3)
+    if end == -1:
+        return
+
+    fm_block = content[3:end]
+    rest = content[end + 3:]
+
+    lines = fm_block.splitlines(keepends=True)
+    new_lines = []
+    inserted = False
+    for line in lines:
+        if line.startswith(f"{field}:"):
+            new_lines.append(f"{field}: {value}\n")
+            inserted = True
+        else:
+            new_lines.append(line)
+            if line.startswith("processed:") and not inserted:
+                new_lines.append(f"{field}: {value}\n")
+                inserted = True
+
+    if not inserted:
+        new_lines.append(f"{field}: {value}\n")
+
+    md_path.write_text("---" + "".join(new_lines) + "---" + rest, encoding="utf-8")
+
 
 def _update_frontmatter_hashtags(md_path: Path, hashtags: str):
     """Insert or update the hashtags field in a summary's YAML frontmatter."""
@@ -769,6 +821,113 @@ def cmd_notify_latest():
             print(f"  ❌ 郵件發送失敗：{e}")
 
 
+# ── Backfill Analysis command ─────────────────────────────
+
+def cmd_backfill_analysis():
+    """Run extract_analysis on all historical summaries that haven't been analysed yet."""
+    from backend.claude_browser import extract_analysis
+    from backend.analyzer import has_analysis, save_mentions, save_industries
+
+    conn = _get_db()
+    episodes = conn.execute("SELECT * FROM episodes ORDER BY created_at ASC").fetchall()
+    if not episodes:
+        print("資料庫中沒有集數")
+        conn.close()
+        return
+
+    pending = [ep for ep in episodes if not has_analysis(conn, ep["video_id"])]
+    print(f"找到 {len(pending)} 集尚未分析（共 {len(episodes)} 集）")
+
+    done = 0
+    for ep in pending:
+        video_id = ep["video_id"]
+        title = ep["title"] or video_id
+        channel_id = ep["channel_id"]
+
+        summary_path = (Path(ep["summary_path"]) if ep["summary_path"] else None) or _find_summary_path(video_id)
+        if summary_path is None or not summary_path.exists():
+            print(f"  ❌ 找不到摘要，略過：{title[:50]}")
+            continue
+
+        content = summary_path.read_text(encoding="utf-8")
+        if content.startswith("---"):
+            fm_end = content.find("---", 3)
+            summary_body = content[fm_end + 3:].strip() if fm_end != -1 else content
+        else:
+            summary_body = content
+
+        print(f"\n=== {title[:60]} ===")
+        print(f"  萃取分析...")
+        try:
+            analysis = extract_analysis(summary_body)
+            save_mentions(conn, video_id, channel_id, analysis["mentions"])
+            save_industries(conn, video_id, channel_id, analysis["industries"])
+            if analysis["industries"]:
+                _update_frontmatter_field(summary_path, "industries", ", ".join(analysis["industries"]))
+                print(f"  ✓ 產業：{', '.join(analysis['industries'])}")
+            if analysis["mentions"]:
+                print(f"  ✓ 標的：{', '.join(m['name'] for m in analysis['mentions'][:5])}")
+            done += 1
+        except Exception as e:
+            print(f"  ❌ 失敗：{e}")
+
+    conn.close()
+    print(f"\n完成！共分析 {done}/{len(pending)} 集")
+
+
+# ── Trending command ───────────────────────────────────────
+
+def cmd_trending(days: int = 30):
+    """Print top 10 most-mentioned entities in the last N days."""
+    from backend.analyzer import get_trending_mentions, get_industry_stats
+
+    conn = _get_db()
+    trending = get_trending_mentions(conn, days)
+    industries = get_industry_stats(conn, days)
+    conn.close()
+
+    print(f"\n📊 近 {days} 天熱門標的 Top 10")
+    print(f"{'名稱':<15} {'代碼':<8} {'提及':<6} {'看多':<5} {'看空':<5} {'中立'}")
+    print("-" * 55)
+    for r in trending:
+        ticker = r["ticker"] or "-"
+        print(f"{r['name']:<15} {ticker:<8} {r['count']:<6} {r['bullish']:<5} {r['bearish']:<5} {r['neutral']}")
+
+    if not trending:
+        print("（暫無資料）")
+
+    print(f"\n🏭 產業熱度（近 {days} 天）")
+    for r in industries:
+        bar = "█" * r["count"]
+        print(f"  {r['name']:<10} {r['count']:>4}  {bar}")
+
+    if not industries:
+        print("（暫無資料）")
+
+
+# ── Track command ──────────────────────────────────────────
+
+def cmd_track(name: str):
+    """Show all episodes that mention a specific entity."""
+    from backend.analyzer import get_entity_track
+
+    conn = _get_db()
+    records = get_entity_track(conn, name)
+    conn.close()
+
+    if not records:
+        print(f"找不到提及「{name}」的集數")
+        return
+
+    print(f"\n🔍 提及「{name}」的集數（共 {len(records)} 筆）\n")
+    for r in records:
+        sentiment_icon = {"看多": "▲", "看空": "▼", "中立": "→"}.get(r["sentiment"] or "", "?")
+        ticker_str = f" ({r['ticker']})" if r["ticker"] else ""
+        print(f"  {sentiment_icon} {r['entity_name']}{ticker_str}")
+        print(f"     {r['title'] or r['video_id']}")
+        print(f"     處理日：{r['processed_at']}  https://youtube.com/watch?v={r['video_id']}\n")
+
+
 # ── Deploy command ────────────────────────────────────────
 
 def cmd_deploy():
@@ -833,6 +992,24 @@ def main():
     elif cmd == "setup-browser":
         from backend.claude_browser import setup_login
         setup_login()
+
+    elif cmd == "backfill-analysis":
+        cmd_backfill_analysis()
+
+    elif cmd == "trending":
+        days = 30
+        if len(args) >= 3 and args[1] == "--days":
+            try:
+                days = int(args[2])
+            except ValueError:
+                pass
+        cmd_trending(days)
+
+    elif cmd == "track":
+        if len(args) < 3 or args[1] != "--name":
+            print("Usage: runner.py track --name <entity_name>", file=sys.stderr)
+            sys.exit(1)
+        cmd_track(args[2])
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)
