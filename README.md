@@ -73,6 +73,22 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 
 # 驗證 Chrome 中的 claude.ai 登入狀態
 ./venv/bin/python runner.py setup-browser
+
+# ── 標的分析 ──
+
+# 對所有歷史摘要補跑分析（首次啟用時執行一次）
+./venv/bin/python runner.py backfill-analysis
+
+# 查看近 30 天熱門標的 Top 10 與產業熱度
+./venv/bin/python runner.py trending
+./venv/bin/python runner.py trending --days 60
+
+# 查詢特定標的的所有提及紀錄
+./venv/bin/python runner.py track --name 台積電
+
+# 查看各頻道對同一標的的多空立場比較
+./venv/bin/python runner.py divergence
+./venv/bin/python runner.py divergence --days 180 --min-channels 2
 ```
 
 ---
