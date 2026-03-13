@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-03-07T09:45:44+00:00
 processed: 2026-03-09
+industries: 半導體, AI, 科技
 hashtags: #光通訊 #Apple #AI基礎建設 #市場輪動 #逆向投資 #Gooaye股癌
 ---
 

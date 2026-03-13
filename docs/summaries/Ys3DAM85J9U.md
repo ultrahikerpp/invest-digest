@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-02-24T01:04:53+00:00
 processed: 2026-02-27
+industries: AI, 科技, 美股
 hashtags: #AI股災 #軟體股 #科技巨頭 #能源基礎設施 #美股 #游庭皓的財經皓角
 hashtags: #AI股災 #軟體股 #科技巨頭 #能源基礎設施 #美股 #游庭皓的財經皓角
 ---

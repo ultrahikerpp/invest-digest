@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2 週前
 processed: 2026-02-27
+industries: 半導體, 科技, 總體經濟
 hashtags: #記憶體 #衛星產業 #HBM #長期投資 #SpaceX #Gooaye股癌
 hashtags: #記憶體 #衛星產業 #HBM #長期投資 #SpaceX #Gooaye股癌
 ---

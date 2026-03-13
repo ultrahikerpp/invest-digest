@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-02T01:09:10+00:00
 processed: 2026-03-02
+industries: 能源, 總體經濟, 美股
 hashtags: #中東局勢 #油價 #通膨 #避險資產 #美股 #游庭皓的財經皓角
 ---
 

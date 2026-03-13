@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-13T01:07:51+00:00
 processed: 2026-03-13
+industries: 能源, AI, 台股
 hashtags: #油價 #伊朗地緣政治 #AI供應鏈 #台股 #美股 #游庭皓的財經皓角
 ---
 

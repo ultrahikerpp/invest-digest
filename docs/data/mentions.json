@@ -1,0 +1,642 @@
+{
+  "trending": [
+    {
+      "name": "標普500",
+      "ticker": "SPX",
+      "count": 8,
+      "bullish": 0,
+      "bearish": 3,
+      "neutral": 5
+    },
+    {
+      "name": "西德州原油",
+      "ticker": "WTI",
+      "count": 7,
+      "bullish": 4,
+      "bearish": 2,
+      "neutral": 1
+    },
+    {
+      "name": "台積電",
+      "ticker": "2330",
+      "count": 7,
+      "bullish": 7,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "Google",
+      "ticker": "GOOGL",
+      "count": 6,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 6
+    },
+    {
+      "name": "費城半導體指數",
+      "ticker": "SOX",
+      "count": 5,
+      "bullish": 1,
+      "bearish": 1,
+      "neutral": 3
+    },
+    {
+      "name": "布蘭特原油",
+      "ticker": "BZ",
+      "count": 5,
+      "bullish": 2,
+      "bearish": 2,
+      "neutral": 1
+    },
+    {
+      "name": "台股加權指數",
+      "ticker": "TWII",
+      "count": 5,
+      "bullish": 2,
+      "bearish": 1,
+      "neutral": 2
+    },
+    {
+      "name": "Nvidia",
+      "ticker": "NVDA",
+      "count": 5,
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
+      "name": "Anthropic",
+      "ticker": null,
+      "count": 5,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
+      "name": "道瓊工業指數",
+      "ticker": "DJI",
+      "count": 4,
+      "bullish": 0,
+      "bearish": 2,
+      "neutral": 2
+    },
+    {
+      "name": "比特幣",
+      "ticker": "BTC",
+      "count": 4,
+      "bullish": 0,
+      "bearish": 2,
+      "neutral": 2
+    },
+    {
+      "name": "OpenAI",
+      "ticker": null,
+      "count": 4,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "Meta",
+      "ticker": "META",
+      "count": 4,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
+      "name": "Apple",
+      "ticker": "AAPL",
+      "count": 4,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "道瓊指數",
+      "ticker": "DJI",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 2
+    },
+    {
+      "name": "納斯達克",
+      "ticker": "IXIC",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 2
+    },
+    {
+      "name": "三星",
+      "ticker": "005930",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "Tesla",
+      "ticker": "TSLA",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "SpaceX",
+      "ticker": null,
+      "count": 3,
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "QQQ",
+      "ticker": "QQQ",
+      "count": 3,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 2
+    }
+  ],
+  "industries": [
+    {
+      "name": "AI",
+      "count": 15
+    },
+    {
+      "name": "半導體",
+      "count": 11
+    },
+    {
+      "name": "台股",
+      "count": 10
+    },
+    {
+      "name": "能源",
+      "count": 9
+    },
+    {
+      "name": "總體經濟",
+      "count": 9
+    },
+    {
+      "name": "美股",
+      "count": 8
+    },
+    {
+      "name": "科技",
+      "count": 4
+    }
+  ],
+  "by_episode": {
+    "0Htayzl_uS0": {
+      "industries": [
+        "半導體",
+        "AI",
+        "美股"
+      ],
+      "mentions": [
+        "Applied Materials（應材）",
+        "Google（Alphabet）",
+        "Intel",
+        "台積電"
+      ]
+    },
+    "Ap3abhMhHRs": {
+      "industries": [
+        "台股",
+        "半導體",
+        "能源"
+      ],
+      "mentions": [
+        "台股加權指數",
+        "費城半導體指數",
+        "道瓊工業指數",
+        "標普500",
+        "納斯達克",
+        "布蘭特原油",
+        "西德州原油",
+        "任天堂"
+      ]
+    },
+    "BKHfdu5h5Eg": {
+      "industries": [
+        "總體經濟",
+        "台股",
+        "美股"
+      ],
+      "mentions": [
+        "納斯達克指數",
+        "標普500指數",
+        "道瓊指數",
+        "費城半導體指數",
+        "IGV",
+        "Adobe",
+        "韓國Kospi指數",
+        "台股加權指數",
+        "日經指數",
+        "比特幣",
+        "VIX指數",
+        "布蘭特原油",
+        "西德州原油"
+      ]
+    },
+    "Dlfe1OZ7Us8": {
+      "industries": [
+        "半導體",
+        "AI",
+        "科技"
+      ],
+      "mentions": [
+        "台積電",
+        "元大台灣50",
+        "富邦台灣高速公路",
+        "Palantir",
+        "Cloudflare",
+        "CrowdStrike",
+        "Lumentum",
+        "Coherent",
+        "康寧",
+        "Credo Technology",
+        "Avago（博通）",
+        "Marvell",
+        "Nvidia",
+        "Google",
+        "Apple"
+      ]
+    },
+    "HnogXwtaKZo": {
+      "industries": [
+        "總體經濟",
+        "能源",
+        "美股"
+      ],
+      "mentions": [
+        "標普500",
+        "納斯達克",
+        "道瓊工業",
+        "台股加權指數",
+        "西德州原油"
+      ]
+    },
+    "MsKuUG5lRzg": {
+      "industries": [
+        "美股",
+        "AI",
+        "科技"
+      ],
+      "mentions": [
+        "Salesforce",
+        "Cloudflare",
+        "Microsoft",
+        "Google",
+        "Apple",
+        "Klarna"
+      ]
+    },
+    "WuPn7ig2dno": {
+      "industries": [
+        "總體經濟",
+        "能源",
+        "AI"
+      ],
+      "mentions": [
+        "道瓊工業指數",
+        "標普500指數",
+        "納斯達克指數",
+        "費城半導體指數",
+        "QQQ",
+        "DBC",
+        "IGV",
+        "黃金現貨",
+        "西德州原油",
+        "比特幣",
+        "國際航空集團",
+        "法航",
+        "美國國債"
+      ]
+    },
+    "Y3UKwjPIVeE": {
+      "industries": [
+        "AI",
+        "半導體",
+        "能源"
+      ],
+      "mentions": [
+        "IBM",
+        "三星",
+        "NVIDIA",
+        "元晶",
+        "GROQ"
+      ]
+    },
+    "Ys3DAM85J9U": {
+      "industries": [
+        "AI",
+        "科技",
+        "美股"
+      ],
+      "mentions": [
+        "Workday",
+        "IBM",
+        "Oracle",
+        "Ares",
+        "Apollo",
+        "BlackStone",
+        "KKR",
+        "Anthropic",
+        "Google",
+        "Microsoft",
+        "Tesla",
+        "Meta",
+        "Amazon",
+        "Apple",
+        "Nvidia",
+        "Accenture",
+        "Dassault Systèmes",
+        "ARM",
+        "ByteDance",
+        "Alibaba",
+        "Meituan",
+        "Xiaomi",
+        "Tencent",
+        "JD",
+        "OpenAI",
+        "標普500",
+        "那斯達克指數",
+        "道瓊工業指數",
+        "恆生指數",
+        "費城半導體指數",
+        "0050",
+        "比特幣"
+      ]
+    },
+    "Zg_YRHt1JTc": {
+      "industries": [
+        "能源",
+        "AI",
+        "總體經濟"
+      ],
+      "mentions": [
+        "台塑化",
+        "台塑",
+        "東京電力",
+        "OpenAI",
+        "甲骨文",
+        "Google",
+        "Anthropic",
+        "阿里巴巴",
+        "中核集團",
+        "標普指數",
+        "VIX指數"
+      ]
+    },
+    "ebP-UdL1290": {
+      "industries": [
+        "能源",
+        "總體經濟",
+        "美股"
+      ],
+      "mentions": [
+        "布蘭特原油",
+        "西德州原油",
+        "標普500",
+        "VIX恐慌指數",
+        "黃金",
+        "美國10年期公債"
+      ]
+    },
+    "fck-l2IItxM": {
+      "industries": [
+        "台股",
+        "半導體",
+        "AI"
+      ],
+      "mentions": [
+        "台積電",
+        "台灣ETF市場",
+        "MSCI新興市場指數",
+        "台股",
+        "日本股市",
+        "韓國股市"
+      ]
+    },
+    "gM-rb0uqmPk": {
+      "industries": [
+        "AI",
+        "能源",
+        "半導體"
+      ],
+      "mentions": [
+        "博通",
+        "蘋果",
+        "特斯拉",
+        "Palantir",
+        "SpaceX",
+        "OpenAI",
+        "Google",
+        "Anthropic",
+        "Meta",
+        "道瓊指數",
+        "標普500",
+        "那斯達克指數",
+        "費城半導體指數",
+        "韓國KOSPI指數",
+        "QQQ",
+        "台股加權指數"
+      ]
+    },
+    "ivBMr9eSv5s": {
+      "industries": [
+        "半導體",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "台積電",
+        "美光",
+        "Nvidia",
+        "三星",
+        "Tesla",
+        "Oracle",
+        "原油",
+        "台股大盤"
+      ]
+    },
+    "kn9xHoNK1Qs": {
+      "industries": [
+        "台股",
+        "美股",
+        "總體經濟"
+      ],
+      "mentions": [
+        "台股",
+        "美股",
+        "日股",
+        "韓股",
+        "富台指"
+      ]
+    },
+    "mDGpvZ44vuk": {
+      "industries": [
+        "半導體",
+        "台股",
+        "AI"
+      ],
+      "mentions": [
+        "Block",
+        "Tesla",
+        "台達電",
+        "群聯",
+        "國巨",
+        "華邦電",
+        "旺宏",
+        "富邦台50",
+        "村田製作所",
+        "TDK",
+        "三星電機"
+      ]
+    },
+    "nEMF7SQvU8s": {
+      "industries": [
+        "能源",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "台積電ADR",
+        "雪佛龍",
+        "可口可樂",
+        "道瓊",
+        "標普500",
+        "那斯達克",
+        "費半指數",
+        "布蘭特原油",
+        "西德州原油"
+      ]
+    },
+    "q1qDEq28hno": {
+      "industries": [
+        "台股",
+        "美股",
+        "AI"
+      ],
+      "mentions": [
+        "台積電",
+        "AMD",
+        "Meta",
+        "Nvidia",
+        "Apple",
+        "Alphabet",
+        "Microsoft",
+        "Amazon",
+        "Adobe",
+        "Walmart",
+        "Costco",
+        "SK Hynix",
+        "Samsung",
+        "IGV",
+        "QQQ",
+        "道瓊指數",
+        "納斯達克",
+        "費半",
+        "標普500",
+        "韓國KOSPI",
+        "Anthropic",
+        "OpenAI",
+        "SpaceX"
+      ]
+    },
+    "rR7ciI7M0pw": {
+      "industries": [
+        "能源",
+        "總體經濟",
+        "台股"
+      ],
+      "mentions": [
+        "西德州原油",
+        "布蘭特原油",
+        "宏碁",
+        "台塑四寶",
+        "比亞迪"
+      ]
+    },
+    "y_JraUE8qLM": {
+      "industries": [
+        "AI",
+        "半導體",
+        "總體經濟"
+      ],
+      "mentions": [
+        "微軟",
+        "台積電",
+        "輝達",
+        "Adobe",
+        "Uber",
+        "Visa",
+        "Mastercard",
+        "Amazon",
+        "Google",
+        "Meta",
+        "阿波羅",
+        "黑石",
+        "KKR",
+        "美國銀行",
+        "花旗",
+        "富國銀行",
+        "高盛",
+        "摩根士丹利",
+        "台塑",
+        "南亞",
+        "統一",
+        "統一超",
+        "Anthropic",
+        "道瓊工業指數",
+        "標普500",
+        "那斯達克",
+        "費半指數",
+        "KBW銀行指數",
+        "台股加權指數",
+        "黃金",
+        "比特幣"
+      ]
+    },
+    "yq3qs9fJr5E": {
+      "industries": [
+        "半導體",
+        "科技",
+        "總體經濟"
+      ],
+      "mentions": [
+        "美光",
+        "海力士",
+        "三星",
+        "MACRO",
+        "SpaceX",
+        "Starlink"
+      ]
+    },
+    "yzPIUVXaYqo": {
+      "industries": [
+        "台股",
+        "AI",
+        "半導體"
+      ],
+      "mentions": [
+        "台積電",
+        "貿聯",
+        "昇達科",
+        "Nvidia",
+        "Coherent",
+        "ASTS",
+        "光聖",
+        "啟基",
+        "華通"
+      ]
+    }
+  },
+  "generated_at": "2026-03-13T07:05:47"
+}

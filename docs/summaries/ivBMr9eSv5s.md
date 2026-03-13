@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-03-11T09:17:57+00:00
 processed: 2026-03-11
+industries: 半導體, AI, 台股
 hashtags: #台積電 #Nvidia #地緣政治風險 #半導體 #AI供應鏈 #Gooaye股癌
 ---
 

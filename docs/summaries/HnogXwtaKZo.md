@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-09T01:07:47+00:00
 processed: 2026-03-09
+industries: 總體經濟, 能源, 美股
 ---
 
 # 2026/3/9(一)Fed該壓通膨 還是拉就業?原油破百!恐慌來了嗎?【早晨財經速解讀】

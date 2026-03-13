@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-06T01:08:27+00:00
 processed: 2026-03-06
+industries: AI, 能源, 半導體
 hashtags: #油價 #美伊衝突 #AI半導體 #台股 #聯準會 #游庭皓的財經皓角
 ---
 

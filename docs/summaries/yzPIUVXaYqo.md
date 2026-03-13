@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-03-04T08:07:01+00:00
 processed: 2026-03-04
+industries: 台股, AI, 半導體
 hashtags: #光互連 #台股修正 #AI輪動 #伊朗戰爭 #區間操作 #Gooaye股癌
 ---
 
