@@ -146,6 +146,74 @@
       ]
     },
     {
+      "name": "道瓊指數",
+      "ticker": "DJI",
+      "total_mentions": 16,
+      "channel_count": 2,
+      "total_bullish": 1,
+      "total_bearish": 6,
+      "total_neutral": 9,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 9,
+          "bullish": 0,
+          "bearish": 3,
+          "neutral": 6,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 7,
+          "bullish": 1,
+          "bearish": 3,
+          "neutral": 3,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
+      "name": "S&P 500",
+      "ticker": "SPX",
+      "total_mentions": 14,
+      "channel_count": 2,
+      "total_bullish": 1,
+      "total_bearish": 4,
+      "total_neutral": 9,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 8,
+          "bullish": 0,
+          "bearish": 3,
+          "neutral": 5,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 6,
+          "bullish": 1,
+          "bearish": 1,
+          "neutral": 4,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "費城半導體指數",
       "ticker": "SOX",
       "total_mentions": 12,
@@ -223,35 +291,44 @@
       ]
     },
     {
-      "name": "道瓊工業指數",
-      "ticker": "DJIA",
-      "total_mentions": 10,
-      "channel_count": 2,
-      "total_bullish": 1,
-      "total_bearish": 5,
+      "name": "NVIDIA",
+      "ticker": "NVDA",
+      "total_mentions": 9,
+      "channel_count": 3,
+      "total_bullish": 5,
+      "total_bearish": 0,
       "total_neutral": 4,
-      "bull_channels": 0,
-      "bear_channels": 1,
-      "neutral_channels": 1,
-      "consensus": "偏空",
+      "bull_channels": 1,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "偏多",
       "divergence_score": 0.0,
       "channels": [
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 6,
-          "bullish": 1,
-          "bearish": 3,
-          "neutral": 2,
-          "stance": "看空"
+          "mentions": 5,
+          "bullish": 2,
+          "bearish": 0,
+          "neutral": 3,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 2,
+          "bullish": 2,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
         },
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 4,
-          "bullish": 0,
-          "bearish": 2,
-          "neutral": 2,
+          "mentions": 2,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 1,
           "stance": "中立"
         }
       ]
@@ -416,74 +493,6 @@
           "bearish": 0,
           "neutral": 0,
           "stance": "看多"
-        }
-      ]
-    },
-    {
-      "name": "輝達",
-      "ticker": "NVDA",
-      "total_mentions": 6,
-      "channel_count": 2,
-      "total_bullish": 2,
-      "total_bearish": 0,
-      "total_neutral": 4,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 5,
-          "bullish": 2,
-          "bearish": 0,
-          "neutral": 3,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "道瓊指數",
-      "ticker": "DJI",
-      "total_mentions": 6,
-      "channel_count": 2,
-      "total_bullish": 0,
-      "total_bearish": 1,
-      "total_neutral": 5,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 5,
-          "bullish": 0,
-          "bearish": 1,
-          "neutral": 4,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
         }
       ]
     },
@@ -1263,40 +1272,6 @@
       ]
     },
     {
-      "name": "NVIDIA",
-      "ticker": "NVDA",
-      "total_mentions": 3,
-      "channel_count": 2,
-      "total_bullish": 3,
-      "total_bearish": 0,
-      "total_neutral": 0,
-      "bull_channels": 2,
-      "bear_channels": 0,
-      "neutral_channels": 0,
-      "consensus": "看多共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 2,
-          "bullish": 2,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        }
-      ]
-    },
-    {
       "name": "康寧",
       "ticker": "GLW",
       "total_mentions": 3,
@@ -1705,5 +1680,5 @@
       ]
     }
   ],
-  "generated_at": "2026-03-14T06:21:51"
+  "generated_at": "2026-03-14T06:53:26"
 }

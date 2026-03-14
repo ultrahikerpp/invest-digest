@@ -8,12 +8,32 @@ Tables managed here:
 """
 from __future__ import annotations
 
+import json as _json
 import sqlite3
 from datetime import datetime
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
 DB_PATH = BASE_DIR / "data" / "subscriptions.db"
+
+_ALIASES_PATH = Path(__file__).parent.parent / "entity_aliases.json"
+_ALIASES: dict[str, str] | None = None
+
+
+def _load_aliases() -> dict[str, str]:
+    global _ALIASES
+    if _ALIASES is None:
+        if _ALIASES_PATH.exists():
+            with open(_ALIASES_PATH, encoding="utf-8") as f:
+                _ALIASES = _json.load(f).get("aliases", {})
+        else:
+            _ALIASES = {}
+    return _ALIASES
+
+
+def normalize_entity_name(name: str) -> str:
+    """Return the canonical name if an alias mapping exists, else return name as-is."""
+    return _load_aliases().get(name, name)
 
 
 def init_tables(conn: sqlite3.Connection) -> None:
@@ -65,6 +85,7 @@ def save_mentions(
     now = datetime.now().strftime("%Y-%m-%d")
     conn.execute("DELETE FROM mentions WHERE video_id=?", (video_id,))
     for m in mentions:
+        normalized_name = normalize_entity_name(m.get("name", ""))
         conn.execute(
             """
             INSERT INTO mentions
@@ -74,7 +95,7 @@ def save_mentions(
             (
                 video_id,
                 channel_id,
-                m.get("name", ""),
+                normalized_name,
                 m.get("type"),
                 m.get("ticker") or None,
                 m.get("sentiment"),

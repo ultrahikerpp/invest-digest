@@ -12,6 +12,8 @@ Usage:
   python3 runner.py notify                 # generate video for latest episode per channel + email
   python3 runner.py deploy                 # build + push to GitHub Pages
   python3 runner.py setup-browser          # one-time Claude login setup for browser automation
+  python3 runner.py renormalize            # apply entity_aliases.json to all existing mentions in the DB
+  python3 runner.py fix-dates              # fix relative published_at dates (e.g. '1 天前') in the DB
 
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
@@ -973,6 +975,63 @@ def cmd_divergence(days: int = 90, min_channels: int = 2):
         print()
 
 
+# ── Renormalize command ───────────────────────────────────
+
+def cmd_renormalize():
+    """Apply entity_aliases.json normalization to all existing mentions in the DB."""
+    from backend.analyzer import _load_aliases, normalize_entity_name
+
+    conn = _get_db()
+    aliases = _load_aliases()
+    if not aliases:
+        print("entity_aliases.json 中沒有別名設定")
+        conn.close()
+        return
+
+    rows = conn.execute("SELECT id, entity_name FROM mentions").fetchall()
+    updated = 0
+    for row in rows:
+        canonical = aliases.get(row["entity_name"])
+        if canonical and canonical != row["entity_name"]:
+            conn.execute("UPDATE mentions SET entity_name=? WHERE id=?", (canonical, row["id"]))
+            updated += 1
+    conn.commit()
+    conn.close()
+    print(f"✓ 已正規化 {updated} 筆標的名稱（共 {len(rows)} 筆）")
+
+
+# ── Fix Dates command ─────────────────────────────────────
+
+def cmd_fix_dates():
+    """Fix episodes where published_at is a relative string (e.g. '1 天前') by using created_at as fallback."""
+    import re as _re
+    conn = _get_db()
+    rows = conn.execute("SELECT video_id, published_at, created_at FROM episodes").fetchall()
+
+    fixed = 0
+    for row in rows:
+        pub = row["published_at"] or ""
+        # A valid ISO date starts with 4 digits followed by a dash
+        if pub and _re.match(r'^\d{4}-\d{2}-\d{2}', pub):
+            continue  # already OK
+
+        # Use created_at (which is always a proper timestamp) as a fallback date
+        fallback = (row["created_at"] or "")[:10]
+        if not fallback:
+            continue
+
+        conn.execute(
+            "UPDATE episodes SET published_at=? WHERE video_id=?",
+            (fallback, row["video_id"])
+        )
+        fixed += 1
+        print(f"  Fixed {row['video_id']}: '{pub}' → '{fallback}'")
+
+    conn.commit()
+    conn.close()
+    print(f"\n✓ 修正了 {fixed} 筆 published_at 日期")
+
+
 # ── Deploy command ────────────────────────────────────────
 
 def cmd_deploy():
@@ -1068,6 +1127,12 @@ def main():
             else:
                 i += 1
         cmd_divergence(days, min_channels)
+
+    elif cmd == "renormalize":
+        cmd_renormalize()
+
+    elif cmd == "fix-dates":
+        cmd_fix_dates()
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)

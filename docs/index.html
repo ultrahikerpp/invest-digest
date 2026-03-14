@@ -1507,6 +1507,106 @@
       font-weight: 500;
       color: var(--text);
     }
+
+    /* ── Search Box (B1) ── */
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      transition: border-color 0.18s;
+    }
+    .search-box:focus-within {
+      border-color: var(--vibe1);
+    }
+    .search-input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      width: 180px;
+    }
+    .search-input::placeholder {
+      color: var(--text-dim);
+    }
+    @media (max-width: 768px) {
+      .search-box { display: none; }
+    }
+
+    /* ── Entity History Page (C1) ── */
+    .entity-history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .entity-history-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .entity-history-item:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+    .entity-sentiment-badge {
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      min-width: 52px;
+      text-align: center;
+    }
+    .entity-sentiment-badge.bull { background: var(--green-lt); color: var(--green); }
+    .entity-sentiment-badge.bear { background: var(--red-lt); color: var(--red); }
+    .entity-sentiment-badge.neutral { background: var(--surface2); color: var(--text-dim); }
+    .entity-history-info { flex: 1; min-width: 0; }
+    .entity-history-title { font-weight: 600; color: var(--text); font-size: 15px; }
+    .entity-history-meta { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+    /* ── Flip Alerts (C2) ── */
+    .flip-alert-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .flip-alert-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(236, 72, 153, 0.10);
+      border: 1px solid rgba(236, 72, 153, 0.30);
+      border-radius: var(--radius-sm);
+      padding: 7px 13px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.18s;
+      text-decoration: none;
+    }
+    .flip-alert-chip:hover {
+      background: rgba(236, 72, 153, 0.18);
+    }
+    .flip-arrow {
+      font-size: 12px;
+      color: #EC4899;
+    }
+    .flip-name { font-weight: 600; }
+    .flip-before { color: var(--green); font-size: 12px; }
+    .flip-after { color: var(--red); font-size: 12px; }
   </style>
 </head>
 
@@ -1526,6 +1626,12 @@
         <div class="logo-sub">財經投資頻道重點摘要</div>
       </div>
     </a>
+    <div class="search-box" id="searchBox" style="display:none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="color:var(--text-dim);flex-shrink:0">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" class="search-input" id="searchInput" placeholder="搜尋集數…" autocomplete="off">
+    </div>
     <div class="header-actions">
       <div class="header-right" id="lastUpdated"></div>
       <button class="theme-toggle" id="themeToggle" aria-label="切換主題">
@@ -1689,8 +1795,11 @@
 
     let allEpisodes = [];
     let generatedAt = '';
-    let mentionsData = null;    // loaded from mentions.json
-    let divergenceData = null;  // loaded from divergence.json
+    let mentionsData = null;      // loaded from mentions.json
+    let divergenceData = null;    // loaded from divergence.json
+    let entityHistoryData = null; // loaded from entity_history.json
+    let flipsData = null;         // loaded from flips.json
+    let searchQuery = '';         // global search filter (B1)
 
     // ── Helpers ────────────────────────────────────────────────
 
@@ -1740,6 +1849,14 @@
         const dResp = await fetch(BASE + 'data/divergence.json');
         if (dResp.ok) divergenceData = await dResp.json();
       } catch (_) { /* no divergence data yet */ }
+      try {
+        const ehResp = await fetch(BASE + 'data/entity_history.json');
+        if (ehResp.ok) entityHistoryData = await ehResp.json();
+      } catch (_) { /* no entity history yet */ }
+      try {
+        const fResp = await fetch(BASE + 'data/flips.json');
+        if (fResp.ok) flipsData = await fResp.json();
+      } catch (_) { /* no flips data yet */ }
     }
 
     // ── Routing ────────────────────────────────────────────────
@@ -1757,6 +1874,9 @@
       }
       if (hash.startsWith('#/industry/')) {
         return { type: 'industry', name: decodeURIComponent(hash.slice(11)) };
+      }
+      if (hash.startsWith('#/entity/')) {
+        return { type: 'entity', name: decodeURIComponent(hash.slice(9)) };
       }
       return { type: 'all' };
     }
@@ -1841,9 +1961,22 @@
     // ── Main Content ───────────────────────────────────────────
 
     function renderEpisodes(episodes, title, activeIndustry = null) {
+      // Show search box for episode list views
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'flex';
+
+      // Apply search filter
+      const q = searchQuery.trim().toLowerCase();
+      const filtered = q
+        ? episodes.filter(ep =>
+            ep.title.toLowerCase().includes(q) ||
+            (ep.hashtags || '').toLowerCase().includes(q)
+          )
+        : episodes;
+
       const industryFilterHtml = _renderIndustryFilterBar(activeIndustry);
 
-      if (!episodes.length) {
+      if (!filtered.length) {
         document.getElementById('mainContent').innerHTML = `
       <div class="page-header"><h1 class="page-title">${title}</h1></div>
       ${industryFilterHtml}
@@ -1860,7 +1993,7 @@
       }
 
       let cards = '';
-      for (const ep of episodes) {
+      for (const ep of filtered) {
         const date = fmt(ep.published_at || ep.processed_at);
         const cardsJson = JSON.stringify(ep.cards || []).replace(/"/g, '&quot;');
         const hashtagsHtml = (ep.hashtags || '').split(/\s+/).filter(t => t)
@@ -1890,7 +2023,7 @@
     </div>
     ${industryFilterHtml}
     <div class="stats-bar">
-      <div class="stat-chip">${ICONS.doc} <strong>${episodes.length}</strong> 集摘要</div>
+      <div class="stat-chip">${ICONS.doc} <strong>${filtered.length}</strong> 集摘要</div>
     </div>
     <div class="episodes-grid">${cards}</div>
   `;
@@ -2042,7 +2175,9 @@
           return `
             <tr>
               <td>
-                <div class="entity-name">${e.name}</div>
+                <div class="entity-name">
+                  <a href="#/entity/${encodeURIComponent(e.name)}" style="color:inherit;text-decoration:none;cursor:pointer">${e.name}</a>
+                </div>
                 ${e.ticker ? `<div class="entity-ticker">${e.ticker}</div>` : ''}
               </td>
               <td style="text-align:right;font-weight:600;color:var(--vibe2)">${e.count}</td>
@@ -2105,8 +2240,31 @@
           </div>`;
       }
 
+      // Build flip alerts HTML
+      let flipsHtml = '';
+      if (flipsData && flipsData.flips && flipsData.flips.length) {
+        const SENT_LABEL = { '看多': '▲ 看多', '看空': '▼ 看空', '中立': '→ 中立' };
+        const chipHtml = flipsData.flips.map(f => {
+          const beforeCls = f.before === '看多' ? 'flip-before' : 'flip-after';
+          const afterCls = f.after === '看多' ? 'flip-before' : 'flip-after';
+          return `<a class="flip-alert-chip" href="#/entity/${encodeURIComponent(f.name)}">
+            <span class="flip-arrow">⚡</span>
+            <span class="flip-name">${f.name}</span>
+            <span class="${beforeCls}">${SENT_LABEL[f.before] || f.before}</span>
+            <span class="flip-arrow">→</span>
+            <span class="${afterCls}">${SENT_LABEL[f.after] || f.after}</span>
+          </a>`;
+        }).join('');
+        flipsHtml = `
+          <div class="trending-section">
+            <div class="trending-section-title">⚡ 情緒翻轉（近 30 天 vs 前 30 天）</div>
+            <div class="flip-alert-bar">${chipHtml}</div>
+          </div>`;
+      }
+
       mc.innerHTML = `
         <div class="page-header"><h1 class="page-title">📊 標的追蹤</h1></div>
+        ${flipsHtml}
         <div class="trending-section">
           <div class="trending-section-title">熱門標的</div>
           ${trendingHtml}
@@ -2262,6 +2420,110 @@
       _render('all');
     }
 
+    // ── Entity History view (C1) ───────────────────────────────
+
+    function renderEntityHistory(entityName) {
+      const mc = document.getElementById('mainContent');
+      renderSidebar(allEpisodes, null);
+
+      // Hide search box on entity page
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'none';
+
+      if (!entityHistoryData || !entityHistoryData.entities) {
+        mc.innerHTML = `
+          <div class="page-header"><h1 class="page-title">🔍 ${entityName}</h1></div>
+          <div class="empty-state">
+            <div class="empty-icon">${ICONS.alertCircle}</div>
+            <div class="empty-title">尚無標的歷史資料</div>
+            <div class="empty-text">執行 <code>python3 runner.py build</code> 後再部署即可。</div>
+          </div>`;
+        return;
+      }
+
+      const episodes = entityHistoryData.entities[entityName] || [];
+      if (!episodes.length) {
+        mc.innerHTML = `
+          <div class="page-header"><h1 class="page-title">🔍 ${entityName}</h1></div>
+          <div class="empty-state">
+            <div class="empty-icon">${ICONS.inbox}</div>
+            <div class="empty-title">找不到此標的</div>
+            <div class="empty-text">可能尚未有集數提及「${entityName}」。</div>
+          </div>`;
+        return;
+      }
+
+      // Count sentiments
+      const bull = episodes.filter(e => e.sentiment === '看多').length;
+      const bear = episodes.filter(e => e.sentiment === '看空').length;
+      const neutral = episodes.filter(e => e.sentiment === '中立').length;
+      const total = episodes.length;
+      const bPct = total ? Math.round(bull / total * 100) : 0;
+      const rPct = total ? Math.round(bear / total * 100) : 0;
+      const nPct = 100 - bPct - rPct;
+
+      const SENT_MAP = {
+        '看多': { cls: 'bull', label: '▲ 看多' },
+        '看空': { cls: 'bear', label: '▼ 看空' },
+        '中立': { cls: 'neutral', label: '→ 中立' },
+      };
+
+      const items = episodes.map(ep => {
+        const sm = SENT_MAP[ep.sentiment] || { cls: 'neutral', label: '→ ' + ep.sentiment };
+        const date = fmt(ep.published_at);
+        const fullEp = allEpisodes.find(e => e.video_id === ep.video_id);
+        const clickAttr = fullEp ? `data-video-id="${ep.video_id}"` : '';
+        return `
+          <div class="entity-history-item" ${clickAttr}>
+            <span class="entity-sentiment-badge ${sm.cls}">${sm.label}</span>
+            <div class="entity-history-info">
+              <div class="entity-history-title">${ep.title}</div>
+              <div class="entity-history-meta">${ep.channel_name}${date ? ' · ' + date : ''}</div>
+            </div>
+          </div>`;
+      }).join('');
+
+      mc.innerHTML = `
+        <div class="page-header">
+          <h1 class="page-title">🔍 ${entityName}</h1>
+        </div>
+        <div class="stats-bar">
+          <div class="stat-chip">${ICONS.doc} <strong>${total}</strong> 次提及</div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div class="sentiment-bar" style="height:12px;border-radius:6px;min-width:200px;max-width:400px">
+            ${bPct > 0 ? `<div class="seg-bullish" style="width:${bPct}%"></div>` : ''}
+            ${rPct > 0 ? `<div class="seg-bearish" style="width:${rPct}%"></div>` : ''}
+            ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
+          </div>
+          <div class="sentiment-counts" style="margin-top:6px">
+            <span class="bull">▲ 看多 ${bull}</span>
+            <span class="bear">▼ 看空 ${bear}</span>
+            <span>→ 中立 ${neutral}</span>
+          </div>
+        </div>
+        <div class="entity-history-list">${items}</div>`;
+
+      // Bind click to open modal
+      mc.querySelectorAll('.entity-history-item[data-video-id]').forEach(item => {
+        item.addEventListener('click', () => {
+          const vid = item.dataset.videoId;
+          const ep = allEpisodes.find(e => e.video_id === vid);
+          if (ep) {
+            openModal({
+              videoId: ep.video_id,
+              channelName: ep.channel_name,
+              title: ep.title,
+              date: fmt(ep.published_at || ep.processed_at),
+              summaryUrl: ep.summary_url,
+              cards: ep.cards || [],
+              hashtags: ep.hashtags || '',
+            });
+          }
+        });
+      });
+    }
+
     // ── Industry filter helper ─────────────────────────────────
 
     function _getEpisodesForIndustry(industryName) {
@@ -2287,6 +2549,15 @@
       const r = getRoute();
       let filtered, title;
 
+      // Reset search on route change
+      searchQuery = '';
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+
+      // Hide search box by default; renderEpisodes will show it when appropriate
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'none';
+
       if (r.type === 'trending') {
         renderSidebar(allEpisodes, null);
         renderTrending();
@@ -2295,6 +2566,10 @@
       if (r.type === 'divergence') {
         renderSidebar(allEpisodes, null);
         renderDivergence();
+        return;
+      }
+      if (r.type === 'entity') {
+        renderEntityHistory(r.name);
         return;
       }
 
@@ -2389,6 +2664,25 @@
 
     document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
     document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+
+    // ── Search input (B1) ──────────────────────────────────────
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      const r = getRoute();
+      let episodes, title;
+      if (r.type === 'channel') {
+        episodes = allEpisodes.filter(ep => ep.channel_id === r.id);
+        const ch = allEpisodes.find(ep => ep.channel_id === r.id);
+        title = ch ? ch.channel_name : r.id;
+      } else if (r.type === 'industry') {
+        episodes = _getEpisodesForIndustry(r.name);
+        title = `🏭 ${r.name}`;
+      } else {
+        episodes = allEpisodes;
+        title = '全部節目';
+      }
+      renderEpisodes(episodes, title, r.type === 'industry' ? r.name : null);
+    });
 
     // ── Article View Counter (Busuanzi JSONP) ──────────────────
 

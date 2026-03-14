@@ -149,9 +149,11 @@ def build():
     out_path = SITE_DATA_DIR / "episodes.json"
     out_path.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # Generate mentions.json and divergence.json from analysis DB
+    # Generate mentions.json, divergence.json, entity_history.json, and flips.json from analysis DB
     _build_mentions_json(SITE_DATA_DIR, generated_at)
     _build_divergence_json(SITE_DATA_DIR, channels, generated_at)
+    _build_entity_history_json(SITE_DATA_DIR, channels, generated_at)
+    _build_flips_json(SITE_DATA_DIR, generated_at)
 
     print(f"\n✓ docs/data/episodes.json — {len(episodes)} episodes")
     print(f"✓ docs/summaries/ — {len(episodes)} files")
@@ -286,6 +288,136 @@ def _build_divergence_json(
 
     except Exception as e:
         print(f"  ⚠️ divergence.json 產生失敗：{e}")
+
+
+def _build_entity_history_json(site_data_dir: Path, channels: dict, generated_at: str) -> None:
+    """Generate docs/data/entity_history.json: per-entity episode history with sentiment."""
+    if not DB_PATH.exists():
+        return
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        if "mentions" not in tables:
+            conn.close()
+            return
+
+        rows = conn.execute("""
+            SELECT
+                m.entity_name,
+                m.ticker,
+                m.sentiment,
+                m.video_id,
+                m.channel_id,
+                m.processed_at,
+                e.title,
+                e.published_at
+            FROM mentions m
+            LEFT JOIN episodes e ON m.video_id = e.video_id
+            ORDER BY m.entity_name, COALESCE(e.published_at, m.processed_at) DESC
+        """).fetchall()
+        conn.close()
+
+        channel_names = {cid: info["name"] for cid, info in channels.items()}
+
+        entities: dict[str, list] = {}
+        for row in rows:
+            name = row["entity_name"]
+            if name not in entities:
+                entities[name] = []
+            entities[name].append({
+                "video_id": row["video_id"],
+                "channel_id": row["channel_id"],
+                "channel_name": channel_names.get(row["channel_id"], row["channel_id"]),
+                "title": row["title"] or row["video_id"],
+                "published_at": row["published_at"] or row["processed_at"] or "",
+                "sentiment": row["sentiment"] or "中立",
+                "ticker": row["ticker"] or "",
+            })
+
+        out = {
+            "entities": entities,
+            "generated_at": generated_at,
+        }
+        out_path = site_data_dir / "entity_history.json"
+        out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"✓ docs/data/entity_history.json — {len(entities)} entities")
+    except Exception as e:
+        print(f"  ⚠️ entity_history.json 產生失敗：{e}")
+
+
+def _build_flips_json(site_data_dir: Path, generated_at: str) -> None:
+    """Generate docs/data/flips.json: entities with sentiment reversal in last 60 days."""
+    if not DB_PATH.exists():
+        return
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        if "mentions" not in tables:
+            conn.close()
+            return
+
+        # Period 1: 30-60 days ago; Period 2: last 30 days
+        p1_rows = conn.execute("""
+            SELECT entity_name, MAX(ticker) AS ticker,
+                   SUM(CASE WHEN sentiment='看多' THEN 1 ELSE 0 END) AS bullish,
+                   SUM(CASE WHEN sentiment='看空' THEN 1 ELSE 0 END) AS bearish,
+                   SUM(CASE WHEN sentiment='中立' THEN 1 ELSE 0 END) AS neutral,
+                   COUNT(*) AS total
+            FROM mentions
+            WHERE processed_at >= DATE('now', '-60 days')
+              AND processed_at < DATE('now', '-30 days')
+            GROUP BY entity_name
+            HAVING total >= 2
+        """).fetchall()
+
+        p2_rows = conn.execute("""
+            SELECT entity_name, MAX(ticker) AS ticker,
+                   SUM(CASE WHEN sentiment='看多' THEN 1 ELSE 0 END) AS bullish,
+                   SUM(CASE WHEN sentiment='看空' THEN 1 ELSE 0 END) AS bearish,
+                   SUM(CASE WHEN sentiment='中立' THEN 1 ELSE 0 END) AS neutral,
+                   COUNT(*) AS total
+            FROM mentions
+            WHERE processed_at >= DATE('now', '-30 days')
+            GROUP BY entity_name
+            HAVING total >= 2
+        """).fetchall()
+        conn.close()
+
+        def _dominant(bull, bear, neutral):
+            if bull > bear and bull > neutral:
+                return "看多"
+            if bear > bull and bear > neutral:
+                return "看空"
+            return "中立"
+
+        p1_map = {r["entity_name"]: dict(r) for r in p1_rows}
+        p2_map = {r["entity_name"]: dict(r) for r in p2_rows}
+
+        flips = []
+        for name, p2 in p2_map.items():
+            if name not in p1_map:
+                continue
+            p1 = p1_map[name]
+            s1 = _dominant(p1["bullish"], p1["bearish"], p1["neutral"])
+            s2 = _dominant(p2["bullish"], p2["bearish"], p2["neutral"])
+            if s1 != s2 and s1 != "中立" and s2 != "中立":
+                flips.append({
+                    "name": name,
+                    "ticker": p2["ticker"] or "",
+                    "before": s1,
+                    "after": s2,
+                    "before_count": p1["total"],
+                    "after_count": p2["total"],
+                })
+
+        out = {"flips": flips, "generated_at": generated_at}
+        out_path = site_data_dir / "flips.json"
+        out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"✓ docs/data/flips.json — {len(flips)} sentiment flips")
+    except Exception as e:
+        print(f"  ⚠️ flips.json 產生失敗：{e}")
 
 
 if __name__ == "__main__":
