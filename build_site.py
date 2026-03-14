@@ -71,10 +71,10 @@ def _normalize_date(raw: str) -> str:
 
 
 def _episode_sort_key(episode: dict) -> tuple:
-    """Sort by EP number desc (EP639 > EP638...), fallback to processed_at desc."""
+    """Sort by EP number desc (EP639 > EP638...), fallback to published_at desc."""
     m = re.search(r'EP(\d+)', episode.get("title", ""), re.IGNORECASE)
     ep_num = int(m.group(1)) if m else 0
-    return (ep_num, episode.get("processed_at") or "")
+    return (ep_num, episode.get("published_at") or episode.get("processed_at") or "")
 
 
 def build():
