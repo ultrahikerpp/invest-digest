@@ -364,6 +364,23 @@
       font-size: 14px;
       color: var(--text-muted);
       font-weight: 500;
+      cursor: default;
+    }
+
+    .stat-chip.clickable {
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s;
+    }
+
+    .stat-chip.clickable:hover {
+      background: var(--vibe1-lt);
+      border-color: var(--vibe1);
+      color: var(--vibe1);
+    }
+
+    .stat-chip.clickable:hover svg,
+    .stat-chip.clickable:hover strong {
+      color: var(--vibe1);
     }
 
     .stat-chip svg {
@@ -2023,12 +2040,26 @@
     </div>
     ${industryFilterHtml}
     <div class="stats-bar">
-      <div class="stat-chip">${ICONS.doc} <strong>${filtered.length}</strong> 集摘要</div>
+      <div class="stat-chip${(q || activeIndustry) ? ' clickable' : ''}" id="statChipCount"
+           title="${(q || activeIndustry) ? '清除篩選，顯示全部' : ''}">
+        ${ICONS.doc} <strong>${filtered.length}</strong> 集摘要${filtered.length < episodes.length ? ` <small style="font-weight:400;opacity:.7">/ ${episodes.length}</small>` : ''}
+      </div>
     </div>
     <div class="episodes-grid">${cards}</div>
   `;
 
       _bindIndustryChips();
+
+      // Stat chip: click to clear all filters when filtered
+      const statChip = document.getElementById('statChipCount');
+      if (statChip && statChip.classList.contains('clickable')) {
+        statChip.addEventListener('click', () => {
+          searchQuery = '';
+          const si = document.getElementById('searchInput');
+          if (si) si.value = '';
+          location.hash = '#/';
+        });
+      }
 
       document.querySelectorAll('.episode-card').forEach(card => {
         card.addEventListener('click', () => {
