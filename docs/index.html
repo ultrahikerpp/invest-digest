@@ -2666,8 +2666,12 @@
     document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
 
     // ── Search input (B1) ──────────────────────────────────────
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      searchQuery = e.target.value;
+    // isComposing: true while IME (注音/倉頡) is mid-composition; skip until confirmed
+    let _searchComposing = false;
+    const _searchInput = document.getElementById('searchInput');
+
+    function _doSearch() {
+      searchQuery = _searchInput.value;
       const r = getRoute();
       let episodes, title;
       if (r.type === 'channel') {
@@ -2682,7 +2686,11 @@
         title = '全部節目';
       }
       renderEpisodes(episodes, title, r.type === 'industry' ? r.name : null);
-    });
+    }
+
+    _searchInput.addEventListener('compositionstart', () => { _searchComposing = true; });
+    _searchInput.addEventListener('compositionend',   () => { _searchComposing = false; _doSearch(); });
+    _searchInput.addEventListener('input', () => { if (!_searchComposing) _doSearch(); });
 
     // ── Article View Counter (Busuanzi JSONP) ──────────────────
 
