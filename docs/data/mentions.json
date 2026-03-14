@@ -35,10 +35,10 @@
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 9,
+      "count": 10,
       "bullish": 9,
       "bearish": 0,
-      "neutral": 0
+      "neutral": 1
     },
     {
       "name": "NVIDIA",
@@ -73,6 +73,30 @@
       "neutral": 5
     },
     {
+      "name": "美光",
+      "ticker": "MU",
+      "count": 6,
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "Tesla",
+      "ticker": "TSLA",
+      "count": 6,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "count": 6,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
       "name": "AMD",
       "ticker": "AMD",
       "count": 6,
@@ -95,14 +119,6 @@
       "bullish": 0,
       "bearish": 0,
       "neutral": 5
-    },
-    {
-      "name": "美光",
-      "ticker": "MU",
-      "count": 5,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 3
     },
     {
       "name": "羅素2000",
@@ -143,32 +159,16 @@
       "bullish": 4,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "亞馬遜",
-      "ticker": "AMZN",
-      "count": 5,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 4
-    },
-    {
-      "name": "Tesla",
-      "ticker": "TSLA",
-      "count": 5,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 5
     }
   ],
   "industries": [
     {
       "name": "AI",
-      "count": 23
+      "count": 24
     },
     {
       "name": "美股",
-      "count": 19
+      "count": 20
     },
     {
       "name": "半導體",
@@ -179,11 +179,11 @@
       "count": 14
     },
     {
-      "name": "能源",
-      "count": 12
+      "name": "台股",
+      "count": 13
     },
     {
-      "name": "台股",
+      "name": "能源",
       "count": 12
     },
     {
@@ -378,6 +378,33 @@
         "道瓊工業",
         "台股加權指數",
         "西德州原油"
+      ]
+    },
+    "JPDxWnDUtAw": {
+      "industries": [
+        "台股",
+        "美股",
+        "AI"
+      ],
+      "mentions": [
+        "旺宏",
+        "廣達",
+        "台積電",
+        "聯電",
+        "統一",
+        "美光",
+        "Tesla",
+        "Microsoft",
+        "Palantir",
+        "Cloudflare",
+        "CrowdStrike",
+        "Adobe",
+        "Salesforce",
+        "Uber",
+        "拼多多",
+        "Teradyne",
+        "Advantest",
+        "Keysight"
       ]
     },
     "MsKuUG5lRzg": {
@@ -948,5 +975,5 @@
       ]
     }
   },
-  "generated_at": "2026-03-14T06:53:26"
+  "generated_at": "2026-03-14T12:06:56"
 }
