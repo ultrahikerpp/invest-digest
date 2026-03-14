@@ -2315,7 +2315,9 @@
         if (/^\d{4}$/.test(ticker)) return true;
         // Taiwan ETF: 5-digit starting with 0 (00878, 00631)
         if (/^0\d{4}$/.test(ticker)) return true;
-        // Anything else with a ticker (6-digit Korean, US alphabetic, etc.) = non-Taiwan
+        // Taiwan market indices (TWII, TAIEX, TWN, etc.)
+        if (/^TW/i.test(ticker)) return true;
+        // Anything else with a ticker (US alphabetic, Korean 6-digit, etc.) = non-Taiwan
         return false;
       }
       // No ticker: use Chinese character ratio (>40% → Taiwan)
