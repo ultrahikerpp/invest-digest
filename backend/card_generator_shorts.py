@@ -276,9 +276,9 @@ def _make_cta_card(channel: str, hashtags: str, output_path: Path) -> Path:
     font_label = _load_font(FS_CTA_TITLE)
     draw.text((PAD, 168), "喜歡這集？", font=font_label, fill=C_MUTED)
 
-    # Large CTA: "追蹤頻道 🔔" + channel name — centred
+    # Large CTA: "追蹤頻道 🔔" + brand name — centred
     font_cta = _load_font(FS_CTA_MAIN)
-    cta_lines = ["追蹤頻道 🔔", channel]
+    cta_lines = ["追蹤頻道 🔔", "Ultra Invest Digest"]
     line_h_cta = FS_CTA_MAIN + 36
     total_cta_h = len(cta_lines) * line_h_cta
     y = 820 - total_cta_h // 2
