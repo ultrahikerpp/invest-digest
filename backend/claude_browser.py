@@ -550,11 +550,11 @@ def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, lis
     prompt = f"""你是社群媒體短影音腳本編輯。請針對以下投資摘要章節，產出適合 YouTube Shorts 的精簡版本。
 
 嚴格要求：
-- 每個章節只輸出 2-3 條重點（不是 5 條）
-- 每條重點必須是 8 到 12 個繁體中文字（只計算中文字，不計標點符號）
+- 每個章節輸出 4-5 條重點
+- 每條重點必須是 8 到 14 個繁體中文字（只計算中文字，不計標點符號）
 - 文字要直接、有力、讓人一眼看懂
 - 不加任何前綴符號（不要加 1. 或 • 或 -）
-- 每個章節輸出 2-3 行，每行一條
+- 每個章節輸出 4-5 行，每行一條
 
 另外，請在最開頭產出一個 [HOOK]，寫一句 15-20 字的「引子」：
 - 要有懸念、驚人數字、或反直覺觀點
@@ -569,7 +569,9 @@ def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, lis
 [章節名稱]
 重點1
 重點2
-重點3（可選）
+重點3
+重點4
+重點5（可選）
 
 章節內容如下：
 
@@ -596,7 +598,7 @@ def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, lis
             if is_hook and current_lines:
                 hook_text = current_lines[0]
             elif current_name is not None:
-                result[current_name] = current_lines[:3]
+                result[current_name] = current_lines[:5]
 
             tag = header_match.group(1).strip()
             if tag == "HOOK":
@@ -617,7 +619,7 @@ def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, lis
     if is_hook and current_lines:
         hook_text = current_lines[0]
     elif current_name is not None:
-        result[current_name] = current_lines[:3]
+        result[current_name] = current_lines[:5]
 
     return result, hook_text
 

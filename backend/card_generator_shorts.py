@@ -32,7 +32,7 @@ FS_BRAND     = 32
 FS_CHANNEL   = 54
 FS_HOOK      = 72
 FS_LABEL     = 46
-FS_CONTENT   = 62
+FS_CONTENT   = 52
 FS_FOOTER    = 34
 FS_PROGRESS  = 32
 FS_CTA_TITLE = 52
@@ -209,10 +209,10 @@ def _make_section_card_shorts(
     font_content = _load_font(FS_CONTENT)
     text_max_w = W - PAD * 2 - 74
     text_x = PAD + 68
-    line_h = FS_CONTENT + 30
-    bullet_gap = 60   # extra gap between bullet points
+    line_h = FS_CONTENT + 22
+    bullet_gap = 36   # extra gap between bullet points
 
-    capped = points[:3]   # Shorts: max 3 bullets
+    capped = points[:5]   # Shorts: max 5 bullets
 
     # Pre-wrap all points to know total height
     all_wrapped = [_wrap_text(pt, font_content, text_max_w, draw) or [pt] for pt in capped]
@@ -354,7 +354,7 @@ def generate_cards_shorts(
     # 2. Section cards (card_01 … card_N)
     for i, (section_title, content) in enumerate(ordered, start=1):
         points = all_points.get(section_title) or _fallback_points(content)
-        points = [p for p in points if p][:3]
+        points = [p for p in points if p][:5]
         card_path = output_dir / f"card_{i:02d}.png"
         _make_section_card_shorts(
             section_title, points, i, total_section_cards,
