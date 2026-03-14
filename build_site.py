@@ -18,6 +18,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent
 SUMMARIES_DIR = BASE_DIR / "data" / "summaries"
 CARDS_DIR = BASE_DIR / "data" / "cards"
+CARDS_SHORTS_DIR = BASE_DIR / "data" / "cards_shorts"
 CHANNELS_FILE = BASE_DIR / "channels.json"
 DB_PATH = BASE_DIR / "data" / "subscriptions.db"
 SITE_DIR = BASE_DIR / "docs"
@@ -111,8 +112,10 @@ def build():
             processed_at = _normalize_date(meta.get("processed", ""))
             hashtags = meta.get("hashtags", "")
 
-            # Collect card URLs if cards exist for this video
-            card_src_dir = CARDS_DIR / channel_name / video_id if channel_name else CARDS_DIR / video_id
+            # Collect card URLs — prefer Shorts cards, fall back to landscape cards
+            _shorts_src = CARDS_SHORTS_DIR / channel_name / video_id if channel_name else CARDS_SHORTS_DIR / video_id
+            _landscape_src = CARDS_DIR / channel_name / video_id if channel_name else CARDS_DIR / video_id
+            card_src_dir = _shorts_src if _shorts_src.exists() else _landscape_src
             card_urls: list[str] = []
             if card_src_dir.exists():
                 card_files = sorted(card_src_dir.glob("card_*.png"))
