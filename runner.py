@@ -11,7 +11,9 @@ Usage:
   python3 runner.py video <video_id>       # generate MP4 from cards
   python3 runner.py notify                 # generate video for latest episode per channel + email
   python3 runner.py deploy                 # build + push to GitHub Pages
-  python3 runner.py setup-browser          # one-time Claude login setup for browser automation
+  python3 runner.py shorts-cards <video_id> # generate Shorts 9:16 cards (hook + sections + CTA)
+  python3 runner.py shorts-video <video_id> # assemble Shorts MP4 from Shorts cards
+  python3 runner.py setup-browser           # one-time Claude login setup for browser automation
   python3 runner.py renormalize            # apply entity_aliases.json to all existing mentions in the DB
   python3 runner.py fix-dates              # fix relative published_at dates (e.g. '1 天前') in the DB
 
@@ -36,11 +38,14 @@ SUMMARIES_DIR = BASE_DIR / "data" / "summaries"
 TRANSCRIPTS_DIR = BASE_DIR / "data" / "transcripts"
 CARDS_DIR = BASE_DIR / "data" / "cards"
 VIDEOS_DIR = BASE_DIR / "data" / "videos"
+CARDS_SHORTS_DIR = BASE_DIR / "data" / "cards_shorts"
+VIDEOS_SHORTS_DIR = BASE_DIR / "data" / "videos_shorts"
 
 # ── Setup ─────────────────────────────────────────────────
 
 def _ensure_dirs():
-    for d in [SUMMARIES_DIR, TRANSCRIPTS_DIR, CARDS_DIR, VIDEOS_DIR]:
+    for d in [SUMMARIES_DIR, TRANSCRIPTS_DIR, CARDS_DIR, VIDEOS_DIR,
+              CARDS_SHORTS_DIR, VIDEOS_SHORTS_DIR]:
         d.mkdir(parents=True, exist_ok=True)
 
 
@@ -366,6 +371,126 @@ def cmd_video(video_id: str):
     print(f"Video saved: {output_path}")
 
 
+# ── Shorts commands ───────────────────────────────────────
+
+def _shorts_cards_output_dir(video_id: str, channel_name: str) -> Path:
+    d = CARDS_SHORTS_DIR / channel_name / video_id
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def _shorts_video_output_path(video_id: str, channel_name: str) -> Path:
+    channel_dir = VIDEOS_SHORTS_DIR / channel_name
+    channel_dir.mkdir(parents=True, exist_ok=True)
+    return channel_dir / f"{video_id}_shorts.mp4"
+
+
+def cmd_shorts_cards(video_id: str):
+    """Generate Shorts-optimised 1080x1920 cards (hook + sections + CTA)."""
+    _ensure_dirs()
+    channels = _load_channels()
+    summary_path = _find_summary_path(video_id)
+    if summary_path is None:
+        print(f"ERROR: Summary not found for {video_id}", file=sys.stderr)
+        sys.exit(1)
+
+    meta = _parse_summary_meta(summary_path)
+    channel_name = meta.get("channel_name", "")
+    if not channel_name:
+        cid = meta.get("channel_id", "")
+        channel_name = _get_channel_name(cid, channels)
+
+    hashtags = meta.get("hashtags", "")
+    output_dir = _shorts_cards_output_dir(video_id, channel_name)
+
+    from backend.card_generator_shorts import generate_cards_shorts
+    card_paths = generate_cards_shorts(summary_path, channel_name, output_dir, hashtags)
+    print(f"Generated {len(card_paths)} Shorts cards in {output_dir}")
+    for p in card_paths:
+        print(f"  {p}")
+
+
+def cmd_shorts_video(video_id: str):
+    """Assemble Shorts MP4 (~56 seconds) from Shorts cards."""
+    _ensure_dirs()
+
+    summary_path = _find_summary_path(video_id)
+    channel_name = _parse_summary_meta(summary_path).get("channel_name", "unknown") if summary_path else "unknown"
+
+    cards_dir = CARDS_SHORTS_DIR / channel_name / video_id
+    if not cards_dir.exists():
+        print(f"ERROR: Shorts cards not found. Run: python3 runner.py shorts-cards {video_id}", file=sys.stderr)
+        sys.exit(1)
+
+    card_paths = sorted(cards_dir.glob("*.png"))
+    if not card_paths:
+        print(f"ERROR: No PNG cards in {cards_dir}", file=sys.stderr)
+        sys.exit(1)
+
+    output_path = _shorts_video_output_path(video_id, channel_name)
+
+    from backend.video_maker import make_video
+    # Hook and CTA cards: 5 seconds each; section cards: 7 seconds each.
+    # Build per-card duration list and assemble via individual concat entries.
+    durations = []
+    for p in card_paths:
+        name = p.stem
+        if name.endswith("_hook") or name.endswith("_cta"):
+            durations.append(5)
+        else:
+            durations.append(7)
+
+    _make_video_variable_duration(card_paths, durations, output_path)
+    print(f"Shorts video saved: {output_path}")
+
+
+def _make_video_variable_duration(card_paths: list, durations: list[int], output_path: Path) -> Path:
+    """
+    Like video_maker.make_video but with per-card duration control.
+    Falls back to uniform 7s if durations list doesn't match card count.
+    """
+    import subprocess, tempfile
+    if len(durations) != len(card_paths):
+        durations = [7] * len(card_paths)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as f:
+        for card, dur in zip(card_paths, durations):
+            f.write(f"file '{Path(card).resolve()}'\n")
+            f.write(f"duration {dur}\n")
+        f.write(f"file '{Path(card_paths[-1]).resolve()}'\n")
+        concat_file = Path(f.name)
+
+    total_seconds = sum(durations)
+
+    cmd = [
+        "ffmpeg", "-y",
+        "-f", "concat",
+        "-safe", "0",
+        "-i", str(concat_file),
+        "-t", str(total_seconds),
+        "-vf", "scale=1080:1920:force_original_aspect_ratio=decrease,"
+               "pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=0a0e1a",
+        "-c:v", "libx264",
+        "-preset", "fast",
+        "-crf", "23",
+        "-pix_fmt", "yuv420p",
+        "-r", "30",
+        "-movflags", "+faststart",
+        str(output_path),
+    ]
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"FFmpeg failed:\n{result.stderr[-800:]}")
+    finally:
+        concat_file.unlink(missing_ok=True)
+
+    return output_path
+
+
 # ── Frontmatter helpers ───────────────────────────────────
 
 def _update_frontmatter_field(md_path: Path, field: str, value: str):
@@ -609,7 +734,7 @@ def cmd_reprocess():
 # ── Approve command ────────────────────────────────────────
 
 def cmd_approve():
-    """Process all pending_review episodes: generate hashtags, cards, video, then email summary."""
+    """Process all pending_review episodes: generate hashtags, Shorts cards, Shorts video, then email summary."""
     _ensure_dirs()
     worker = _import_worker()
     conn = _get_db()
@@ -658,20 +783,20 @@ def cmd_approve():
         _update_frontmatter_hashtags(summary_path, hashtags)
         print(f"  ✓ Hashtags: {hashtags}")
 
-        # Generate cards
-        print(f"  產生字卡...")
+        # Generate Shorts cards (1080x1920)
+        print(f"  產生 Shorts 字卡...")
         try:
-            cmd_cards(video_id)
+            cmd_shorts_cards(video_id)
         except SystemExit:
-            print(f"  ❌ 字卡產生失敗")
+            print(f"  ❌ Shorts 字卡產生失敗")
             continue
 
-        # Generate video
-        print(f"  產生影片...")
+        # Generate Shorts video
+        print(f"  產生 Shorts 影片...")
         try:
-            cmd_video(video_id)
+            cmd_shorts_video(video_id)
         except SystemExit:
-            print(f"  ❌ 影片產生失敗")
+            print(f"  ❌ Shorts 影片產生失敗")
             continue
 
         _mark_done(conn, video_id)
@@ -694,9 +819,9 @@ def cmd_approve():
     subject = f"[完成] 共 {n} 集影片已產出"
     lines = [f"共 {n} 集影片已產出\n"]
     for r in results:
-        video_path = _video_output_path(r["video_id"], r["channel_name"])
+        video_path = _shorts_video_output_path(r["video_id"], r["channel_name"])
         lines.append(f"{r['channel_name']}｜{r['title']}｜{r['hashtags']}")
-        lines.append(f"  影片路徑：{video_path}\n")
+        lines.append(f"  Shorts 影片路徑：{video_path}\n")
     body = "\n".join(lines)
 
     print(f"\n寄送完成通知郵件...")
@@ -1086,6 +1211,18 @@ def main():
             print("Usage: runner.py video <video_id>", file=sys.stderr)
             sys.exit(1)
         cmd_video(args[1])
+
+    elif cmd == "shorts-cards":
+        if len(args) < 2:
+            print("Usage: runner.py shorts-cards <video_id>", file=sys.stderr)
+            sys.exit(1)
+        cmd_shorts_cards(args[1])
+
+    elif cmd == "shorts-video":
+        if len(args) < 2:
+            print("Usage: runner.py shorts-video <video_id>", file=sys.stderr)
+            sys.exit(1)
+        cmd_shorts_video(args[1])
 
     elif cmd == "deploy":
         cmd_deploy()
