@@ -389,35 +389,45 @@ def generate_hashtags(summary_body: str, channel_name: str) -> str:
         return f"#投資 #財經 #重點摘要 #市場分析 #股市 {channel_tag}"
 
 
-def generate_card_points(sections: dict[str, str]) -> dict[str, list[str]]:
+def generate_card_points(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
     """
-    Given a dict of {section_title: content}, return {section_title: [5 bullet points]}.
+    Given a dict of {section_title: content}, return ({section_title: [bullet points]}, hook_text).
     All sections are processed in a single browser session (one chat call).
+
+    Points: 4-5 per section, 8-14 Chinese characters each (short, punchy).
+    Hook: 15-20 character sentence for the opening card.
     """
     section_names = list(sections.keys())
 
-    # Build batch prompt
     sections_text = "\n\n".join(
         f"## {title}\n{content}" for title, content in sections.items()
     )
-    prompt = f"""你是投資內容精華整理編輯。我有以下幾個投資摘要章節，請對每個章節各整理出 5 條重點金句。
+
+    prompt = f"""你是社群媒體字卡腳本編輯。請針對以下投資摘要章節，產出適合社群分享的精簡版本。
 
 嚴格要求：
-- 每條金句必須是完整的一句話，有清楚的主詞與結論
-- 每條金句長度必須剛好在 20 到 30 個繁體中文字之間（只計算中文字數，不計標點）
-- 如果超過 30 字，請縮短；如果不足 20 字，請補充完整
-- 偏向精闢、直接、有觀點的金句陳述
-- 不加任何前綴符號（不要加 1. 或 • 或 - 或空格）
-- 每個章節輸出 5 行金句，每行一條
+- 每個章節輸出 4-5 條重點
+- 每條重點必須是 8 到 14 個繁體中文字（只計算中文字，不計標點符號）
+- 文字要直接、有力、讓人一眼看懂
+- 不加任何前綴符號（不要加 1. 或 • 或 -）
+- 每個章節輸出 4-5 行，每行一條
+
+另外，請在最開頭產出一個 [HOOK]，寫一句 15-20 字的「引子」：
+- 要有懸念、驚人數字、或反直覺觀點
+- 讓沒看過這集的人想點開繼續看
+- 格式：一個完整句子，可以用「？」或「！」結尾
 
 請嚴格按照以下格式輸出（保留方括號標記，每組之間空一行）：
 
+[HOOK]
+引子句子
+
 [章節名稱]
-金句1
-金句2
-金句3
-金句4
-金句5
+重點1
+重點2
+重點3
+重點4
+重點5（可選）
 
 章節內容如下：
 
@@ -427,33 +437,46 @@ def generate_card_points(sections: dict[str, str]) -> dict[str, list[str]]:
         raw = chat(prompt, timeout_secs=120)
     except Exception as e:
         print(f"  [claude] 批次金句生成失敗：{e}")
-        return {name: [] for name in section_names}
+        return {name: [] for name in section_names}, ""
 
-    # Parse response: split on [章節名稱] markers
+    # Parse response — extract [HOOK] and [章節名稱] blocks
     result: dict[str, list[str]] = {}
+    hook_text = ""
     current_name: str | None = None
     current_lines: list[str] = []
+    is_hook = False
 
     for line in raw.splitlines():
         line = line.strip()
-        # Detect [章節名稱] header
         header_match = re.match(r'^\[(.+)\]$', line)
         if header_match:
-            if current_name is not None:
+            if is_hook and current_lines:
+                hook_text = current_lines[0]
+            elif current_name is not None:
                 result[current_name] = current_lines[:5]
-            current_name = header_match.group(1).strip()
-            current_lines = []
-        elif current_name is not None and line:
-            # Strip any leading list markers just in case
+
+            tag = header_match.group(1).strip()
+            if tag == "HOOK":
+                is_hook = True
+                current_name = None
+                current_lines = []
+            else:
+                is_hook = False
+                current_name = tag
+                current_lines = []
+        elif line:
             cleaned = re.sub(r'^[\d]+[.、。\)）]\s*', '', line)
             cleaned = re.sub(r'^[-•·]\s*', '', cleaned).strip()
             if cleaned:
                 current_lines.append(cleaned)
 
-    if current_name is not None:
+    # Save the last block
+    if is_hook and current_lines:
+        hook_text = current_lines[0]
+    elif current_name is not None:
         result[current_name] = current_lines[:5]
 
-    return result
+    return result, hook_text
 
 
 def _clean_json_raw(raw: str) -> str:

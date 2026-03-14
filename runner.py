@@ -285,9 +285,10 @@ def cmd_cards(video_id: str):
         print(f"ERROR: Summary not found for {video_id}", file=sys.stderr)
         sys.exit(1)
 
-    # Read channel_name from frontmatter
+    # Read channel_name and hashtags from frontmatter
     content = summary_path.read_text(encoding="utf-8")
     channel_name = ""
+    hashtags = ""
     if content.startswith("---"):
         fm_end = content.find("---", 3)
         if fm_end != -1:
@@ -295,15 +296,17 @@ def cmd_cards(video_id: str):
             for line in fm.splitlines():
                 if line.startswith("channel_name:"):
                     channel_name = line.split(":", 1)[1].strip()
-                    break
-                if line.startswith("channel_id:"):
+                elif line.startswith("channel_id:"):
                     cid = line.split(":", 1)[1].strip()
-                    channel_name = _get_channel_name(cid, channels)
+                    if not channel_name:
+                        channel_name = _get_channel_name(cid, channels)
+                elif line.startswith("hashtags:"):
+                    hashtags = line.split(":", 1)[1].strip()
 
     output_dir = _cards_output_dir(video_id, channel_name or "unknown")
 
     from backend.card_generator import generate_cards
-    card_paths = generate_cards(summary_path, channel_name, output_dir)
+    card_paths = generate_cards(summary_path, channel_name, output_dir, hashtags=hashtags)
     print(f"Generated {len(card_paths)} cards in {output_dir}")
     for p in card_paths:
         print(f"  {p}")

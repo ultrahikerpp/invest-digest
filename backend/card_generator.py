@@ -48,10 +48,14 @@ _SECTION_ALIASES: dict[str, str] = {
 FS_BRAND    = 30
 FS_CHANNEL  = 38
 FS_TITLE    = 66
+FS_HOOK     = 58
 FS_LABEL    = 38
 FS_CONTENT  = 42
 FS_FOOTER   = 28
 FS_PROGRESS = 28
+FS_CTA_TITLE = 44
+FS_CTA_MAIN  = 66
+FS_CTA_SUB   = 38
 
 
 def _load_font(size: int) -> ImageFont.FreeTypeFont:
@@ -120,6 +124,85 @@ def _draw_gradient_line(draw: ImageDraw.ImageDraw, y: int, x1: int = PAD, x2: in
     draw.rectangle([x1,        y, x1 + seg,     y + h], fill=C_VIBE1)
     draw.rectangle([x1 + seg,  y, x1 + seg * 2, y + h], fill=C_VIBE2)
     draw.rectangle([x1 + seg * 2, y, x2,         y + h], fill=C_VIBE3)
+
+
+def _make_hook_card(hook_text: str, title: str, channel: str, output_path: Path) -> Path:
+    """Opening card with a punchy hook sentence."""
+    img = Image.new("RGB", (W, H), C_BG)
+    draw = ImageDraw.Draw(img)
+    _draw_gradient_bg(draw)
+    _draw_top_strip(draw)
+
+    font_brand = _load_font(FS_BRAND)
+    draw.text((PAD, 46), "Ultra Invest Digest", font=font_brand, fill=C_MUTED)
+
+    font_channel = _load_font(FS_CHANNEL)
+    draw.text((PAD, 90), channel, font=font_channel, fill=C_VIBE1)
+
+    _draw_gradient_line(draw, y=152, x1=PAD, x2=W - PAD)
+
+    font_hook = _load_font(FS_HOOK)
+    content_w = W - PAD * 2
+    lines = _wrap_text(hook_text, font_hook, content_w, draw)
+    line_h = FS_HOOK + 24
+    total_h = len(lines) * line_h
+    y = max(240, H // 2 - total_h // 2)
+    for line in lines:
+        draw.text((PAD, y), line, font=font_hook, fill=C_WHITE)
+        y += line_h
+
+    _draw_gradient_line(draw, y + 40, PAD, PAD + 180, h=5)
+
+    ep_match = re.search(r'EP\d+', title, re.IGNORECASE)
+    if ep_match:
+        font_ep = _load_font(FS_BRAND)
+        draw.text((PAD, H - 72), ep_match.group(0).upper(), font=font_ep, fill=C_DIM)
+
+    img.save(output_path)
+    return output_path
+
+
+def _make_cta_card(channel: str, hashtags: str, output_path: Path) -> Path:
+    """Last card: call-to-action."""
+    img = Image.new("RGB", (W, H), C_BG)
+    draw = ImageDraw.Draw(img)
+    _draw_gradient_bg(draw)
+    _draw_top_strip(draw)
+
+    font_brand = _load_font(FS_BRAND)
+    draw.text((PAD, 46), "Ultra Invest Digest", font=font_brand, fill=C_MUTED)
+
+    _draw_gradient_line(draw, y=96, x1=PAD, x2=W - PAD)
+
+    font_label = _load_font(FS_CTA_TITLE)
+    draw.text((PAD, 136), "喜歡這集？", font=font_label, fill=C_MUTED)
+
+    font_cta = _load_font(FS_CTA_MAIN)
+    cta_lines = ["追蹤頻道 🔔", "Ultra Invest Digest"]
+    line_h_cta = FS_CTA_MAIN + 28
+    total_cta_h = len(cta_lines) * line_h_cta
+    y = H // 2 - total_cta_h // 2
+
+    for line in cta_lines:
+        line_w = int(draw.textlength(line, font=font_cta))
+        x = max(PAD, (W - line_w) // 2)
+        draw.text((x, y), line, font=font_cta, fill=C_WHITE)
+        y += line_h_cta
+
+    _draw_gradient_line(draw, y + 40, PAD + 80, W - PAD - 80, h=5)
+
+    font_sub = _load_font(FS_CTA_SUB)
+    sub_text = "每週投資重點不漏接"
+    sub_w = int(draw.textlength(sub_text, font=font_sub))
+    draw.text(((W - sub_w) // 2, y + 90), sub_text, font=font_sub, fill=C_LIGHT)
+
+    if hashtags:
+        tags_text = " ".join(hashtags.split()[:3])
+        font_tags = _load_font(FS_BRAND)
+        draw.text((PAD, H - 80), tags_text, font=font_tags, fill=C_DIM)
+
+    img.save(output_path)
+    return output_path
 
 
 def _make_title_card(title: str, channel: str, output_path: Path) -> Path:
@@ -294,11 +377,16 @@ def parse_summary(md_path: Path) -> dict:
     return {"title": title, "sections": sections}
 
 
-def generate_cards(md_path: Path, channel_name: str, output_dir: Path) -> list[Path]:
+def generate_cards(
+    md_path: Path,
+    channel_name: str,
+    output_dir: Path,
+    hashtags: str = "",
+) -> list[Path]:
     """
     Generate all PNG cards for a summary file.
 
-    Returns list of card paths in order (section cards only).
+    Returns list of card paths in order: [hook, section×N, cta].
     """
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -306,23 +394,39 @@ def generate_cards(md_path: Path, channel_name: str, output_dir: Path) -> list[P
     title = data["title"]
     sections = data["sections"]
 
-    cards: list[Path] = []
-
-    # Section cards only (no title card), all 6 sections in fixed order
     ordered = [(k, sections[k]) for k in SECTION_ORDER if k in sections]
     if not ordered:
-        return cards
+        return []
 
-    # Generate all bullet points in one Claude browser session
-    print(f"  [card] 用 Claude 批次生成 {len(ordered)} 個章節的金句...")
+    total_section_cards = len(ordered)
+
+    # Generate bullet points + hook in one Claude browser session
+    print(f"  [card] 用 Claude 批次生成金句 + Hook...")
     from backend.claude_browser import generate_card_points
-    sections_dict = {title: content for title, content in ordered}
-    all_points = generate_card_points(sections_dict)
+    sections_dict = {t: c for t, c in ordered}
+    all_points, hook_text = generate_card_points(sections_dict)
 
+    cards: list[Path] = []
+
+    # 1. Hook card (card_00)
+    hook_path = output_dir / "card_00_hook.png"
+    _make_hook_card(hook_text or title, title, channel_name, hook_path)
+    cards.append(hook_path)
+    print(f"  [card] ✓ Hook 卡片")
+
+    # 2. Section cards (card_01 … card_N)
     for i, (section_title, content) in enumerate(ordered, start=1):
         points = all_points.get(section_title) or _fallback_points(content)
+        points = [p for p in points if p][:5]
         card_path = output_dir / f"card_{i:02d}.png"
-        _make_section_card(section_title, points, i, len(ordered), title, channel_name, card_path)
+        _make_section_card(section_title, points, i, total_section_cards, title, channel_name, card_path)
         cards.append(card_path)
+        print(f"  [card] ✓ {section_title} ({len(points)} 條)")
+
+    # 3. CTA card (card_N+1)
+    cta_path = output_dir / f"card_{total_section_cards + 1:02d}_cta.png"
+    _make_cta_card(channel_name, hashtags, cta_path)
+    cards.append(cta_path)
+    print(f"  [card] ✓ CTA 卡片")
 
     return cards
