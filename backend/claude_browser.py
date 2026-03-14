@@ -532,6 +532,96 @@ def extract_analysis(summary_body: str) -> dict:
     return {"mentions": [], "industries": []}
 
 
+def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
+    """
+    Generate Shorts-optimised bullet points for each section, plus a HOOK sentence.
+
+    Points: 2-3 per section, 8-12 Chinese characters each.
+    Hook: 15-20 character sentence for the opening card.
+
+    Returns (points_dict, hook_text).
+    """
+    section_names = list(sections.keys())
+
+    sections_text = "\n\n".join(
+        f"## {title}\n{content}" for title, content in sections.items()
+    )
+
+    prompt = f"""你是社群媒體短影音腳本編輯。請針對以下投資摘要章節，產出適合 YouTube Shorts 的精簡版本。
+
+嚴格要求：
+- 每個章節只輸出 2-3 條重點（不是 5 條）
+- 每條重點必須是 8 到 12 個繁體中文字（只計算中文字，不計標點符號）
+- 文字要直接、有力、讓人一眼看懂
+- 不加任何前綴符號（不要加 1. 或 • 或 -）
+- 每個章節輸出 2-3 行，每行一條
+
+另外，請在最開頭產出一個 [HOOK]，寫一句 15-20 字的「引子」：
+- 要有懸念、驚人數字、或反直覺觀點
+- 讓沒看過這集的人想點開繼續看
+- 格式：一個完整句子，可以用「？」或「！」結尾
+
+請嚴格按照以下格式輸出（保留方括號標記，每組之間空一行）：
+
+[HOOK]
+引子句子
+
+[章節名稱]
+重點1
+重點2
+重點3（可選）
+
+章節內容如下：
+
+{sections_text}"""
+
+    try:
+        raw = chat(prompt, timeout_secs=120)
+    except Exception as e:
+        print(f"  [claude] Shorts 金句生成失敗：{e}")
+        return {name: [] for name in section_names}, ""
+
+    # Parse response — extract [HOOK] and [章節名稱] blocks
+    result: dict[str, list[str]] = {}
+    hook_text = ""
+    current_name: str | None = None
+    current_lines: list[str] = []
+    is_hook = False
+
+    for line in raw.splitlines():
+        line = line.strip()
+        header_match = re.match(r'^\[(.+)\]$', line)
+        if header_match:
+            # Save previous block
+            if is_hook and current_lines:
+                hook_text = current_lines[0]
+            elif current_name is not None:
+                result[current_name] = current_lines[:3]
+
+            tag = header_match.group(1).strip()
+            if tag == "HOOK":
+                is_hook = True
+                current_name = None
+                current_lines = []
+            else:
+                is_hook = False
+                current_name = tag
+                current_lines = []
+        elif line:
+            cleaned = re.sub(r'^[\d]+[.、。\)）]\s*', '', line)
+            cleaned = re.sub(r'^[-•·]\s*', '', cleaned).strip()
+            if cleaned:
+                current_lines.append(cleaned)
+
+    # Save the last block
+    if is_hook and current_lines:
+        hook_text = current_lines[0]
+    elif current_name is not None:
+        result[current_name] = current_lines[:3]
+
+    return result, hook_text
+
+
 def setup_login() -> None:
     """
     Verify that claude.ai cookies are accessible from Chrome.
