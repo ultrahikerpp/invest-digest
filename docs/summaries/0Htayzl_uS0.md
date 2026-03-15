@@ -5,6 +5,12 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 12 天前
 processed: 2026-02-27
+dqs_m1: 0.3333
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 industries: 半導體, AI, 美股
 hashtags: #半導體 #HBM #AppliedMaterials #AI泡沫 #成長股 #Gooaye股癌
 hashtags: #半導體 #HBM #AppliedMaterials #AI泡沫 #成長股 #Gooaye股癌

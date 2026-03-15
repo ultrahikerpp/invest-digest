@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-02-25T01:05:37+00:00
 processed: 2026-02-27
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: 台股, 美股, AI
 hashtags: #AI #台股 #半導體 #軟體股 #板塊輪動 #游庭皓的財經皓角
 hashtags: #AI #台股 #半導體 #軟體股 #板塊輪動 #游庭皓的財經皓角

@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-13T01:15:52+00:00
 processed: 2026-03-13
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: 能源, 總體經濟, 科技
 hashtags: #油價破百 #荷姆茲海峽 #私人信貸風險 #能源板塊 #SaaS #JC趨勢財經觀點
 ---

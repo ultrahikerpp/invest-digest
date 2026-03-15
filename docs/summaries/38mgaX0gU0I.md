@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-10T12:00:11+00:00
 processed: 2026-03-13
+dqs_m1: 0.6667
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: 美股, AI, 科技
 hashtags: #Salesforce #AI顛覆軟體業 #底層資料 #工程師轉型 #美股投資 #JC趨勢財經觀點
 ---

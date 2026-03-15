@@ -5,6 +5,12 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-03-14T08:26:00+00:00
 processed: 2026-03-14
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 hashtags: #投資 #財經 #重點摘要 #市場分析 #股市 #Gooaye股癌
 ---
 

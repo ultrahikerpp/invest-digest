@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2 週前
 processed: 2026-02-28
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: 台股, 半導體, AI
 hashtags: #台灣經濟 #AI #台積電 #半導體 #ETF #游庭皓的財經皓角
 hashtags: #台灣經濟 #AI #台積電 #半導體 #ETF #游庭皓的財經皓角

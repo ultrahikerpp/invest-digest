@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-02-23T01:05:49+00:00
 processed: 2026-02-27
+dqs_m1: 1.0
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 industries: 美股, 總體經濟, 新興市場
 hashtags: #關稅政策 #台積電 #新興市場 #美股 #AI #游庭皓的財經皓角
 hashtags: #關稅政策 #台積電 #新興市場 #美股 #AI #游庭皓的財經皓角

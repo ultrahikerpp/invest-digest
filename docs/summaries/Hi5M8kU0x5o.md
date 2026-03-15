@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-04T01:15:51+00:00
 processed: 2026-03-14
+dqs_m1: 0.6667
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 hashtags: #VIX #抄底策略 #CrowdStrike #MongoDB #美股恐慌 #JC趨勢財經觀點
 industries: 美股, AI, 科技
 ---

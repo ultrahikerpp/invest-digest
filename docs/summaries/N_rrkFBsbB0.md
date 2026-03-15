@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-11T12:00:06+00:00
 processed: 2026-03-13
+dqs_m1: 1.0
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 industries: 總體經濟, ETF, 美股
 hashtags: #降息循環 #投資等級債 #`#00985D` #AI選債 #資產配置 #JC趨勢財經觀點
 ---

@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-05T01:06:39+00:00
 processed: 2026-03-14
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 hashtags: #博通 #AI半導體 #美股反彈 #客製化晶片 #新型雲端服務商 #JC趨勢財經觀點
 industries: 美股, AI, 半導體
 ---

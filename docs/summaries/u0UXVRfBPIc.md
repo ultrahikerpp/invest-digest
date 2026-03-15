@@ -5,6 +5,12 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-02-07T09:17:33+00:00
 processed: 2026-03-13
+dqs_m1: 0.6667
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 hashtags: #AI科技巨頭CAPEX #台股供應鏈 #光通訊散熱 #逢低加碼 #NVIDIA #Gooaye股癌
 industries: 美股, 台股, AI
 ---

@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-06T01:04:29+00:00
 processed: 2026-03-14
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 hashtags: #油價通膨 #光通訊 #MRVL #AI晶片出口管制 #程序化廣告 #JC趨勢財經觀點
 industries: 美股, AI, 半導體
 ---

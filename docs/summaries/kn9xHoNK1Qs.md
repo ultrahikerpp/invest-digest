@@ -5,6 +5,12 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 5 天前
 processed: 2026-02-27
+dqs_m1: 0.6667
+dqs_m4: 0.25
+dqs_m4: 0.25
+dqs_m4: 0.25
+dqs_m4: 0.25
+dqs_m4: 0.25
 industries: 台股, 美股, 總體經濟
 hashtags: #台股 #美股 #地緣政治 #關稅 #風險管理 #Gooaye股癌
 hashtags: #台股 #美股 #地緣政治 #關稅 #風險管理 #Gooaye股癌

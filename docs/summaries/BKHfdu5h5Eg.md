@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-05T01:06:13+00:00
 processed: 2026-03-05
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: 總體經濟, 台股, 美股
 hashtags: #亞洲股市 #油價 #伊朗衝突 #停滯性通膨 #美股反彈 #游庭皓的財經皓角
 ---

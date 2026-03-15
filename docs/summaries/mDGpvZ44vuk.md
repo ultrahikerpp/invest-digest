@@ -5,6 +5,12 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-02-28T08:49:38+00:00
 processed: 2026-02-28
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: 半導體, 台股, AI
 hashtags: #被動元件 #太陽能 #AI就業 #光通訊 #地緣政治風險 #Gooaye股癌
 hashtags: #被動元件 #太陽能 #AI就業 #光通訊 #地緣政治風險 #Gooaye股癌

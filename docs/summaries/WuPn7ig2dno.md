@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-04T01:04:58+00:00
 processed: 2026-03-04
+dqs_m1: 1.0
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 industries: 總體經濟, 能源, AI
 hashtags: #AI泡沫 #中東危機 #黃金 #費半 #油價 #游庭皓的財經皓角
 ---

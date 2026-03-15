@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-10T01:07:08+00:00
 processed: 2026-03-10
+dqs_m1: 1.0
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 industries: 台股, 半導體, 能源
 hashtags: #油價崩跌 #台股外資賣壓 #川普能源政策 #中東地緣政治 #半導體出口 #游庭皓的財經皓角
 ---

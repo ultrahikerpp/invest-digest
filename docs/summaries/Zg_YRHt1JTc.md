@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-11T01:07:06+00:00
 processed: 2026-03-11
+dqs_m1: 1.0
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
+dqs_m4: 0.75
 industries: 能源, AI, 總體經濟
 hashtags: #能源危機 #油價 #核能 #AI資料中心 #降息預期 #游庭皓的財經皓角
 ---

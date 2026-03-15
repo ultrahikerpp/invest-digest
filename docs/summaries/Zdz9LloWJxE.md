@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-10T01:11:40+00:00
 processed: 2026-03-13
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 hashtags: #美股反彈 #AI半導體 #光通訊 #HIMS #AAOI #JC趨勢財經觀點
 industries: 半導體, AI, 美股
 ---

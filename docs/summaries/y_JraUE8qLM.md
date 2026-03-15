@@ -5,6 +5,12 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-03-03T01:07:03+00:00
 processed: 2026-03-03
+dqs_m1: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: AI, 半導體, 總體經濟
 hashtags: #黃金 #AI科技股 #中東地緣風險 #台股 #通膨 #游庭皓的財經皓角
 ---

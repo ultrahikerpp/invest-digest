@@ -5,6 +5,12 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-11T01:02:33+00:00
 processed: 2026-03-13
+dqs_m1: 0.6667
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
+dqs_m4: 1.0
 industries: 美股, 半導體, AI
 hashtags: #ORCL #AI基礎設施 #雲端 #AMZN #企業SaaS #JC趨勢財經觀點
 ---
