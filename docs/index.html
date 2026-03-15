@@ -1624,6 +1624,93 @@
     .flip-name { font-weight: 600; }
     .flip-before { color: var(--green); font-size: 12px; }
     .flip-after { color: var(--red); font-size: 12px; }
+
+    /* ── Macro Dashboard ── */
+    .macro-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin: 28px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .macro-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .macro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+    .macro-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .macro-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-md);
+    }
+    .macro-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px 0;
+    }
+    .macro-card-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .macro-card-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .macro-card-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 1px;
+    }
+    .macro-card-widget {
+      height: 180px;
+      position: relative;
+    }
+    .macro-card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      padding: 10px 16px 14px;
+      border-top: 1px solid var(--border);
+      margin-top: 2px;
+    }
+
+    .macro-note {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 20px;
+      line-height: 1.7;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    @media (max-width: 768px) {
+      .macro-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
@@ -1889,6 +1976,9 @@
       if (hash === '#/divergence') {
         return { type: 'divergence' };
       }
+      if (hash === '#/macro') {
+        return { type: 'macro' };
+      }
       if (hash.startsWith('#/industry/')) {
         return { type: 'industry', name: decodeURIComponent(hash.slice(11)) };
       }
@@ -1951,7 +2041,14 @@
       const r = getRoute();
       const trendingActive = r.type === 'trending';
       const divergenceActive = r.type === 'divergence';
+      const macroActive = r.type === 'macro';
       document.getElementById('analysisList').innerHTML = `
+        <div class="sidebar-analysis-item ${macroActive ? 'active' : ''}" id="macroNavBtn">
+          <div class="analysis-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="analysis-item-name">總經儀表板</div>
+        </div>
         <div class="sidebar-analysis-item ${trendingActive ? 'active' : ''}" id="trendingNavBtn">
           <div class="analysis-item-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -1965,6 +2062,10 @@
           <div class="analysis-item-name">多空分歧</div>
         </div>
       `;
+      document.getElementById('macroNavBtn').addEventListener('click', () => {
+        location.hash = '#/macro';
+        closeSidebar();
+      });
       document.getElementById('trendingNavBtn').addEventListener('click', () => {
         location.hash = '#/trending';
         closeSidebar();
@@ -2453,6 +2554,127 @@
       _render('all');
     }
 
+    // ── Macro Dashboard ───────────────────────────────────────
+
+    function renderMacro() {
+      const mc = document.getElementById('mainContent');
+      const isDark = !document.documentElement.hasAttribute('data-theme');
+      const theme = isDark ? 'dark' : 'light';
+
+      const SECTIONS = [
+        {
+          title: '市場情緒',
+          items: [
+            {
+              id: 'tv-spx', icon: '📈', label: 'S&P 500', sub: '美國大盤指數', symbol: 'FOREXCOM:SPXUSD',
+              desc: 'S&P 500 是美國 500 大企業的加權指數，為全球股市最重要的基準。指數上漲代表整體市場樂觀、企業獲利預期正面；下跌則反映衰退疑慮或系統性風險。台股、港股等亞洲市場走勢通常與 S&P 500 高度正相關，尤其在重大事件後的隔日開盤影響顯著。',
+            },
+            {
+              id: 'tv-vix', icon: '😨', label: 'VIX 恐慌指數', sub: '市場波動率 / 情緒指標', symbol: 'CAPITALCOM:VIX',
+              desc: 'VIX 衡量市場對未來 30 天 S&P 500 波動率的預期，俗稱「恐慌指數」。VIX 低於 15 代表市場情緒平靜；高於 25 進入警戒區間；超過 40 通常出現在金融危機或重大黑天鵝事件。VIX 與股市幾乎完全負相關——VIX 急升時股市往往同步重挫，是研判市場情緒的關鍵指標。',
+            },
+          ],
+        },
+        {
+          title: '美元與匯率',
+          items: [
+            {
+              id: 'tv-dxy', icon: '💵', label: '美元指數 DXY', sub: '強弱影響新興市場與原物料', symbol: 'CAPITALCOM:DXY',
+              desc: 'DXY 衡量美元對歐元、日圓、英鎊等六大貨幣的強弱。美元走強時，以美元計價的原物料（黃金、油價）承壓，新興市場資金外流、股市下跌；美元走弱則相反。對台股而言，台幣升值有利外資流入；美元強勢週期中，外資傾向回流美國，可能對台股造成賣壓。',
+            },
+            {
+              id: 'tv-ndx', icon: '💻', label: '納斯達克 100', sub: '科技成長股基準 / 風險偏好指標', symbol: 'CAPITALCOM:US100',
+              desc: '納斯達克 100 由美股前 100 大非金融科技公司組成，是全球科技股最重要的指數。台積電、聯發科等台灣科技股與 NDX 走勢高度連動，因為同屬半導體與 AI 供應鏈。NDX 下跌往往預示科技類股估值修正壓力；反之 NDX 強勢通常帶動台股電子類股同步走高。',
+            },
+            {
+              id: 'tv-usdjpy', icon: '🇯🇵', label: 'USD/JPY 美元兌日圓', sub: '利率差異代理指標 / 風險情緒', symbol: 'FX:USDJPY',
+              desc: 'USD/JPY 是美日利率差異的最直接體現。日圓被視為避險貨幣——市場恐慌時，投資人買入日圓避險，USD/JPY 下跌；市場風險偏好升溫時，美元兌日圓走強。此外，日圓升值會壓縮日本出口商獲利，影響日本股市；而 Carry Trade 平倉（借日圓買高息資產的策略反轉）往往引發全球股市同步大跌。',
+            },
+          ],
+        },
+        {
+          title: '大宗商品',
+          items: [
+            {
+              id: 'tv-gold', icon: '🥇', label: '黃金', sub: '避險情緒 / 通膨預期', symbol: 'TVC:GOLD',
+              desc: '黃金是最經典的避險資產。股市大跌或地緣政治風險升溫時，資金流入黃金推高金價。通膨預期上升時，黃金亦有保值需求。金價走強通常代表市場對股票等風險資產信心不足；然而若金價與股市同步上漲，則可能反映流動性寬鬆或通膨預期升溫，需搭配其他指標判斷。',
+            },
+            {
+              id: 'tv-oil', icon: '🛢️', label: 'WTI 原油', sub: '能源通膨與景氣訊號', symbol: 'TVC:USOIL',
+              desc: '油價是全球景氣的重要溫度計。油價上漲有時反映需求強勁（景氣好、對股市正面）；但若源於供給衝擊（如 OPEC 減產、地緣衝突），則推高通膨、壓縮企業利潤，對股市形成負面壓力。能源股（XOM、CVX 等）與油價高度正相關；航空、運輸等高耗油產業則受油價上漲拖累。',
+            },
+            {
+              id: 'tv-copper', icon: '🔶', label: '銅（Dr. Copper）', sub: '景氣領先指標 / 工業需求', symbol: 'CAPITALCOM:COPPER',
+              desc: '銅被稱為「經濟學博士」，因其廣泛用於建築、電子、電動車等幾乎所有工業領域，銅價走勢被視為全球景氣的領先指標。銅價上漲通常預示工業需求回升，對景氣循環類股（材料、工業、能源）構成利多；銅價持續下跌則警示全球經濟放緩。中國是全球最大銅需求國，銅價亦反映中國景氣預期。',
+            },
+          ],
+        },
+      ];
+
+      let sectionsHtml = '';
+      for (const sec of SECTIONS) {
+        let cards = '';
+        for (const item of sec.items) {
+          cards += `
+            <div class="macro-card">
+              <div class="macro-card-header">
+                <div class="macro-card-icon">${item.icon}</div>
+                <div>
+                  <div class="macro-card-label">${item.label}</div>
+                  <div class="macro-card-sub">${item.sub}</div>
+                </div>
+              </div>
+              <div class="macro-card-widget" id="${item.id}"></div>
+              <div class="macro-card-desc">${item.desc}</div>
+            </div>`;
+        }
+        sectionsHtml += `
+          <div class="macro-section-title">${sec.title}</div>
+          <div class="macro-grid">${cards}</div>`;
+      }
+
+      mc.innerHTML = `
+        <div class="page-header">
+          <h1 class="page-title">🌐 總經儀表板</h1>
+        </div>
+        <div style="font-size:13px;color:var(--text-dim);margin-bottom:4px">
+          即時行情來自 TradingView，涵蓋美元、利率、大宗商品等與股市高度相關的總體經濟指標。
+        </div>
+        ${sectionsHtml}
+        <div class="macro-note">
+          ℹ️ 資料由 TradingView 提供，圖表顯示近 3 個月走勢。點擊圖表可在 TradingView 查看更多細節。<br>
+          <strong>指標說明：</strong>
+          VIX 恐慌指數高於 30 通常代表恐慌；DXY 美元指數走強時，新興市場與原物料承壓；USD/JPY 上漲反映美日利差擴大或風險偏好轉強；銅價（Dr. Copper）被視為全球景氣的領先指標，與股市高度正相關。
+        </div>`;
+
+      // Inject TradingView mini chart widgets after DOM is ready
+      const widgetCfgBase = {
+        width: '100%',
+        height: 180,
+        locale: 'zh_TW',
+        dateRange: '3M',
+        colorTheme: theme,
+        isTransparent: true,
+        autosize: true,
+        largeChartUrl: '',
+        noTimeScale: false,
+        chartOnly: false,
+      };
+
+      for (const sec of SECTIONS) {
+        for (const item of sec.items) {
+          const container = document.getElementById(item.id);
+          if (!container) continue;
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+          script.async = true;
+          script.text = JSON.stringify({ ...widgetCfgBase, symbol: item.symbol });
+          container.appendChild(script);
+        }
+      }
+    }
+
     // ── Entity History view (C1) ───────────────────────────────
 
     function renderEntityHistory(entityName) {
@@ -2591,6 +2813,11 @@
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'none';
 
+      if (r.type === 'macro') {
+        renderSidebar(allEpisodes, null);
+        renderMacro();
+        return;
+      }
       if (r.type === 'trending') {
         renderSidebar(allEpisodes, null);
         renderTrending();
