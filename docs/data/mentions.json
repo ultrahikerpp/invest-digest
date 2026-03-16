@@ -25,6 +25,14 @@
       "neutral": 4
     },
     {
+      "name": "台積電",
+      "ticker": "2330",
+      "count": 11,
+      "bullish": 10,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "Google",
       "ticker": "GOOGL",
       "count": 11,
@@ -33,40 +41,40 @@
       "neutral": 11
     },
     {
-      "name": "台積電",
-      "ticker": "2330",
-      "count": 10,
-      "bullish": 9,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "count": 9,
-      "bullish": 5,
+      "count": 10,
+      "bullish": 6,
       "bearish": 0,
       "neutral": 4
     },
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 8,
+      "count": 9,
       "bullish": 1,
       "bearish": 0,
-      "neutral": 7
+      "neutral": 8
     },
     {
       "name": "西德州原油",
       "ticker": "WTI",
-      "count": 7,
-      "bullish": 4,
+      "count": 8,
+      "bullish": 5,
       "bearish": 2,
       "neutral": 1
     },
     {
       "name": "Anthropic",
       "ticker": null,
+      "count": 8,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 6
+    },
+    {
+      "name": "AMD",
+      "ticker": "AMD",
       "count": 7,
       "bullish": 2,
       "bearish": 0,
@@ -79,6 +87,22 @@
       "bullish": 3,
       "bearish": 0,
       "neutral": 3
+    },
+    {
+      "name": "布蘭特原油",
+      "ticker": "BZ",
+      "count": 6,
+      "bullish": 3,
+      "bearish": 2,
+      "neutral": 1
+    },
+    {
+      "name": "博通",
+      "ticker": "AVGO",
+      "count": 6,
+      "bullish": 5,
+      "bearish": 0,
+      "neutral": 1
     },
     {
       "name": "Tesla",
@@ -97,11 +121,19 @@
       "neutral": 4
     },
     {
-      "name": "AMD",
-      "ticker": "AMD",
+      "name": "OpenAI",
+      "ticker": null,
       "count": 6,
       "bullish": 2,
       "bearish": 0,
+      "neutral": 4
+    },
+    {
+      "name": "Microsoft",
+      "ticker": "MSFT",
+      "count": 6,
+      "bullish": 1,
+      "bearish": 1,
       "neutral": 4
     },
     {
@@ -127,68 +159,36 @@
       "bullish": 1,
       "bearish": 2,
       "neutral": 2
-    },
-    {
-      "name": "微軟",
-      "ticker": "MSFT",
-      "count": 5,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 4
-    },
-    {
-      "name": "布蘭特原油",
-      "ticker": "BZ",
-      "count": 5,
-      "bullish": 2,
-      "bearish": 2,
-      "neutral": 1
-    },
-    {
-      "name": "台股加權指數",
-      "ticker": "TWII",
-      "count": 5,
-      "bullish": 2,
-      "bearish": 1,
-      "neutral": 2
-    },
-    {
-      "name": "博通",
-      "ticker": "AVGO",
-      "count": 5,
-      "bullish": 4,
-      "bearish": 0,
-      "neutral": 1
     }
   ],
   "industries": [
     {
       "name": "AI",
-      "count": 24
+      "count": 25
     },
     {
       "name": "美股",
-      "count": 20
+      "count": 21
     },
     {
       "name": "半導體",
-      "count": 16
+      "count": 17
     },
     {
       "name": "總體經濟",
-      "count": 14
+      "count": 15
+    },
+    {
+      "name": "能源",
+      "count": 13
     },
     {
       "name": "台股",
       "count": 13
     },
     {
-      "name": "能源",
-      "count": 12
-    },
-    {
       "name": "科技",
-      "count": 7
+      "count": 8
     },
     {
       "name": "新興市場",
@@ -523,6 +523,18 @@
         "GROQ"
       ]
     },
+    "YZ-HGEmzJ5k": {
+      "industries": [
+        "能源",
+        "總體經濟",
+        "美股"
+      ],
+      "mentions": [
+        "西德州原油",
+        "布蘭特原油",
+        "美股三大指數"
+      ]
+    },
     "Ys3DAM85J9U": {
       "industries": [
         "AI",
@@ -693,6 +705,34 @@
         "台股",
         "日本股市",
         "韓國股市"
+      ]
+    },
+    "g7bA1Qs3GS4": {
+      "industries": [
+        "半導體",
+        "AI",
+        "科技"
+      ],
+      "mentions": [
+        "NVIDIA",
+        "台積電",
+        "博通",
+        "AMD",
+        "Google / Alphabet",
+        "Microsoft",
+        "Amazon",
+        "Meta",
+        "Marvell",
+        "Lumentum",
+        "Coherent",
+        "台達電",
+        "台光電",
+        "聯發科",
+        "英特爾",
+        "OpenAI",
+        "Anthropic",
+        "智譜",
+        "MiniMax"
       ]
     },
     "gM-rb0uqmPk": {
@@ -975,5 +1015,5 @@
       ]
     }
   },
-  "generated_at": "2026-03-15T15:37:37"
+  "generated_at": "2026-03-16T12:27:44"
 }
