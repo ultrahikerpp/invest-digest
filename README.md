@@ -68,6 +68,14 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 # 產生指定影片的摘要短影片 MP4
 ./venv/bin/python runner.py video <video_id>
 
+# ── Shorts 短影音 ──
+
+# 產生指定影片的 Shorts 9:16 字卡 PNG（hook + 各段落 + CTA）
+./venv/bin/python runner.py shorts-cards <video_id>
+
+# 組裝 Shorts 字卡成 MP4 短影音
+./venv/bin/python runner.py shorts-video <video_id>
+
 # 發送最新集數影片通知 Email
 ./venv/bin/python runner.py notify
 
