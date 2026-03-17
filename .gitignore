@@ -9,6 +9,22 @@
 # Keep .gitignore itself
 !.gitignore
 
+# Allow root-level project files
+!README.md
+!LICENSE
+!CLAUDE.md
+!requirements.txt
+!channels.json
+!runner.py
+!build_site.py
+!deploy.sh
+!find_channel_id.py
+!.env.example
+
+# Allow backend source
+!backend/
+!backend/*.py
+
 # Allow core scripts and config
 !runner.py
 !build_site.py

@@ -2,7 +2,33 @@
 
 > YouTube 財經投資頻道自動摘要工具
 
+[![Version](https://img.shields.io/badge/Version-1.0.0-orange)](https://github.com/ultrahikerpp/invest-digest/releases)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-macOS-lightgrey?logo=apple)](README.md)
+[![Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-blue?logo=github)](https://ultrahikerpp.github.io/invest-digest/)
+
 每天自動抓取訂閱頻道的最新影片，透過 Whisper 轉錄逐字稿、Claude AI 整理成結構化投資重點摘要與字卡，並部署為 GitHub Pages 靜態網站供瀏覽器查看。
+
+---
+
+## Demo
+
+![Ultra Investment Digest 網站截圖](docs/screenshot.png)
+
+🔗 **線上預覽：** https://ultrahikerpp.github.io/invest-digest/
+
+---
+
+## 環境需求
+
+| 項目 | 版本 / 需求 |
+| --- | --- |
+| Python | 3.9 以上 |
+| Google Chrome | 已安裝，且已在 Chrome 中登入 [claude.ai](https://claude.ai) |
+| ffmpeg | 產生 MP4 影片時需要（`brew install ffmpeg`） |
+| 作業系統 | macOS（Windows / Linux 尚未支援） |
+| Gmail | 需設定應用程式密碼（App Password）以發送通知信 |
 
 ---
 
@@ -182,6 +208,7 @@ investment-digest/
 │   └── video_maker.py     # 短影片 MP4 組裝
 ├── docs/                  # GitHub Pages 靜態網站
 │   ├── index.html         # 單頁應用（SPA，Vanilla JS）
+│   ├── screenshot.png     # 網站截圖（README 用）
 │   ├── summaries/         # Markdown 摘要（由 build_site.py 複製）
 │   └── data/
 │       ├── episodes.json  # 集數索引（由 build_site.py 產生）
@@ -224,3 +251,31 @@ industries: 台股, ETF, 總體經濟
 
 `industries` 欄位由 `run` 或 `backfill-analysis` 自動填入，最多 3 個，從固定清單選取：
 台股、美股、中港股、半導體、AI、科技、金融、房地產、能源、原物料、生技醫療、ETF、總體經濟、加密貨幣、新興市場
+
+---
+
+## 已知限制
+
+- **僅支援 macOS**：瀏覽器 cookie 讀取使用 macOS Keychain，尚未支援 Windows / Linux
+- **需保持 Chrome 登入狀態**：若 claude.ai session 過期，需重新登入 Chrome 後再執行
+- **不穩定性**：依賴 claude.ai 網頁介面，若 Claude 改版 UI 可能需要更新 selector
+
+---
+
+## 貢獻指南
+
+歡迎提交 Issue 或 Pull Request！
+
+1. Fork 此專案
+2. 建立功能分支：`git checkout -b feat/your-feature`
+3. 提交變更：`git commit -m "feat: add your feature"`
+4. 推送分支：`git push origin feat/your-feature`
+5. 開啟 Pull Request
+
+**Commit 格式**：請遵循 [Conventional Commits](https://www.conventionalcommits.org/)，類型包括：`feat`、`fix`、`refactor`、`docs`、`chore`
+
+---
+
+## License
+
+[MIT](LICENSE) © 2026 ultrahikerpp
