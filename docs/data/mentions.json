@@ -3,26 +3,26 @@
     {
       "name": "道瓊指數",
       "ticker": "DJIA",
-      "count": 16,
-      "bullish": 1,
+      "count": 18,
+      "bullish": 3,
       "bearish": 6,
       "neutral": 9
     },
     {
       "name": "S&P 500",
       "ticker": "SPX",
-      "count": 14,
-      "bullish": 1,
+      "count": 15,
+      "bullish": 2,
       "bearish": 4,
       "neutral": 9
     },
     {
       "name": "費城半導體指數",
       "ticker": "SOX",
-      "count": 12,
-      "bullish": 4,
+      "count": 14,
+      "bullish": 5,
       "bearish": 4,
-      "neutral": 4
+      "neutral": 5
     },
     {
       "name": "台積電",
@@ -51,8 +51,8 @@
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 9,
-      "bullish": 1,
+      "count": 10,
+      "bullish": 2,
       "bearish": 0,
       "neutral": 8
     },
@@ -75,10 +75,34 @@
     {
       "name": "AMD",
       "ticker": "AMD",
+      "count": 8,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 6
+    },
+    {
+      "name": "羅素2000",
+      "ticker": "RUT",
+      "count": 7,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 4
+    },
+    {
+      "name": "OpenAI",
+      "ticker": null,
       "count": 7,
       "bullish": 2,
       "bearish": 0,
       "neutral": 5
+    },
+    {
+      "name": "那斯達克",
+      "ticker": "IXIC",
+      "count": 6,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 3
     },
     {
       "name": "美光",
@@ -113,16 +137,16 @@
       "neutral": 5
     },
     {
-      "name": "Palantir",
-      "ticker": "PLTR",
+      "name": "QQQ",
+      "ticker": "QQQ",
       "count": 6,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 4
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 3
     },
     {
-      "name": "OpenAI",
-      "ticker": null,
+      "name": "Palantir",
+      "ticker": "PLTR",
       "count": 6,
       "bullish": 2,
       "bearish": 0,
@@ -135,36 +159,12 @@
       "bullish": 1,
       "bearish": 1,
       "neutral": 4
-    },
-    {
-      "name": "那斯達克",
-      "ticker": "IXIC",
-      "count": 5,
-      "bullish": 1,
-      "bearish": 2,
-      "neutral": 2
-    },
-    {
-      "name": "蘋果",
-      "ticker": "AAPL",
-      "count": 5,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 5
-    },
-    {
-      "name": "羅素2000",
-      "ticker": "RUT",
-      "count": 5,
-      "bullish": 1,
-      "bearish": 2,
-      "neutral": 2
     }
   ],
   "industries": [
     {
       "name": "AI",
-      "count": 25
+      "count": 26
     },
     {
       "name": "美股",
@@ -172,19 +172,19 @@
     },
     {
       "name": "半導體",
-      "count": 17
+      "count": 19
     },
     {
       "name": "總體經濟",
-      "count": 15
+      "count": 16
     },
     {
       "name": "能源",
-      "count": 13
+      "count": 14
     },
     {
       "name": "台股",
-      "count": 13
+      "count": 14
     },
     {
       "name": "科技",
@@ -507,6 +507,32 @@
         "國際航空集團",
         "法航",
         "美國國債"
+      ]
+    },
+    "Wuqc3EUtGIg": {
+      "industries": [
+        "能源",
+        "半導體",
+        "總體經濟"
+      ],
+      "mentions": [
+        "輝達（NVIDIA）",
+        "AMD",
+        "台塑",
+        "台塑化",
+        "聯電",
+        "世界先進",
+        "力積電",
+        "黑石（Blackstone）",
+        "貝萊德（BlackRock）",
+        "摩根士丹利",
+        "道瓊指數",
+        "標普500指數",
+        "那斯達克",
+        "羅素2000",
+        "費城半導體指數",
+        "TLT",
+        "QQQ"
       ]
     },
     "Y3UKwjPIVeE": {
@@ -1013,7 +1039,39 @@
         "啟基",
         "華通"
       ]
+    },
+    "zllE5XH6sko": {
+      "industries": [
+        "AI",
+        "半導體",
+        "台股"
+      ],
+      "mentions": [
+        "輝達（NVIDIA）",
+        "Meta",
+        "Nebius",
+        "美光（Micron）",
+        "OpenAI",
+        "xAI",
+        "IBM",
+        "CoreWeave",
+        "Sandisk",
+        "Western Digital（WDC）",
+        "Snowflake",
+        "Databricks",
+        "鴻海",
+        "廣達",
+        "聯亞",
+        "波若威",
+        "上詮",
+        "旺宏",
+        "道瓊指數",
+        "S&P 500",
+        "納斯達克100",
+        "費城半導體指數",
+        "羅素2000"
+      ]
     }
   },
-  "generated_at": "2026-03-16T12:54:09"
+  "generated_at": "2026-03-17T03:18:40"
 }
