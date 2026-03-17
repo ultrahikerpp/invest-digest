@@ -95,6 +95,27 @@ def _build_analysis_prompt(summary_body: str) -> str:
 {summary_body[:4000]}"""
 
 
+def _build_m1_prompt(summary_body: str) -> str:
+    return f"""你是一位投資內容品質審查員。請分析以下投資摘要，評估三個要素是否存在。
+
+請輸出裸 JSON，不要任何說明文字，第一個字元必須是 {{：
+
+{{
+  "signal_direction": <0或1，訊號方向是否明確：bullish/bearish/neutral>,
+  "impact_magnitude": <0或1，影響幅度是否具體：%、板塊輪動、市值影響等>,
+  "time_frame": <0或1，時間框架是否明確：本週/本季/長期等>,
+  "total": <三項加總>
+}}
+
+評分標準：
+- signal_direction (1分)：摘要中有明確的看多、看空或中性立場
+- impact_magnitude (1分)：有具體的影響幅度描述（百分比、板塊輪動、市值規模等）
+- time_frame (1分)：有明確的時間框架（本週、本季、今年、長期等）
+
+[摘要內容]
+{summary_body[:4000]}"""
+
+
 def _build_hashtag_prompt(summary_body: str) -> str:
     return f"""根據以下投資摘要內容，產出 5 個最重要的關鍵字 hashtag。
 
@@ -186,7 +207,14 @@ def _extract_last_response(page) -> str:
             if (tag === 'a') return children();
             if (tag === 'hr') return '\\n---\\n\\n';
             if (tag === 'table') return children() + '\\n';
-            if (tag === 'thead' || tag === 'tbody') return children();
+            if (tag === 'thead') {
+                const content = children();
+                const firstTr = node.querySelector('tr');
+                const cols = firstTr ? firstTr.querySelectorAll('td, th').length : 1;
+                const sep = '| ' + Array(cols).fill('---').join(' | ') + ' |\\n';
+                return content + sep;
+            }
+            if (tag === 'tbody') return children();
             if (tag === 'tr') {
                 const cells = Array.from(node.querySelectorAll('td, th'));
                 return '| ' + cells.map(c => c.innerText.trim()).join(' | ') + ' |\\n';
@@ -553,6 +581,39 @@ def extract_analysis(summary_body: str) -> dict:
             print(f"  [claude] 原始回應前 200 字：{raw[:200]!r}")
 
     return {"mentions": [], "industries": []}
+
+
+def score_m1(summary_body: str) -> float:
+    """
+    Score summary on M1 (signal quality) via Claude browser.
+
+    Returns total/3 normalised to 0.0–1.0.
+    Returns -1.0 on failure (distinguishable from a genuine 0 score).
+    """
+    import json
+
+    prompt = _build_m1_prompt(summary_body)
+    try:
+        raw = chat(prompt, timeout_secs=30)
+    except Exception as e:
+        print(f"  [m1] chat 失敗：{e}")
+        return -1.0
+
+    raw = raw.strip()
+    if not raw:
+        print(f"  [m1] 回應為空")
+        return -1.0
+
+    try:
+        cleaned = _clean_json_raw(raw)
+        if not cleaned:
+            raise ValueError("清理後內容為空")
+        data = json.loads(cleaned)
+        total = int(data.get("total", 0))
+        return round(total / 3, 4)
+    except Exception as e:
+        print(f"  [m1] JSON 解析失敗：{e}  原始：{raw[:200]!r}")
+        return -1.0
 
 
 def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:

@@ -16,6 +16,10 @@ Usage:
   python3 runner.py setup-browser           # one-time Claude login setup for browser automation
   python3 runner.py renormalize            # apply entity_aliases.json to all existing mentions in the DB
   python3 runner.py fix-dates              # fix relative published_at dates (e.g. '1 天前') in the DB
+  python3 runner.py score <video_id>       # M1 (Claude) + M4 (rule) DQS scoring for one episode
+  python3 runner.py score <video_id> --m4-only  # M4 only, skip Claude
+  python3 runner.py score --all            # M4 only for all episodes
+  python3 runner.py score --all --force    # M1 + M4 for all episodes
 
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
@@ -204,7 +208,7 @@ def cmd_run(channel_id: str | None = None):
                 f"video_id: {v['video_id']}\n"
                 f"channel_id: {cid}\n"
                 f"channel_name: {cname}\n"
-                f"published: {v.get('published_at', '')}\n"
+                f"published: {v.get('published_at', '')[:10]}\n"
                 f"processed: {now}\n"
                 f"---\n\n"
                 f"# {v['title']}\n\n"
@@ -1160,6 +1164,127 @@ def cmd_fix_dates():
     print(f"\n✓ 修正了 {fixed} 筆 published_at 日期")
 
 
+# ── Score command ─────────────────────────────────────────
+
+def _read_summary_body(md_path: Path) -> str:
+    """Return the body of a summary (strip YAML frontmatter if present)."""
+    content = md_path.read_text(encoding="utf-8")
+    if content.startswith("---"):
+        fm_end = content.find("---", 3)
+        return content[fm_end + 3:].strip() if fm_end != -1 else content
+    return content
+
+
+def _score_episode(video_id: str, run_m1: bool = True) -> None:
+    """Score a single episode with M1 (optional) and M4, display results."""
+    from backend.dqs import score_m4
+
+    summary_path = _find_summary_path(video_id)
+    if summary_path is None:
+        print(f"ERROR: 找不到 {video_id} 的摘要檔案", file=sys.stderr)
+        return
+
+    meta = _parse_summary_meta(summary_path)
+    title = meta.get("title", video_id)
+    summary_body = _read_summary_body(summary_path)
+
+    # ── M4 (rule-based) ───────────────────────────────────
+    from datetime import date as _date
+    pub_str = meta.get("published", "")
+    ref_date = None
+    if pub_str and len(pub_str) >= 10:
+        try:
+            ref_date = _date.fromisoformat(pub_str[:10])
+        except ValueError:
+            pass
+
+    m4_score, coverage = score_m4(summary_body, reference_date=ref_date)
+
+    # ── M1 (Claude browser) ───────────────────────────────
+    m1_score: float | None = None
+    if run_m1:
+        print(f"  [M1] 使用 Claude 評分訊號品質...")
+        from backend.claude_browser import score_m1
+        m1_score = score_m1(summary_body)
+
+    # ── Display ───────────────────────────────────────────
+    print(f"\n{'═'*55}")
+    print(f"  {title[:50]}")
+    print(f"  video_id: {video_id}")
+    print(f"{'─'*55}")
+    if m1_score is not None:
+        status = f"{m1_score:.2f}" if m1_score >= 0 else "失敗 (-1)"
+        print(f"  M1 訊號品質 (Claude):  {status}")
+    print(f"  M4 覆蓋廣度 (規則):    {m4_score:.2f}")
+    print(f"{'─'*55}")
+    for cat, hit in coverage.items():
+        icon = "✓" if hit else "✗"
+        print(f"    {icon} {cat}")
+    print(f"{'═'*55}\n")
+
+    # ── Persist to frontmatter ────────────────────────────
+    _update_frontmatter_field(summary_path, "dqs_m4", str(m4_score))
+    if m1_score is not None and m1_score >= 0:
+        _update_frontmatter_field(summary_path, "dqs_m1", str(m1_score))
+
+
+def cmd_score(video_id: str | None = None, all_episodes: bool = False, run_m1: bool = True) -> None:
+    """Score episodes with M1 (Claude) + M4 (rule-based) DQS metrics."""
+    _ensure_dirs()
+
+    if all_episodes:
+        from backend.dqs import score_m4
+        from datetime import date as _date
+
+        md_paths = sorted(SUMMARIES_DIR.glob("**/*.md"))
+        if not md_paths:
+            print("找不到任何摘要檔案")
+            return
+
+        label = "M1 + M4" if run_m1 else "M4"
+        print(f"找到 {len(md_paths)} 個摘要，執行 {label} 評分...\n")
+        results = []
+        for md_path in md_paths:
+            meta = _parse_summary_meta(md_path)
+            vid = meta.get("video_id", md_path.stem)
+            title = meta.get("title", vid)
+            summary_body = _read_summary_body(md_path)
+
+            pub_str = meta.get("published", "")
+            ref_date = None
+            if pub_str and len(pub_str) >= 10:
+                try:
+                    ref_date = _date.fromisoformat(pub_str[:10])
+                except ValueError:
+                    pass
+
+            m4_score, coverage = score_m4(summary_body, reference_date=ref_date)
+            _update_frontmatter_field(md_path, "dqs_m4", str(m4_score))
+
+            m1_score: float | None = None
+            if run_m1:
+                from backend.claude_browser import score_m1
+                print(f"  [M1] {title[:40]}...")
+                m1_score = score_m1(summary_body)
+                if m1_score >= 0:
+                    _update_frontmatter_field(md_path, "dqs_m1", str(m1_score))
+
+            m1_str = f"  M1={m1_score:.2f}" if m1_score is not None and m1_score >= 0 else ""
+            results.append((m4_score, title[:45]))
+            print(f"  M4={m4_score:.2f}{m1_str}  {title[:50]}")
+
+        avg = sum(r[0] for r in results) / len(results) if results else 0
+        print(f"\n平均 M4 分數：{avg:.2f}（共 {len(results)} 集）")
+        print(f"dqs_m4{' + dqs_m1' if run_m1 else ''} 欄位已寫入各摘要 frontmatter")
+
+    elif video_id:
+        _score_episode(video_id, run_m1=run_m1)
+
+    else:
+        print("Usage: runner.py score <video_id>  |  runner.py score --all", file=sys.stderr)
+        sys.exit(1)
+
+
 # ── Deploy command ────────────────────────────────────────
 
 def cmd_deploy():
@@ -1273,6 +1398,17 @@ def main():
 
     elif cmd == "fix-dates":
         cmd_fix_dates()
+
+    elif cmd == "score":
+        flags = set(a for a in args[1:] if a.startswith("--"))
+        positional = [a for a in args[1:] if not a.startswith("--")]
+        m4_only = "--m4-only" in flags
+        force_m1 = "--force" in flags
+        run_m1 = force_m1 or (not m4_only)
+        if "--all" in flags or (not positional):
+            cmd_score(all_episodes=True, run_m1=run_m1)
+        else:
+            cmd_score(video_id=positional[0], run_m1=run_m1)
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)
