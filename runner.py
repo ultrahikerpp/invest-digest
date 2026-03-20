@@ -762,7 +762,8 @@ def cmd_approve():
         video_id = ep["video_id"]
         channel_id = ep["channel_id"]
         title = ep["title"] or video_id
-        summary_path = (Path(ep["summary_path"]) if ep["summary_path"] else None) or _find_summary_path(video_id)
+        _db_path = Path(ep["summary_path"]) if ep["summary_path"] else None
+        summary_path = (_db_path if _db_path and _db_path.exists() else None) or _find_summary_path(video_id)
 
         print(f"\n=== {title[:60]} ===")
 
