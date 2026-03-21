@@ -20,6 +20,7 @@ Usage:
   python3 runner.py score <video_id> --m4-only  # M4 only, skip Claude
   python3 runner.py score --all            # M4 only for all episodes
   python3 runner.py score --all --force    # M1 + M4 for all episodes
+  python3 runner.py weekly                 # synthesize cross-channel weekly digest from past 7 days
 
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
@@ -1286,6 +1287,128 @@ def cmd_score(video_id: str | None = None, all_episodes: bool = False, run_m1: b
         sys.exit(1)
 
 
+# ── Weekly command ────────────────────────────────────────
+
+WEEKLY_DIR = BASE_DIR / "data" / "weekly"
+
+def cmd_weekly():
+    """Synthesize a cross-channel weekly digest from the past 7 days of summaries."""
+    from datetime import timedelta
+    import re
+
+    WEEKLY_DIR.mkdir(parents=True, exist_ok=True)
+
+    cutoff = datetime.now() - timedelta(days=7)
+    cutoff_str = cutoff.strftime("%Y-%m-%d")
+
+    # Collect summaries published in the past 7 days
+    md_files = sorted(SUMMARIES_DIR.glob("*/*.md"))
+    episodes_for_weekly = []
+    for md_path in md_files:
+        content = md_path.read_text(encoding="utf-8")
+        # Parse frontmatter
+        meta: dict = {}
+        if content.startswith("---"):
+            end = content.find("---", 3)
+            if end != -1:
+                fm_block = content[3:end]
+                for line in fm_block.splitlines():
+                    m = re.match(r'^(\w+):\s*(.*)', line)
+                    if m:
+                        meta[m.group(1)] = m.group(2).strip()
+                body = content[end + 3:].lstrip("\n")
+            else:
+                body = content
+        else:
+            body = content
+
+        published = meta.get("published", "")
+        if not published or published < cutoff_str:
+            continue
+
+        title = meta.get("title", md_path.stem)
+        channel_name = meta.get("channel_name", "")
+        episodes_for_weekly.append((title, channel_name, body))
+
+    if not episodes_for_weekly:
+        print("No episodes published in the past 7 days. Nothing to synthesize.")
+        return
+
+    print(f"Found {len(episodes_for_weekly)} episode(s) from the past 7 days.")
+
+    # Build summaries block: channel + title + first 800 chars of body
+    summaries_parts = []
+    for title, channel_name, body in episodes_for_weekly:
+        snippet = body[:800].strip()
+        header = f"【{channel_name}】{title}" if channel_name else title
+        summaries_parts.append(f"### {header}\n\n{snippet}")
+    summaries_block = "\n\n---\n\n".join(summaries_parts)
+
+    prompt = f"""你是一位財經分析整合員。以下是本週各投資頻道的摘要集錦，請整合成一份跨頻道週報。
+
+要求：
+- 用繁體中文
+- 找出各頻道本週的共同主題與分歧觀點
+- 標出本週最多頻道關注的標的
+- 指出各頻道觀點差異最大的地方
+- 最後一段「本週共識」：寫出各頻道最大公約數觀點
+- **重要**：提及任何觀點時，必須明確標注來源，格式為「頻道名稱《集數名稱》」，例如「股癌《EP637》認為…」或「游庭皓的財經皓角《2026/03/18 早晨速解讀》提到…」
+
+## 格式
+
+## 本週共同主題
+## 各頻道重點摘要（每個頻道 2-3 句）
+## 標的共識
+## 觀點分歧
+## 本週共識
+
+---
+
+{summaries_block}"""
+
+    print("Synthesizing weekly digest via Claude...")
+    from backend.claude_browser import chat as claude_chat
+    result = claude_chat(prompt)
+
+    # Strip page-UI artifacts that bleed into the extracted response.
+    # Patterns seen: ::view-transition CSS, "V", "visualize", "show_widget"
+    _ARTIFACT_PATTERNS = re.compile(
+        r'::view-transition|animation-duration|animation-timing-function|'
+        r'cubic-bezier|visualize|show_widget'
+    )
+    cleaned_lines = []
+    for line in result.splitlines():
+        stripped = line.strip()
+        # Drop lines that are pure UI artifacts or a lone "V"
+        if _ARTIFACT_PATTERNS.search(stripped):
+            continue
+        if stripped in ('V', '}'):
+            continue
+        cleaned_lines.append(line)
+    result = '\n'.join(cleaned_lines)
+    # Collapse runs of blank lines left by the cleanup
+    result = re.sub(r'\n{3,}', '\n\n', result).strip()
+
+    # Determine week label (ISO year-week)
+    now = datetime.now()
+    iso_year, iso_week, _ = now.isocalendar()
+    week_label = f"{iso_year}-{iso_week:02d}"
+    today_str = now.strftime("%Y-%m-%d")
+
+    frontmatter = (
+        f"---\n"
+        f"week: {week_label}\n"
+        f"generated: {today_str}\n"
+        f"episodes: {len(episodes_for_weekly)}\n"
+        f"---\n\n"
+    )
+    full_md = frontmatter + result
+
+    out_path = WEEKLY_DIR / f"{week_label}.md"
+    out_path.write_text(full_md, encoding="utf-8")
+    print(f"✓ Weekly digest saved: {out_path}")
+
+
 # ── Deploy command ────────────────────────────────────────
 
 def cmd_deploy():
@@ -1410,6 +1533,9 @@ def main():
             cmd_score(all_episodes=True, run_m1=run_m1)
         else:
             cmd_score(video_id=positional[0], run_m1=run_m1)
+
+    elif cmd == "weekly":
+        cmd_weekly()
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)

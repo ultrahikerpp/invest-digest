@@ -3125,8 +3125,13 @@
 
     // ── Watchlist helpers ──────────────────────────────────────
 
+    let _watchlistCache = null;
+
     function getWatchlist() {
-      return JSON.parse(localStorage.getItem('watchlist') || '[]');
+      if (_watchlistCache === null) {
+        _watchlistCache = JSON.parse(localStorage.getItem('watchlist') || '[]');
+      }
+      return _watchlistCache;
     }
 
     function isWatchlisted(name) {
@@ -3134,7 +3139,7 @@
     }
 
     function toggleWatchlist(name) {
-      const wl = getWatchlist();
+      const wl = getWatchlist().slice();
       const idx = wl.indexOf(name);
       if (idx >= 0) {
         wl.splice(idx, 1);
@@ -3144,6 +3149,21 @@
         showToast('已加入自選');
       }
       localStorage.setItem('watchlist', JSON.stringify(wl));
+      _watchlistCache = null;
+    }
+
+    // ── Sentiment minibar helper ────────────────────────────────
+
+    function _sentimentMinibar(bull, bear, neutral) {
+      const total = (bull || 0) + (bear || 0) + (neutral || 0) || 1;
+      const bPct = Math.round((bull || 0) / total * 100);
+      const rPct = Math.round((bear || 0) / total * 100);
+      const nPct = 100 - bPct - rPct;
+      return `<div class="entity-search-minibar">
+        ${bPct > 0 ? `<div class="seg-bull" style="width:${bPct}%"></div>` : ''}
+        ${rPct > 0 ? `<div class="seg-bear" style="width:${rPct}%"></div>` : ''}
+        ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
+      </div>`;
     }
 
     function showToast(msg) {
@@ -3187,16 +3207,7 @@
 
       const rows = wl.map(name => {
         const e = entityMap[name] || { name, ticker: '', count: 0, bullish: 0, bearish: 0, neutral: 0 };
-        const total = (e.bullish || 0) + (e.bearish || 0) + (e.neutral || 0) || 1;
-        const bPct = Math.round((e.bullish || 0) / total * 100);
-        const rPct = Math.round((e.bearish || 0) / total * 100);
-        const nPct = 100 - bPct - rPct;
-        const barHtml = `
-          <div class="entity-search-minibar">
-            ${bPct > 0 ? `<div class="seg-bull" style="width:${bPct}%"></div>` : ''}
-            ${rPct > 0 ? `<div class="seg-bear" style="width:${rPct}%"></div>` : ''}
-            ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
-          </div>`;
+        const barHtml = _sentimentMinibar(e.bullish, e.bearish, e.neutral);
         return `
           <div class="entity-search-item" style="cursor:pointer" data-entity-name="${name.replace(/"/g, '&quot;')}">
             <div style="flex:1;min-width:0">
@@ -3351,14 +3362,10 @@
       if (starBtn) {
         starBtn.addEventListener('click', () => {
           toggleWatchlist(entityName);
-          starBtn.outerHTML = _renderStarBtn();
-          const newBtn = document.getElementById('entityStarBtn');
-          if (newBtn) {
-            newBtn.addEventListener('click', () => {
-              toggleWatchlist(entityName);
-              renderEntityHistory(entityName);
-            });
-          }
+          const starred = isWatchlisted(entityName);
+          starBtn.classList.toggle('active', starred);
+          starBtn.innerHTML = starred ? '⭐ 已自選' : '☆ 加入自選';
+          starBtn.title = starred ? '移除自選' : '加入自選';
         });
       }
 
@@ -3525,61 +3532,61 @@
       // Lumentum to be invisible in search even though they exist in the history.
       let entities = [];
       if (entityHistoryData && entityHistoryData.entities) {
-        entities = Object.entries(entityHistoryData.entities).map(([name, eps]) => ({
-          name,
-          ticker: (eps[0] && eps[0].ticker) || '',
-          count: eps.length,
-          bull: eps.filter(e => e.sentiment === '看多').length,
-          bear: eps.filter(e => e.sentiment === '看空').length,
-          neutral: eps.filter(e => e.sentiment === '中立').length,
-        })).sort((a, b) => b.count - a.count);
+        entities = Object.entries(entityHistoryData.entities).map(([name, eps]) => {
+          const ticker = (eps[0] && eps[0].ticker) || '';
+          return {
+            name,
+            ticker,
+            nameLow: name.toLowerCase(),
+            tickerLow: ticker.toLowerCase(),
+            count: eps.length,
+            bull: eps.filter(e => e.sentiment === '看多').length,
+            bear: eps.filter(e => e.sentiment === '看空').length,
+            neutral: eps.filter(e => e.sentiment === '中立').length,
+          };
+        }).sort((a, b) => b.count - a.count);
       } else if (mentionsData && mentionsData.trending && mentionsData.trending.length) {
-        entities = mentionsData.trending.map(e => ({
-          name: e.name,
-          ticker: e.ticker || '',
-          count: e.count || 0,
-          bull: e.bullish || 0,
-          bear: e.bearish || 0,
-          neutral: e.neutral || 0,
-        }));
+        entities = mentionsData.trending.map(e => {
+          const ticker = e.ticker || '';
+          return {
+            name: e.name,
+            ticker,
+            nameLow: e.name.toLowerCase(),
+            tickerLow: ticker.toLowerCase(),
+            count: e.count || 0,
+            bull: e.bullish || 0,
+            bear: e.bearish || 0,
+            neutral: e.neutral || 0,
+          };
+        });
       }
 
       function _buildItems(q) {
         const qLow = q.trim().toLowerCase();
         const filtered = qLow
           ? entities.filter(e =>
-              e.name.toLowerCase().includes(qLow) ||
-              (e.ticker && e.ticker.toLowerCase().includes(qLow))
+              e.nameLow.includes(qLow) ||
+              e.tickerLow.includes(qLow)
             )
           : entities;
 
-        if (!filtered.length) {
-          return `<div class="entity-search-no-result">找不到「${q}」相關標的</div>`;
-        }
+        const html = filtered.length
+          ? filtered.map(e => {
+              const starred = isWatchlisted(e.name);
+              return `
+                <div class="entity-search-item" data-entity-name="${e.name.replace(/"/g, '&quot;')}">
+                  <div style="flex:1;min-width:0">
+                    <div class="entity-search-name">${e.name}</div>
+                    ${e.ticker ? `<div class="entity-search-ticker">${e.ticker}</div>` : ''}
+                  </div>
+                  ${_sentimentMinibar(e.bull, e.bear, e.neutral)}
+                  <div class="entity-search-count-chip">${e.count} 次</div>
+                  <button class="watchlist-star-btn${starred ? ' active' : ''}" data-wl-name="${e.name.replace(/"/g, '&quot;')}" title="${starred ? '移除自選' : '加入自選'}">${starred ? '⭐' : '☆'}</button>
+                </div>`;
+            }).join('')
+          : `<div class="entity-search-no-result">找不到「${q}」相關標的</div>`;
 
-        return filtered.map(e => {
-          const total = e.bull + e.bear + e.neutral || 1;
-          const bPct = Math.round(e.bull / total * 100);
-          const rPct = Math.round(e.bear / total * 100);
-          const nPct = 100 - bPct - rPct;
-          const barHtml = `
-            <div class="entity-search-minibar">
-              ${bPct > 0 ? `<div class="seg-bull" style="width:${bPct}%"></div>` : ''}
-              ${rPct > 0 ? `<div class="seg-bear" style="width:${rPct}%"></div>` : ''}
-              ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
-            </div>`;
-          const starred = isWatchlisted(e.name);
-          return `
-            <div class="entity-search-item" data-entity-name="${e.name.replace(/"/g, '&quot;')}">
-              <div style="flex:1;min-width:0">
-                <div class="entity-search-name">${e.name}</div>
-                ${e.ticker ? `<div class="entity-search-ticker">${e.ticker}</div>` : ''}
-              </div>
-              ${barHtml}
-              <div class="entity-search-count-chip">${e.count} 次</div>
-              <button class="watchlist-star-btn${starred ? ' active' : ''}" data-wl-name="${e.name.replace(/"/g, '&quot;')}" title="${starred ? '移除自選' : '加入自選'}">${starred ? '⭐' : '☆'}</button>
-            </div>`;
-        }).join('');
+        return { html, count: filtered.length };
       }
 
       mc.innerHTML = `
@@ -3597,12 +3604,8 @@
       `;
 
       function _update(q) {
-        const items = _buildItems(q);
-        document.getElementById('entitySearchResults').innerHTML = items;
-        const count = (q ? entities.filter(e =>
-          e.name.toLowerCase().includes(q.toLowerCase()) ||
-          (e.ticker && e.ticker.toLowerCase().includes(q.toLowerCase()))
-        ).length : entities.length);
+        const { html, count } = _buildItems(q);
+        document.getElementById('entitySearchResults').innerHTML = html;
         document.getElementById('entitySearchCount').textContent =
           q ? `找到 ${count} 個標的` : `共 ${entities.length} 個標的`;
         // Bind entity row clicks (navigate)
