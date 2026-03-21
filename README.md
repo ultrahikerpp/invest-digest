@@ -2,7 +2,7 @@
 
 > YouTube 財經投資頻道自動摘要工具
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-orange)](https://github.com/ultrahikerpp/invest-digest/releases)
+[![Version](https://img.shields.io/badge/Version-1.3.0-orange)](https://github.com/ultrahikerpp/invest-digest/releases)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-macOS-lightgrey?logo=apple)](README.md)
@@ -108,6 +108,11 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 # 驗證 Chrome 中的 claude.ai 登入狀態
 ./venv/bin/python runner.py setup-browser
 
+# ── 週報 ──
+
+# 生成本週跨頻道 AI 觀點合成週報（需 Claude browser，約 2-5 分鐘）
+./venv/bin/python runner.py weekly
+
 # ── 標的分析 ──
 
 # 對所有歷史摘要補跑分析（首次啟用時執行一次）
@@ -152,10 +157,43 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 ./venv/bin/python runner.py divergence --days 180 --min-channels 2
 ```
 
-`build` / `deploy` 時會同步產生 `docs/data/mentions.json`，靜態網站的「📊 標的追蹤」頁面會顯示：
-- 熱門標的排行榜（含看多／看空／中立比例）
-- 產業熱度橫條圖
-- 集數列表可按產業篩選
+`build` / `deploy` 時會同步產生下列靜態資料檔，供網站各頁面使用：
+
+| 檔案 | 說明 |
+| --- | --- |
+| `docs/data/mentions.json` | 熱門標的排行（含看多／看空／中立比例）、產業熱度 |
+| `docs/data/entity_history.json` | 每個標的的跨集提及歷史與情緒紀錄 |
+| `docs/data/divergence.json` | 跨頻道多空分歧分析 |
+| `docs/data/cooccurrence.json` | 標的共現分析（同集常一起出現的標的） |
+| `docs/data/flips.json` | 近期情緒翻轉標的 |
+| `docs/data/weekly_latest.md` | 最新一期 AI 週報（由 `runner.py weekly` 生成） |
+| `docs/data/weekly_meta.json` | 週報元資料（期數、集數、生成時間） |
+| `docs/feed.xml` | RSS 2.0 訂閱 Feed（最新 30 集） |
+
+---
+
+## 網站功能
+
+靜態網站（`docs/index.html`）提供以下功能頁面：
+
+| 路由 | 功能 |
+| --- | --- |
+| `#/` | 全部集數列表 |
+| `#/channel/<id>` | 單一頻道集數列表 |
+| `#/trending` | 標的追蹤：熱門標的排行榜、產業熱度 |
+| `#/entity-search` | **標的搜尋**：輸入名稱或代號（台積電、NVDA、2330）即時搜尋所有 257+ 標的 |
+| `#/entity/<name>` | **標的深度頁**：跨集提及歷史、情緒分布、相關標的、分享卡片 |
+| `#/watchlist` | **自選標的**：LocalStorage 儲存的個人關注清單 |
+| `#/weekly` | **AI 週報**：跨頻道觀點合成（由 `runner.py weekly` 生成） |
+| `#/divergence` | 跨頻道多空分歧分析 |
+| `#/macro` | 總經儀表板 |
+
+**標的深度頁額外功能：**
+- ⭐ 加入／移除自選（LocalStorage）
+- 📤 分享卡片：生成 1080×1080 PNG 可下載分享
+- 🔗 相關標的：同集常一起出現的標的推薦
+
+**RSS 訂閱：** `docs/feed.xml`（每次 build 自動更新，可用 Feedly / Reeder 訂閱）
 
 ---
 
@@ -197,7 +235,7 @@ tail -f data/runner.log
 
 ```
 investment-digest/
-├── runner.py              # 主 CLI（run / approve / build / cards / video / deploy / notify）
+├── runner.py              # 主 CLI（run / approve / build / cards / video / deploy / notify / weekly）
 ├── build_site.py          # 靜態網站產生器
 ├── channels.json          # 訂閱頻道設定
 ├── backend/
@@ -205,17 +243,26 @@ investment-digest/
 │   ├── claude_browser.py  # Claude AI 瀏覽器自動化（摘要、hashtags、字卡金句、標的萃取）
 │   ├── analyzer.py        # 標的追蹤 DB 操作（mentions / episode_industries）
 │   ├── card_generator.py  # 字卡 PNG 產生（Pillow）
+│   ├── dqs.py             # 摘要品質評分（DQS）
 │   └── video_maker.py     # 短影片 MP4 組裝
 ├── docs/                  # GitHub Pages 靜態網站
 │   ├── index.html         # 單頁應用（SPA，Vanilla JS）
+│   ├── feed.xml           # RSS 2.0 訂閱 Feed（build 時自動產生）
 │   ├── screenshot.png     # 網站截圖（README 用）
 │   ├── summaries/         # Markdown 摘要（由 build_site.py 複製）
 │   └── data/
-│       ├── episodes.json  # 集數索引（由 build_site.py 產生）
-│       └── mentions.json  # 標的與產業統計（由 build_site.py 產生）
+│       ├── episodes.json        # 集數索引
+│       ├── mentions.json        # 標的熱度與產業統計
+│       ├── entity_history.json  # 每個標的的跨集提及歷史
+│       ├── divergence.json      # 跨頻道多空分歧
+│       ├── cooccurrence.json    # 標的共現分析
+│       ├── flips.json           # 情緒翻轉標的
+│       ├── weekly_latest.md     # 最新 AI 週報
+│       └── weekly_meta.json     # 週報元資料
 └── data/
     ├── subscriptions.db   # SQLite（episodes / mentions / episode_industries）
     ├── summaries/         # Markdown 摘要（原始資料，依頻道分資料夾）
+    ├── weekly/            # AI 週報（YYYY-WW.md，由 runner.py weekly 生成）
     ├── transcripts/       # Whisper 逐字稿（本機，不上傳）
     ├── cards/             # PNG 字卡（本機，不上傳）
     ├── videos/            # MP4 影片（本機，不上傳）
