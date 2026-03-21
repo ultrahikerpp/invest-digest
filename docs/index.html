@@ -2491,7 +2491,7 @@
           <div class="analysis-item-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           </div>
-          <div class="analysis-item-name">週報</div>
+          <div class="analysis-item-name">投資週報</div>
         </div>
       `;
       document.getElementById('macroNavBtn').addEventListener('click', () => {
@@ -3660,7 +3660,7 @@
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'none';
 
-      mc.innerHTML = `<div class="loading"><div class="spinner"></div> 載入週報…</div>`;
+      mc.innerHTML = `<div class="loading"><div class="spinner"></div> 載入投資週報…</div>`;
 
       try {
         const metaResp = await fetch(BASE + 'data/weekly_meta.json');
@@ -3670,10 +3670,10 @@
         if (!meta.available) {
           mc.innerHTML = `
             <div class="weekly-page">
-              <div class="page-header"><h1 class="page-title">📋 週報</h1></div>
+              <div class="page-header"><h1 class="page-title">📋 投資週報</h1></div>
               <div class="empty-state">
                 <div class="empty-icon">${ICONS.inbox}</div>
-                <div class="empty-title">本週週報尚未生成</div>
+                <div class="empty-title">本週投資週報尚未生成</div>
                 <div class="empty-text">執行 <code>python3 runner.py weekly</code> 即可</div>
               </div>
             </div>`;
@@ -3687,7 +3687,7 @@
 
         mc.innerHTML = `
           <div class="weekly-page">
-            <div class="page-header"><h1 class="page-title">📋 週報</h1></div>
+            <div class="page-header"><h1 class="page-title">📋 投資週報</h1></div>
             <div class="weekly-meta-bar">
               <div class="stat-chip">${ICONS.calendar} <strong>${meta.week || ''}</strong> 第 ${meta.week ? meta.week.split('-')[1] : ''} 週</div>
               <div class="stat-chip">${ICONS.doc} <strong>${meta.episodes || 0}</strong> 集合成</div>
@@ -3698,10 +3698,10 @@
       } catch (_) {
         mc.innerHTML = `
           <div class="weekly-page">
-            <div class="page-header"><h1 class="page-title">📋 週報</h1></div>
+            <div class="page-header"><h1 class="page-title">📋 投資週報</h1></div>
             <div class="empty-state">
               <div class="empty-icon">${ICONS.inbox}</div>
-              <div class="empty-title">本週週報尚未生成</div>
+              <div class="empty-title">本週投資週報尚未生成</div>
               <div class="empty-text">執行 <code>python3 runner.py weekly</code> 即可</div>
             </div>
           </div>`;
