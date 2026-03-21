@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ultra Investment Digest｜財經投資頻道重點摘要</title>
+  <link rel="alternate" type="application/rss+xml" title="Ultra Investment Digest RSS" href="feed.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+TC:wght@400;500;700&display=swap"
@@ -1623,6 +1624,37 @@
     .entity-history-title { font-weight: 600; color: var(--text); font-size: 15px; }
     .entity-history-meta { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
 
+    /* ── Related Entities (co-occurrence) ── */
+    .related-entities-section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .related-entities-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+    .related-entity-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--vibe1-lt);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 13px;
+      color: var(--vibe1);
+      cursor: pointer;
+      margin: 0 6px 6px 0;
+      transition: background 0.15s;
+    }
+    .related-entity-chip:hover { background: rgba(99,102,241,0.25); }
+    .related-entity-count { color: var(--text-dim); font-size: 11px; }
+
     /* ── Entity Search Page ── */
     .entity-search-input-wrap {
       position: relative;
@@ -1783,6 +1815,144 @@
       border-color: #F59E0B;
       background: rgba(245, 158, 11, 0.10);
     }
+
+    /* ── Share Card Button ── */
+    .share-card-btn {
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 6px 12px;
+      color: var(--text-dim);
+      font-size: 14px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 8px;
+    }
+    .share-card-btn:hover {
+      background: var(--vibe1-lt);
+      border-color: var(--vibe1);
+      color: var(--text);
+    }
+
+    /* ── Share Card Modal ── */
+    .share-card-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.75);
+      align-items: center;
+      justify-content: center;
+    }
+    .share-card-modal.open {
+      display: flex;
+    }
+    .share-card-inner {
+      background: #10122A;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: var(--shadow-lg);
+    }
+    .share-card-inner canvas {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+    .share-card-actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .share-card-download-btn {
+      background: var(--vibe1);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.15s;
+    }
+    .share-card-download-btn:hover {
+      background: var(--vibe1-dk);
+    }
+    .share-card-close-btn {
+      background: none;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .share-card-close-btn:hover {
+      background: var(--vibe1-lt);
+      color: var(--text);
+    }
+
+    /* ── Weekly Report Page ── */
+    .weekly-page {
+      max-width: 720px;
+    }
+    .weekly-meta-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .weekly-body {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+    }
+    .weekly-body h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--vibe1);
+      margin: 28px 0 12px;
+      padding: 10px 16px;
+      background: rgba(99,102,241,0.10);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--vibe2);
+    }
+    .weekly-body h2:first-child {
+      margin-top: 0;
+    }
+    .weekly-body p {
+      font-size: 16px;
+      line-height: 2.0;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .weekly-body ul, .weekly-body ol {
+      padding-left: 26px;
+      margin-bottom: 18px;
+    }
+    .weekly-body li {
+      font-size: 16px;
+      line-height: 2.0;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .weekly-body strong {
+      color: var(--text-strong);
+      font-weight: 600;
+    }
+    .weekly-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
     @keyframes toast-in-out {
       0%   { opacity: 0; transform: translateX(-50%) translateY(12px); }
       15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -2033,6 +2203,17 @@
     <div class="lightbox-counter" id="lbCounter"></div>
   </div>
 
+  <!-- Share Card Modal -->
+  <div class="share-card-modal" id="shareCardModal">
+    <div class="share-card-inner">
+      <canvas id="shareCardCanvas" width="1080" height="1080"></canvas>
+      <div class="share-card-actions">
+        <button class="share-card-download-btn" id="shareCardDownload">&#11015; 下載 PNG</button>
+        <button class="share-card-close-btn" id="shareCardClose">關閉</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Summary Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modal">
@@ -2118,6 +2299,7 @@
     let divergenceData = null;    // loaded from divergence.json
     let entityHistoryData = null; // loaded from entity_history.json
     let flipsData = null;         // loaded from flips.json
+    let cooccurrenceData = null;  // loaded from cooccurrence.json
     let searchQuery = '';         // global search filter (B1)
 
     // ── Helpers ────────────────────────────────────────────────
@@ -2176,6 +2358,10 @@
         const fResp = await fetch(BASE + 'data/flips.json');
         if (fResp.ok) flipsData = await fResp.json();
       } catch (_) { /* no flips data yet */ }
+      try {
+        const coResp = await fetch(BASE + 'data/cooccurrence.json');
+        if (coResp.ok) cooccurrenceData = await coResp.json();
+      } catch (_) { /* no cooccurrence data yet */ }
     }
 
     // ── Routing ────────────────────────────────────────────────
@@ -2206,6 +2392,9 @@
       }
       if (hash === '#/watchlist') {
         return { type: 'watchlist' };
+      }
+      if (hash === '#/weekly') {
+        return { type: 'weekly' };
       }
       return { type: 'all' };
     }
@@ -2266,6 +2455,7 @@
       const macroActive = r.type === 'macro';
       const entitySearchActive = r.type === 'entity-search';
       const watchlistActive = r.type === 'watchlist';
+      const weeklyActive = r.type === 'weekly';
       document.getElementById('analysisList').innerHTML = `
         <div class="sidebar-analysis-item ${macroActive ? 'active' : ''}" id="macroNavBtn">
           <div class="analysis-item-icon">
@@ -2297,6 +2487,12 @@
           </div>
           <div class="analysis-item-name">自選標的</div>
         </div>
+        <div class="sidebar-analysis-item ${weeklyActive ? 'active' : ''}" id="weeklyNavBtn">
+          <div class="analysis-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="analysis-item-name">週報</div>
+        </div>
       `;
       document.getElementById('macroNavBtn').addEventListener('click', () => {
         location.hash = '#/macro';
@@ -2316,6 +2512,10 @@
       });
       document.getElementById('watchlistNavBtn').addEventListener('click', () => {
         location.hash = '#/watchlist';
+        closeSidebar();
+      });
+      document.getElementById('weeklyNavBtn').addEventListener('click', () => {
+        location.hash = '#/weekly';
         closeSidebar();
       });
     }
@@ -3102,10 +3302,14 @@
         ? `<button class="entity-page-star-btn active" id="entityStarBtn" title="移除自選">⭐ 已自選</button>`
         : `<button class="entity-page-star-btn" id="entityStarBtn" title="加入自選">☆ 加入自選</button>`;
 
+      // Find ticker from entity history data
+      const ticker = (episodes[0] && episodes[0].ticker) || '';
+
       mc.innerHTML = `
         <div class="page-header" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
           <h1 class="page-title" style="margin:0">🔍 ${entityName}</h1>
           ${_renderStarBtn()}
+          <button class="share-card-btn" id="entityShareBtn" title="分享卡片">&#128247; 分享</button>
         </div>
         <div class="stats-bar">
           <div class="stat-chip">${ICONS.doc} <strong>${total}</strong> 次提及</div>
@@ -3124,6 +3328,24 @@
         </div>
         <div class="entity-history-list">${items}</div>`;
 
+      // Append related entities section if co-occurrence data is available
+      const related = cooccurrenceData && cooccurrenceData.entities && cooccurrenceData.entities[entityName];
+      if (related && related.length) {
+        const chips = related.map(r =>
+          `<span class="related-entity-chip" data-entity="${r.name}">${r.name} <span class="related-entity-count">×${r.count}</span></span>`
+        ).join('');
+        const section = document.createElement('div');
+        section.className = 'related-entities-section';
+        section.innerHTML = `<div class="related-entities-title">相關標的</div><div>${chips}</div>`;
+        mc.appendChild(section);
+        section.querySelectorAll('.related-entity-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const name = chip.dataset.entity;
+            location.hash = '#/entity/' + encodeURIComponent(name);
+          });
+        });
+      }
+
       // Bind star button
       const starBtn = document.getElementById('entityStarBtn');
       if (starBtn) {
@@ -3137,6 +3359,15 @@
               renderEntityHistory(entityName);
             });
           }
+        });
+      }
+
+      // Bind share button
+      const shareBtn = document.getElementById('entityShareBtn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+          generateShareCard(entityName, { total, bull, bear, neutral, ticker });
+          document.getElementById('shareCardModal').classList.add('open');
         });
       }
 
@@ -3158,6 +3389,126 @@
           }
         });
       });
+    }
+
+    // ── Share Card (Canvas) ───────────────────────────────────
+
+    function generateShareCard(entityName, data) {
+      const canvas = document.getElementById('shareCardCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = 1080, H = 1080;
+
+      // Background gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, W * 0.6, H);
+      bgGrad.addColorStop(0, '#080A1A');
+      bgGrad.addColorStop(1, '#160C32');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Top accent bar
+      const accentGrad = ctx.createLinearGradient(0, 0, W, 0);
+      accentGrad.addColorStop(0,   '#6366F1');
+      accentGrad.addColorStop(0.5, '#A855F7');
+      accentGrad.addColorStop(1,   '#EC4899');
+      ctx.fillStyle = accentGrad;
+      ctx.fillRect(0, 0, W, 8);
+
+      // Entity name
+      ctx.fillStyle = '#F1F5F9';
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 72px "IBM Plex Sans", "Noto Sans TC", sans-serif';
+      ctx.fillText(entityName, W / 2, 420);
+
+      // Ticker
+      if (data.ticker) {
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '32px "IBM Plex Sans", "Noto Sans TC", sans-serif';
+        ctx.fillText(data.ticker, W / 2, 480);
+      }
+
+      // "被提及 N 次"
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '28px "IBM Plex Sans", "Noto Sans TC", sans-serif';
+      const mentionY = data.ticker ? 540 : 490;
+      ctx.fillText(`被提及 ${data.total} 次`, W / 2, mentionY);
+
+      // Sentiment bar
+      const barW = 600, barH = 20;
+      const barX = (W - barW) / 2;
+      const barY = mentionY + 60;
+      const bPct = data.total ? data.bull / data.total : 0;
+      const rPct = data.total ? data.bear / data.total : 0;
+      const nPct = 1 - bPct - rPct;
+
+      // Draw rounded rect helper
+      function roundRect(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      if (data.total === 0) {
+        ctx.fillStyle = '#334155';
+        roundRect(barX, barY, barW, barH, barH / 2);
+      } else {
+        let cx = barX;
+        if (bPct > 0) {
+          ctx.fillStyle = '#10B981';
+          roundRect(cx, barY, Math.max(barW * bPct, barH), barH, barH / 2);
+          cx += barW * bPct;
+        }
+        if (rPct > 0) {
+          ctx.fillStyle = '#F43F5E';
+          roundRect(cx, barY, Math.max(barW * rPct, barH), barH, barH / 2);
+          cx += barW * rPct;
+        }
+        if (nPct > 0) {
+          ctx.fillStyle = '#475569';
+          roundRect(cx, barY, barW * nPct, barH, barH / 2);
+        }
+      }
+
+      // Sentiment label
+      ctx.font = '26px "IBM Plex Sans", "Noto Sans TC", sans-serif';
+      ctx.textAlign = 'center';
+      const labelY = barY + barH + 42;
+      const labelParts = [
+        { text: `▲ 看多 ${data.bull}`, color: '#10B981' },
+        { text: `  ▼ 看空 ${data.bear}`, color: '#F43F5E' },
+        { text: `  → 中立 ${data.neutral}`, color: '#94A3B8' },
+      ];
+      let totalLabelW = 0;
+      const labelMeasures = labelParts.map(p => {
+        ctx.font = '26px "IBM Plex Sans", "Noto Sans TC", sans-serif';
+        const m = ctx.measureText(p.text);
+        totalLabelW += m.width;
+        return m.width;
+      });
+      let lx = W / 2 - totalLabelW / 2;
+      for (let i = 0; i < labelParts.length; i++) {
+        ctx.fillStyle = labelParts[i].color;
+        ctx.textAlign = 'left';
+        ctx.fillText(labelParts[i].text, lx, labelY);
+        lx += labelMeasures[i];
+      }
+
+      // Bottom site name
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#64748B';
+      ctx.font = '24px "IBM Plex Sans", "Noto Sans TC", sans-serif';
+      ctx.fillText('Ultra Investment Digest', W / 2, H - 80);
+      ctx.fillStyle = '#475569';
+      ctx.font = '18px "IBM Plex Sans", "Noto Sans TC", sans-serif';
+      ctx.fillText('ultrahikerpp.github.io/invest-digest/', W / 2, H - 48);
     }
 
     // ── Entity Search Page ────────────────────────────────────
@@ -3301,6 +3652,62 @@
       return `<div class="industry-filter-bar">${chips}</div>`;
     }
 
+    // ── Weekly Report Page ────────────────────────────────────
+
+    async function renderWeekly() {
+      const mc = document.getElementById('mainContent');
+      renderSidebar(allEpisodes, null);
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'none';
+
+      mc.innerHTML = `<div class="loading"><div class="spinner"></div> 載入週報…</div>`;
+
+      try {
+        const metaResp = await fetch(BASE + 'data/weekly_meta.json');
+        if (!metaResp.ok) throw new Error('no_weekly');
+        const meta = await metaResp.json();
+
+        if (!meta.available) {
+          mc.innerHTML = `
+            <div class="weekly-page">
+              <div class="page-header"><h1 class="page-title">📋 週報</h1></div>
+              <div class="empty-state">
+                <div class="empty-icon">${ICONS.inbox}</div>
+                <div class="empty-title">本週週報尚未生成</div>
+                <div class="empty-text">執行 <code>python3 runner.py weekly</code> 即可</div>
+              </div>
+            </div>`;
+          return;
+        }
+
+        const mdResp = await fetch(BASE + 'data/weekly_latest.md');
+        if (!mdResp.ok) throw new Error('no_md');
+        const mdText = await mdResp.text();
+        const body = stripFrontmatter(mdText);
+
+        mc.innerHTML = `
+          <div class="weekly-page">
+            <div class="page-header"><h1 class="page-title">📋 週報</h1></div>
+            <div class="weekly-meta-bar">
+              <div class="stat-chip">${ICONS.calendar} <strong>${meta.week || ''}</strong> 第 ${meta.week ? meta.week.split('-')[1] : ''} 週</div>
+              <div class="stat-chip">${ICONS.doc} <strong>${meta.episodes || 0}</strong> 集合成</div>
+              <div class="stat-chip" style="font-size:12px;color:var(--text-dim)">生成於 ${meta.generated || ''}</div>
+            </div>
+            <div class="weekly-body">${marked.parse(body)}</div>
+          </div>`;
+      } catch (_) {
+        mc.innerHTML = `
+          <div class="weekly-page">
+            <div class="page-header"><h1 class="page-title">📋 週報</h1></div>
+            <div class="empty-state">
+              <div class="empty-icon">${ICONS.inbox}</div>
+              <div class="empty-title">本週週報尚未生成</div>
+              <div class="empty-text">執行 <code>python3 runner.py weekly</code> 即可</div>
+            </div>
+          </div>`;
+      }
+    }
+
     // ── Router ─────────────────────────────────────────────────
 
     function route() {
@@ -3341,6 +3748,10 @@
       }
       if (r.type === 'watchlist') {
         renderWatchlist();
+        return;
+      }
+      if (r.type === 'weekly') {
+        renderWeekly();
         return;
       }
 
@@ -3435,6 +3846,31 @@
 
     document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
     document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+
+    // ── Share Card Modal ───────────────────────────────────────
+
+    document.getElementById('shareCardClose').addEventListener('click', () => {
+      document.getElementById('shareCardModal').classList.remove('open');
+    });
+    document.getElementById('shareCardModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('shareCardModal')) {
+        document.getElementById('shareCardModal').classList.remove('open');
+      }
+    });
+    document.getElementById('shareCardDownload').addEventListener('click', () => {
+      const canvas = document.getElementById('shareCardCanvas');
+      // Get entity name from page title
+      const titleEl = document.querySelector('#mainContent .page-title');
+      const rawName = titleEl ? titleEl.textContent.replace(/^🔍\s*/, '').trim() : 'entity';
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${rawName}-share.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    });
 
     // ── Search input (B1) ──────────────────────────────────────
     // isComposing: true while IME (注音/倉頡) is mid-composition; skip until confirmed
