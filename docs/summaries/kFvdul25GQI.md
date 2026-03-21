@@ -5,7 +5,8 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 1 個月前
 processed: 2026-03-20
-hashtags: #少子化 #台灣房市 #超高齡社會 #人口結構 #資產重分配 #游庭皓的財經皓角
+hashtags: #少子化 #台灣人口 #超高齡社會 #房市分化 #資產重分配 #游庭皓的財經皓角
+hashtags: #少子化 #台灣人口 #超高齡社會 #房市分化 #資產重分配 #游庭皓的財經皓角
 ---
 
 # 【市場觀察】2026 台灣人如何迎接 少子化海嘯?
