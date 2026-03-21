@@ -1336,10 +1336,10 @@ def cmd_weekly():
 
     print(f"Found {len(episodes_for_weekly)} episode(s) from the past 7 days.")
 
-    # Build summaries block: channel + title + first 800 chars of body
+    # Build summaries block: channel + title + body (up to 3000 chars to avoid prompt bloat)
     summaries_parts = []
     for title, channel_name, body in episodes_for_weekly:
-        snippet = body[:800].strip()
+        snippet = body[:3000].strip()
         header = f"【{channel_name}】{title}" if channel_name else title
         summaries_parts.append(f"### {header}\n\n{snippet}")
     summaries_block = "\n\n---\n\n".join(summaries_parts)
