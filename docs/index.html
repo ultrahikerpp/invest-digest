@@ -1623,6 +1623,98 @@
     .entity-history-title { font-weight: 600; color: var(--text); font-size: 15px; }
     .entity-history-meta { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
 
+    /* ── Entity Search Page ── */
+    .entity-search-input-wrap {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .entity-search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    .entity-search-field {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px 12px 42px;
+      font-size: 15px;
+      font-family: var(--sans);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    .entity-search-field:focus { border-color: var(--vibe1); }
+    .entity-search-field::placeholder { color: var(--text-dim); }
+    .entity-search-count {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+    .entity-search-results {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .entity-search-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 0.18s, background 0.18s;
+      text-decoration: none;
+    }
+    .entity-search-item:hover {
+      border-color: var(--border-hover);
+      background: var(--vibe1-lt);
+    }
+    .entity-search-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .entity-search-ticker {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .entity-search-count-chip {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .entity-search-minibar {
+      width: 64px;
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+      display: flex;
+      flex-shrink: 0;
+      background: var(--surface2);
+    }
+    .entity-search-minibar .seg-bull { background: var(--green); }
+    .entity-search-minibar .seg-bear { background: var(--red); }
+    .entity-search-minibar .seg-neutral { background: var(--text-dim); opacity: 0.35; }
+    .entity-search-no-result {
+      text-align: center;
+      color: var(--text-dim);
+      padding: 40px 0;
+      font-size: 14px;
+    }
+
     /* ── Flip Alerts (C2) ── */
     .flip-alert-bar {
       display: flex;
@@ -2015,6 +2107,10 @@
       if (hash.startsWith('#/entity/')) {
         return { type: 'entity', name: decodeURIComponent(hash.slice(9)) };
       }
+      if (hash === '#/entity-search' || hash.startsWith('#/entity-search?')) {
+        const q = new URLSearchParams(hash.includes('?') ? hash.slice(hash.indexOf('?')) : '').get('q') || '';
+        return { type: 'entity-search', query: q };
+      }
       return { type: 'all' };
     }
 
@@ -2072,6 +2168,7 @@
       const trendingActive = r.type === 'trending';
       const divergenceActive = r.type === 'divergence';
       const macroActive = r.type === 'macro';
+      const entitySearchActive = r.type === 'entity-search';
       document.getElementById('analysisList').innerHTML = `
         <div class="sidebar-analysis-item ${macroActive ? 'active' : ''}" id="macroNavBtn">
           <div class="analysis-item-icon">
@@ -2091,6 +2188,12 @@
           </div>
           <div class="analysis-item-name">多空分歧</div>
         </div>
+        <div class="sidebar-analysis-item ${entitySearchActive ? 'active' : ''}" id="entitySearchNavBtn">
+          <div class="analysis-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div class="analysis-item-name">標的搜尋</div>
+        </div>
       `;
       document.getElementById('macroNavBtn').addEventListener('click', () => {
         location.hash = '#/macro';
@@ -2102,6 +2205,10 @@
       });
       document.getElementById('divergenceNavBtn').addEventListener('click', () => {
         location.hash = '#/divergence';
+        closeSidebar();
+      });
+      document.getElementById('entitySearchNavBtn').addEventListener('click', () => {
+        location.hash = '#/entity-search';
         closeSidebar();
       });
     }
@@ -2813,6 +2920,113 @@
       });
     }
 
+    // ── Entity Search Page ────────────────────────────────────
+
+    function renderEntitySearch(initialQuery) {
+      const mc = document.getElementById('mainContent');
+      renderSidebar(allEpisodes, null);
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'none';
+
+      // Build entity list from mentionsData.trending (has ticker + sentiment counts)
+      // Fall back to entity_history keys if trending unavailable
+      let entities = [];
+      if (mentionsData && mentionsData.trending && mentionsData.trending.length) {
+        entities = mentionsData.trending.map(e => ({
+          name: e.name,
+          ticker: e.ticker || '',
+          count: e.count || 0,
+          bull: e.bullish || 0,
+          bear: e.bearish || 0,
+          neutral: e.neutral || 0,
+        }));
+      } else if (entityHistoryData && entityHistoryData.entities) {
+        entities = Object.entries(entityHistoryData.entities).map(([name, eps]) => ({
+          name,
+          ticker: (eps[0] && eps[0].ticker) || '',
+          count: eps.length,
+          bull: eps.filter(e => e.sentiment === '看多').length,
+          bear: eps.filter(e => e.sentiment === '看空').length,
+          neutral: eps.filter(e => e.sentiment === '中立').length,
+        })).sort((a, b) => b.count - a.count);
+      }
+
+      function _buildItems(q) {
+        const qLow = q.trim().toLowerCase();
+        const filtered = qLow
+          ? entities.filter(e =>
+              e.name.toLowerCase().includes(qLow) ||
+              (e.ticker && e.ticker.toLowerCase().includes(qLow))
+            )
+          : entities;
+
+        if (!filtered.length) {
+          return `<div class="entity-search-no-result">找不到「${q}」相關標的</div>`;
+        }
+
+        return filtered.map(e => {
+          const total = e.bull + e.bear + e.neutral || 1;
+          const bPct = Math.round(e.bull / total * 100);
+          const rPct = Math.round(e.bear / total * 100);
+          const nPct = 100 - bPct - rPct;
+          const barHtml = `
+            <div class="entity-search-minibar">
+              ${bPct > 0 ? `<div class="seg-bull" style="width:${bPct}%"></div>` : ''}
+              ${rPct > 0 ? `<div class="seg-bear" style="width:${rPct}%"></div>` : ''}
+              ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
+            </div>`;
+          return `
+            <div class="entity-search-item" data-entity-name="${e.name.replace(/"/g, '&quot;')}">
+              <div style="flex:1;min-width:0">
+                <div class="entity-search-name">${e.name}</div>
+                ${e.ticker ? `<div class="entity-search-ticker">${e.ticker}</div>` : ''}
+              </div>
+              ${barHtml}
+              <div class="entity-search-count-chip">${e.count} 次</div>
+            </div>`;
+        }).join('');
+      }
+
+      mc.innerHTML = `
+        <div class="page-header">
+          <h1 class="page-title">🔍 標的搜尋</h1>
+        </div>
+        <div class="entity-search-input-wrap">
+          <svg class="entity-search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="entitySearchField" class="entity-search-field" type="search"
+            placeholder="搜尋標的名稱或代號，例如：台積電、NVDA、2330…"
+            autocomplete="off" value="${initialQuery.replace(/"/g, '&quot;')}">
+        </div>
+        <div id="entitySearchCount" class="entity-search-count"></div>
+        <div id="entitySearchResults" class="entity-search-results"></div>
+      `;
+
+      function _update(q) {
+        const items = _buildItems(q);
+        document.getElementById('entitySearchResults').innerHTML = items;
+        const count = (q ? entities.filter(e =>
+          e.name.toLowerCase().includes(q.toLowerCase()) ||
+          (e.ticker && e.ticker.toLowerCase().includes(q.toLowerCase()))
+        ).length : entities.length);
+        document.getElementById('entitySearchCount').textContent =
+          q ? `找到 ${count} 個標的` : `共 ${entities.length} 個標的`;
+        // Bind clicks
+        document.querySelectorAll('.entity-search-item').forEach(el => {
+          el.addEventListener('click', () => {
+            const name = el.dataset.entityName;
+            location.hash = `#/entity/${encodeURIComponent(name)}`;
+          });
+        });
+      }
+
+      _update(initialQuery);
+
+      const field = document.getElementById('entitySearchField');
+      field.addEventListener('input', () => _update(field.value));
+      // Focus the input
+      setTimeout(() => field.focus(), 50);
+    }
+
     // ── Industry filter helper ─────────────────────────────────
 
     function _getEpisodesForIndustry(industryName) {
@@ -2864,6 +3078,10 @@
       }
       if (r.type === 'entity') {
         renderEntityHistory(r.name);
+        return;
+      }
+      if (r.type === 'entity-search') {
+        renderEntitySearch(r.query || '');
         return;
       }
 
