@@ -465,10 +465,10 @@
     {
       "name": "美光",
       "ticker": "MU",
-      "total_mentions": 9,
+      "total_mentions": 10,
       "channel_count": 3,
       "total_bullish": 5,
-      "total_bearish": 0,
+      "total_bearish": 1,
       "total_neutral": 4,
       "bull_channels": 1,
       "bear_channels": 0,
@@ -477,17 +477,17 @@
       "divergence_score": 0.0,
       "channels": [
         {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 4,
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 5,
           "bullish": 2,
-          "bearish": 0,
+          "bearish": 1,
           "neutral": 2,
           "stance": "中立"
         },
         {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
           "mentions": 4,
           "bullish": 2,
           "bearish": 0,
@@ -508,14 +508,14 @@
     {
       "name": "Anthropic",
       "ticker": null,
-      "total_mentions": 8,
-      "channel_count": 2,
+      "total_mentions": 9,
+      "channel_count": 3,
       "total_bullish": 2,
       "total_bearish": 0,
-      "total_neutral": 6,
+      "total_neutral": 7,
       "bull_channels": 0,
       "bear_channels": 0,
-      "neutral_channels": 2,
+      "neutral_channels": 3,
       "consensus": "中立共識",
       "divergence_score": 0.0,
       "channels": [
@@ -536,6 +536,58 @@
           "bearish": 0,
           "neutral": 2,
           "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
+      "name": "OpenAI",
+      "ticker": null,
+      "total_mentions": 9,
+      "channel_count": 3,
+      "total_bullish": 3,
+      "total_bearish": 0,
+      "total_neutral": 6,
+      "bull_channels": 1,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "偏多",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 4,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 3,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 4,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 3,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
         }
       ]
     },
@@ -578,40 +630,6 @@
           "bullish": 0,
           "bearish": 1,
           "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "OpenAI",
-      "ticker": null,
-      "total_mentions": 8,
-      "channel_count": 2,
-      "total_bullish": 2,
-      "total_bearish": 0,
-      "total_neutral": 6,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 4,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 3,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 4,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 3,
           "stance": "中立"
         }
       ]
@@ -2185,5 +2203,5 @@
       ]
     }
   ],
-  "generated_at": "2026-03-21T12:50:13"
+  "generated_at": "2026-03-21T14:39:53"
 }

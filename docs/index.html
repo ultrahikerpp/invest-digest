@@ -1715,6 +1715,99 @@
       font-size: 14px;
     }
 
+    /* ── Watchlist ── */
+    .watchlist-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      color: var(--text-dim);
+      font-size: 14px;
+      text-align: center;
+      gap: 10px;
+    }
+    .watchlist-empty .empty-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+      opacity: 0.5;
+    }
+    .watchlist-empty .empty-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .watchlist-star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      color: var(--text-dim);
+      font-size: 18px;
+      line-height: 1;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    .watchlist-star-btn:hover {
+      background: var(--vibe1-lt);
+      color: var(--text-muted);
+    }
+    .watchlist-star-btn.active {
+      color: #F59E0B;
+    }
+    .watchlist-star-btn.active:hover {
+      color: #D97706;
+    }
+    .entity-page-star-btn {
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 6px 12px;
+      color: var(--text-dim);
+      font-size: 14px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 12px;
+    }
+    .entity-page-star-btn:hover {
+      background: var(--vibe1-lt);
+      border-color: var(--vibe1);
+      color: var(--text);
+    }
+    .entity-page-star-btn.active {
+      color: #F59E0B;
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.10);
+    }
+    @keyframes toast-in-out {
+      0%   { opacity: 0; transform: translateX(-50%) translateY(12px); }
+      15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+      75%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    }
+    .toast-notification {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30, 32, 60, 0.96);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 9999;
+      pointer-events: none;
+      animation: toast-in-out 1.5s ease forwards;
+      white-space: nowrap;
+      box-shadow: var(--shadow-md);
+    }
+
     /* ── Flip Alerts (C2) ── */
     .flip-alert-bar {
       display: flex;
@@ -2111,6 +2204,9 @@
         const q = new URLSearchParams(hash.includes('?') ? hash.slice(hash.indexOf('?')) : '').get('q') || '';
         return { type: 'entity-search', query: q };
       }
+      if (hash === '#/watchlist') {
+        return { type: 'watchlist' };
+      }
       return { type: 'all' };
     }
 
@@ -2169,6 +2265,7 @@
       const divergenceActive = r.type === 'divergence';
       const macroActive = r.type === 'macro';
       const entitySearchActive = r.type === 'entity-search';
+      const watchlistActive = r.type === 'watchlist';
       document.getElementById('analysisList').innerHTML = `
         <div class="sidebar-analysis-item ${macroActive ? 'active' : ''}" id="macroNavBtn">
           <div class="analysis-item-icon">
@@ -2194,6 +2291,12 @@
           </div>
           <div class="analysis-item-name">標的搜尋</div>
         </div>
+        <div class="sidebar-analysis-item ${watchlistActive ? 'active' : ''}" id="watchlistNavBtn">
+          <div class="analysis-item-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${watchlistActive ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="analysis-item-name">自選標的</div>
+        </div>
       `;
       document.getElementById('macroNavBtn').addEventListener('click', () => {
         location.hash = '#/macro';
@@ -2209,6 +2312,10 @@
       });
       document.getElementById('entitySearchNavBtn').addEventListener('click', () => {
         location.hash = '#/entity-search';
+        closeSidebar();
+      });
+      document.getElementById('watchlistNavBtn').addEventListener('click', () => {
+        location.hash = '#/watchlist';
         closeSidebar();
       });
     }
@@ -2816,6 +2923,118 @@
       }
     }
 
+    // ── Watchlist helpers ──────────────────────────────────────
+
+    function getWatchlist() {
+      return JSON.parse(localStorage.getItem('watchlist') || '[]');
+    }
+
+    function isWatchlisted(name) {
+      return getWatchlist().includes(name);
+    }
+
+    function toggleWatchlist(name) {
+      const wl = getWatchlist();
+      const idx = wl.indexOf(name);
+      if (idx >= 0) {
+        wl.splice(idx, 1);
+        showToast('已移除自選');
+      } else {
+        wl.push(name);
+        showToast('已加入自選');
+      }
+      localStorage.setItem('watchlist', JSON.stringify(wl));
+    }
+
+    function showToast(msg) {
+      const el = document.createElement('div');
+      el.className = 'toast-notification';
+      el.textContent = msg;
+      document.body.appendChild(el);
+      setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 1500);
+    }
+
+    // ── Watchlist page ─────────────────────────────────────────
+
+    function renderWatchlist() {
+      const mc = document.getElementById('mainContent');
+      renderSidebar(allEpisodes, null);
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'none';
+
+      const wl = getWatchlist();
+
+      if (!wl.length) {
+        mc.innerHTML = `
+          <div class="page-header">
+            <h1 class="page-title">⭐ 自選標的</h1>
+          </div>
+          <div class="watchlist-empty">
+            <div class="empty-icon">⭐</div>
+            <div class="empty-title">尚無自選標的</div>
+            <div>在標的搜尋或標的頁加入</div>
+          </div>`;
+        return;
+      }
+
+      // Build entity data map from mentionsData
+      const entityMap = {};
+      if (mentionsData && mentionsData.trending) {
+        for (const e of mentionsData.trending) {
+          entityMap[e.name] = e;
+        }
+      }
+
+      const rows = wl.map(name => {
+        const e = entityMap[name] || { name, ticker: '', count: 0, bullish: 0, bearish: 0, neutral: 0 };
+        const total = (e.bullish || 0) + (e.bearish || 0) + (e.neutral || 0) || 1;
+        const bPct = Math.round((e.bullish || 0) / total * 100);
+        const rPct = Math.round((e.bearish || 0) / total * 100);
+        const nPct = 100 - bPct - rPct;
+        const barHtml = `
+          <div class="entity-search-minibar">
+            ${bPct > 0 ? `<div class="seg-bull" style="width:${bPct}%"></div>` : ''}
+            ${rPct > 0 ? `<div class="seg-bear" style="width:${rPct}%"></div>` : ''}
+            ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
+          </div>`;
+        return `
+          <div class="entity-search-item" style="cursor:pointer" data-entity-name="${name.replace(/"/g, '&quot;')}">
+            <div style="flex:1;min-width:0">
+              <div class="entity-search-name">${name}</div>
+              ${e.ticker ? `<div class="entity-search-ticker">${e.ticker}</div>` : ''}
+            </div>
+            ${e.count ? barHtml : ''}
+            ${e.count ? `<div class="entity-search-count-chip">${e.count} 次</div>` : ''}
+            <button class="watchlist-star-btn active" data-wl-name="${name.replace(/"/g, '&quot;')}" title="移除自選">⭐</button>
+          </div>`;
+      }).join('');
+
+      mc.innerHTML = `
+        <div class="page-header">
+          <h1 class="page-title">⭐ 自選標的</h1>
+        </div>
+        <div class="entity-search-results">${rows}</div>`;
+
+      // Bind entity row clicks (navigate)
+      mc.querySelectorAll('.entity-search-item').forEach(el => {
+        el.addEventListener('click', (evt) => {
+          if (evt.target.closest('.watchlist-star-btn')) return;
+          const name = el.dataset.entityName;
+          location.hash = `#/entity/${encodeURIComponent(name)}`;
+        });
+      });
+
+      // Bind star button clicks (remove from watchlist and re-render)
+      mc.querySelectorAll('.watchlist-star-btn').forEach(btn => {
+        btn.addEventListener('click', (evt) => {
+          evt.stopPropagation();
+          const name = btn.dataset.wlName;
+          toggleWatchlist(name);
+          renderWatchlist();
+        });
+      });
+    }
+
     // ── Entity History view (C1) ───────────────────────────────
 
     function renderEntityHistory(entityName) {
@@ -2879,9 +3098,14 @@
           </div>`;
       }).join('');
 
+      const _renderStarBtn = () => isWatchlisted(entityName)
+        ? `<button class="entity-page-star-btn active" id="entityStarBtn" title="移除自選">⭐ 已自選</button>`
+        : `<button class="entity-page-star-btn" id="entityStarBtn" title="加入自選">☆ 加入自選</button>`;
+
       mc.innerHTML = `
-        <div class="page-header">
-          <h1 class="page-title">🔍 ${entityName}</h1>
+        <div class="page-header" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
+          <h1 class="page-title" style="margin:0">🔍 ${entityName}</h1>
+          ${_renderStarBtn()}
         </div>
         <div class="stats-bar">
           <div class="stat-chip">${ICONS.doc} <strong>${total}</strong> 次提及</div>
@@ -2899,6 +3123,22 @@
           </div>
         </div>
         <div class="entity-history-list">${items}</div>`;
+
+      // Bind star button
+      const starBtn = document.getElementById('entityStarBtn');
+      if (starBtn) {
+        starBtn.addEventListener('click', () => {
+          toggleWatchlist(entityName);
+          starBtn.outerHTML = _renderStarBtn();
+          const newBtn = document.getElementById('entityStarBtn');
+          if (newBtn) {
+            newBtn.addEventListener('click', () => {
+              toggleWatchlist(entityName);
+              renderEntityHistory(entityName);
+            });
+          }
+        });
+      }
 
       // Bind click to open modal
       mc.querySelectorAll('.entity-history-item[data-video-id]').forEach(item => {
@@ -2975,6 +3215,7 @@
               ${rPct > 0 ? `<div class="seg-bear" style="width:${rPct}%"></div>` : ''}
               ${nPct > 0 ? `<div class="seg-neutral" style="width:${nPct}%"></div>` : ''}
             </div>`;
+          const starred = isWatchlisted(e.name);
           return `
             <div class="entity-search-item" data-entity-name="${e.name.replace(/"/g, '&quot;')}">
               <div style="flex:1;min-width:0">
@@ -2983,6 +3224,7 @@
               </div>
               ${barHtml}
               <div class="entity-search-count-chip">${e.count} 次</div>
+              <button class="watchlist-star-btn${starred ? ' active' : ''}" data-wl-name="${e.name.replace(/"/g, '&quot;')}" title="${starred ? '移除自選' : '加入自選'}">${starred ? '⭐' : '☆'}</button>
             </div>`;
         }).join('');
       }
@@ -3010,11 +3252,24 @@
         ).length : entities.length);
         document.getElementById('entitySearchCount').textContent =
           q ? `找到 ${count} 個標的` : `共 ${entities.length} 個標的`;
-        // Bind clicks
+        // Bind entity row clicks (navigate)
         document.querySelectorAll('.entity-search-item').forEach(el => {
-          el.addEventListener('click', () => {
+          el.addEventListener('click', (evt) => {
+            if (evt.target.closest('.watchlist-star-btn')) return;
             const name = el.dataset.entityName;
             location.hash = `#/entity/${encodeURIComponent(name)}`;
+          });
+        });
+        // Bind star button clicks (toggle watchlist, update button state only)
+        document.querySelectorAll('#entitySearchResults .watchlist-star-btn').forEach(btn => {
+          btn.addEventListener('click', (evt) => {
+            evt.stopPropagation();
+            const name = btn.dataset.wlName;
+            toggleWatchlist(name);
+            const starred = isWatchlisted(name);
+            btn.classList.toggle('active', starred);
+            btn.textContent = starred ? '⭐' : '☆';
+            btn.title = starred ? '移除自選' : '加入自選';
           });
         });
       }
@@ -3082,6 +3337,10 @@
       }
       if (r.type === 'entity-search') {
         renderEntitySearch(r.query || '');
+        return;
+      }
+      if (r.type === 'watchlist') {
+        renderWatchlist();
         return;
       }
 

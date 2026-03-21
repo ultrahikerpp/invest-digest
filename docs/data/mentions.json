@@ -67,10 +67,26 @@
     {
       "name": "美光",
       "ticker": "MU",
-      "count": 9,
+      "count": 10,
       "bullish": 5,
-      "bearish": 0,
+      "bearish": 1,
       "neutral": 4
+    },
+    {
+      "name": "OpenAI",
+      "ticker": null,
+      "count": 9,
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 6
+    },
+    {
+      "name": "Anthropic",
+      "ticker": null,
+      "count": 9,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 7
     },
     {
       "name": "西德州原油",
@@ -89,28 +105,12 @@
       "neutral": 4
     },
     {
-      "name": "OpenAI",
-      "ticker": null,
-      "count": 8,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 6
-    },
-    {
       "name": "Microsoft",
       "ticker": "MSFT",
       "count": 8,
       "bullish": 2,
       "bearish": 1,
       "neutral": 5
-    },
-    {
-      "name": "Anthropic",
-      "ticker": null,
-      "count": 8,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 6
     },
     {
       "name": "那斯達克",
@@ -164,7 +164,7 @@
   "industries": [
     {
       "name": "AI",
-      "count": 30
+      "count": 31
     },
     {
       "name": "半導體",
@@ -172,18 +172,18 @@
     },
     {
       "name": "美股",
-      "count": 21
+      "count": 22
     },
     {
       "name": "總體經濟",
       "count": 18
     },
     {
-      "name": "能源",
-      "count": 14
+      "name": "台股",
+      "count": 15
     },
     {
-      "name": "台股",
+      "name": "能源",
       "count": 14
     },
     {
@@ -729,6 +729,28 @@
         "Perplexity AI"
       ]
     },
+    "cnsLcRD2TMs": {
+      "industries": [
+        "台股",
+        "美股",
+        "AI"
+      ],
+      "mentions": [
+        "Bloom Energy",
+        "美光",
+        "訊息",
+        "GDT",
+        "元太",
+        "OpenAI",
+        "Anthropic",
+        "光通訊相關類股",
+        "CPO相關",
+        "記憶體（DRAM/NAND）",
+        "散熱相關類股",
+        "被動元件",
+        "SMR（小型核反應爐）"
+      ]
+    },
     "eJklz32rDOo": {
       "industries": [
         "美股",
@@ -1173,5 +1195,5 @@
       ]
     }
   },
-  "generated_at": "2026-03-21T12:50:13"
+  "generated_at": "2026-03-21T14:39:53"
 }
