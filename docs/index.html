@@ -1816,87 +1816,6 @@
       background: rgba(245, 158, 11, 0.10);
     }
 
-    /* ── Share Card Button ── */
-    .share-card-btn {
-      background: none;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      padding: 6px 12px;
-      color: var(--text-dim);
-      font-size: 14px;
-      border-radius: var(--radius-sm);
-      transition: color 0.15s, background 0.15s, border-color 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      margin-left: 8px;
-    }
-    .share-card-btn:hover {
-      background: var(--vibe1-lt);
-      border-color: var(--vibe1);
-      color: var(--text);
-    }
-
-    /* ── Share Card Modal ── */
-    .share-card-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: rgba(0,0,0,0.75);
-      align-items: center;
-      justify-content: center;
-    }
-    .share-card-modal.open {
-      display: flex;
-    }
-    .share-card-inner {
-      background: #10122A;
-      border-radius: 16px;
-      padding: 24px;
-      max-width: 420px;
-      width: 90%;
-      box-shadow: var(--shadow-lg);
-    }
-    .share-card-inner canvas {
-      width: 100%;
-      border-radius: 8px;
-      display: block;
-    }
-    .share-card-actions {
-      margin-top: 16px;
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
-    .share-card-download-btn {
-      background: var(--vibe1);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      padding: 9px 18px;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-      font-weight: 600;
-      transition: background 0.15s;
-    }
-    .share-card-download-btn:hover {
-      background: var(--vibe1-dk);
-    }
-    .share-card-close-btn {
-      background: none;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      padding: 9px 18px;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-      transition: background 0.15s, color 0.15s;
-    }
-    .share-card-close-btn:hover {
-      background: var(--vibe1-lt);
-      color: var(--text);
-    }
 
     /* ── Weekly Report Page ── */
     .weekly-page {
@@ -2203,16 +2122,6 @@
     <div class="lightbox-counter" id="lbCounter"></div>
   </div>
 
-  <!-- Share Card Modal -->
-  <div class="share-card-modal" id="shareCardModal">
-    <div class="share-card-inner">
-      <canvas id="shareCardCanvas" width="1080" height="1080"></canvas>
-      <div class="share-card-actions">
-        <button class="share-card-download-btn" id="shareCardDownload">&#11015; 下載 PNG</button>
-        <button class="share-card-close-btn" id="shareCardClose">關閉</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Summary Modal -->
   <div class="modal-overlay" id="modalOverlay">
@@ -3320,7 +3229,6 @@
         <div class="page-header" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
           <h1 class="page-title" style="margin:0">🔍 ${entityName}</h1>
           ${_renderStarBtn()}
-          <button class="share-card-btn" id="entityShareBtn" title="分享卡片">&#128247; 分享</button>
         </div>
         <div class="stats-bar">
           <div class="stat-chip">${ICONS.doc} <strong>${total}</strong> 次提及</div>
@@ -3369,14 +3277,6 @@
         });
       }
 
-      // Bind share button
-      const shareBtn = document.getElementById('entityShareBtn');
-      if (shareBtn) {
-        shareBtn.addEventListener('click', () => {
-          generateShareCard(entityName, { total, bull, bear, neutral, ticker });
-          document.getElementById('shareCardModal').classList.add('open');
-        });
-      }
 
       // Bind click to open modal
       mc.querySelectorAll('.entity-history-item[data-video-id]').forEach(item => {
@@ -3398,125 +3298,6 @@
       });
     }
 
-    // ── Share Card (Canvas) ───────────────────────────────────
-
-    function generateShareCard(entityName, data) {
-      const canvas = document.getElementById('shareCardCanvas');
-      const ctx = canvas.getContext('2d');
-      const W = 1080, H = 1080;
-
-      // Background gradient
-      const bgGrad = ctx.createLinearGradient(0, 0, W * 0.6, H);
-      bgGrad.addColorStop(0, '#080A1A');
-      bgGrad.addColorStop(1, '#160C32');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, W, H);
-
-      // Top accent bar
-      const accentGrad = ctx.createLinearGradient(0, 0, W, 0);
-      accentGrad.addColorStop(0,   '#6366F1');
-      accentGrad.addColorStop(0.5, '#A855F7');
-      accentGrad.addColorStop(1,   '#EC4899');
-      ctx.fillStyle = accentGrad;
-      ctx.fillRect(0, 0, W, 8);
-
-      // Entity name
-      ctx.fillStyle = '#F1F5F9';
-      ctx.textAlign = 'center';
-      ctx.font = 'bold 72px "IBM Plex Sans", "Noto Sans TC", sans-serif';
-      ctx.fillText(entityName, W / 2, 420);
-
-      // Ticker
-      if (data.ticker) {
-        ctx.fillStyle = '#94A3B8';
-        ctx.font = '32px "IBM Plex Sans", "Noto Sans TC", sans-serif';
-        ctx.fillText(data.ticker, W / 2, 480);
-      }
-
-      // "被提及 N 次"
-      ctx.fillStyle = '#94A3B8';
-      ctx.font = '28px "IBM Plex Sans", "Noto Sans TC", sans-serif';
-      const mentionY = data.ticker ? 540 : 490;
-      ctx.fillText(`被提及 ${data.total} 次`, W / 2, mentionY);
-
-      // Sentiment bar
-      const barW = 600, barH = 20;
-      const barX = (W - barW) / 2;
-      const barY = mentionY + 60;
-      const bPct = data.total ? data.bull / data.total : 0;
-      const rPct = data.total ? data.bear / data.total : 0;
-      const nPct = 1 - bPct - rPct;
-
-      // Draw rounded rect helper
-      function roundRect(x, y, w, h, r) {
-        ctx.beginPath();
-        ctx.moveTo(x + r, y);
-        ctx.lineTo(x + w - r, y);
-        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-        ctx.lineTo(x + w, y + h - r);
-        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-        ctx.lineTo(x + r, y + h);
-        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-        ctx.lineTo(x, y + r);
-        ctx.quadraticCurveTo(x, y, x + r, y);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      if (data.total === 0) {
-        ctx.fillStyle = '#334155';
-        roundRect(barX, barY, barW, barH, barH / 2);
-      } else {
-        let cx = barX;
-        if (bPct > 0) {
-          ctx.fillStyle = '#10B981';
-          roundRect(cx, barY, Math.max(barW * bPct, barH), barH, barH / 2);
-          cx += barW * bPct;
-        }
-        if (rPct > 0) {
-          ctx.fillStyle = '#F43F5E';
-          roundRect(cx, barY, Math.max(barW * rPct, barH), barH, barH / 2);
-          cx += barW * rPct;
-        }
-        if (nPct > 0) {
-          ctx.fillStyle = '#475569';
-          roundRect(cx, barY, barW * nPct, barH, barH / 2);
-        }
-      }
-
-      // Sentiment label
-      ctx.font = '26px "IBM Plex Sans", "Noto Sans TC", sans-serif';
-      ctx.textAlign = 'center';
-      const labelY = barY + barH + 42;
-      const labelParts = [
-        { text: `▲ 看多 ${data.bull}`, color: '#10B981' },
-        { text: `  ▼ 看空 ${data.bear}`, color: '#F43F5E' },
-        { text: `  → 中立 ${data.neutral}`, color: '#94A3B8' },
-      ];
-      let totalLabelW = 0;
-      const labelMeasures = labelParts.map(p => {
-        ctx.font = '26px "IBM Plex Sans", "Noto Sans TC", sans-serif';
-        const m = ctx.measureText(p.text);
-        totalLabelW += m.width;
-        return m.width;
-      });
-      let lx = W / 2 - totalLabelW / 2;
-      for (let i = 0; i < labelParts.length; i++) {
-        ctx.fillStyle = labelParts[i].color;
-        ctx.textAlign = 'left';
-        ctx.fillText(labelParts[i].text, lx, labelY);
-        lx += labelMeasures[i];
-      }
-
-      // Bottom site name
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#64748B';
-      ctx.font = '24px "IBM Plex Sans", "Noto Sans TC", sans-serif';
-      ctx.fillText('Ultra Investment Digest', W / 2, H - 80);
-      ctx.fillStyle = '#475569';
-      ctx.font = '18px "IBM Plex Sans", "Noto Sans TC", sans-serif';
-      ctx.fillText('ultrahikerpp.github.io/invest-digest/', W / 2, H - 48);
-    }
 
     // ── Entity Search Page ────────────────────────────────────
 
@@ -3852,30 +3633,6 @@
     document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
     document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
 
-    // ── Share Card Modal ───────────────────────────────────────
-
-    document.getElementById('shareCardClose').addEventListener('click', () => {
-      document.getElementById('shareCardModal').classList.remove('open');
-    });
-    document.getElementById('shareCardModal').addEventListener('click', (e) => {
-      if (e.target === document.getElementById('shareCardModal')) {
-        document.getElementById('shareCardModal').classList.remove('open');
-      }
-    });
-    document.getElementById('shareCardDownload').addEventListener('click', () => {
-      const canvas = document.getElementById('shareCardCanvas');
-      // Get entity name from page title
-      const titleEl = document.querySelector('#mainContent .page-title');
-      const rawName = titleEl ? titleEl.textContent.replace(/^🔍\s*/, '').trim() : 'entity';
-      canvas.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${rawName}-share.png`;
-        a.click();
-        URL.revokeObjectURL(url);
-      }, 'image/png');
-    });
 
     // ── Search input (B1) ──────────────────────────────────────
     // isComposing: true while IME (注音/倉頡) is mid-composition; skip until confirmed
