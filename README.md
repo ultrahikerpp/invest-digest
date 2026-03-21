@@ -166,9 +166,23 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 | `docs/data/divergence.json` | 跨頻道多空分歧分析 |
 | `docs/data/cooccurrence.json` | 標的共現分析（同集常一起出現的標的） |
 | `docs/data/flips.json` | 近期情緒翻轉標的 |
-| `docs/data/weekly_latest.md` | 最新一期 AI 週報（由 `runner.py weekly` 生成） |
+| `docs/data/weekly_latest.md` | 最新一期 AI 週報（GitHub Pages 用，由 `deploy` 從 `data/weekly/` 複製而來） |
 | `docs/data/weekly_meta.json` | 週報元資料（期數、集數、生成時間） |
 | `docs/feed.xml` | RSS 2.0 訂閱 Feed（最新 30 集） |
+
+### 週報雙檔說明
+
+週報存在兩個位置，用途不同：
+
+| 路徑 | 用途 | 是否上傳 GitHub |
+| --- | --- | --- |
+| `data/weekly/YYYY-WW.md` | 本機歷史存檔（每期保留） | ❌ gitignored |
+| `docs/data/weekly_latest.md` | GitHub Pages 顯示用（永遠只放最新一期） | ✅ |
+
+`runner.py weekly` 執行時，會將結果寫入 `data/weekly/YYYY-WW.md`（本機存檔）。
+`runner.py deploy` 再把最新那份複製到 `docs/data/weekly_latest.md` 並 commit/push。
+
+> 若只跑 `weekly` 而未跑 `deploy`，需手動 commit `docs/data/weekly_latest.md` 才會更新 GitHub Pages。
 
 ---
 
@@ -262,7 +276,7 @@ investment-digest/
 └── data/
     ├── subscriptions.db   # SQLite（episodes / mentions / episode_industries）
     ├── summaries/         # Markdown 摘要（原始資料，依頻道分資料夾）
-    ├── weekly/            # AI 週報（YYYY-WW.md，由 runner.py weekly 生成）
+    ├── weekly/            # AI 週報歷史（YYYY-WW.md，本機存檔，不上傳 GitHub）
     ├── transcripts/       # Whisper 逐字稿（本機，不上傳）
     ├── cards/             # PNG 字卡（本機，不上傳）
     ├── videos/            # MP4 影片（本機，不上傳）
