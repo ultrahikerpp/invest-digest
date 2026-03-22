@@ -179,7 +179,7 @@ def _run_newsletter_channel(conn, nl: dict, worker) -> int:
     subject_filter = nl["subject_filter"]
 
     print(f"\n=== {cname} [newsletter] ===")
-    newsletters = fetch_newsletters(sender, subject_filter, max_results=1)
+    newsletters = fetch_newsletters(sender, subject_filter, max_results=10)
     print(f"  Found {len(newsletters)} matching newsletters")
 
     new_count = 0
