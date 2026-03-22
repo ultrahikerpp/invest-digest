@@ -45,12 +45,13 @@ CARDS_DIR = BASE_DIR / "data" / "cards"
 VIDEOS_DIR = BASE_DIR / "data" / "videos"
 CARDS_SHORTS_DIR = BASE_DIR / "data" / "cards_shorts"
 VIDEOS_SHORTS_DIR = BASE_DIR / "data" / "videos_shorts"
+FB_POSTS_DIR = BASE_DIR / "data" / "fb_posts"
 
 # ── Setup ─────────────────────────────────────────────────
 
 def _ensure_dirs():
     for d in [SUMMARIES_DIR, TRANSCRIPTS_DIR, CARDS_DIR, VIDEOS_DIR,
-              CARDS_SHORTS_DIR, VIDEOS_SHORTS_DIR]:
+              CARDS_SHORTS_DIR, VIDEOS_SHORTS_DIR, FB_POSTS_DIR]:
         d.mkdir(parents=True, exist_ok=True)
 
 
@@ -902,6 +903,18 @@ def cmd_approve():
         _update_frontmatter_hashtags(summary_path, hashtags)
         print(f"  ✓ Hashtags: {hashtags}")
 
+        # Generate Facebook post text
+        print(f"  產生 Facebook 貼文...")
+        try:
+            from backend.fb_post_generator import generate_facebook_post
+            fb_post_text = generate_facebook_post(summary_path)
+            fb_post_path = FB_POSTS_DIR / f"{video_id}.txt"
+            fb_post_path.write_text(fb_post_text, encoding="utf-8")
+            print(f"  ✓ Facebook 貼文：{fb_post_path}")
+        except Exception as e:
+            print(f"  ⚠️ Facebook 貼文產生失敗（不影響主流程）：{e}")
+            fb_post_path = None
+
         # Generate Shorts cards (1080x1920)
         print(f"  產生 Shorts 字卡...")
         try:
@@ -925,6 +938,7 @@ def cmd_approve():
             "title": title,
             "hashtags": hashtags,
             "video_id": video_id,
+            "fb_post_path": fb_post_path,
         })
 
     conn.close()
@@ -940,7 +954,10 @@ def cmd_approve():
     for r in results:
         video_path = _shorts_video_output_path(r["video_id"], r["channel_name"])
         lines.append(f"{r['channel_name']}｜{r['title']}｜{r['hashtags']}")
-        lines.append(f"  Shorts 影片路徑：{video_path}\n")
+        lines.append(f"  Shorts 影片路徑：{video_path}")
+        if r.get("fb_post_path"):
+            lines.append(f"  Facebook 貼文：{r['fb_post_path']}")
+        lines.append("")
     body = "\n".join(lines)
 
     print(f"\n寄送完成通知郵件...")
