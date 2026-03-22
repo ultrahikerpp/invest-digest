@@ -51,34 +51,34 @@
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 11,
+      "count": 12,
       "bullish": 2,
       "bearish": 1,
-      "neutral": 8
+      "neutral": 9
     },
     {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 11,
+      "count": 12,
       "bullish": 3,
       "bearish": 0,
-      "neutral": 8
+      "neutral": 9
     },
     {
       "name": "美光",
       "ticker": "MU",
-      "count": 10,
-      "bullish": 5,
+      "count": 11,
+      "bullish": 6,
       "bearish": 1,
       "neutral": 4
     },
     {
       "name": "OpenAI",
       "ticker": null,
-      "count": 9,
+      "count": 10,
       "bullish": 3,
       "bearish": 0,
-      "neutral": 6
+      "neutral": 7
     },
     {
       "name": "Anthropic",
@@ -129,12 +129,44 @@
       "neutral": 2
     },
     {
+      "name": "亞馬遜",
+      "ticker": "AMZN",
+      "count": 7,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
       "name": "三星",
       "ticker": "005930",
       "count": 7,
       "bullish": 0,
       "bearish": 0,
       "neutral": 7
+    },
+    {
+      "name": "Lumentum",
+      "ticker": "LITE",
+      "count": 7,
+      "bullish": 6,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "Coherent",
+      "ticker": "COHR",
+      "count": 7,
+      "bullish": 6,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "微軟",
+      "ticker": "MSFT",
+      "count": 6,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 5
     },
     {
       "name": "布蘭特原油",
@@ -151,14 +183,6 @@
       "bullish": 3,
       "bearish": 1,
       "neutral": 2
-    },
-    {
-      "name": "亞馬遜",
-      "ticker": "AMZN",
-      "count": 6,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 5
     },
     {
       "name": "Tesla",
@@ -185,20 +209,12 @@
       "neutral": 4
     },
     {
-      "name": "Lumentum",
-      "ticker": "LITE",
+      "name": "Nvidia",
+      "ticker": "NVDA",
       "count": 6,
-      "bullish": 6,
+      "bullish": 4,
       "bearish": 0,
-      "neutral": 0
-    },
-    {
-      "name": "Coherent",
-      "ticker": "COHR",
-      "count": 6,
-      "bullish": 6,
-      "bearish": 0,
-      "neutral": 0
+      "neutral": 2
     },
     {
       "name": "Amazon",
@@ -223,22 +239,6 @@
       "bullish": 1,
       "bearish": 1,
       "neutral": 3
-    },
-    {
-      "name": "微軟",
-      "ticker": "MSFT",
-      "count": 5,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 4
-    },
-    {
-      "name": "Nvidia",
-      "ticker": "NVDA",
-      "count": 5,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "Intel",
@@ -593,6 +593,14 @@
       "neutral": 2
     },
     {
+      "name": "xAI",
+      "ticker": null,
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "Walmart",
       "ticker": "WMT",
       "count": 2,
@@ -663,6 +671,14 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 0
+    },
+    {
+      "name": "Broadcom",
+      "ticker": "AVGO",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
     },
     {
       "name": "Accenture",
@@ -1473,14 +1489,6 @@
       "neutral": 1
     },
     {
-      "name": "xAI",
-      "ticker": null,
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "Xiaomi",
       "ticker": "1810",
       "count": 1,
@@ -1969,14 +1977,6 @@
       "neutral": 0
     },
     {
-      "name": "Broadcom",
-      "ticker": "AVGO",
-      "count": 1,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 0
-    },
-    {
       "name": "Bloom Energy",
       "ticker": "BE",
       "count": 1,
@@ -2140,11 +2140,11 @@
   "industries": [
     {
       "name": "AI",
-      "count": 31
+      "count": 32
     },
     {
       "name": "半導體",
-      "count": 23
+      "count": 24
     },
     {
       "name": "美股",
@@ -2164,7 +2164,7 @@
     },
     {
       "name": "科技",
-      "count": 10
+      "count": 11
     },
     {
       "name": "新興市場",
@@ -2897,6 +2897,26 @@
         "富台指"
       ]
     },
+    "kp-newsletter-34": {
+      "industries": [
+        "半導體",
+        "AI",
+        "科技"
+      ],
+      "mentions": [
+        "xAI",
+        "Nvidia",
+        "美光",
+        "微軟",
+        "OpenAI",
+        "亞馬遜",
+        "Meta",
+        "AMD",
+        "Broadcom",
+        "Coherent",
+        "Lumentum"
+      ]
+    },
     "mDGpvZ44vuk": {
       "industries": [
         "半導體",
@@ -3171,5 +3191,5 @@
       ]
     }
   },
-  "generated_at": "2026-03-21T16:51:17"
+  "generated_at": "2026-03-22T00:28:39"
 }
