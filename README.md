@@ -1,6 +1,6 @@
 # Ultra Investment Digest
 
-> YouTube 財經投資頻道自動摘要工具
+> YouTube 財經投資頻道 ＋ 電子報自動摘要工具
 
 [![Version](https://img.shields.io/badge/Version-1.3.0-orange)](https://github.com/ultrahikerpp/invest-digest/releases)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)](https://www.python.org/)
@@ -8,7 +8,7 @@
 [![Platform](https://img.shields.io/badge/Platform-macOS-lightgrey?logo=apple)](README.md)
 [![Demo](https://img.shields.io/badge/Demo-GitHub%20Pages-blue?logo=github)](https://ultrahikerpp.github.io/invest-digest/)
 
-每天自動抓取訂閱頻道的最新影片，透過 Whisper 轉錄逐字稿、Claude AI 整理成結構化投資重點摘要與字卡，並部署為 GitHub Pages 靜態網站供瀏覽器查看。
+每天自動抓取訂閱頻道的最新影片與投資電子報，透過 Whisper 轉錄逐字稿（YouTube）或直接讀取郵件全文（電子報）、Claude AI 整理成結構化投資重點摘要與字卡，並部署為 GitHub Pages 靜態網站供瀏覽器查看。
 
 ---
 
@@ -28,7 +28,7 @@
 | Google Chrome | 已安裝，且已在 Chrome 中登入 [claude.ai](https://claude.ai) |
 | ffmpeg | 產生 MP4 影片時需要（`brew install ffmpeg`） |
 | 作業系統 | macOS（Windows / Linux 尚未支援） |
-| Gmail | 需設定應用程式密碼（App Password）以發送通知信 |
+| Gmail | 需設定應用程式密碼（App Password）以發送通知信；需啟用 IMAP（設定 → 轉寄和 POP/IMAP → 啟用 IMAP）以接收電子報 |
 
 ---
 
@@ -129,6 +129,69 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 ./venv/bin/python runner.py divergence
 ./venv/bin/python runner.py divergence --days 180 --min-channels 2
 ```
+
+---
+
+## 電子報整合（FOMO研究院 KP思考筆記）
+
+### 支援來源
+
+目前支援抓取 **FOMO研究院「KP思考筆記」週更免費電子報**（每週六發送），透過 Gmail IMAP 讀取郵件全文，不需要 Whisper 轉錄。
+
+### 設定方式
+
+電子報來源設定在 `channels.json` 的 `newsletters` 區塊（與 YouTube `channels` 分開）：
+
+```json
+{
+  "channels": [ ... ],
+  "newsletters": [
+    {
+      "channel_id": "fomo-newsletter",
+      "name": "FOMO研究院",
+      "type": "newsletter",
+      "sender": "fomosoc@substack.com",
+      "subject_filter": "KP思考筆記",
+      "thumbnail_url": "",
+      "active": true
+    }
+  ]
+}
+```
+
+| 欄位 | 說明 |
+| --- | --- |
+| `sender` | 寄件人 Email，用於 IMAP 搜尋 |
+| `subject_filter` | 主旨關鍵字篩選，只處理包含此字串的信件（免費週更用 `KP思考筆記`，排除付費深入分析） |
+| `active` | `false` 可暫停抓取 |
+
+### 工作流程
+
+電子報的處理流程與 YouTube 完全相同：
+
+```
+runner.py run  →  Gmail IMAP 抓取最新電子報 → Claude AI 生成摘要
+                  → 寄送審閱通知信 → 人工確認
+runner.py approve  →  hashtags + 字卡 + 自動部署
+```
+
+- `run` 執行時 YouTube 頻道與電子報會**同時處理**
+- `--channel` 參數僅針對 YouTube 單一頻道；電子報只在全頻道 run 時執行
+- 已處理過的期數透過 SQLite 去重，不會重複產出
+
+### 電子報 vs YouTube 差異
+
+| 項目 | YouTube | 電子報 |
+| --- | --- | --- |
+| 內容取得 | yt-dlp 下載音訊 + Whisper 轉錄 | Gmail IMAP 讀取郵件純文字 |
+| 摘要 prompt | 逐字稿整理（有廣告段落過濾） | 文章整理（多主題結構化） |
+| 原始連結 | YouTube 影片網址 | Substack 文章網址 |
+| 字卡章節 | 核心觀點、提及標的… | 本期主題總覽、各主題重點… |
+| 網站按鈕 | 「YouTube 觀看原片」 | 「閱讀原文於 Substack」 |
+
+### 新增其他電子報
+
+在 `channels.json` 的 `newsletters` 陣列新增一筆記錄即可，`sender` 填對方寄件地址，`subject_filter` 填用於識別免費信件的主旨關鍵字。
 
 ---
 
@@ -253,12 +316,13 @@ investment-digest/
 ├── build_site.py          # 靜態網站產生器
 ├── channels.json          # 訂閱頻道設定
 ├── backend/
-│   ├── worker.py          # 核心邏輯（RSS 抓取、Whisper 轉錄、Email 通知）
-│   ├── claude_browser.py  # Claude AI 瀏覽器自動化（摘要、hashtags、字卡金句、標的萃取）
-│   ├── analyzer.py        # 標的追蹤 DB 操作（mentions / episode_industries）
-│   ├── card_generator.py  # 字卡 PNG 產生（Pillow）
-│   ├── dqs.py             # 摘要品質評分（DQS）
-│   └── video_maker.py     # 短影片 MP4 組裝
+│   ├── worker.py              # 核心邏輯（RSS 抓取、Whisper 轉錄、Email 通知）
+│   ├── newsletter_fetcher.py  # Gmail IMAP 電子報抓取（KP思考筆記等免費電子報）
+│   ├── claude_browser.py      # Claude AI 瀏覽器自動化（摘要、hashtags、字卡金句、標的萃取）
+│   ├── analyzer.py            # 標的追蹤 DB 操作（mentions / episode_industries）
+│   ├── card_generator.py      # 字卡 PNG 產生（Pillow）
+│   ├── dqs.py                 # 摘要品質評分（DQS）
+│   └── video_maker.py         # 短影片 MP4 組裝
 ├── docs/                  # GitHub Pages 靜態網站
 │   ├── index.html         # 單頁應用（SPA，Vanilla JS）
 │   ├── feed.xml           # RSS 2.0 訂閱 Feed（build 時自動產生）
@@ -292,6 +356,7 @@ investment-digest/
 - **無 Web Server**：靜態 GitHub Pages；所有資料於建置時預先產生
 - **兩階段工作流程**：`run` 產出摘要進入 `pending_review`，人工確認後執行 `approve` 產出字卡與影片並自動部署
 - **SQLite 狀態追蹤**：`data/subscriptions.db` 記錄每集狀態（`pending_review` / `done`），以及 `mentions`、`episode_industries` 表儲存標的與產業分析結果
+- **電子報支援**：透過 Gmail IMAP 讀取郵件純文字，省去音訊下載與 Whisper 轉錄；`channels.json` 的 `newsletters` 區塊獨立設定，與 YouTube 頻道共用相同的摘要→審閱→部署流程
 
 ---
 
@@ -307,6 +372,23 @@ published: 2026-02-27
 processed: 2026-02-27
 hashtags: #台股 #ETF #升息 #通膨 #資產配置 #Gooaye股癌
 industries: 台股, ETF, 總體經濟
+---
+```
+
+電子報摘要的 frontmatter 格式如下（多了 `source_type` 和 `source_url`）：
+
+```yaml
+---
+title: 美光財報的重點？巨頭發起光通訊新憲法？- KP思考筆記(第34期)
+video_id: kp-newsletter-34
+channel_id: fomo-newsletter
+channel_name: FOMO研究院
+source_type: newsletter
+source_url: https://fomosoc.substack.com/p/openai-kp34
+published: 2026-03-21
+processed: 2026-03-22
+hashtags: #美光 #NVIDIA #AI #光通訊 #科技股 #FOMO研究院
+industries: 半導體, AI, 科技
 ---
 ```
 

@@ -69,6 +69,15 @@ def _load_channels() -> list[dict]:
     return [ch for ch in channels if ch.get("active", True)]
 
 
+def _load_newsletters() -> list[dict]:
+    if not CHANNELS_FILE.exists():
+        return []
+    with open(CHANNELS_FILE, encoding="utf-8") as f:
+        data = json.load(f)
+    newsletters = data.get("newsletters", [])
+    return [nl for nl in newsletters if nl.get("active", True)]
+
+
 def _get_channel_name(channel_id: str, channels: list[dict]) -> str:
     for ch in channels:
         if ch["channel_id"] == channel_id:
@@ -154,6 +163,101 @@ def _import_worker():
     sys.path.insert(0, str(BASE_DIR))
     import backend.worker as w
     return w
+
+
+# ── Newsletter fetch ──────────────────────────────────────
+
+def _run_newsletter_channel(conn, nl: dict, worker) -> int:
+    """Fetch and process a single newsletter source. Returns count of new items."""
+    from backend.newsletter_fetcher import fetch_newsletters
+    from backend.claude_browser import generate_newsletter_summary, extract_analysis
+    from backend.analyzer import save_mentions, save_industries
+
+    cid = nl["channel_id"]
+    cname = nl["name"]
+    sender = nl["sender"]
+    subject_filter = nl["subject_filter"]
+
+    print(f"\n=== {cname} [newsletter] ===")
+    newsletters = fetch_newsletters(sender, subject_filter, max_results=1)
+    print(f"  Found {len(newsletters)} matching newsletters")
+
+    new_count = 0
+    for item in newsletters:
+        vid = item["video_id"]
+        if _is_processed(conn, vid):
+            print(f"  [skip] {item['title'][:70]}")
+            continue
+
+        print(f"  [new]  {item['title'][:70]}")
+
+        # Generate summary (body is already plain text — no transcription needed)
+        print(f"  Generating summary...")
+        summary_body = generate_newsletter_summary(item["body"], item["title"])
+
+        # Build source link (Substack URL if available)
+        source_link = item.get("substack_url", "")
+        source_line = f"🔗 [閱讀原文於 Substack]({source_link})\n\n" if source_link else ""
+
+        now = datetime.now().strftime("%Y-%m-%d")
+        frontmatter = (
+            f"---\n"
+            f"title: {item['title']}\n"
+            f"video_id: {vid}\n"
+            f"channel_id: {cid}\n"
+            f"channel_name: {cname}\n"
+            f"source_type: newsletter\n"
+            f"source_url: {item.get('substack_url', '')}\n"
+            f"published: {item['published_at']}\n"
+            f"processed: {now}\n"
+            f"---\n\n"
+            f"# {item['title']}\n\n"
+            f"{source_line}"
+        )
+        full_md = frontmatter + summary_body
+
+        s_path = _summary_path(vid, cname)
+        s_path.write_text(full_md, encoding="utf-8")
+
+        # Extract structured analysis (mentions + industries)
+        print(f"  萃取標的與產業分析...")
+        try:
+            analysis = extract_analysis(summary_body)
+            save_mentions(conn, vid, cid, analysis["mentions"])
+            save_industries(conn, vid, cid, analysis["industries"])
+            if analysis["industries"]:
+                _update_frontmatter_field(s_path, "industries", ", ".join(analysis["industries"]))
+                print(f"  ✓ 產業：{', '.join(analysis['industries'])}")
+            if analysis["mentions"]:
+                print(f"  ✓ 標的：{', '.join(m['name'] for m in analysis['mentions'][:5])}")
+        except Exception as e:
+            print(f"  ⚠️ 分析萃取失敗（不影響主流程）：{e}")
+
+        _mark_pending_review(conn, cid, item, "", str(s_path))
+        new_count += 1
+        print(f"  ✓ 摘要已儲存：{item['title'][:60]}")
+
+        # Send review notification email
+        subject = f"[待審閱] {cname}｜{item['title']}"
+        body_email = (
+            f"新電子報摘要已產出，請審閱後執行以下指令：\n\n"
+            f"python3 runner.py approve\n\n"
+            f"─────────────────────────\n"
+            f"來源：{cname}\n"
+            f"標題：{item['title']}\n"
+            f"Substack：{item.get('substack_url', 'N/A')}\n"
+            f"摘要檔案：{s_path}\n"
+            f"─────────────────────────\n\n"
+            f"{summary_body}"
+        )
+        print(f"  寄送審閱通知郵件...")
+        try:
+            worker.send_notification_email(subject, body_email)
+            print(f"  ✓ 郵件已寄至 {worker.GMAIL_USER}")
+        except Exception as e:
+            print(f"  ❌ 郵件發送失敗：{e}")
+
+    return new_count
 
 
 # ── Run command ───────────────────────────────────────────
@@ -264,6 +368,12 @@ def cmd_run(channel_id: str | None = None):
             print(f"  No new videos")
         else:
             total_new += new_count
+
+    # ── Newsletters ──────────────────────────────────────
+    if channel_id is None:  # newsletters only on full run, not single-channel
+        newsletters = _load_newsletters()
+        for nl in newsletters:
+            total_new += _run_newsletter_channel(conn, nl, worker)
 
     conn.close()
     print(f"\nTotal new episodes processed: {total_new}")

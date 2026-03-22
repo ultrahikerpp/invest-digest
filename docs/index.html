@@ -2155,12 +2155,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-primary" id="modalYtLink" href="#" target="_blank" rel="noopener">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-          YouTube 觀看原片
-        </a>
+        <a class="btn btn-primary" id="modalYtLink" href="#" target="_blank" rel="noopener"></a>
         <button class="btn btn-ghost" id="modalCloseBtn">關閉</button>
       </div>
     </div>
@@ -2517,6 +2512,7 @@
 
       document.querySelectorAll('.episode-card').forEach(card => {
         card.addEventListener('click', () => {
+          const epData = allEpisodes.find(e => e.video_id === card.dataset.videoId) || {};
           openModal({
             videoId: card.dataset.videoId,
             channelName: card.dataset.channelName,
@@ -2525,6 +2521,8 @@
             summaryUrl: card.dataset.summaryUrl,
             cards: card.dataset.cards ? JSON.parse(card.dataset.cards) : [],
             hashtags: card.dataset.hashtags || '',
+            sourceType: epData.source_type || 'youtube',
+            sourceUrl: epData.source_url || '',
           });
         });
       });
@@ -2545,7 +2543,7 @@
 
     // ── Modal ──────────────────────────────────────────────────
 
-    async function openModal({ videoId, channelName, title, date, summaryUrl, cards, hashtags }) {
+    async function openModal({ videoId, channelName, title, date, summaryUrl, cards, hashtags, sourceType, sourceUrl }) {
       const overlay = document.getElementById('modalOverlay');
       const body = document.getElementById('modalBody');
       const strip = document.getElementById('cardsStrip');
@@ -2566,7 +2564,14 @@
 
       const metaEl = document.getElementById('modalMeta');
       metaEl.innerHTML = date ? `${ICONS.calendar} ${date}` : '';
-      document.getElementById('modalYtLink').href = `https://youtube.com/watch?v=${videoId}`;
+      const ytLinkEl = document.getElementById('modalYtLink');
+      if (sourceType === 'newsletter' && sourceUrl) {
+        ytLinkEl.href = sourceUrl;
+        ytLinkEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> 閱讀原文於 Substack`;
+      } else {
+        ytLinkEl.href = `https://youtube.com/watch?v=${videoId}`;
+        ytLinkEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg> YouTube 觀看原片`;
+      }
       body.innerHTML = '<div class="loading"><div class="spinner"></div> 載入中…</div>';
 
       if (cards && cards.length) {
@@ -3292,6 +3297,8 @@
               summaryUrl: ep.summary_url,
               cards: ep.cards || [],
               hashtags: ep.hashtags || '',
+              sourceType: ep.source_type || 'youtube',
+              sourceUrl: ep.source_url || '',
             });
           }
         });

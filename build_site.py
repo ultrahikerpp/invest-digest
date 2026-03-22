@@ -111,6 +111,8 @@ def build():
             published_at = _normalize_date(meta.get("published", ""))
             processed_at = _normalize_date(meta.get("processed", ""))
             hashtags = meta.get("hashtags", "")
+            source_type = meta.get("source_type", "youtube")
+            source_url = meta.get("source_url", "")
 
             # Collect card URLs — prefer Shorts cards, fall back to landscape cards
             _shorts_src = CARDS_SHORTS_DIR / channel_name / video_id if channel_name else CARDS_SHORTS_DIR / video_id
@@ -134,6 +136,8 @@ def build():
                 "summary_url": f"summaries/{video_id}.md",
                 "cards": card_urls,
                 "hashtags": hashtags,
+                "source_type": source_type,
+                "source_url": source_url,
             })
 
             # Copy summary file to site/

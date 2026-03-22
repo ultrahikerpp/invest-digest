@@ -583,6 +583,55 @@ def extract_analysis(summary_body: str) -> dict:
     return {"mentions": [], "industries": []}
 
 
+# ── Newsletter summary ─────────────────────────────────────
+
+def _build_newsletter_summary_prompt(body: str, title: str) -> str:
+    return f"""你是一位專業的投資電子報摘要整理員。以下是 FOMO研究院「KP思考筆記」電子報的完整文章內容。請忠實整理各主題的重點，產出結構化摘要。
+
+【核心原則：忠實於原始內容】
+- 所有摘要內容必須直接來自文章，不得加入任何文章中未提及的觀點、數據或建議
+- 用「KP認為」、「文章提到」等語氣，忠實呈現作者立場，而非以自己的角度詮釋
+- 若某主題在文章中無對應分析，請直接寫「本期未提及」
+
+電子報標題：{title}
+
+文章內容：
+{body}
+
+請用繁體中文產出以下格式的 Markdown 摘要：
+
+## 本期主題總覽
+（列出本期討論的所有主題名稱，一行一個）
+
+## 各主題重點
+（每個主題獨立一個小節，列出 3-5 個核心論點，用「KP認為…」語氣呈現）
+
+## 核心觀點
+（本期最重要的 2-3 個投資洞察或思考框架，用「KP認為…」語氣）
+
+## 提及標的
+（文章中明確提及的股票、ETF、公司、產業、指數；若未提及請寫「本期未提及具體標的」）
+
+## 關鍵數據
+（文章中出現的具體數字、財報數據、百分比、時間點；若無請寫「本期未提及具體數據」）
+
+## 創作者建議的觀察方向
+（KP 建議後續追蹤或留意的指標、事件、產業動態；若未提及請寫「本期未明確提及」）"""
+
+
+def generate_newsletter_summary(body: str, title: str) -> str:
+    """Generate investment summary for a newsletter article via Claude browser automation."""
+    prompt = _build_newsletter_summary_prompt(body, title)
+    try:
+        return chat(prompt, timeout_secs=180)
+    except Exception as e:
+        return (
+            f"# {title}\n\n"
+            f"⚠️ Claude 瀏覽器摘要失敗：{e}\n\n"
+            f"## 電子報前段\n\n{body[:1000]}"
+        )
+
+
 def score_m1(summary_body: str) -> float:
     """
     Score summary on M1 (signal quality) via Claude browser.

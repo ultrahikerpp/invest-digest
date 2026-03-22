@@ -35,13 +35,16 @@ C_MUTED = (148, 163, 184)  # slate muted       #94A3B8
 C_DIM   = (71,   85, 105)  # dark slate        #475569
 C_CARD  = (16,   18,  42)  # card surface      #10122A
 
-SECTION_ORDER = ["核心觀點", "提及標的", "關鍵數據", "創作者點出的機會", "風險提示", "創作者建議的觀察方向"]
+SECTION_ORDER = ["本期主題總覽", "各主題重點", "核心觀點", "提及標的", "關鍵數據", "創作者點出的機會", "風險提示", "創作者建議的觀察方向"]
 
 # Backwards-compatible aliases: map old section names → new section names
 # so that summaries generated before the prompt update still render correctly
 _SECTION_ALIASES: dict[str, str] = {
     "投資機會": "創作者點出的機會",
     "個人行動建議": "創作者建議的觀察方向",
+    # Newsletter aliases (summaries generated with old prompt)
+    "KP 的核心觀點": "核心觀點",
+    "觀察方向": "創作者建議的觀察方向",
 }
 
 # ── Font sizes ────────────────────────────────────────────

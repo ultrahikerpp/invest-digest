@@ -4,6 +4,7 @@ video_id: kp-newsletter-34
 channel_id: fomo-newsletter
 channel_name: FOMO研究院
 source_type: newsletter
+source_url: https://fomosoc.substack.com/p/openai-kp34
 published: 2026-03-21
 processed: 2026-03-22
 hashtags: #美光 #NVIDIA #AI #光通訊 #科技股 #FOMO研究院
