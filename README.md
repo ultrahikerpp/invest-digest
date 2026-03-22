@@ -63,7 +63,7 @@ cp .env.example .env
 ```
 runner.py run      →  新集數轉錄 + 摘要，寄送審閱通知信（僅此一次）
      ↓ （收到信後人工確認摘要內容）
-runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
+runner.py approve  →  產生 hashtags + Facebook 貼文 + 字卡 + 影片，自動部署網站
 ```
 
 ---
@@ -79,7 +79,7 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 # 只抓取特定頻道
 ./venv/bin/python runner.py run --channel <channel_id>
 
-# 處理所有待審閱集數：產生 hashtags、字卡、影片，並自動部署網站
+# 處理所有待審閱集數：產生 hashtags、Facebook 貼文、字卡、影片，並自動部署網站
 ./venv/bin/python runner.py approve
 
 # 重新產生靜態網站（docs/）
@@ -128,6 +128,61 @@ runner.py approve  →  產生 hashtags + 字卡 + 影片，自動部署網站
 # 查看各頻道對同一標的的多空立場比較
 ./venv/bin/python runner.py divergence
 ./venv/bin/python runner.py divergence --days 180 --min-channels 2
+```
+
+---
+
+## Facebook 貼文自動產生
+
+`runner.py approve` 在產生 hashtags 後，會自動呼叫 `backend/fb_post_generator.py`，將摘要 Markdown 轉換成適合直接貼上 Facebook 的純文字格式，並儲存於 `data/fb_posts/<video_id>.txt`。
+
+### 輸出格式
+
+```
+[投資YT重點摘要]
+📺 Gooaye 股癌
+📈 EP646 | 🦙
+
+──────────────────────────────
+
+💡 核心觀點
+
+▸ 投資聚焦未來展望：財報分析應更著重於公司的未來業績指引...
+▸ AI題材的市場兩極化：AI在某些應用場景可能被過度炒作...
+
+──────────────────────────────
+
+🎯 提及標的
+...
+
+──────────────────────────────
+
+🔗 YouTube 觀看原片：https://youtube.com/watch?v=xxxx
+
+#光通訊 #CPO #記憶體 #AI投資 #選股策略 #Gooaye股癌
+```
+
+### 區段 Emoji 對照
+
+| 區段 | Emoji |
+| --- | --- |
+| 核心觀點 | 💡 |
+| 提及標的 | 🎯 |
+| 關鍵數據 | 📊 |
+| 創作者點出的機會 | 🚀 |
+| 風險提示 | ⚠️ |
+| 創作者建議的觀察方向 | 🔭 |
+| 本期主題總覽（電子報） | 📋 |
+| 各主題重點（電子報） | 📑 |
+
+### 單獨產生指定集數的 Facebook 貼文
+
+```python
+from backend.fb_post_generator import generate_facebook_post
+from pathlib import Path
+
+result = generate_facebook_post(Path("data/summaries/Gooaye 股癌/xxxx.md"))
+print(result)
 ```
 
 ---
@@ -321,6 +376,7 @@ investment-digest/
 │   ├── claude_browser.py      # Claude AI 瀏覽器自動化（摘要、hashtags、字卡金句、標的萃取）
 │   ├── analyzer.py            # 標的追蹤 DB 操作（mentions / episode_industries）
 │   ├── card_generator.py      # 字卡 PNG 產生（Pillow）
+│   ├── fb_post_generator.py   # Facebook 貼文純文字產生
 │   ├── dqs.py                 # 摘要品質評分（DQS）
 │   └── video_maker.py         # 短影片 MP4 組裝
 ├── docs/                  # GitHub Pages 靜態網站
@@ -344,6 +400,7 @@ investment-digest/
     ├── transcripts/       # Whisper 逐字稿（本機，不上傳）
     ├── cards/             # PNG 字卡（本機，不上傳）
     ├── videos/            # MP4 影片（本機，不上傳）
+    ├── fb_posts/          # Facebook 貼文純文字（本機，不上傳）
     └── runner.log         # 每日批次執行 log
 ```
 
