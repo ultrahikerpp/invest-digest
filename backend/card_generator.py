@@ -12,10 +12,46 @@ def _fallback_points(content: str) -> list[str]:
     points = []
     for raw in content.split("\n"):
         cleaned = re.sub(r"\*+", "", raw).strip()
+        cleaned = re.sub(r"^#{1,6}\s*", "", cleaned).strip()   # strip markdown headers
         cleaned = re.sub(r"^[-•·]\s*", "", cleaned).strip()
         if cleaned:
             points.append(cleaned[:25] + "…" if len(cleaned) > 25 else cleaned)
     return points[:5]
+
+
+def _extract_structured_points(section_name: str, content: str):
+    """
+    Extract card bullet points directly from newsletter markdown structure.
+    Only 各主題重點 and 提及標的 are handled here.
+    All other sections are sent to Claude.
+    """
+    if section_name == "各主題重點":
+        points = []
+        for line in content.splitlines():
+            m = re.match(r'^###\s+(.+)$', line.strip())
+            if m:
+                title = re.sub(r'^主題[一二三四五六七八九十\d]+[：:]\s*', '', m.group(1)).strip()
+                title = re.sub(r'[？?！!]$', '', title).strip()
+                if title:
+                    points.append(title)
+        return points[:6] if points else None
+
+    return None
+
+
+def _get_claude_points(all_points: dict, section_title: str) -> list:
+    """
+    Look up Claude-generated points for a section.
+    Tries exact match first, then substring match to handle name variations
+    (e.g. Claude outputs [觀察方向] but section_title is [創作者建議的觀察方向]).
+    """
+    if section_title in all_points:
+        pts = all_points[section_title]
+        return pts if pts else []
+    for key, pts in all_points.items():
+        if key in section_title or section_title in key:
+            return pts if pts else []
+    return []
 
 
 # ── Dimensions ────────────────────────────────────────────
@@ -405,9 +441,27 @@ def generate_cards(
 
     # Generate bullet points + hook in one Claude browser session
     print(f"  [card] 用 Claude 批次生成金句 + Hook...")
-    from backend.claude_browser import generate_card_points
     sections_dict = {t: c for t, c in ordered}
-    all_points, hook_text = generate_card_points(sections_dict)
+
+    _NEWSLETTER_SECTIONS = {"本期主題總覽", "各主題重點", "核心觀點"}
+    is_newsletter = any(k in sections for k in _NEWSLETTER_SECTIONS)
+
+    if is_newsletter:
+        from backend.claude_browser import generate_newsletter_card_points
+        # Pre-extract structured sections; only send the rest to Claude
+        pre_extracted = {}
+        claude_sections = {}
+        for name, content in sections_dict.items():
+            pts = _extract_structured_points(name, content)
+            if pts:
+                pre_extracted[name] = pts
+            else:
+                claude_sections[name] = content[:500]  # cap content per section
+        all_points, hook_text = generate_newsletter_card_points(claude_sections)
+        all_points.update(pre_extracted)
+    else:
+        from backend.claude_browser import generate_card_points
+        all_points, hook_text = generate_card_points(sections_dict)
 
     cards: list[Path] = []
 
@@ -418,9 +472,14 @@ def generate_cards(
     print(f"  [card] ✓ Hook 卡片")
 
     # 2. Section cards (card_01 … card_N)
+    max_points = 4 if is_newsletter else 5
     for i, (section_title, content) in enumerate(ordered, start=1):
-        points = all_points.get(section_title) or _fallback_points(content)
-        points = [p for p in points if p][:5]
+        points = (
+            _get_claude_points(all_points, section_title)
+            or (is_newsletter and _extract_structured_points(section_title, content))
+            or _fallback_points(content)
+        )
+        points = [p for p in points if p][:max_points]
         card_path = output_dir / f"card_{i:02d}.png"
         _make_section_card(section_title, points, i, total_section_cards, title, channel_name, card_path)
         cards.append(card_path)

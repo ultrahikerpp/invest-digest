@@ -323,7 +323,7 @@ def generate_cards_shorts(
     Returns list of card paths in order:
       [hook_card, section_card×N, cta_card]
     """
-    from backend.card_generator import parse_summary, SECTION_ORDER, _fallback_points
+    from backend.card_generator import parse_summary, SECTION_ORDER, _fallback_points, _extract_structured_points, _get_claude_points
     from backend.claude_browser import generate_card_points_shorts
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -341,7 +341,25 @@ def generate_cards_shorts(
     # Generate Shorts bullet points + hook via Claude
     print(f"  [shorts] 用 Claude 批次生成 Shorts 金句 + Hook...")
     sections_dict = {t: c for t, c in ordered}
-    all_points, hook_text = generate_card_points_shorts(sections_dict)
+
+    _NEWSLETTER_SECTIONS = {"本期主題總覽", "各主題重點", "核心觀點"}
+    is_newsletter = any(k in sections for k in _NEWSLETTER_SECTIONS)
+
+    if is_newsletter:
+        from backend.claude_browser import generate_newsletter_card_points_shorts
+        # Pre-extract structured sections; only send the rest to Claude
+        pre_extracted = {}
+        claude_sections = {}
+        for name, content in sections_dict.items():
+            pts = _extract_structured_points(name, content)
+            if pts:
+                pre_extracted[name] = pts
+            else:
+                claude_sections[name] = content[:500]  # cap content per section
+        all_points, hook_text = generate_newsletter_card_points_shorts(claude_sections)
+        all_points.update(pre_extracted)
+    else:
+        all_points, hook_text = generate_card_points_shorts(sections_dict)
 
     cards: list[Path] = []
 
@@ -352,9 +370,14 @@ def generate_cards_shorts(
     print(f"  [shorts] ✓ Hook 卡片")
 
     # 2. Section cards (card_01 … card_N)
+    max_points = 4 if is_newsletter else 5
     for i, (section_title, content) in enumerate(ordered, start=1):
-        points = all_points.get(section_title) or _fallback_points(content)
-        points = [p for p in points if p][:5]
+        points = (
+            _get_claude_points(all_points, section_title)
+            or (is_newsletter and _extract_structured_points(section_title, content))
+            or _fallback_points(content)
+        )
+        points = [p for p in points if p][:max_points]
         card_path = output_dir / f"card_{i:02d}.png"
         _make_section_card_shorts(
             section_title, points, i, total_section_cards,
