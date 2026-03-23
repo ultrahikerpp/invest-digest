@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-03-23
 processed: 2026-03-23
+hashtags: #美股修正 #科技巨頭 #TeraFab #AI半導體 #TSLA #JC趨勢財經觀點
 industries: 美股, 半導體, AI
 ---
 
