@@ -3,26 +3,26 @@
     {
       "name": "道瓊指數",
       "ticker": "DJIA",
-      "count": 22,
+      "count": 23,
       "bullish": 3,
       "bearish": 9,
-      "neutral": 10
+      "neutral": 11
     },
     {
       "name": "費城半導體指數",
       "ticker": "SOX",
-      "count": 18,
+      "count": 19,
       "bullish": 5,
       "bearish": 5,
-      "neutral": 8
+      "neutral": 9
     },
     {
       "name": "S&P 500",
       "ticker": "SPX",
-      "count": 18,
+      "count": 19,
       "bullish": 2,
       "bearish": 4,
-      "neutral": 12
+      "neutral": 13
     },
     {
       "name": "台積電",
@@ -41,20 +41,20 @@
       "neutral": 13
     },
     {
+      "name": "NVIDIA",
+      "ticker": "NVDA",
+      "count": 15,
+      "bullish": 10,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
       "name": "Meta",
       "ticker": "META",
       "count": 15,
       "bullish": 5,
       "bearish": 1,
       "neutral": 9
-    },
-    {
-      "name": "NVIDIA",
-      "ticker": "NVDA",
-      "count": 14,
-      "bullish": 9,
-      "bearish": 0,
-      "neutral": 5
     },
     {
       "name": "AMD",
@@ -89,20 +89,28 @@
       "neutral": 7
     },
     {
+      "name": "羅素2000",
+      "ticker": "RUT",
+      "count": 9,
+      "bullish": 1,
+      "bearish": 3,
+      "neutral": 5
+    },
+    {
+      "name": "博通",
+      "ticker": "AVGO",
+      "count": 9,
+      "bullish": 6,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
       "name": "西德州原油",
       "ticker": "WTI",
       "count": 8,
       "bullish": 5,
       "bearish": 2,
       "neutral": 1
-    },
-    {
-      "name": "羅素2000",
-      "ticker": "RUT",
-      "count": 8,
-      "bullish": 1,
-      "bearish": 3,
-      "neutral": 4
     },
     {
       "name": "微軟",
@@ -113,12 +121,12 @@
       "neutral": 5
     },
     {
-      "name": "博通",
-      "ticker": "AVGO",
+      "name": "亞馬遜",
+      "ticker": "AMZN",
       "count": 8,
-      "bullish": 5,
+      "bullish": 2,
       "bearish": 0,
-      "neutral": 3
+      "neutral": 6
     },
     {
       "name": "三星",
@@ -153,14 +161,6 @@
       "neutral": 4
     },
     {
-      "name": "亞馬遜",
-      "ticker": "AMZN",
-      "count": 7,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 5
-    },
-    {
       "name": "Lumentum",
       "ticker": "LITE",
       "count": 7,
@@ -183,6 +183,14 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 5
+    },
+    {
+      "name": "特斯拉",
+      "ticker": "TSLA",
+      "count": 6,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 3
     },
     {
       "name": "標普500指數",
@@ -249,12 +257,12 @@
       "neutral": 5
     },
     {
-      "name": "特斯拉",
-      "ticker": "TSLA",
+      "name": "納斯達克100",
+      "ticker": "NDX",
       "count": 5,
-      "bullish": 1,
-      "bearish": 2,
-      "neutral": 2
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 3
     },
     {
       "name": "Salesforce",
@@ -294,14 +302,6 @@
       "count": 4,
       "bullish": 0,
       "bearish": 2,
-      "neutral": 2
-    },
-    {
-      "name": "納斯達克100",
-      "ticker": "NDX",
-      "count": 4,
-      "bullish": 2,
-      "bearish": 0,
       "neutral": 2
     },
     {
@@ -625,6 +625,22 @@
       "neutral": 1
     },
     {
+      "name": "Vistra",
+      "ticker": "VST",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "Vertiv",
+      "ticker": "VRT",
+      "count": 2,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
       "name": "VIX指數",
       "ticker": "VIX",
       "count": 2,
@@ -705,12 +721,28 @@
       "neutral": 1
     },
     {
+      "name": "GE Vernova",
+      "ticker": "GEV",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "CoreWeave",
       "ticker": "CRWV",
       "count": 2,
       "bullish": 2,
       "bearish": 0,
       "neutral": 0
+    },
+    {
+      "name": "Constellation Energy",
+      "ticker": "CEG",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
     },
     {
       "name": "Broadcom",
@@ -1641,28 +1673,12 @@
       "neutral": 0
     },
     {
-      "name": "Vistra",
-      "ticker": "VST",
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "Visa",
       "ticker": "V",
       "count": 1,
       "bullish": 0,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "Vertiv",
-      "ticker": "VRT",
-      "count": 1,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 0
     },
     {
       "name": "VTI",
@@ -1841,6 +1857,14 @@
       "neutral": 0
     },
     {
+      "name": "NextEra Energy",
+      "ticker": "NEE",
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
       "name": "NVIDIA（輝達）",
       "ticker": "NVDA",
       "count": 1,
@@ -2001,14 +2025,6 @@
       "neutral": 0
     },
     {
-      "name": "GE Vernova",
-      "ticker": "GEV",
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "GDT",
       "ticker": "4958",
       "count": 1,
@@ -2051,14 +2067,6 @@
     {
       "name": "DBC",
       "ticker": "DBC",
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
-      "name": "Constellation Energy",
-      "ticker": "CEG",
       "count": 1,
       "bullish": 0,
       "bearish": 0,
@@ -2273,6 +2281,14 @@
       "neutral": 0
     },
     {
+      "name": "AES",
+      "ticker": "AES",
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
       "name": "AAOI",
       "ticker": "AAOI",
       "count": 1,
@@ -2292,15 +2308,15 @@
   "industries": [
     {
       "name": "AI",
-      "count": 36
+      "count": 37
     },
     {
       "name": "美股",
-      "count": 26
+      "count": 27
     },
     {
       "name": "半導體",
-      "count": 26
+      "count": 27
     },
     {
       "name": "總體經濟",
@@ -3031,6 +3047,30 @@
         "台股加權指數"
       ]
     },
+    "h8ydCGbilH8": {
+      "industries": [
+        "美股",
+        "AI",
+        "半導體"
+      ],
+      "mentions": [
+        "NVIDIA",
+        "博通",
+        "AES",
+        "Constellation Energy",
+        "NextEra Energy",
+        "Vistra",
+        "GE Vernova",
+        "Vertiv",
+        "亞馬遜",
+        "特斯拉",
+        "S&P 500",
+        "納斯達克100",
+        "道瓊指數",
+        "費城半導體指數",
+        "羅素2000"
+      ]
+    },
     "i7VqH8h1DNg": {
       "industries": [
         "能源",
@@ -3455,5 +3495,5 @@
       ]
     }
   },
-  "generated_at": "2026-03-23T13:37:06"
+  "generated_at": "2026-03-24T14:24:05"
 }
