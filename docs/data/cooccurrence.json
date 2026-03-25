@@ -64,6 +64,11 @@
         "count": 7
       },
       {
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 7
+      },
+      {
         "name": "Google",
         "ticker": "GOOGL",
         "count": 6
@@ -74,13 +79,13 @@
         "count": 6
       },
       {
-        "name": "美光",
-        "ticker": "MU",
+        "name": "三星",
+        "ticker": "005930",
         "count": 6
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
+        "name": "美光",
+        "ticker": "MU",
         "count": 6
       },
       {
@@ -89,18 +94,13 @@
         "count": 6
       },
       {
-        "name": "Nvidia",
-        "ticker": "NVDA",
-        "count": 5
-      },
-      {
-        "name": "三星",
-        "ticker": "005930",
-        "count": 5
-      },
-      {
         "name": "OpenAI",
         "ticker": "",
+        "count": 6
+      },
+      {
+        "name": "Nvidia",
+        "ticker": "NVDA",
         "count": 5
       }
     ],
@@ -125,7 +125,7 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 9
+        "count": 10
       },
       {
         "name": "Meta",
@@ -136,6 +136,11 @@
         "name": "Google",
         "ticker": "GOOGL",
         "count": 7
+      },
+      {
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 6
       },
       {
         "name": "Amazon",
@@ -153,18 +158,13 @@
         "count": 5
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 5
       },
       {
         "name": "Nvidia",
         "ticker": "NVDA",
-        "count": 4
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
         "count": 4
       },
       {
@@ -227,6 +227,21 @@
     ],
     "Tesla": [
       {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 4
+      },
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 3
+      },
+      {
+        "name": "Palantir",
+        "ticker": "PLTR",
+        "count": 3
+      },
+      {
         "name": "Salesforce",
         "ticker": "CRM",
         "count": 3
@@ -257,24 +272,9 @@
         "count": 3
       },
       {
-        "name": "台積電",
-        "ticker": "TSM",
+        "name": "Cloudflare",
+        "ticker": "NET",
         "count": 3
-      },
-      {
-        "name": "Accenture",
-        "ticker": "ACN",
-        "count": 2
-      },
-      {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 2
-      },
-      {
-        "name": "Costco",
-        "ticker": "COST",
-        "count": 2
       }
     ],
     "Costco": [
@@ -311,8 +311,28 @@
     ],
     "Palantir": [
       {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 3
+      },
+      {
+        "name": "Tesla",
+        "ticker": "TSLA",
+        "count": 3
+      },
+      {
+        "name": "Cloudflare",
+        "ticker": "NET",
+        "count": 3
+      },
+      {
         "name": "CrowdStrike",
         "ticker": "CRWD",
+        "count": 3
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 3
       },
       {
@@ -326,23 +346,8 @@
         "count": 3
       },
       {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 2
-      },
-      {
         "name": "Salesforce",
         "ticker": "CRM",
-        "count": 2
-      },
-      {
-        "name": "Tesla",
-        "ticker": "TSLA",
-        "count": 2
-      },
-      {
-        "name": "Cloudflare",
-        "ticker": "NET",
         "count": 2
       },
       {
@@ -353,11 +358,6 @@
       {
         "name": "Google",
         "ticker": "GOOGL",
-        "count": 2
-      },
-      {
-        "name": "Lumentum",
-        "ticker": "LITE",
         "count": 2
       }
     ],
@@ -991,13 +991,18 @@
         "count": 9
       },
       {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 8
+      },
+      {
         "name": "NVIDIA",
         "ticker": "NVDA",
         "count": 8
       },
       {
-        "name": "OpenAI",
-        "ticker": "",
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 7
       },
       {
@@ -1016,11 +1021,6 @@
         "count": 6
       },
       {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 6
-      },
-      {
         "name": "費城半導體指數",
         "ticker": "SOX",
         "count": 6
@@ -1031,9 +1031,9 @@
         "count": 6
       },
       {
-        "name": "Amazon",
-        "ticker": "AMZN",
-        "count": 5
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 6
       }
     ],
     "Amazon": [
@@ -1142,24 +1142,24 @@
     ],
     "OpenAI": [
       {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 10
+      },
+      {
         "name": "Meta",
         "ticker": "META",
         "count": 10
       },
       {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 9
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 8
       },
       {
         "name": "Google",
         "ticker": "GOOGL",
         "count": 8
-      },
-      {
-        "name": "AMD",
-        "ticker": "AMD",
-        "count": 7
       },
       {
         "name": "S&P 500",
@@ -1169,6 +1169,11 @@
       {
         "name": "道瓊指數",
         "ticker": "DJIA",
+        "count": 6
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 6
       },
       {
@@ -1185,17 +1190,17 @@
         "name": "費城半導體指數",
         "ticker": "SOX",
         "count": 5
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 5
       }
     ],
     "三星": [
       {
         "name": "台積電",
         "ticker": "TSM",
+        "count": 6
+      },
+      {
+        "name": "AMD",
+        "ticker": "AMD",
         "count": 5
       },
       {
@@ -1204,13 +1209,13 @@
         "count": 5
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
-        "count": 4
-      },
-      {
         "name": "Google",
         "ticker": "GOOGL",
+        "count": 3
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
         "count": 3
       },
       {
@@ -1226,11 +1231,6 @@
       {
         "name": "Microsoft",
         "ticker": "MSFT",
-        "count": 2
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
         "count": 2
       },
       {
@@ -1777,18 +1777,28 @@
     ],
     "Cloudflare": [
       {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 4
+      },
+      {
         "name": "Google",
         "ticker": "GOOGL",
         "count": 3
       },
       {
-        "name": "台積電",
-        "ticker": "TSM",
+        "name": "Palantir",
+        "ticker": "PLTR",
         "count": 3
       },
       {
         "name": "Salesforce",
         "ticker": "CRM",
+        "count": 3
+      },
+      {
+        "name": "Tesla",
+        "ticker": "TSLA",
         "count": 3
       },
       {
@@ -1802,18 +1812,13 @@
         "count": 2
       },
       {
-        "name": "Palantir",
-        "ticker": "PLTR",
-        "count": 2
-      },
-      {
         "name": "Microsoft",
         "ticker": "MSFT",
         "count": 2
       },
       {
-        "name": "Tesla",
-        "ticker": "TSLA",
+        "name": "OpenAI",
+        "ticker": "",
         "count": 2
       }
     ],
@@ -3275,18 +3280,28 @@
     ],
     "SpaceX": [
       {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 3
+      },
+      {
         "name": "Meta",
         "ticker": "META",
         "count": 3
       },
       {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 2
-      },
-      {
         "name": "OpenAI",
         "ticker": "",
+        "count": 3
+      },
+      {
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 3
+      },
+      {
+        "name": "Palantir",
+        "ticker": "PLTR",
         "count": 2
       },
       {
@@ -3305,18 +3320,13 @@
         "count": 2
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
+        "name": "三星",
+        "ticker": "005930",
         "count": 2
       },
       {
-        "name": "Amazon",
-        "ticker": "AMZN",
-        "count": 2
-      },
-      {
-        "name": "Microsoft",
-        "ticker": "MSFT",
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 2
       }
     ],
@@ -3594,5 +3604,5 @@
       }
     ]
   },
-  "generated_at": "2026-03-25T12:15:09"
+  "generated_at": "2026-03-25T14:20:50"
 }
