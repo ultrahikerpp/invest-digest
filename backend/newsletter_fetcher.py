@@ -125,7 +125,7 @@ def fetch_newsletters(
 
     Args:
         sender: Sender email address to filter on (e.g. 'fomosoc@substack.com').
-        subject_filter: Keyword that must appear in the subject (e.g. 'KP思考筆記').
+        subject_filter: Regex pattern for the subject (e.g. 'KP思考筆記|深入分析').
         max_results: Maximum number of matching newsletters to return.
 
     Returns:
@@ -146,7 +146,7 @@ def fetch_newsletters(
             return []
 
         # Process most recent first; limit how many we inspect to 3× max_results
-        inspect_ids = msg_ids[-max_results * 3:]
+        inspect_ids = msg_ids[-max_results * 5:]
 
         newsletters: list[dict] = []
         for msg_id in reversed(inspect_ids):
@@ -158,13 +158,18 @@ def fetch_newsletters(
 
             subject = _decode_header(msg.get("Subject", ""))
 
-            # Only free weekly: subject must contain the filter keyword
-            if subject_filter not in subject:
+            # Use regex to match subject
+            if not re.search(subject_filter, subject):
                 continue
 
             issue_num = _parse_issue_number(subject)
             if not issue_num:
                 continue
+
+            # Determine prefix based on series
+            prefix = "kp-newsletter"
+            if "深入分析" in subject:
+                prefix = "fomo-analysis"
 
             # Parse send date
             date_str = msg.get("Date", "")
@@ -199,7 +204,7 @@ def fetch_newsletters(
 
             newsletters.append(
                 {
-                    "video_id": f"kp-newsletter-{issue_num}",
+                    "video_id": f"{prefix}-{issue_num}",
                     "title": subject,
                     "published_at": published_at,
                     "body": body,
