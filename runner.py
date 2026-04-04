@@ -388,7 +388,8 @@ def cmd_build():
         [sys.executable, str(BASE_DIR / "build_site.py")],
         cwd=BASE_DIR
     )
-    sys.exit(result.returncode)
+    if result.returncode != 0:
+        sys.exit(result.returncode)
 
 
 # ── Cards command ─────────────────────────────────────────
