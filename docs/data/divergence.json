@@ -225,11 +225,11 @@
     {
       "name": "Google",
       "ticker": "GOOGL",
-      "total_mentions": 22,
+      "total_mentions": 23,
       "channel_count": 4,
       "total_bullish": 4,
       "total_bearish": 1,
-      "total_neutral": 17,
+      "total_neutral": 18,
       "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 4,
@@ -255,6 +255,15 @@
           "stance": "中立"
         },
         {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 5,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 5,
+          "stance": "中立"
+        },
+        {
           "channel_id": "fomo-newsletter",
           "channel_name": "fomo-newsletter",
           "mentions": 4,
@@ -262,26 +271,17 @@
           "bearish": 0,
           "neutral": 2,
           "stance": "中立"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 4,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 4,
-          "stance": "中立"
         }
       ]
     },
     {
       "name": "Meta",
       "ticker": "META",
-      "total_mentions": 22,
+      "total_mentions": 23,
       "channel_count": 4,
       "total_bullish": 7,
       "total_bearish": 3,
-      "total_neutral": 12,
+      "total_neutral": 13,
       "bull_channels": 1,
       "bear_channels": 0,
       "neutral_channels": 3,
@@ -318,10 +318,10 @@
         {
           "channel_id": "UC23rnlQU_qE3cec9x709peA",
           "channel_name": "Gooaye 股癌",
-          "mentions": 3,
+          "mentions": 4,
           "bullish": 1,
           "bearish": 1,
-          "neutral": 1,
+          "neutral": 2,
           "stance": "中立"
         }
       ]
@@ -329,9 +329,9 @@
     {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "total_mentions": 22,
+      "total_mentions": 23,
       "channel_count": 4,
-      "total_bullish": 15,
+      "total_bullish": 16,
       "total_bearish": 0,
       "total_neutral": 7,
       "bull_channels": 4,
@@ -352,8 +352,8 @@
         {
           "channel_id": "UC23rnlQU_qE3cec9x709peA",
           "channel_name": "Gooaye 股癌",
-          "mentions": 5,
-          "bullish": 4,
+          "mentions": 6,
+          "bullish": 5,
           "bearish": 0,
           "neutral": 1,
           "stance": "看多"
@@ -381,11 +381,11 @@
     {
       "name": "台積電",
       "ticker": "2330",
-      "total_mentions": 21,
+      "total_mentions": 22,
       "channel_count": 4,
       "total_bullish": 17,
       "total_bearish": 0,
-      "total_neutral": 4,
+      "total_neutral": 5,
       "bull_channels": 4,
       "bear_channels": 0,
       "neutral_channels": 0,
@@ -395,10 +395,10 @@
         {
           "channel_id": "UC23rnlQU_qE3cec9x709peA",
           "channel_name": "Gooaye 股癌",
-          "mentions": 7,
+          "mentions": 8,
           "bullish": 5,
           "bearish": 0,
-          "neutral": 2,
+          "neutral": 3,
           "stance": "看多"
         },
         {
@@ -433,9 +433,9 @@
     {
       "name": "AMD",
       "ticker": "AMD",
-      "total_mentions": 18,
+      "total_mentions": 19,
       "channel_count": 4,
-      "total_bullish": 5,
+      "total_bullish": 6,
       "total_bearish": 1,
       "total_neutral": 12,
       "bull_channels": 0,
@@ -465,8 +465,8 @@
         {
           "channel_id": "UC23rnlQU_qE3cec9x709peA",
           "channel_name": "Gooaye 股癌",
-          "mentions": 4,
-          "bullish": 1,
+          "mentions": 5,
+          "bullish": 2,
           "bearish": 0,
           "neutral": 3,
           "stance": "中立"
@@ -802,6 +802,49 @@
       ]
     },
     {
+      "name": "Intel",
+      "ticker": "INTC",
+      "total_mentions": 10,
+      "channel_count": 3,
+      "total_bullish": 2,
+      "total_bearish": 2,
+      "total_neutral": 6,
+      "bull_channels": 0,
+      "bear_channels": 1,
+      "neutral_channels": 2,
+      "consensus": "偏空",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 4,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 4,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 3,
+          "bullish": 1,
+          "bearish": 2,
+          "neutral": 0,
+          "stance": "看空"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 3,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 2,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "Lumentum",
       "ticker": "LITE",
       "total_mentions": 10,
@@ -879,49 +922,6 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 2,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 2,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "Intel",
-      "ticker": "INTC",
-      "total_mentions": 9,
-      "channel_count": 3,
-      "total_bullish": 1,
-      "total_bearish": 2,
-      "total_neutral": 6,
-      "bull_channels": 0,
-      "bear_channels": 1,
-      "neutral_channels": 2,
-      "consensus": "偏空",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 4,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 4,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 3,
-          "bullish": 1,
-          "bearish": 2,
-          "neutral": 0,
-          "stance": "看空"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
           "mentions": 2,
           "bullish": 0,
           "bearish": 0,
@@ -1825,6 +1825,58 @@
       ]
     },
     {
+      "name": "ARM",
+      "ticker": "ARM",
+      "total_mentions": 4,
+      "channel_count": 4,
+      "total_bullish": 2,
+      "total_bearish": 0,
+      "total_neutral": 2,
+      "bull_channels": 2,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "偏多",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "Oracle",
       "ticker": "ORCL",
       "total_mentions": 4,
@@ -1902,49 +1954,6 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "ARM",
-      "ticker": "ARM",
-      "total_mentions": 3,
-      "channel_count": 3,
-      "total_bullish": 1,
-      "total_bearish": 0,
-      "total_neutral": 2,
-      "bull_channels": 1,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "偏多",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
           "mentions": 1,
           "bullish": 0,
           "bearish": 0,
@@ -2487,6 +2496,40 @@
           "bearish": 1,
           "neutral": 0,
           "stance": "看空"
+        }
+      ]
+    },
+    {
+      "name": "AWS",
+      "ticker": null,
+      "total_mentions": 2,
+      "channel_count": 2,
+      "total_bullish": 0,
+      "total_bearish": 0,
+      "total_neutral": 2,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
         }
       ]
     },
@@ -3273,5 +3316,5 @@
       ]
     }
   ],
-  "generated_at": "2026-04-04T05:32:52"
+  "generated_at": "2026-04-04T13:58:38"
 }
