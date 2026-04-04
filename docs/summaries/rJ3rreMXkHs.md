@@ -1,5 +1,5 @@
 ---
-title: rJ3rreMXkHs
+title: 2026/04/03 (五）美股為什麼又Ｖ轉了？終於要講微軟....為什麼跌？
 video_id: rJ3rreMXkHs
 channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
@@ -8,7 +8,7 @@ processed: 2026-04-03
 hashtags: #美股 #微軟 #特斯拉 #AI算力 #霍爾木茲海峽 #
 ---
 
-# rJ3rreMXkHs
+# 2026/04/03 (五）美股為什麼又Ｖ轉了？終於要講微軟....為什麼跌？
 
 🔗 [YouTube 觀看原片](https://youtube.com/watch?v=rJ3rreMXkHs)
 
