@@ -46,6 +46,7 @@ VIDEOS_DIR = BASE_DIR / "data" / "videos"
 CARDS_SHORTS_DIR = BASE_DIR / "data" / "cards_shorts"
 VIDEOS_SHORTS_DIR = BASE_DIR / "data" / "videos_shorts"
 FB_POSTS_DIR = BASE_DIR / "data" / "fb_posts"
+WIKI_BASE_DIR = Path("/Users/miroppp/Side Projects/LLM Wiki/raw/invest/podcast_summaries")
 
 # ── Setup ─────────────────────────────────────────────────
 
@@ -84,6 +85,31 @@ def _get_channel_name(channel_id: str, channels: list[dict]) -> str:
         if ch["channel_id"] == channel_id:
             return ch["name"]
     return channel_id
+
+
+def _sync_to_wiki(summary_path: Path, channel_id: str):
+    """Copy a summary markdown file to the external LLM Wiki based on wiki_dir in channels.json."""
+    if not WIKI_BASE_DIR.exists():
+        return
+
+    # Load all sources (channels + newsletters)
+    all_sources = _load_channels() + _load_newsletters()
+    wiki_dir = None
+    for src in all_sources:
+        if src["channel_id"] == channel_id:
+            wiki_dir = src.get("wiki_dir")
+            break
+
+    if not wiki_dir:
+        return
+
+    dest_dir = WIKI_BASE_DIR / wiki_dir
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest_path = dest_dir / summary_path.name
+    
+    import shutil
+    shutil.copy2(summary_path, dest_path)
+    print(f"  ✓ 已同步至 Wiki：{dest_path}")
 
 
 # ── Database ──────────────────────────────────────────────
@@ -932,6 +958,7 @@ def cmd_approve():
             print(f"  ❌ Shorts 影片產生失敗")
             continue
 
+        _sync_to_wiki(summary_path, channel_id)
         _mark_done(conn, video_id)
         print(f"  ✓ 完成")
         results.append({

@@ -138,7 +138,8 @@ def _videos_from_rss(channel_id: str, max_results: int) -> list[dict]:
 
 def _videos_from_page(channel_id: str, max_results: int) -> list[dict]:
     """Fallback: scrape channel videos page via ytInitialData."""
-    url = f"https://www.youtube.com/channel/{channel_id}/videos"
+    # Force sort by newest (sort=dd)
+    url = f"https://www.youtube.com/channel/{channel_id}/videos?view=0&sort=dd"
     req = urllib.request.Request(url, headers=HEADERS)
     with urllib.request.urlopen(req, timeout=15) as resp:
         html = resp.read().decode("utf-8")
@@ -152,7 +153,18 @@ def _videos_from_page(channel_id: str, max_results: int) -> list[dict]:
     try:
         tabs = data["contents"]["twoColumnBrowseResultsRenderer"]["tabs"]
         for tab in tabs:
-            tab_content = tab.get("tabRenderer", {}).get("content", {})
+            tab_renderer = tab.get("tabRenderer", {})
+            title = tab_renderer.get("title", "")
+            
+            # Skip tabs that are clearly not the 'Videos' tab (e.g. Home, Shorts, Live)
+            # Home is usually the first tab. '影片' or 'Videos' is what we want.
+            if title not in ("影片", "Videos", "Uploads"):
+                # If we have many tabs, and we haven't found 'Videos' yet, keep looking.
+                # But if there's only one tab or it's a simple layout, we might have to take it.
+                if len(tabs) > 1 and title: 
+                    continue
+
+            tab_content = tab_renderer.get("content", {})
             items = (
                 tab_content.get("richGridRenderer", {}).get("contents", [])
                 or tab_content.get("sectionListRenderer", {})
@@ -169,10 +181,17 @@ def _videos_from_page(channel_id: str, max_results: int) -> list[dict]:
                     continue
                 video_id = renderer.get("videoId", "")
                 title_runs = renderer.get("title", {}).get("runs", [{}])
-                title = title_runs[0].get("text", "") if title_runs else ""
+                title_text = title_runs[0].get("text", "") if title_runs else ""
                 pub = renderer.get("publishedTimeText", {}).get("simpleText", "")
-                if video_id and title:
-                    videos.append({"video_id": video_id, "title": title, "published_at": pub})
+                
+                # Guard: skip videos that are months or years old
+                if pub and ("個月前" in pub or "年前" in pub or "months ago" in pub or "years ago" in pub):
+                    print(f"  [skip-old] {title_text[:50]} ({pub})")
+                    continue
+
+                if video_id and title_text:
+                    videos.append({"video_id": video_id, "title": title_text, "published_at": pub})
+            
             if videos:
                 break
     except (KeyError, IndexError):
