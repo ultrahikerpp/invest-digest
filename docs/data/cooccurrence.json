@@ -382,16 +382,16 @@
       {
         "name": "AMD",
         "ticker": "AMD",
+        "count": 8
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 7
       },
       {
         "name": "Google",
         "ticker": "GOOGL",
-        "count": 6
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
         "count": 6
       },
       {
@@ -615,6 +615,11 @@
         "count": 5
       },
       {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 5
+      },
+      {
         "name": "台積電",
         "ticker": "TSM",
         "count": 5
@@ -627,11 +632,6 @@
       {
         "name": "Cloudflare",
         "ticker": "NET",
-        "count": 4
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
         "count": 4
       },
       {
@@ -850,6 +850,11 @@
         "count": 15
       },
       {
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 14
+      },
+      {
         "name": "Google",
         "ticker": "GOOGL",
         "count": 13
@@ -862,11 +867,6 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
-        "count": 13
-      },
-      {
-        "name": "AMD",
-        "ticker": "AMD",
         "count": 13
       },
       {
@@ -1173,7 +1173,7 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 13
+        "count": 14
       },
       {
         "name": "Meta",
@@ -1196,14 +1196,14 @@
         "count": 9
       },
       {
-        "name": "Lumentum",
-        "ticker": "LITE",
+        "name": "Intel",
+        "ticker": "INTC",
         "count": 8
       },
       {
-        "name": "Intel",
-        "ticker": "INTC",
-        "count": 7
+        "name": "Lumentum",
+        "ticker": "LITE",
+        "count": 8
       },
       {
         "name": "S&P 500",
@@ -1223,23 +1223,23 @@
     ],
     "Amazon": [
       {
+        "name": "Microsoft",
+        "ticker": "MSFT",
+        "count": 7
+      },
+      {
         "name": "Meta",
         "ticker": "META",
         "count": 7
       },
       {
-        "name": "Microsoft",
-        "ticker": "MSFT",
+        "name": "Google",
+        "ticker": "GOOGL",
         "count": 6
       },
       {
         "name": "AMD",
         "ticker": "AMD",
-        "count": 5
-      },
-      {
-        "name": "Google",
-        "ticker": "GOOGL",
         "count": 5
       },
       {
@@ -1277,6 +1277,11 @@
       {
         "name": "Amazon",
         "ticker": "AMZN",
+        "count": 7
+      },
+      {
+        "name": "Google",
+        "ticker": "GOOGL",
         "count": 6
       },
       {
@@ -1287,11 +1292,6 @@
       {
         "name": "AMD",
         "ticker": "AMD",
-        "count": 5
-      },
-      {
-        "name": "Google",
-        "ticker": "GOOGL",
         "count": 5
       },
       {
@@ -1933,6 +1933,11 @@
         "count": 3
       },
       {
+        "name": "Tesla",
+        "ticker": "TSLA",
+        "count": 3
+      },
+      {
         "name": "Microsoft",
         "ticker": "MSFT",
         "count": 3
@@ -1953,13 +1958,8 @@
         "count": 2
       },
       {
-        "name": "Tesla",
-        "ticker": "TSLA",
-        "count": 2
-      },
-      {
-        "name": "Amazon",
-        "ticker": "AMZN",
+        "name": "Intel",
+        "ticker": "INTC",
         "count": 2
       }
     ],
@@ -3155,6 +3155,23 @@
         "count": 2
       }
     ],
+    "台股": [
+      {
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 2
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 2
+      },
+      {
+        "name": "美股",
+        "ticker": "NASDAQ",
+        "count": 2
+      }
+    ],
     "高盛": [
       {
         "name": "Adobe",
@@ -3772,6 +3789,110 @@
         "count": 2
       }
     ],
+    "Constellation Energy": [
+      {
+        "name": "Vistra",
+        "ticker": "VST",
+        "count": 4
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 3
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 3
+      },
+      {
+        "name": "羅素2000",
+        "ticker": "RUT",
+        "count": 3
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOX",
+        "count": 3
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "DJIA",
+        "count": 3
+      },
+      {
+        "name": "Google",
+        "ticker": "GOOGL",
+        "count": 2
+      },
+      {
+        "name": "GE Vernova",
+        "ticker": "GEV",
+        "count": 2
+      },
+      {
+        "name": "亞馬遜",
+        "ticker": "AMZN",
+        "count": 2
+      },
+      {
+        "name": "博通",
+        "ticker": "AVGO",
+        "count": 2
+      }
+    ],
+    "Vistra": [
+      {
+        "name": "Constellation Energy",
+        "ticker": "CEG",
+        "count": 4
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 3
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 3
+      },
+      {
+        "name": "羅素2000",
+        "ticker": "RUT",
+        "count": 3
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOX",
+        "count": 3
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "DJIA",
+        "count": 3
+      },
+      {
+        "name": "Google",
+        "ticker": "GOOGL",
+        "count": 2
+      },
+      {
+        "name": "GE Vernova",
+        "ticker": "GEV",
+        "count": 2
+      },
+      {
+        "name": "亞馬遜",
+        "ticker": "AMZN",
+        "count": 2
+      },
+      {
+        "name": "博通",
+        "ticker": "AVGO",
+        "count": 2
+      }
+    ],
     "聯發科": [
       {
         "name": "AMD",
@@ -3841,58 +3962,6 @@
         "count": 2
       }
     ],
-    "Constellation Energy": [
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 3
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 3
-      },
-      {
-        "name": "Vistra",
-        "ticker": "VST",
-        "count": 3
-      },
-      {
-        "name": "羅素2000",
-        "ticker": "RUT",
-        "count": 3
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOX",
-        "count": 3
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 3
-      },
-      {
-        "name": "GE Vernova",
-        "ticker": "GEV",
-        "count": 2
-      },
-      {
-        "name": "亞馬遜",
-        "ticker": "AMZN",
-        "count": 2
-      },
-      {
-        "name": "博通",
-        "ticker": "AVGO",
-        "count": 2
-      },
-      {
-        "name": "納斯達克100",
-        "ticker": "NDX",
-        "count": 2
-      }
-    ],
     "GE Vernova": [
       {
         "name": "NVIDIA",
@@ -3945,55 +4014,10 @@
         "count": 2
       }
     ],
-    "Vistra": [
+    "美股": [
       {
-        "name": "Constellation Energy",
-        "ticker": "CEG",
-        "count": 3
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 3
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 3
-      },
-      {
-        "name": "羅素2000",
-        "ticker": "RUT",
-        "count": 3
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOX",
-        "count": 3
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 3
-      },
-      {
-        "name": "GE Vernova",
-        "ticker": "GEV",
-        "count": 2
-      },
-      {
-        "name": "亞馬遜",
-        "ticker": "AMZN",
-        "count": 2
-      },
-      {
-        "name": "博通",
-        "ticker": "AVGO",
-        "count": 2
-      },
-      {
-        "name": "納斯達克100",
-        "ticker": "NDX",
+        "name": "台股",
+        "ticker": "",
         "count": 2
       }
     ],
@@ -4095,6 +4119,18 @@
         "count": 2
       }
     ],
+    "Samsung": [
+      {
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 2
+      },
+      {
+        "name": "Apple",
+        "ticker": "AAPL",
+        "count": 2
+      }
+    ],
     "海力士": [
       {
         "name": "三星",
@@ -4108,5 +4144,5 @@
       }
     ]
   },
-  "generated_at": "2026-04-08T14:02:00"
+  "generated_at": "2026-04-08T15:04:35"
 }
