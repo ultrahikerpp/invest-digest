@@ -1395,6 +1395,39 @@
       border-color: var(--border-hover);
     }
 
+    .chart-btn {
+      font-size: 12px;
+      background: var(--vibe1-lt);
+      color: var(--vibe1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      user-select: none;
+    }
+
+    .chart-btn:hover {
+      background: var(--vibe1);
+      color: white;
+      border-color: var(--vibe1);
+    }
+
+    .chart-btn.active {
+      background: var(--vibe3);
+      color: white;
+      border-color: var(--vibe3);
+    }
+
+    .divergence-chart-container {
+      width: 100%;
+      height: 400px;
+      background: rgba(0,0,0,0.1);
+    }
+
     .divergence-card-header {
       display: flex;
       align-items: center;
@@ -2847,6 +2880,10 @@
           const isDiverge = e.consensus === '多空分歧';
           const nameColorCls = ['看多共識', '偏多'].includes(e.consensus) ? 'bull'
             : ['看空共識', '偏空'].includes(e.consensus) ? 'bear' : '';
+          
+          // Generate a safe ID for the chart container
+          const safeId = 'chart-' + Math.random().toString(36).substr(2, 9);
+          
           let channelRows = '';
           for (const ch of e.channels) {
             const sm = STANCE_META[ch.stance] || { cls: 'neutral', icon: '?' };
@@ -2872,10 +2909,12 @@
               <div class="divergence-card-header">
                 <span class="divergence-entity-name ${nameColorCls}">${e.name}</span>
                 ${ticker}
+                <span class="chart-btn" onclick="toggleChart(this, '${safeId}', '${e.name}', '${e.ticker || ''}')">📊 價量趨勢</span>
                 <span class="consensus-badge ${meta.cls}">${meta.label}</span>
                 <span class="divergence-total">${e.total_mentions} 次提及 · ${e.channel_count} 頻道</span>
               </div>
               <div class="channel-stances">${channelRows}</div>
+              <div class="divergence-chart-container" id="${safeId}" style="display:none;margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--border)"></div>
             </div>`;
         }
 
@@ -3086,6 +3125,63 @@
       el.textContent = msg;
       document.body.appendChild(el);
       setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 1500);
+    }
+
+    function toggleChart(btn, containerId, name, ticker) {
+      const container = document.getElementById(containerId);
+      const isActive = btn.classList.contains('active');
+      
+      if (isActive) {
+        container.style.display = 'none';
+        btn.classList.remove('active');
+        btn.innerHTML = '📊 價量趨勢';
+      } else {
+        container.style.display = 'block';
+        btn.classList.add('active');
+        btn.innerHTML = '關閉圖表';
+        
+        if (!container.innerHTML) {
+          // Determine symbol
+          let symbol = ticker || name;
+          if (/^\d{4,5}$/.test(ticker)) {
+            symbol = 'TWSE:' + ticker;
+          }
+          
+          const isDark = !document.documentElement.hasAttribute('data-theme');
+          const theme = isDark ? 'dark' : 'light';
+          
+          // Use advanced widget for price/volume
+          const loadWidget = () => {
+            new TradingView.widget({
+              "autosize": true,
+              "symbol": symbol,
+              "interval": "D",
+              "timezone": "Asia/Taipei",
+              "theme": theme,
+              "style": "1",
+              "locale": "zh_TW",
+              "toolbar_bg": "#f1f3f6",
+              "enable_publishing": false,
+              "hide_top_toolbar": false,
+              "hide_legend": false,
+              "save_image": false,
+              "container_id": containerId,
+              "studies": [
+                "Volume@tv-basicstudies"
+              ],
+            });
+          };
+
+          if (typeof TradingView === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://s3.tradingview.com/tv.js';
+            script.onload = loadWidget;
+            document.head.appendChild(script);
+          } else {
+            loadWidget();
+          }
+        }
+      }
     }
 
     // ── Watchlist page ─────────────────────────────────────────
