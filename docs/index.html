@@ -2876,7 +2876,7 @@
 
         function _buildCard(e) {
           const meta = CONSENSUS_META[e.consensus] || { cls: 'neutral', label: e.consensus };
-          const ticker = e.ticker ? `<span class="divergence-entity-ticker">${e.ticker}</span>` : '';
+          const tickerStr = e.ticker ? `<span class="divergence-entity-ticker">${e.ticker}</span>` : '';
           const isDiverge = e.consensus === '多空分歧';
           const nameColorCls = ['看多共識', '偏多'].includes(e.consensus) ? 'bull'
             : ['看空共識', '偏空'].includes(e.consensus) ? 'bear' : '';
@@ -2904,12 +2904,16 @@
                 <span class="stance-count">${ch.mentions}次</span>
               </div>`;
           }
+          
+          // Only show chart button if ticker exists
+          const chartBtn = e.ticker ? `<span class="chart-btn" onclick="toggleChart(this, '${safeId}', '${e.name}', '${e.ticker}')">📊 價量趨勢</span>` : '';
+
           return `
             <div class="divergence-card ${isDiverge ? 'is-diverge' : ''}">
               <div class="divergence-card-header">
                 <span class="divergence-entity-name ${nameColorCls}">${e.name}</span>
-                ${ticker}
-                <span class="chart-btn" onclick="toggleChart(this, '${safeId}', '${e.name}', '${e.ticker || ''}')">📊 價量趨勢</span>
+                ${tickerStr}
+                ${chartBtn}
                 <span class="consensus-badge ${meta.cls}">${meta.label}</span>
                 <span class="divergence-total">${e.total_mentions} 次提及 · ${e.channel_count} 頻道</span>
               </div>
@@ -3137,49 +3141,76 @@
         btn.innerHTML = '📊 價量趨勢';
       } else {
         container.style.display = 'block';
+        container.style.height = '450px'; // Set a fixed height for the widget
         btn.classList.add('active');
         btn.innerHTML = '關閉圖表';
         
         if (!container.innerHTML) {
-          // Determine symbol
-          let symbol = ticker || name;
-          if (/^\d{4,5}$/.test(ticker)) {
-            symbol = 'TWSE:' + ticker;
-          }
+          // Determine symbol mapping
+          let symbol = ticker;
+          if (!symbol) return;
           
+          const indexMap = {
+            'DJIA': 'TVC:DJI',
+            'SPX':  'SP:SPX',
+            'SOX':  'PHLX:SOX',
+            'RUT':  'TVC:RUT',
+            'IXIC': 'NASDAQ:IXIC',
+            'NDX':  'NASDAQ:NDX',
+            'VIX':  'TVC:VIX',
+            'TWII': 'TWSE:TWII',
+          };
+          
+          const tUp = ticker.toUpperCase();
+          if (indexMap[tUp]) {
+            symbol = indexMap[tUp];
+          } else if (/^\d{4,5}$/.test(ticker)) {
+            symbol = 'TWSE:' + ticker;
+          } else {
+            symbol = ticker.toUpperCase();
+          }
+
           const isDark = !document.documentElement.hasAttribute('data-theme');
           const theme = isDark ? 'dark' : 'light';
           
-          // Use advanced widget for price/volume
-          const loadWidget = () => {
-            new TradingView.widget({
-              "autosize": true,
-              "symbol": symbol,
-              "interval": "D",
-              "timezone": "Asia/Taipei",
-              "theme": theme,
-              "style": "1",
-              "locale": "zh_TW",
-              "toolbar_bg": "#f1f3f6",
-              "enable_publishing": false,
-              "hide_top_toolbar": false,
-              "hide_legend": false,
-              "save_image": false,
-              "container_id": containerId,
-              "studies": [
-                "Volume@tv-basicstudies"
-              ],
-            });
+          // Use Symbol Overview Widget which is more permissive for external sites
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';
+          script.async = true;
+          
+          const config = {
+            "symbols": [[name, symbol]],
+            "chartOnly": false,
+            "width": "100%",
+            "height": "100%",
+            "locale": "zh_TW",
+            "colorTheme": theme,
+            "autosize": true,
+            "showVolume": true,
+            "showMA": false,
+            "hideDateRanges": false,
+            "hideMarketStatus": false,
+            "hideSymbolLogo": false,
+            "scalePosition": "right",
+            "scaleMode": "Normal",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": "10",
+            "noTimeScale": false,
+            "valuesTracking": "1",
+            "changeMode": "price-and-percent",
+            "chartType": "area",
+            "maLineColor": "#2962FF",
+            "maLineWidth": 1,
+            "maLength": 9,
+            "lineWidth": 2,
+            "lineColor": "#2962FF",
+            "topColor": "rgba(41, 98, 255, 0.3)",
+            "bottomColor": "rgba(41, 98, 255, 0)"
           };
-
-          if (typeof TradingView === 'undefined') {
-            const script = document.createElement('script');
-            script.src = 'https://s3.tradingview.com/tv.js';
-            script.onload = loadWidget;
-            document.head.appendChild(script);
-          } else {
-            loadWidget();
-          }
+          
+          script.text = JSON.stringify(config);
+          container.appendChild(script);
         }
       }
     }
