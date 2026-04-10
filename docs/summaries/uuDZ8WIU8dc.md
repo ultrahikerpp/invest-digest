@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-04-10
 processed: 2026-04-10
+hashtags: #Amazon #AI硬體 #SaaS崩跌 #半導體 #通膨風險 #JC趨勢財經觀點
 industries: 美股, AI, 半導體
 ---
 
@@ -45,15 +46,15 @@ industries: 美股, AI, 半導體
 
 - CoreWeave
 
-- Inter（文中指 Marvell 之外另一家，依逐字稿判斷應為 Intel，提及七連漲）
+- Inter
 
-- 馬費歐（Marvell Technology）
+- Marvell 
 
-- Palantir（文中稱「Pantyr」）
+- Palantir
 
 - Adobe
 
-- Figma（文中稱「FIG」）
+- Figma
 
 - Google / Alphabet
 
@@ -156,7 +157,7 @@ industries: 美股, AI, 半導體
 
 - **亞馬遜**：作者認為其站回年線後具有指標性的轉強訊號，看好其在AI晶片自研業務與AWS雲端算力上的持續擴張，認為適合進行資金配置。
 
-- **Marvell（馬費歐）**：作者認為其光通訊業務是不論哪家廠商拿到AI基礎建設訂單都必然需要的關鍵零組件，具備「不挑邊站」的結構性優勢，且估值相對吸引。
+- **Marvell**：作者認為其光通訊業務是不論哪家廠商拿到AI基礎建設訂單都必然需要的關鍵零組件，具備「不挑邊站」的結構性優勢，且估值相對吸引。
 
 - **Intel**：作者認為其敘事已從「能否存活」轉變為「正在復活」，受惠於美國本土製造政策紅利，訂單可見度持續提升。
 
