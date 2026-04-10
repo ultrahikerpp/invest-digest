@@ -3165,7 +3165,6 @@
           if (indexMap[tUp]) {
             symbol = indexMap[tUp];
           } else if (/^\d{4,5}$/.test(ticker)) {
-            // TWSE prefix is the most reliable for tv.js with Taiwan stocks
             symbol = 'TWSE:' + ticker;
           } else {
             symbol = ticker.toUpperCase();
@@ -3174,35 +3173,32 @@
           const isDark = !document.documentElement.hasAttribute('data-theme');
           const theme = isDark ? 'dark' : 'light';
           
-          const loadWidget = () => {
-            new TradingView.widget({
-              "autosize": true,
-              "symbol": symbol,
-              "interval": "D",
-              "timezone": "Asia/Taipei",
-              "theme": theme,
-              "style": "3", // Area chart - more permissive for TW stocks
-              "locale": "zh_TW",
-              "toolbar_bg": "#f1f3f6",
-              "enable_publishing": false,
-              "hide_top_toolbar": true,
-              "hide_legend": false,
-              "save_image": false,
-              "container_id": containerId,
-              "studies": [
-                "Volume@tv-basicstudies"
-              ],
-            });
-          };
-
-          if (typeof TradingView === 'undefined') {
-            const script = document.createElement('script');
-            script.src = 'https://s3.tradingview.com/tv.js';
-            script.onload = loadWidget;
-            document.head.appendChild(script);
-          } else {
-            loadWidget();
-          }
+          // Use direct iframe embed to bypass widget domain/licensing restrictions
+          // style=3 is Area, style=1 is Candles. Let's use 3 for better compatibility.
+          const iframe = document.createElement('iframe');
+          const url = new URL('https://www.tradingview.com/widgetembed/');
+          url.searchParams.set('symbol', symbol);
+          url.searchParams.set('interval', 'D');
+          url.searchParams.set('hidesidetoolbar', '1');
+          url.searchParams.set('symboledit', '0');
+          url.searchParams.set('saveimage', '0');
+          url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
+          url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
+          url.searchParams.set('theme', theme);
+          url.searchParams.set('style', '3');
+          url.searchParams.set('timezone', 'Asia/Taipei');
+          url.searchParams.set('locale', 'zh_TW');
+          
+          iframe.src = url.href;
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.border = 'none';
+          iframe.setAttribute('frameborder', '0');
+          iframe.setAttribute('allowTransparency', 'true');
+          iframe.setAttribute('scrolling', 'no');
+          iframe.setAttribute('allowfullscreen', 'true');
+          
+          container.appendChild(iframe);
         }
       }
     }
