@@ -2905,8 +2905,10 @@
               </div>`;
           }
           
-          // Only show chart button if ticker exists
-          const chartBtn = e.ticker ? `<span class="chart-btn" onclick="toggleChart(this, '${safeId}', '${e.name}', '${e.ticker}')">📊 價量趨勢</span>` : '';
+          // Only show chart button if ticker exists AND it's NOT a Taiwan entity (due to Licensing)
+          // Exception: We keep it for US stocks which work fine.
+          const isTw = _isTwEntity(e.name, e.ticker);
+          const chartBtn = (e.ticker && !isTw) ? `<span class="chart-btn" onclick="toggleChart(this, '${safeId}', '${e.name}', '${e.ticker}')">📊 價量趨勢</span>` : '';
 
           return `
             <div class="divergence-card ${isDiverge ? 'is-diverge' : ''}">
