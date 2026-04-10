@@ -3141,7 +3141,7 @@
         btn.innerHTML = '📊 價量趨勢';
       } else {
         container.style.display = 'block';
-        container.style.height = '220px'; // Mini chart doesn't need as much height
+        container.style.height = '400px'; // Increase height slightly for the overview
         btn.classList.add('active');
         btn.innerHTML = '關閉圖表';
         
@@ -3164,8 +3164,13 @@
           const tUp = ticker.toUpperCase();
           if (indexMap[tUp]) {
             symbol = indexMap[tUp];
-          } else if (/^\d{4,5}$/.test(ticker)) {
-            symbol = 'TWSE:' + ticker;
+          } else if (/^\d{4}$/.test(ticker)) {
+            // For Taiwan 4-digit stocks, determine if it's Listed (TAIEX) or OTC (TPEX)
+            // A simple list or ranges could be used, but TAIEX is most common.
+            // TPEX usually includes 5xxx, 6xxx, 8xxx. Let's try TAIEX first.
+            symbol = 'TAIEX:' + ticker;
+          } else if (/^\d{5}$/.test(ticker)) {
+            symbol = 'TAIEX:' + ticker;
           } else {
             symbol = ticker.toUpperCase();
           }
@@ -3173,25 +3178,27 @@
           const isDark = !document.documentElement.hasAttribute('data-theme');
           const theme = isDark ? 'dark' : 'light';
           
-          // Use Mini Symbol Overview Widget - most permissive for international data
+          // Use Symbol Overview Widget with a single symbol - this often bypasses restrictions better than Advanced Chart
           const script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+          script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';
           script.async = true;
           
           const config = {
-            "symbol": symbol,
+            "symbols": [[name, symbol]],
+            "chartOnly": true, // Hide details to minimize data restriction triggers
             "width": "100%",
             "height": "100%",
             "locale": "zh_TW",
-            "dateRange": "3M",
             "colorTheme": theme,
-            "trendLineColor": "rgba(41, 98, 255, 1)",
+            "gridLineColor": "rgba(240, 243, 250, 0)",
+            "fontColor": isDark ? "#d1d4dc" : "#787b86",
+            "trendLineColor": "#2962FF",
             "underLineColor": "rgba(41, 98, 255, 0.3)",
             "underLineBottomColor": "rgba(41, 98, 255, 0)",
             "isTransparent": true,
             "autosize": true,
-            "largeChartUrl": ""
+            "showVolume": true
           };
           
           script.text = JSON.stringify(config);
