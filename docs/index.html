@@ -3141,7 +3141,7 @@
         btn.innerHTML = '📊 價量趨勢';
       } else {
         container.style.display = 'block';
-        container.style.height = '400px'; // Increase height slightly for the overview
+        container.style.height = '450px'; 
         btn.classList.add('active');
         btn.innerHTML = '關閉圖表';
         
@@ -3164,13 +3164,9 @@
           const tUp = ticker.toUpperCase();
           if (indexMap[tUp]) {
             symbol = indexMap[tUp];
-          } else if (/^\d{4}$/.test(ticker)) {
-            // For Taiwan 4-digit stocks, determine if it's Listed (TAIEX) or OTC (TPEX)
-            // A simple list or ranges could be used, but TAIEX is most common.
-            // TPEX usually includes 5xxx, 6xxx, 8xxx. Let's try TAIEX first.
-            symbol = 'TAIEX:' + ticker;
-          } else if (/^\d{5}$/.test(ticker)) {
-            symbol = 'TAIEX:' + ticker;
+          } else if (/^\d{4,5}$/.test(ticker)) {
+            // TWSE prefix is the most reliable for tv.js with Taiwan stocks
+            symbol = 'TWSE:' + ticker;
           } else {
             symbol = ticker.toUpperCase();
           }
@@ -3178,31 +3174,35 @@
           const isDark = !document.documentElement.hasAttribute('data-theme');
           const theme = isDark ? 'dark' : 'light';
           
-          // Use Symbol Overview Widget with a single symbol - this often bypasses restrictions better than Advanced Chart
-          const script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';
-          script.async = true;
-          
-          const config = {
-            "symbols": [[name, symbol]],
-            "chartOnly": true, // Hide details to minimize data restriction triggers
-            "width": "100%",
-            "height": "100%",
-            "locale": "zh_TW",
-            "colorTheme": theme,
-            "gridLineColor": "rgba(240, 243, 250, 0)",
-            "fontColor": isDark ? "#d1d4dc" : "#787b86",
-            "trendLineColor": "#2962FF",
-            "underLineColor": "rgba(41, 98, 255, 0.3)",
-            "underLineBottomColor": "rgba(41, 98, 255, 0)",
-            "isTransparent": true,
-            "autosize": true,
-            "showVolume": true
+          const loadWidget = () => {
+            new TradingView.widget({
+              "autosize": true,
+              "symbol": symbol,
+              "interval": "D",
+              "timezone": "Asia/Taipei",
+              "theme": theme,
+              "style": "3", // Area chart - more permissive for TW stocks
+              "locale": "zh_TW",
+              "toolbar_bg": "#f1f3f6",
+              "enable_publishing": false,
+              "hide_top_toolbar": true,
+              "hide_legend": false,
+              "save_image": false,
+              "container_id": containerId,
+              "studies": [
+                "Volume@tv-basicstudies"
+              ],
+            });
           };
-          
-          script.text = JSON.stringify(config);
-          container.appendChild(script);
+
+          if (typeof TradingView === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://s3.tradingview.com/tv.js';
+            script.onload = loadWidget;
+            document.head.appendChild(script);
+          } else {
+            loadWidget();
+          }
         }
       }
     }
