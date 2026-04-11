@@ -2996,9 +2996,16 @@
             const cls = v >= 0 ? 'pos' : 'neg';
             return `<span class="fund-chip-value ${cls}">${v >= 0 ? '+' : ''}${pct}%</span>`;
           }
-          function _fmtCap(v) {
+          function _fmtCap(v, currency) {
             if (v == null) return '<span class="fund-chip-value" style="color:var(--text-dim)">—</span>';
-            const t = v >= 1e12 ? `$${(v/1e12).toFixed(2)}T` : `$${(v/1e9).toFixed(1)}B`;
+            const isTwd = currency === 'TWD';
+            // TWD: show in 億/兆; USD: show in B/T
+            let t;
+            if (isTwd) {
+              t = v >= 1e12 ? `${(v/1e12).toFixed(2)}兆` : `${(v/1e8).toFixed(0)}億`;
+            } else {
+              t = v >= 1e12 ? `$${(v/1e12).toFixed(2)}T` : `$${(v/1e9).toFixed(1)}B`;
+            }
             return `<span class="fund-chip-value">${t}</span>`;
           }
 
@@ -3008,7 +3015,7 @@
             const chips = [
               `<div class="fund-chip"><span class="fund-chip-label">本益比 P/E</span>${_fmtPe(f.pe)}</div>`,
               `<div class="fund-chip"><span class="fund-chip-label">預估 P/E</span>${_fmtPe(f.fwd_pe)}</div>`,
-              `<div class="fund-chip"><span class="fund-chip-label">市值</span>${_fmtCap(f.mkt_cap)}</div>`,
+              `<div class="fund-chip"><span class="fund-chip-label">市值</span>${_fmtCap(f.mkt_cap, f.currency)}</div>`,
               `<div class="fund-chip"><span class="fund-chip-label">EPS 成長</span>${_fmtGrowth(f.eps_growth)}</div>`,
               `<div class="fund-chip"><span class="fund-chip-label">營收成長</span>${_fmtGrowth(f.rev_growth)}</div>`,
             ].join('');
