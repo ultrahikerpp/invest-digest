@@ -1693,8 +1693,30 @@
       color: var(--text-dim);
     }
     @media (max-width: 768px) {
-      .search-box { display: none; }
+      /* Force hide header search box — JS inline style overrides need !important */
+      .search-box { display: none !important; }
+
+      .mobile-search-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 8px 14px;
+        margin-bottom: 16px;
+      }
+      .mobile-search-bar input {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        color: var(--text);
+      }
+      .mobile-search-bar input::placeholder { color: var(--text-dim); }
     }
+    .mobile-search-bar { display: none; }
 
     /* ── Entity History Page (C1) ── */
     .entity-history-list {
@@ -2626,6 +2648,10 @@
     <div class="page-header">
       <h1 class="page-title">${title}</h1>
     </div>
+    <div class="mobile-search-bar" id="mobileSearchBar">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="color:var(--text-dim);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="mobileSearchInput" placeholder="搜尋集數…" autocomplete="off" value="${q ? q : ''}">
+    </div>
     ${industryFilterHtml}
     <div class="stats-bar">
       <div class="stat-chip${(q || activeIndustry) ? ' clickable' : ''}" id="statChipCount"
@@ -2646,6 +2672,19 @@
           const si = document.getElementById('searchInput');
           if (si) si.value = '';
           location.hash = '#/';
+        });
+      }
+
+      // Mobile search bar (only visible on small screens via CSS)
+      const mobileSearch = document.getElementById('mobileSearchInput');
+      if (mobileSearch) {
+        mobileSearch.addEventListener('input', e => {
+          searchQuery = e.target.value;
+          const si = document.getElementById('searchInput');
+          if (si) si.value = searchQuery;
+          renderEpisodes(allEpisodes.filter(ep =>
+            !activeChannelId || ep.channel_id === activeChannelId
+          ), title, activeIndustry);
         });
       }
 
