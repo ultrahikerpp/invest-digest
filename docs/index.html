@@ -3145,38 +3145,34 @@
         btn.innerHTML = '關閉圖表';
 
         if (!container.dataset.initialized) {
-          // Taiwan 4–5 digit numeric tickers → TWSE/TPEX OpenAPI + Lightweight Charts
-          if (/^\d{4,5}$/.test(ticker)) {
-            _renderTwStockChart(container, ticker);
-          } else {
-            // US / global → TradingView iframe
-            container.dataset.initialized = '1';
-            const indexMap = {
-              'DJIA': 'TVC:DJI', 'SPX': 'SP:SPX', 'SOX': 'PHLX:SOX',
-              'RUT': 'TVC:RUT', 'IXIC': 'NASDAQ:IXIC', 'NDX': 'NASDAQ:NDX',
-              'VIX': 'TVC:VIX', 'TWII': 'TWSE:TWII',
-            };
-            const tUp = ticker.toUpperCase();
-            const symbol = indexMap[tUp] || ticker.toUpperCase();
-            const isDark = !document.documentElement.hasAttribute('data-theme');
-            const iframe = document.createElement('iframe');
-            const url = new URL('https://www.tradingview.com/widgetembed/');
-            url.searchParams.set('symbol', symbol);
-            url.searchParams.set('interval', 'D');
-            url.searchParams.set('hidesidetoolbar', '1');
-            url.searchParams.set('symboledit', '0');
-            url.searchParams.set('saveimage', '0');
-            url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
-            url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
-            url.searchParams.set('theme', isDark ? 'dark' : 'light');
-            url.searchParams.set('style', '3');
-            url.searchParams.set('timezone', 'Asia/Taipei');
-            url.searchParams.set('locale', 'zh_TW');
-            iframe.src = url.href;
-            iframe.style.cssText = 'width:100%;height:100%;border:none;';
-            iframe.setAttribute('allowfullscreen', 'true');
-            container.appendChild(iframe);
-          }
+          // All tickers → TradingView iframe
+          container.dataset.initialized = '1';
+          const indexMap = {
+            'DJIA': 'TVC:DJI', 'SPX': 'SP:SPX', 'SOX': 'PHLX:SOX',
+            'RUT': 'TVC:RUT', 'IXIC': 'NASDAQ:IXIC', 'NDX': 'NASDAQ:NDX',
+            'VIX': 'TVC:VIX', 'TWII': 'TWSE:TWII',
+          };
+          const tUp = ticker.toUpperCase();
+          // 4–5 digit numeric → Taiwan stock (try TWSE first, TradingView will show "symbol not found" for TPEX stocks)
+          const symbol = indexMap[tUp] || (/^\d{4,5}$/.test(ticker) ? `TWSE:${ticker}` : tUp);
+          const isDark = !document.documentElement.hasAttribute('data-theme');
+          const iframe = document.createElement('iframe');
+          const url = new URL('https://www.tradingview.com/widgetembed/');
+          url.searchParams.set('symbol', symbol);
+          url.searchParams.set('interval', 'D');
+          url.searchParams.set('hidesidetoolbar', '1');
+          url.searchParams.set('symboledit', '0');
+          url.searchParams.set('saveimage', '0');
+          url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
+          url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
+          url.searchParams.set('theme', isDark ? 'dark' : 'light');
+          url.searchParams.set('style', '3');
+          url.searchParams.set('timezone', 'Asia/Taipei');
+          url.searchParams.set('locale', 'zh_TW');
+          iframe.src = url.href;
+          iframe.style.cssText = 'width:100%;height:100%;border:none;';
+          iframe.setAttribute('allowfullscreen', 'true');
+          container.appendChild(iframe);
         }
       }
     }
