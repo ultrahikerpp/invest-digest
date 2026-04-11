@@ -1931,6 +1931,34 @@
     .weekly-page {
       max-width: 720px;
     }
+    .weekly-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .weekly-nav-chip {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+    .weekly-nav-chip:hover {
+      background: var(--vibe1-lt);
+      color: var(--vibe1);
+      border-color: var(--vibe1);
+    }
+    .weekly-nav-chip.active {
+      background: var(--vibe3);
+      color: white;
+      border-color: var(--vibe3);
+    }
     .weekly-meta-bar {
       display: flex;
       gap: 10px;
@@ -2407,8 +2435,9 @@
       if (hash === '#/watchlist') {
         return { type: 'watchlist' };
       }
-      if (hash === '#/weekly') {
-        return { type: 'weekly' };
+      if (hash === '#/weekly' || hash.startsWith('#/weekly/')) {
+        const week = hash.startsWith('#/weekly/') ? hash.slice('#/weekly/'.length) : null;
+        return { type: 'weekly', week };
       }
       return { type: 'all' };
     }
@@ -3782,7 +3811,7 @@
 
     // ── Weekly Report Page ────────────────────────────────────
 
-    async function renderWeekly() {
+    async function renderWeekly(requestedWeek = null) {
       const mc = document.getElementById('mainContent');
       renderSidebar(allEpisodes, null);
       const searchBox = document.getElementById('searchBox');
@@ -3790,49 +3819,57 @@
 
       mc.innerHTML = `<div class="loading"><div class="spinner"></div> 載入投資週報…</div>`;
 
+      const emptyHtml = `
+        <div class="weekly-page">
+          <div class="page-header"><h1 class="page-title">📋 投資週報</h1></div>
+          <div class="empty-state">
+            <div class="empty-icon">${ICONS.inbox}</div>
+            <div class="empty-title">投資週報尚未生成</div>
+            <div class="empty-text">執行 <code>python3 runner.py weekly</code> 即可</div>
+          </div>
+        </div>`;
+
       try {
         const metaResp = await fetch(BASE + 'data/weekly_meta.json');
         if (!metaResp.ok) throw new Error('no_weekly');
         const meta = await metaResp.json();
+        if (!meta.available) { mc.innerHTML = emptyHtml; return; }
 
-        if (!meta.available) {
-          mc.innerHTML = `
-            <div class="weekly-page">
-              <div class="page-header"><h1 class="page-title">📋 投資週報</h1></div>
-              <div class="empty-state">
-                <div class="empty-icon">${ICONS.inbox}</div>
-                <div class="empty-title">本週投資週報尚未生成</div>
-                <div class="empty-text">執行 <code>python3 runner.py weekly</code> 即可</div>
-              </div>
-            </div>`;
-          return;
-        }
+        // Build index — new builds include meta.index; legacy builds have just one entry
+        const index = meta.index || [{
+          week: meta.week, generated: meta.generated,
+          episodes: meta.episodes, filename: null,
+        }];
+        const activeEntry = (requestedWeek && index.find(e => e.week === requestedWeek)) || index[0];
 
-        const mdResp = await fetch(BASE + 'data/weekly_latest.md');
+        // Resolve path: new builds copy to data/weekly/{filename}; legacy uses weekly_latest.md
+        const mdPath = activeEntry.filename
+          ? `data/weekly/${activeEntry.filename}`
+          : 'data/weekly_latest.md';
+
+        const mdResp = await fetch(BASE + mdPath);
         if (!mdResp.ok) throw new Error('no_md');
-        const mdText = await mdResp.text();
-        const body = stripFrontmatter(mdText);
+        const body = stripFrontmatter(await mdResp.text());
+
+        // Week-selector nav chips
+        const navChips = index.map(e => {
+          const isActive = e.week === activeEntry.week;
+          return `<a class="weekly-nav-chip ${isActive ? 'active' : ''}" href="#/weekly/${e.week}">${e.week}</a>`;
+        }).join('');
 
         mc.innerHTML = `
           <div class="weekly-page">
             <div class="page-header"><h1 class="page-title">📋 投資週報</h1></div>
+            <nav class="weekly-nav">${navChips}</nav>
             <div class="weekly-meta-bar">
-              <div class="stat-chip">${ICONS.calendar} <strong>${meta.week || ''}</strong> 第 ${meta.week ? meta.week.split('-')[1] : ''} 週</div>
-              <div class="stat-chip">${ICONS.doc} <strong>${meta.episodes || 0}</strong> 集合成</div>
-              <div class="stat-chip" style="font-size:12px;color:var(--text-dim)">生成於 ${meta.generated || ''}</div>
+              <div class="stat-chip">${ICONS.calendar} <strong>${activeEntry.week}</strong> 第 ${activeEntry.week.split('-')[1]} 週</div>
+              <div class="stat-chip">${ICONS.doc} <strong>${activeEntry.episodes || 0}</strong> 集合成</div>
+              <div class="stat-chip" style="font-size:12px;color:var(--text-dim)">生成於 ${activeEntry.generated || ''}</div>
             </div>
             <div class="weekly-body">${marked.parse(body)}</div>
           </div>`;
       } catch (_) {
-        mc.innerHTML = `
-          <div class="weekly-page">
-            <div class="page-header"><h1 class="page-title">📋 投資週報</h1></div>
-            <div class="empty-state">
-              <div class="empty-icon">${ICONS.inbox}</div>
-              <div class="empty-title">本週投資週報尚未生成</div>
-              <div class="empty-text">執行 <code>python3 runner.py weekly</code> 即可</div>
-            </div>
-          </div>`;
+        mc.innerHTML = emptyHtml;
       }
     }
 
@@ -3879,7 +3916,7 @@
         return;
       }
       if (r.type === 'weekly') {
-        renderWeekly();
+        renderWeekly(r.week || null);
         return;
       }
 
