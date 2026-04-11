@@ -25,6 +25,14 @@
       "neutral": 11
     },
     {
+      "name": "NVIDIA",
+      "ticker": "NVDA",
+      "count": 28,
+      "bullish": 19,
+      "bearish": 0,
+      "neutral": 9
+    },
+    {
       "name": "Meta",
       "ticker": "META",
       "count": 28,
@@ -33,52 +41,44 @@
       "neutral": 15
     },
     {
-      "name": "NVIDIA",
-      "ticker": "NVDA",
-      "count": 27,
-      "bullish": 18,
-      "bearish": 0,
-      "neutral": 9
-    },
-    {
       "name": "Google",
       "ticker": "GOOGL",
-      "count": 25,
+      "count": 26,
       "bullish": 5,
       "bearish": 1,
-      "neutral": 19
+      "neutral": 20
     },
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 23,
-      "bullish": 17,
+      "count": 24,
+      "bullish": 18,
       "bearish": 0,
       "neutral": 6
     },
     {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 22,
-      "bullish": 8,
+      "count": 23,
+      "bullish": 9,
       "bearish": 1,
       "neutral": 13
     },
     {
       "name": "OpenAI",
       "ticker": null,
-      "count": 19,
+      "count": 20,
       "bullish": 4,
       "bearish": 1,
-      "neutral": 14
+      "neutral": 15
     },
     {
       "name": "Anthropic",
       "ticker": null,
-      "count": 16,
+      "count": 17,
       "bullish": 6,
       "bearish": 1,
-      "neutral": 9
+      "neutral": 10
     },
     {
       "name": "微軟",
@@ -115,10 +115,18 @@
     {
       "name": "Intel",
       "ticker": "INTC",
-      "count": 13,
-      "bullish": 5,
+      "count": 14,
+      "bullish": 6,
       "bearish": 2,
       "neutral": 6
+    },
+    {
+      "name": "Tesla",
+      "ticker": "TSLA",
+      "count": 12,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 9
     },
     {
       "name": "特斯拉",
@@ -137,12 +145,12 @@
       "neutral": 4
     },
     {
-      "name": "Tesla",
-      "ticker": "TSLA",
+      "name": "Amazon",
+      "ticker": "AMZN",
       "count": 11,
-      "bullish": 1,
-      "bearish": 1,
-      "neutral": 9
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 8
     },
     {
       "name": "西德州原油",
@@ -201,14 +209,6 @@
       "neutral": 1
     },
     {
-      "name": "Amazon",
-      "ticker": "AMZN",
-      "count": 10,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 8
-    },
-    {
       "name": "蘋果",
       "ticker": "AAPL",
       "count": 9,
@@ -231,6 +231,14 @@
       "bullish": 2,
       "bearish": 3,
       "neutral": 4
+    },
+    {
+      "name": "台股加權指數",
+      "ticker": "TWII",
+      "count": 9,
+      "bullish": 5,
+      "bearish": 2,
+      "neutral": 2
     },
     {
       "name": "QQQ",
@@ -273,11 +281,11 @@
       "neutral": 1
     },
     {
-      "name": "台股加權指數",
-      "ticker": "TWII",
+      "name": "Marvell",
+      "ticker": "MRVL",
       "count": 8,
-      "bullish": 4,
-      "bearish": 2,
+      "bullish": 5,
+      "bearish": 1,
       "neutral": 2
     },
     {
@@ -295,14 +303,6 @@
       "bullish": 1,
       "bearish": 2,
       "neutral": 4
-    },
-    {
-      "name": "Marvell",
-      "ticker": "MRVL",
-      "count": 7,
-      "bullish": 4,
-      "bearish": 1,
-      "neutral": 2
     },
     {
       "name": "IGV",
@@ -775,6 +775,14 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "國巨",
+      "ticker": "2327",
+      "count": 2,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 0
     },
     {
       "name": "台達電",
@@ -1782,14 +1790,6 @@
       "count": 1,
       "bullish": 0,
       "bearish": 1,
-      "neutral": 0
-    },
-    {
-      "name": "國巨",
-      "ticker": "2327",
-      "count": 1,
-      "bullish": 1,
-      "bearish": 0,
       "neutral": 0
     },
     {
@@ -3100,7 +3100,7 @@
   "industries": [
     {
       "name": "AI",
-      "count": 58
+      "count": 59
     },
     {
       "name": "美股",
@@ -3108,7 +3108,7 @@
     },
     {
       "name": "半導體",
-      "count": 38
+      "count": 39
     },
     {
       "name": "能源",
@@ -3120,7 +3120,7 @@
     },
     {
       "name": "台股",
-      "count": 21
+      "count": 22
     },
     {
       "name": "科技",
@@ -3576,6 +3576,27 @@
         "Google",
         "Apple",
         "Klarna"
+      ]
+    },
+    "NCAgqfGtqts": {
+      "industries": [
+        "半導體",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "台積電",
+        "NVIDIA",
+        "Tesla",
+        "Intel",
+        "AMD",
+        "Marvell",
+        "Amazon",
+        "國巨",
+        "Anthropic",
+        "OpenAI",
+        "Google",
+        "台股加權指數"
       ]
     },
     "N_rrkFBsbB0": {
@@ -4929,5 +4950,5 @@
       ]
     }
   },
-  "generated_at": "2026-04-11T15:43:07"
+  "generated_at": "2026-04-11T17:12:51"
 }
