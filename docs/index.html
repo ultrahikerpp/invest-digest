@@ -3145,39 +3145,43 @@
         btn.innerHTML = '關閉圖表';
 
         if (!container.dataset.initialized) {
-          // All tickers → TradingView iframe
-          container.dataset.initialized = '1';
-          const indexMap = {
-            'DJIA': 'TVC:DJI', 'SPX': 'SP:SPX', 'SOX': 'PHLX:SOX',
-            'RUT': 'TVC:RUT', 'IXIC': 'NASDAQ:IXIC', 'NDX': 'NASDAQ:NDX',
-            'VIX': 'TVC:VIX', 'TWII': 'TWSE:TWII',
-          };
-          const tUp = ticker.toUpperCase();
-          // 4–5 digit numeric → Taiwan stock (try TWSE first, TradingView will show "symbol not found" for TPEX stocks)
-          const symbol = indexMap[tUp] || (/^\d{4,5}$/.test(ticker) ? `TWSE:${ticker}` : tUp);
-          const isDark = !document.documentElement.hasAttribute('data-theme');
-          const iframe = document.createElement('iframe');
-          const url = new URL('https://www.tradingview.com/widgetembed/');
-          url.searchParams.set('symbol', symbol);
-          url.searchParams.set('interval', 'D');
-          url.searchParams.set('hidesidetoolbar', '1');
-          url.searchParams.set('symboledit', '0');
-          url.searchParams.set('saveimage', '0');
-          url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
-          url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
-          url.searchParams.set('theme', isDark ? 'dark' : 'light');
-          url.searchParams.set('style', '3');
-          url.searchParams.set('timezone', 'Asia/Taipei');
-          url.searchParams.set('locale', 'zh_TW');
-          iframe.src = url.href;
-          iframe.style.cssText = 'width:100%;height:100%;border:none;';
-          iframe.setAttribute('allowfullscreen', 'true');
-          container.appendChild(iframe);
+          // Taiwan 4–5 digit numeric tickers → TWSE API + Lightweight Charts
+          if (/^\d{4,5}$/.test(ticker)) {
+            _renderTwStockChart(container, ticker);
+          } else {
+            // US / global → TradingView iframe
+            container.dataset.initialized = '1';
+            const indexMap = {
+              'DJIA': 'TVC:DJI', 'SPX': 'SP:SPX', 'SOX': 'PHLX:SOX',
+              'RUT': 'TVC:RUT', 'IXIC': 'NASDAQ:IXIC', 'NDX': 'NASDAQ:NDX',
+              'VIX': 'TVC:VIX', 'TWII': 'TWSE:TWII',
+            };
+            const tUp = ticker.toUpperCase();
+            const symbol = indexMap[tUp] || tUp;
+            const isDark = !document.documentElement.hasAttribute('data-theme');
+            const iframe = document.createElement('iframe');
+            const url = new URL('https://www.tradingview.com/widgetembed/');
+            url.searchParams.set('symbol', symbol);
+            url.searchParams.set('interval', 'D');
+            url.searchParams.set('hidesidetoolbar', '1');
+            url.searchParams.set('symboledit', '0');
+            url.searchParams.set('saveimage', '0');
+            url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
+            url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
+            url.searchParams.set('theme', isDark ? 'dark' : 'light');
+            url.searchParams.set('style', '3');
+            url.searchParams.set('timezone', 'Asia/Taipei');
+            url.searchParams.set('locale', 'zh_TW');
+            iframe.src = url.href;
+            iframe.style.cssText = 'width:100%;height:100%;border:none;';
+            iframe.setAttribute('allowfullscreen', 'true');
+            container.appendChild(iframe);
+          }
         }
       }
     }
 
-    // ── Taiwan stock chart (Yahoo Finance primary, TWSE/TPEX fallback) ────────
+    // ── Taiwan stock chart (TWSE www.twse.com.tw + Lightweight Charts) ────────
 
     function _rocToIso(s) {
       const p = (s || '').trim().split('/');
@@ -3189,87 +3193,39 @@
       return parseFloat(String(s || '0').replace(/,/g, '')) || 0;
     }
 
-    async function _fetchYahooOhlcv(ticker) {
-      for (const suffix of ['.TW', '.TWO']) {
-        try {
-          const symbol = encodeURIComponent(ticker + suffix);
-          const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=3mo`;
-          const resp = await fetch(url);
-          if (!resp.ok) continue;
-          const json = await resp.json();
-          const result = json?.chart?.result?.[0];
-          if (!result?.timestamp?.length) continue;
-          const ts = result.timestamp;
-          const q = result.indicators?.quote?.[0] || {};
-          const rows = [];
-          for (let i = 0; i < ts.length; i++) {
-            const close = q.close?.[i];
-            if (!close) continue;
-            const d = new Date(ts[i] * 1000);
-            const time = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-            rows.push({ time, open: q.open?.[i] || close, high: q.high?.[i] || close, low: q.low?.[i] || close, close, volume: q.volume?.[i] || 0 });
-          }
-          if (rows.length >= 5) return rows.sort((a, b) => a.time.localeCompare(b.time));
-        } catch { continue; }
-      }
-      return [];
-    }
-
     async function _fetchTwseOhlcv(ticker) {
+      // Use www.twse.com.tw (CORS: *), fetch last 3 months
       const now = new Date();
       const promises = [];
       for (let i = 0; i < 3; i++) {
         const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
         const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}01`;
-        const url = `https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY?stockNo=${encodeURIComponent(ticker)}&date=${dateStr}`;
-        promises.push(fetch(url).then(r => r.ok ? r.json() : []).catch(() => []));
+        const url = `https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=${dateStr}&stockNo=${encodeURIComponent(ticker)}`;
+        promises.push(fetch(url).then(r => r.ok ? r.json() : null).catch(() => null));
       }
       const rows = [];
-      for (const arr of await Promise.all(promises)) {
-        if (!Array.isArray(arr)) continue;
-        for (const r of arr) {
-          const time = _rocToIso(r['Date'] || r['日期'] || '');
+      for (const json of await Promise.all(promises)) {
+        if (!json || json.stat !== 'OK' || !Array.isArray(json.data)) continue;
+        // fields: [日期, 成交股數, 成交金額, 開盤價, 最高價, 最低價, 收盤價, 漲跌價差, 成交筆數, 註記]
+        for (const r of json.data) {
+          const time = _rocToIso(r[0]);
           if (!time) continue;
-          const open   = _cleanNum(r['OpeningPrice'] || r['開盤價']);
-          const high   = _cleanNum(r['HighestPrice']  || r['最高價']);
-          const low    = _cleanNum(r['LowestPrice']   || r['最低價']);
-          const close  = _cleanNum(r['ClosingPrice']  || r['收盤價']);
-          const volume = _cleanNum(r['TradeVolume']   || r['成交股數']);
+          const open   = _cleanNum(r[3]);
+          const high   = _cleanNum(r[4]);
+          const low    = _cleanNum(r[5]);
+          const close  = _cleanNum(r[6]);
+          const volume = _cleanNum(r[1]);
           if (close > 0) rows.push({ time, open, high, low, close, volume });
         }
       }
       return rows.sort((a, b) => a.time.localeCompare(b.time));
     }
 
-    async function _fetchTpexOhlcv(ticker) {
-      try {
-        const url = `https://www.tpex.org.tw/openapi/v1/tpex_mainboard_perday_quote?stockNo=${encodeURIComponent(ticker)}`;
-        const arr = await fetch(url).then(r => r.ok ? r.json() : []).catch(() => []);
-        if (!Array.isArray(arr)) return [];
-        const rows = [];
-        for (const r of arr) {
-          const raw = r['日期'] || r['Date'] || '';
-          const time = raw.includes('/') ? _rocToIso(raw) : raw;
-          if (!time) continue;
-          const open   = _cleanNum(r['開盤'] || r['Open']   || r['OpeningPrice']);
-          const high   = _cleanNum(r['最高'] || r['High']   || r['HighestPrice']);
-          const low    = _cleanNum(r['最低'] || r['Low']    || r['LowestPrice']);
-          const close  = _cleanNum(r['收盤'] || r['Close']  || r['ClosingPrice']);
-          const volume = _cleanNum(r['成交股數'] || r['Volume'] || r['TradeVolume']);
-          if (close > 0) rows.push({ time, open, high, low, close, volume });
-        }
-        return rows.sort((a, b) => a.time.localeCompare(b.time)).slice(-66);
-      } catch { return []; }
-    }
-
     async function _renderTwStockChart(container, ticker) {
       container.dataset.initialized = '1';
       container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:13px">載入台股資料中…</div>`;
 
-      // Yahoo Finance (CORS-friendly, covers both TWSE & TPEX) → TWSE → TPEX fallback
-      let data = await _fetchYahooOhlcv(ticker);
-      if (data.length < 5) data = await _fetchTwseOhlcv(ticker);
-      if (data.length < 5) data = await _fetchTpexOhlcv(ticker);
+      let data = await _fetchTwseOhlcv(ticker);
 
       if (data.length < 2) {
         container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:13px">查無歷史資料</div>`;
