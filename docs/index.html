@@ -3181,7 +3181,7 @@
       }
     }
 
-    // ── Taiwan stock chart (TWSE/TPEX OpenAPI + Lightweight Charts) ────────
+    // ── Taiwan stock chart (Yahoo Finance primary, TWSE/TPEX fallback) ────────
 
     function _rocToIso(s) {
       const p = (s || '').trim().split('/');
@@ -3191,6 +3191,32 @@
 
     function _cleanNum(s) {
       return parseFloat(String(s || '0').replace(/,/g, '')) || 0;
+    }
+
+    async function _fetchYahooOhlcv(ticker) {
+      for (const suffix of ['.TW', '.TWO']) {
+        try {
+          const symbol = encodeURIComponent(ticker + suffix);
+          const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=3mo`;
+          const resp = await fetch(url);
+          if (!resp.ok) continue;
+          const json = await resp.json();
+          const result = json?.chart?.result?.[0];
+          if (!result?.timestamp?.length) continue;
+          const ts = result.timestamp;
+          const q = result.indicators?.quote?.[0] || {};
+          const rows = [];
+          for (let i = 0; i < ts.length; i++) {
+            const close = q.close?.[i];
+            if (!close) continue;
+            const d = new Date(ts[i] * 1000);
+            const time = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+            rows.push({ time, open: q.open?.[i] || close, high: q.high?.[i] || close, low: q.low?.[i] || close, close, volume: q.volume?.[i] || 0 });
+          }
+          if (rows.length >= 5) return rows.sort((a, b) => a.time.localeCompare(b.time));
+        } catch { continue; }
+      }
+      return [];
     }
 
     async function _fetchTwseOhlcv(ticker) {
@@ -3244,7 +3270,9 @@
       container.dataset.initialized = '1';
       container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:13px">載入台股資料中…</div>`;
 
-      let data = await _fetchTwseOhlcv(ticker);
+      // Yahoo Finance (CORS-friendly, covers both TWSE & TPEX) → TWSE → TPEX fallback
+      let data = await _fetchYahooOhlcv(ticker);
+      if (data.length < 5) data = await _fetchTwseOhlcv(ticker);
       if (data.length < 5) data = await _fetchTpexOhlcv(ticker);
 
       if (data.length < 2) {
