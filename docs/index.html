@@ -2905,10 +2905,7 @@
               </div>`;
           }
           
-          // Only show chart button if ticker exists AND it's NOT a Taiwan entity (due to Licensing)
-          // Exception: We keep it for US stocks which work fine.
-          const isTw = _isTwEntity(e.name, e.ticker);
-          const chartBtn = (e.ticker && !isTw) ? `<span class="chart-btn" onclick="toggleChart(this, '${safeId}', '${e.name}', '${e.ticker}')">📊 價量趨勢</span>` : '';
+          const chartBtn = e.ticker ? `<span class="chart-btn" onclick="toggleChart(this, '${safeId}', '${e.name}', '${e.ticker}')">📊 價量趨勢</span>` : '';
 
           return `
             <div class="divergence-card ${isDiverge ? 'is-diverge' : ''}">
@@ -3136,73 +3133,178 @@
     function toggleChart(btn, containerId, name, ticker) {
       const container = document.getElementById(containerId);
       const isActive = btn.classList.contains('active');
-      
+
       if (isActive) {
         container.style.display = 'none';
         btn.classList.remove('active');
         btn.innerHTML = '📊 價量趨勢';
       } else {
         container.style.display = 'block';
-        container.style.height = '450px'; 
+        container.style.height = '400px';
         btn.classList.add('active');
         btn.innerHTML = '關閉圖表';
-        
-        if (!container.innerHTML) {
-          // Determine symbol mapping
-          let symbol = ticker;
-          if (!symbol) return;
-          
-          const indexMap = {
-            'DJIA': 'TVC:DJI',
-            'SPX':  'SP:SPX',
-            'SOX':  'PHLX:SOX',
-            'RUT':  'TVC:RUT',
-            'IXIC': 'NASDAQ:IXIC',
-            'NDX':  'NASDAQ:NDX',
-            'VIX':  'TVC:VIX',
-            'TWII': 'TWSE:TWII',
-          };
-          
-          const tUp = ticker.toUpperCase();
-          if (indexMap[tUp]) {
-            symbol = indexMap[tUp];
-          } else if (/^\d{4,5}$/.test(ticker)) {
-            symbol = 'TWSE:' + ticker;
-          } else {
-            symbol = ticker.toUpperCase();
-          }
 
-          const isDark = !document.documentElement.hasAttribute('data-theme');
-          const theme = isDark ? 'dark' : 'light';
-          
-          // Use direct iframe embed to bypass widget domain/licensing restrictions
-          // style=3 is Area, style=1 is Candles. Let's use 3 for better compatibility.
-          const iframe = document.createElement('iframe');
-          const url = new URL('https://www.tradingview.com/widgetembed/');
-          url.searchParams.set('symbol', symbol);
-          url.searchParams.set('interval', 'D');
-          url.searchParams.set('hidesidetoolbar', '1');
-          url.searchParams.set('symboledit', '0');
-          url.searchParams.set('saveimage', '0');
-          url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
-          url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
-          url.searchParams.set('theme', theme);
-          url.searchParams.set('style', '3');
-          url.searchParams.set('timezone', 'Asia/Taipei');
-          url.searchParams.set('locale', 'zh_TW');
-          
-          iframe.src = url.href;
-          iframe.style.width = '100%';
-          iframe.style.height = '100%';
-          iframe.style.border = 'none';
-          iframe.setAttribute('frameborder', '0');
-          iframe.setAttribute('allowTransparency', 'true');
-          iframe.setAttribute('scrolling', 'no');
-          iframe.setAttribute('allowfullscreen', 'true');
-          
-          container.appendChild(iframe);
+        if (!container.dataset.initialized) {
+          // Taiwan 4–5 digit numeric tickers → TWSE/TPEX OpenAPI + Lightweight Charts
+          if (/^\d{4,5}$/.test(ticker)) {
+            _renderTwStockChart(container, ticker);
+          } else {
+            // US / global → TradingView iframe
+            container.dataset.initialized = '1';
+            const indexMap = {
+              'DJIA': 'TVC:DJI', 'SPX': 'SP:SPX', 'SOX': 'PHLX:SOX',
+              'RUT': 'TVC:RUT', 'IXIC': 'NASDAQ:IXIC', 'NDX': 'NASDAQ:NDX',
+              'VIX': 'TVC:VIX', 'TWII': 'TWSE:TWII',
+            };
+            const tUp = ticker.toUpperCase();
+            const symbol = indexMap[tUp] || ticker.toUpperCase();
+            const isDark = !document.documentElement.hasAttribute('data-theme');
+            const iframe = document.createElement('iframe');
+            const url = new URL('https://www.tradingview.com/widgetembed/');
+            url.searchParams.set('symbol', symbol);
+            url.searchParams.set('interval', 'D');
+            url.searchParams.set('hidesidetoolbar', '1');
+            url.searchParams.set('symboledit', '0');
+            url.searchParams.set('saveimage', '0');
+            url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
+            url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
+            url.searchParams.set('theme', isDark ? 'dark' : 'light');
+            url.searchParams.set('style', '3');
+            url.searchParams.set('timezone', 'Asia/Taipei');
+            url.searchParams.set('locale', 'zh_TW');
+            iframe.src = url.href;
+            iframe.style.cssText = 'width:100%;height:100%;border:none;';
+            iframe.setAttribute('allowfullscreen', 'true');
+            container.appendChild(iframe);
+          }
         }
       }
+    }
+
+    // ── Taiwan stock chart (TWSE/TPEX OpenAPI + Lightweight Charts) ────────
+
+    function _rocToIso(s) {
+      const p = (s || '').trim().split('/');
+      if (p.length !== 3) return '';
+      return `${parseInt(p[0]) + 1911}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`;
+    }
+
+    function _cleanNum(s) {
+      return parseFloat(String(s || '0').replace(/,/g, '')) || 0;
+    }
+
+    async function _fetchTwseOhlcv(ticker) {
+      const now = new Date();
+      const promises = [];
+      for (let i = 0; i < 3; i++) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}01`;
+        const url = `https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY?stockNo=${encodeURIComponent(ticker)}&date=${dateStr}`;
+        promises.push(fetch(url).then(r => r.ok ? r.json() : []).catch(() => []));
+      }
+      const rows = [];
+      for (const arr of await Promise.all(promises)) {
+        if (!Array.isArray(arr)) continue;
+        for (const r of arr) {
+          const time = _rocToIso(r['Date'] || r['日期'] || '');
+          if (!time) continue;
+          const open   = _cleanNum(r['OpeningPrice'] || r['開盤價']);
+          const high   = _cleanNum(r['HighestPrice']  || r['最高價']);
+          const low    = _cleanNum(r['LowestPrice']   || r['最低價']);
+          const close  = _cleanNum(r['ClosingPrice']  || r['收盤價']);
+          const volume = _cleanNum(r['TradeVolume']   || r['成交股數']);
+          if (close > 0) rows.push({ time, open, high, low, close, volume });
+        }
+      }
+      return rows.sort((a, b) => a.time.localeCompare(b.time));
+    }
+
+    async function _fetchTpexOhlcv(ticker) {
+      try {
+        const url = `https://www.tpex.org.tw/openapi/v1/tpex_mainboard_perday_quote?stockNo=${encodeURIComponent(ticker)}`;
+        const arr = await fetch(url).then(r => r.ok ? r.json() : []).catch(() => []);
+        if (!Array.isArray(arr)) return [];
+        const rows = [];
+        for (const r of arr) {
+          const raw = r['日期'] || r['Date'] || '';
+          const time = raw.includes('/') ? _rocToIso(raw) : raw;
+          if (!time) continue;
+          const open   = _cleanNum(r['開盤'] || r['Open']   || r['OpeningPrice']);
+          const high   = _cleanNum(r['最高'] || r['High']   || r['HighestPrice']);
+          const low    = _cleanNum(r['最低'] || r['Low']    || r['LowestPrice']);
+          const close  = _cleanNum(r['收盤'] || r['Close']  || r['ClosingPrice']);
+          const volume = _cleanNum(r['成交股數'] || r['Volume'] || r['TradeVolume']);
+          if (close > 0) rows.push({ time, open, high, low, close, volume });
+        }
+        return rows.sort((a, b) => a.time.localeCompare(b.time)).slice(-66);
+      } catch { return []; }
+    }
+
+    async function _renderTwStockChart(container, ticker) {
+      container.dataset.initialized = '1';
+      container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:13px">載入台股資料中…</div>`;
+
+      let data = await _fetchTwseOhlcv(ticker);
+      if (data.length < 5) data = await _fetchTpexOhlcv(ticker);
+
+      if (data.length < 2) {
+        container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:13px">查無歷史資料</div>`;
+        return;
+      }
+
+      if (typeof LightweightCharts === 'undefined') {
+        await new Promise((res, rej) => {
+          const s = document.createElement('script');
+          s.src = 'https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js';
+          s.onload = res; s.onerror = rej;
+          document.head.appendChild(s);
+        }).catch(() => null);
+      }
+
+      if (typeof LightweightCharts === 'undefined') {
+        container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:13px">圖表庫載入失敗</div>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      const isDark = !document.documentElement.hasAttribute('data-theme');
+      const bg        = isDark ? '#131722' : '#ffffff';
+      const textColor = isDark ? '#d1d4dc' : '#333333';
+      const lineColor = isDark ? '#2a2e39' : '#e0e3eb';
+      const w = container.clientWidth  || container.parentElement?.clientWidth  || 400;
+      const h = container.clientHeight || 400;
+
+      const chart = LightweightCharts.createChart(container, {
+        width: w, height: h,
+        layout: { background: { color: bg }, textColor },
+        grid:   { vertLines: { color: lineColor }, horzLines: { color: lineColor } },
+        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+        rightPriceScale: { borderColor: lineColor, scaleMargins: { top: 0.05, bottom: 0.28 } },
+        timeScale: { borderColor: lineColor },
+        handleScroll: { mouseWheel: false },
+        handleScale: { mouseWheel: false },
+      });
+
+      // Taiwan convention: red = up, green = down
+      const candleSeries = chart.addCandlestickSeries({
+        upColor: '#ef5350', downColor: '#26a69a',
+        borderUpColor: '#ef5350', borderDownColor: '#26a69a',
+        wickUpColor: '#ef5350', wickDownColor: '#26a69a',
+      });
+      candleSeries.setData(data.map(({ time, open, high, low, close }) => ({ time, open, high, low, close })));
+
+      const volSeries = chart.addHistogramSeries({
+        priceScaleId: 'volume',
+        color: isDark ? 'rgba(99,102,241,0.45)' : 'rgba(99,102,241,0.35)',
+        priceFormat: { type: 'volume' },
+      });
+      volSeries.priceScale().applyOptions({ scaleMargins: { top: 0.76, bottom: 0 } });
+      volSeries.setData(data.map(({ time, volume }) => ({ time, value: volume })));
+
+      chart.timeScale().fitContent();
+      new ResizeObserver(() => {
+        chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
+      }).observe(container);
     }
 
     // ── Watchlist page ─────────────────────────────────────────
