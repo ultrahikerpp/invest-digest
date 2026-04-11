@@ -25,6 +25,14 @@
       "neutral": 11
     },
     {
+      "name": "Meta",
+      "ticker": "META",
+      "count": 28,
+      "bullish": 10,
+      "bearish": 3,
+      "neutral": 15
+    },
+    {
       "name": "NVIDIA",
       "ticker": "NVDA",
       "count": 27,
@@ -33,28 +41,20 @@
       "neutral": 9
     },
     {
-      "name": "Meta",
-      "ticker": "META",
-      "count": 27,
-      "bullish": 10,
-      "bearish": 3,
-      "neutral": 14
-    },
-    {
       "name": "Google",
       "ticker": "GOOGL",
-      "count": 24,
-      "bullish": 4,
+      "count": 25,
+      "bullish": 5,
       "bearish": 1,
       "neutral": 19
     },
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 22,
+      "count": 23,
       "bullish": 17,
       "bearish": 0,
-      "neutral": 5
+      "neutral": 6
     },
     {
       "name": "AMD",
@@ -73,20 +73,20 @@
       "neutral": 14
     },
     {
+      "name": "Anthropic",
+      "ticker": null,
+      "count": 16,
+      "bullish": 6,
+      "bearish": 1,
+      "neutral": 9
+    },
+    {
       "name": "微軟",
       "ticker": "MSFT",
       "count": 15,
       "bullish": 8,
       "bearish": 1,
       "neutral": 6
-    },
-    {
-      "name": "Anthropic",
-      "ticker": null,
-      "count": 15,
-      "bullish": 5,
-      "bearish": 1,
-      "neutral": 9
     },
     {
       "name": "美光",
@@ -107,16 +107,24 @@
     {
       "name": "亞馬遜",
       "ticker": "AMZN",
-      "count": 13,
-      "bullish": 5,
+      "count": 14,
+      "bullish": 6,
       "bearish": 0,
       "neutral": 8
     },
     {
       "name": "Intel",
       "ticker": "INTC",
-      "count": 12,
-      "bullish": 4,
+      "count": 13,
+      "bullish": 5,
+      "bearish": 2,
+      "neutral": 6
+    },
+    {
+      "name": "特斯拉",
+      "ticker": "TSLA",
+      "count": 11,
+      "bullish": 3,
       "bearish": 2,
       "neutral": 6
     },
@@ -145,14 +153,6 @@
       "neutral": 2
     },
     {
-      "name": "特斯拉",
-      "ticker": "TSLA",
-      "count": 10,
-      "bullish": 2,
-      "bearish": 2,
-      "neutral": 6
-    },
-    {
       "name": "三星",
       "ticker": "005930",
       "count": 10,
@@ -167,6 +167,14 @@
       "bullish": 3,
       "bearish": 1,
       "neutral": 6
+    },
+    {
+      "name": "Nvidia",
+      "ticker": "NVDA",
+      "count": 10,
+      "bullish": 6,
+      "bearish": 0,
+      "neutral": 4
     },
     {
       "name": "Microsoft",
@@ -231,14 +239,6 @@
       "bullish": 2,
       "bearish": 3,
       "neutral": 4
-    },
-    {
-      "name": "Nvidia",
-      "ticker": "NVDA",
-      "count": 9,
-      "bullish": 6,
-      "bearish": 0,
-      "neutral": 3
     },
     {
       "name": "那斯達克",
@@ -313,20 +313,20 @@
       "neutral": 1
     },
     {
+      "name": "CrowdStrike",
+      "ticker": "CRWD",
+      "count": 7,
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
       "name": "英特爾",
       "ticker": "INTC",
       "count": 6,
       "bullish": 0,
       "bearish": 0,
       "neutral": 6
-    },
-    {
-      "name": "CrowdStrike",
-      "ticker": "CRWD",
-      "count": 6,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 4
     },
     {
       "name": "Cloudflare",
@@ -891,6 +891,14 @@
     {
       "name": "RSP",
       "ticker": "RSP",
+      "count": 2,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "Palo Alto Networks",
+      "ticker": "PANW",
       "count": 2,
       "bullish": 2,
       "bearish": 0,
@@ -2185,6 +2193,14 @@
       "neutral": 1
     },
     {
+      "name": "UnitedHealth Group",
+      "ticker": "UNH",
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
       "name": "UUP",
       "ticker": "UUP",
       "count": 1,
@@ -2425,14 +2441,6 @@
       "neutral": 1
     },
     {
-      "name": "Palo Alto Networks",
-      "ticker": "PANW",
-      "count": 1,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 0
-    },
-    {
       "name": "NuScale Power",
       "ticker": "SMR",
       "count": 1,
@@ -2611,6 +2619,14 @@
     {
       "name": "IVV",
       "ticker": "IVV",
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "Humana",
+      "ticker": "HUM",
       "count": 1,
       "bullish": 1,
       "bearish": 0,
@@ -3084,15 +3100,15 @@
   "industries": [
     {
       "name": "AI",
-      "count": 57
+      "count": 58
     },
     {
       "name": "美股",
-      "count": 50
+      "count": 51
     },
     {
       "name": "半導體",
-      "count": 37
+      "count": 38
     },
     {
       "name": "能源",
@@ -4471,6 +4487,27 @@
         "Apollo"
       ]
     },
+    "kp-newsletter-37": {
+      "industries": [
+        "美股",
+        "AI",
+        "半導體"
+      ],
+      "mentions": [
+        "Intel",
+        "特斯拉",
+        "台積電",
+        "Nvidia",
+        "Google",
+        "Meta",
+        "亞馬遜",
+        "Anthropic",
+        "CrowdStrike",
+        "Palo Alto Networks",
+        "UnitedHealth Group",
+        "Humana"
+      ]
+    },
     "leh1Zp5LljI": {
       "industries": [
         "能源",
@@ -4892,5 +4929,5 @@
       ]
     }
   },
-  "generated_at": "2026-04-10T15:17:46"
+  "generated_at": "2026-04-11T06:43:20"
 }
