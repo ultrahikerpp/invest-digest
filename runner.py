@@ -880,7 +880,7 @@ def cmd_reprocess():
 # ── Approve command ────────────────────────────────────────
 
 def cmd_approve():
-    """Process all pending_review episodes: generate hashtags, Shorts cards, Shorts video, then email summary."""
+    """Process all pending_review episodes: generate hashtags + Shorts cards + Facebook post, then email summary and deploy."""
     _ensure_dirs()
     worker = _import_worker()
     conn = _get_db()
@@ -950,14 +950,6 @@ def cmd_approve():
             print(f"  ❌ Shorts 字卡產生失敗")
             continue
 
-        # Generate Shorts video
-        print(f"  產生 Shorts 影片...")
-        try:
-            cmd_shorts_video(video_id)
-        except SystemExit:
-            print(f"  ❌ Shorts 影片產生失敗")
-            continue
-
         _sync_to_wiki(summary_path, channel_id)
         _mark_done(conn, video_id)
         print(f"  ✓ 完成")
@@ -977,12 +969,10 @@ def cmd_approve():
 
     # Send completion notification email
     n = len(results)
-    subject = f"[完成] 共 {n} 集影片已產出"
-    lines = [f"共 {n} 集影片已產出\n"]
+    subject = f"[完成] 共 {n} 集摘要已審閱"
+    lines = [f"共 {n} 集摘要已完成審閱\n"]
     for r in results:
-        video_path = _shorts_video_output_path(r["video_id"], r["channel_name"])
         lines.append(f"{r['channel_name']}｜{r['title']}｜{r['hashtags']}")
-        lines.append(f"  Shorts 影片路徑：{video_path}")
         if r.get("fb_post_path"):
             lines.append(f"  Facebook 貼文：{r['fb_post_path']}")
         lines.append("")
