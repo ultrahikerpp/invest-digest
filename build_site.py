@@ -257,6 +257,78 @@ def _build_mentions_json(site_data_dir: Path, generated_at: str) -> None:
         print(f"  ⚠️ mentions.json 產生失敗：{e}")
 
 
+def _enrich_us_fundamentals(entities: list[dict]) -> None:
+    """Fetch Yahoo Finance fundamentals for US and Taiwan stock tickers (in-place)."""
+    import time
+
+    try:
+        import yfinance as yf
+    except ImportError:
+        print("  (skipping fundamentals — yfinance not installed)")
+        return
+
+    eligible = [e for e in entities if e.get("ticker")]
+    if not eligible:
+        return
+
+    def _is_tw(ticker: str) -> bool:
+        return bool(re.fullmatch(r"\d{4,5}", ticker))
+
+    # Deduplicate by ticker
+    seen: dict[str, dict] = {}
+    for e in eligible:
+        seen.setdefault(e["ticker"].upper(), e)
+
+    print(f"  Fetching fundamentals for {len(seen)} tickers…")
+
+    info_map: dict[str, dict] = {}
+    for ticker, _e in seen.items():
+        # For Taiwan tickers, try .TW then .TWO
+        yf_symbols = ([f"{ticker}.TW", f"{ticker}.TWO"] if _is_tw(ticker) else [ticker])
+        info = {}
+        for sym in yf_symbols:
+            try:
+                raw = yf.Ticker(sym).info or {}
+                if raw.get("trailingPE") or raw.get("marketCap"):
+                    info = raw
+                    break
+            except Exception:
+                pass
+            time.sleep(0.2)
+
+        pe         = info.get("trailingPE")
+        fwd_pe     = info.get("forwardPE")
+        mkt_cap    = info.get("marketCap")
+        w52_low    = info.get("fiftyTwoWeekLow")
+        w52_high   = info.get("fiftyTwoWeekHigh")
+        price      = info.get("currentPrice") or info.get("regularMarketPrice")
+        eps_growth = info.get("earningsGrowth")
+        rev_growth = info.get("revenueGrowth")
+        currency   = info.get("currency", "USD")
+
+        if any(v is not None for v in [pe, fwd_pe, mkt_cap]):
+            info_map[ticker] = {
+                "pe":         round(pe, 1)         if pe         is not None else None,
+                "fwd_pe":     round(fwd_pe, 1)     if fwd_pe     is not None else None,
+                "mkt_cap":    mkt_cap,
+                "currency":   currency,
+                "w52_low":    round(w52_low, 2)    if w52_low    is not None else None,
+                "w52_high":   round(w52_high, 2)   if w52_high   is not None else None,
+                "price":      round(price, 2)      if price      is not None else None,
+                "eps_growth": round(eps_growth, 4) if eps_growth is not None else None,
+                "rev_growth": round(rev_growth, 4) if rev_growth is not None else None,
+            }
+
+    enriched = 0
+    for e in eligible:
+        sym = e["ticker"].upper()
+        if sym in info_map:
+            e["fundamentals"] = info_map[sym]
+            enriched += 1
+
+    print(f"  ✓ enriched {enriched}/{len(eligible)} entities with fundamentals")
+
+
 def _build_divergence_json(
     site_data_dir: Path,
     channels: dict[str, dict],
@@ -286,6 +358,8 @@ def _build_divergence_json(
             conn, days=90, min_channels=2, channel_names=channel_names
         )
         conn.close()
+
+        _enrich_us_fundamentals(entities)
 
         out = {
             "entities": entities,
@@ -498,51 +572,71 @@ def _build_cooccurrence_json(site_data_dir: Path, generated_at: str) -> None:
         print(f"  ⚠️ cooccurrence.json 產生失敗：{e}")
 
 
+def _parse_weekly_frontmatter(content: str, stem: str) -> dict:
+    """Extract YAML frontmatter fields from a weekly MD file."""
+    meta: dict = {}
+    if content.startswith("---"):
+        end = content.find("---", 3)
+        if end != -1:
+            for line in content[3:end].splitlines():
+                m = re.match(r'^(\w+):\s*(.*)', line)
+                if m:
+                    meta[m.group(1)] = m.group(2).strip()
+    meta.setdefault("week", stem)
+    return meta
+
+
 def _build_weekly_json(site_data_dir: Path, generated_at: str) -> None:
-    """Copy the latest weekly digest to docs/data/ and write weekly_meta.json."""
+    """Copy all weekly digests to docs/data/weekly/ and write weekly_meta.json."""
     weekly_dir = BASE_DIR / "data" / "weekly"
+    no_meta = {"available": False, "generated_at": generated_at}
+
     if not weekly_dir.exists():
-        out_meta = site_data_dir / "weekly_meta.json"
-        out_meta.write_text(json.dumps({"available": False, "generated_at": generated_at}, ensure_ascii=False), encoding="utf-8")
+        (site_data_dir / "weekly_meta.json").write_text(
+            json.dumps(no_meta, ensure_ascii=False), encoding="utf-8"
+        )
         print("  (skipping weekly — data/weekly/ not found)")
         return
 
     md_files = sorted(weekly_dir.glob("*.md"), reverse=True)
     if not md_files:
-        out_meta = site_data_dir / "weekly_meta.json"
-        out_meta.write_text(json.dumps({"available": False, "generated_at": generated_at}, ensure_ascii=False), encoding="utf-8")
+        (site_data_dir / "weekly_meta.json").write_text(
+            json.dumps(no_meta, ensure_ascii=False), encoding="utf-8"
+        )
         print("  (skipping weekly — no .md files in data/weekly/)")
         return
 
-    latest = md_files[0]
-    content = latest.read_text(encoding="utf-8")
+    # Copy all weekly MDs to docs/data/weekly/
+    out_weekly_dir = site_data_dir / "weekly"
+    out_weekly_dir.mkdir(exist_ok=True)
+    index = []
+    for f in md_files:
+        content = f.read_text(encoding="utf-8")
+        meta = _parse_weekly_frontmatter(content, f.stem)
+        shutil.copy2(f, out_weekly_dir / f.name)
+        index.append({
+            "week":      meta.get("week", f.stem),
+            "generated": meta.get("generated", ""),
+            "episodes":  int(meta.get("episodes", 0) or 0),
+            "filename":  f.name,
+        })
 
-    # Parse frontmatter
-    meta: dict = {}
-    if content.startswith("---"):
-        end = content.find("---", 3)
-        if end != -1:
-            fm_block = content[3:end]
-            for line in fm_block.splitlines():
-                m = re.match(r'^(\w+):\s*(.*)', line)
-                if m:
-                    meta[m.group(1)] = m.group(2).strip()
+    latest_meta = index[0]
 
-    # Copy to docs/data/weekly_latest.md
-    out_md = site_data_dir / "weekly_latest.md"
-    shutil.copy2(latest, out_md)
+    # Keep weekly_latest.md for backward compatibility
+    shutil.copy2(md_files[0], site_data_dir / "weekly_latest.md")
 
-    # Write weekly_meta.json
-    out_meta = site_data_dir / "weekly_meta.json"
-    out_meta.write_text(json.dumps({
-        "available": True,
-        "week": meta.get("week", latest.stem),
-        "generated": meta.get("generated", ""),
-        "episodes": int(meta.get("episodes", 0)),
+    # Write weekly_meta.json with full index
+    (site_data_dir / "weekly_meta.json").write_text(json.dumps({
+        "available":    True,
+        "week":         latest_meta["week"],
+        "generated":    latest_meta["generated"],
+        "episodes":     latest_meta["episodes"],
         "generated_at": generated_at,
+        "index":        index,          # all weeks, newest first
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(f"✓ docs/data/weekly_latest.md — week {meta.get('week', latest.stem)}")
+    print(f"✓ docs/data/weekly_latest.md — week {latest_meta['week']}")
     print(f"✓ docs/data/weekly_meta.json")
 
 
