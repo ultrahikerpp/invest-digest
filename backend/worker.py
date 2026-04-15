@@ -136,10 +136,45 @@ def _videos_from_rss(channel_id: str, max_results: int) -> list[dict]:
     return videos
 
 
-def _videos_from_page(channel_id: str, max_results: int) -> list[dict]:
-    """Fallback: scrape channel videos page via ytInitialData."""
-    # Force sort by newest (sort=dd)
-    url = f"https://www.youtube.com/channel/{channel_id}/videos?view=0&sort=dd"
+def _extract_videos_from_tab(tab_renderer: dict, tab_names: tuple, max_results: int) -> list[dict]:
+    """Extract videos from a specific tab by name(s). Returns list of video dicts."""
+    title = tab_renderer.get("title", "")
+    if title not in tab_names:
+        return []
+    tab_content = tab_renderer.get("content", {})
+    items = (
+        tab_content.get("richGridRenderer", {}).get("contents", [])
+        or tab_content.get("sectionListRenderer", {})
+                   .get("contents", [{}])[0]
+                   .get("itemSectionRenderer", {})
+                   .get("contents", [{}])[0]
+                   .get("gridRenderer", {})
+                   .get("items", [])
+    )
+    videos = []
+    for item in items[:max_results]:
+        renderer = item.get("richItemRenderer", {}).get("content", {}).get("videoRenderer") \
+                or item.get("gridVideoRenderer")
+        if not renderer:
+            continue
+        video_id = renderer.get("videoId", "")
+        title_runs = renderer.get("title", {}).get("runs", [{}])
+        title_text = title_runs[0].get("text", "") if title_runs else ""
+        pub = renderer.get("publishedTimeText", {}).get("simpleText", "")
+
+        # Guard: skip videos that are months or years old
+        if pub and ("個月前" in pub or "年前" in pub or "months ago" in pub or "years ago" in pub):
+            print(f"  [skip-old] {title_text[:50]} ({pub})")
+            continue
+
+        if video_id and title_text:
+            videos.append({"video_id": video_id, "title": title_text, "published_at": pub})
+    return videos
+
+
+def _scrape_channel_page(channel_id: str, path: str, tab_names: tuple, max_results: int) -> list[dict]:
+    """Scrape a YouTube channel page and extract videos from the specified tab."""
+    url = f"https://www.youtube.com/channel/{channel_id}/{path}"
     req = urllib.request.Request(url, headers=HEADERS)
     with urllib.request.urlopen(req, timeout=15) as resp:
         html = resp.read().decode("utf-8")
@@ -149,55 +184,45 @@ def _videos_from_page(channel_id: str, max_results: int) -> list[dict]:
         return []
 
     data = json.loads(match.group(1))
-    videos = []
     try:
         tabs = data["contents"]["twoColumnBrowseResultsRenderer"]["tabs"]
-        for tab in tabs:
-            tab_renderer = tab.get("tabRenderer", {})
-            title = tab_renderer.get("title", "")
-            
-            # Skip tabs that are clearly not the 'Videos' tab (e.g. Home, Shorts, Live)
-            # Home is usually the first tab. '影片' or 'Videos' is what we want.
-            if title not in ("影片", "Videos", "Uploads"):
-                # If we have many tabs, and we haven't found 'Videos' yet, keep looking.
-                # But if there's only one tab or it's a simple layout, we might have to take it.
-                if len(tabs) > 1 and title: 
-                    continue
+    except (KeyError, TypeError):
+        return []
 
-            tab_content = tab_renderer.get("content", {})
-            items = (
-                tab_content.get("richGridRenderer", {}).get("contents", [])
-                or tab_content.get("sectionListRenderer", {})
-                           .get("contents", [{}])[0]
-                           .get("itemSectionRenderer", {})
-                           .get("contents", [{}])[0]
-                           .get("gridRenderer", {})
-                           .get("items", [])
-            )
-            for item in items[:max_results]:
-                renderer = item.get("richItemRenderer", {}).get("content", {}).get("videoRenderer") \
-                        or item.get("gridVideoRenderer")
-                if not renderer:
-                    continue
-                video_id = renderer.get("videoId", "")
-                title_runs = renderer.get("title", {}).get("runs", [{}])
-                title_text = title_runs[0].get("text", "") if title_runs else ""
-                pub = renderer.get("publishedTimeText", {}).get("simpleText", "")
-                
-                # Guard: skip videos that are months or years old
-                if pub and ("個月前" in pub or "年前" in pub or "months ago" in pub or "years ago" in pub):
-                    print(f"  [skip-old] {title_text[:50]} ({pub})")
-                    continue
+    for tab in tabs:
+        tab_renderer = tab.get("tabRenderer", {})
+        videos = _extract_videos_from_tab(tab_renderer, tab_names, max_results)
+        if videos:
+            return videos
+    return []
 
-                if video_id and title_text:
-                    videos.append({"video_id": video_id, "title": title_text, "published_at": pub})
-            
-            if videos:
-                break
-    except (KeyError, IndexError):
-        pass
 
-    return videos
+def _videos_from_page(channel_id: str, max_results: int) -> list[dict]:
+    """Scrape /videos tab (regular uploads) and /streams tab (live VODs), merge results."""
+    seen: set[str] = set()
+    merged: list[dict] = []
+
+    # Regular uploads tab
+    try:
+        for v in _scrape_channel_page(channel_id, "videos?view=0&sort=dd",
+                                      ("影片", "Videos", "Uploads"), max_results):
+            if v["video_id"] not in seen:
+                seen.add(v["video_id"])
+                merged.append(v)
+    except Exception as e:
+        print(f"  [videos tab error] {e}")
+
+    # Streams/live tab (many channels now broadcast daily shows as live streams)
+    try:
+        for v in _scrape_channel_page(channel_id, "streams",
+                                      ("直播", "Live", "Streams"), max_results):
+            if v["video_id"] not in seen:
+                seen.add(v["video_id"])
+                merged.append(v)
+    except Exception as e:
+        print(f"  [streams tab error] {e}")
+
+    return merged
 
 
 def get_latest_videos(channel_id: str, max_results: int = 10) -> list[dict]:

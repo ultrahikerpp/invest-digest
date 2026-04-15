@@ -310,10 +310,15 @@ def cmd_run(channel_id: str | None = None):
         videos = worker.get_latest_videos(cid)
         print(f"  Found {len(videos)} recent videos")
 
+        skip_patterns = ch.get("skip_patterns", [])
         new_count = 0
         for v in videos:
             if _is_processed(conn, v["video_id"]):
                 print(f"  [skip] {v['title'][:60]}")
+                continue
+
+            if skip_patterns and any(p in v["title"] for p in skip_patterns):
+                print(f"  [skip-pattern] {v['title'][:60]}")
                 continue
 
             print(f"  [new]  {v['title'][:60]}")
