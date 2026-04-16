@@ -67,15 +67,18 @@ def _normalize_date(raw: str) -> str:
         dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
         return dt.strftime("%Y-%m-%d")
     except ValueError:
-        # Could be relative (e.g. "1 天前") or already YYYY-MM-DD
-        return raw
+        # Return raw only if it already looks like YYYY-MM-DD; otherwise discard
+        if re.match(r'^\d{4}-\d{2}-\d{2}$', raw):
+            return raw
+        return ""
 
 
 def _episode_sort_key(episode: dict) -> tuple:
-    """Sort by EP number desc (EP639 > EP638...), fallback to published_at desc."""
+    """Sort by published_at desc first, then EP number desc as tiebreaker."""
     m = re.search(r'EP(\d+)', episode.get("title", ""), re.IGNORECASE)
     ep_num = int(m.group(1)) if m else 0
-    return (ep_num, episode.get("published_at") or episode.get("processed_at") or "")
+    date = episode.get("published_at") or episode.get("processed_at") or ""
+    return (date, ep_num)
 
 
 def build():
