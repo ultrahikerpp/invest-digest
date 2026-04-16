@@ -3,7 +3,7 @@ title: 2026/04/15 (三）納指10連漲， 巨頭終於要動了？AVGO, MRVL, C
 video_id: Rv2NyQweGhA
 channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
-published: 直播時間：1 小時前
+published: 2026-04-15
 processed: 2026-04-15
 hashtags: #MRVL #AVGO #光通訊 #AI半導體 #納斯達克 #JC趨勢財經觀點
 industries: 半導體, AI, 美股

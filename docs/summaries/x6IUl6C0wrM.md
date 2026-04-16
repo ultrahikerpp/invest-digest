@@ -3,7 +3,7 @@ title: 2026/4/15(三)台股創高後 下一步四萬?AI法律大戰 誰能受惠
 video_id: x6IUl6C0wrM
 channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
-published: 直播時間：1 小時前
+published: 2026-04-15
 processed: 2026-04-15
 hashtags: #台積電 #台股四萬點 #半導體 #能源通膨 #大戶回流 #游庭皓的財經皓角
 industries: 台股, 半導體, 能源

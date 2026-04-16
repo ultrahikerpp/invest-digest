@@ -3,7 +3,7 @@ title: EP638 | 🐈‍⬛
 video_id: kn9xHoNK1Qs
 channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
-published: 5 天前
+published: 2026-02-27
 processed: 2026-02-27
 dqs_m1: 0.6667
 dqs_m4: 0.25
