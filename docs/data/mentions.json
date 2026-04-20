@@ -3,42 +3,42 @@
     {
       "name": "S&P 500",
       "ticker": "SPX",
-      "count": 40,
-      "bullish": 11,
+      "count": 42,
+      "bullish": 12,
       "bearish": 6,
-      "neutral": 23
+      "neutral": 24
     },
     {
       "name": "費城半導體指數",
       "ticker": "SOX",
-      "count": 39,
-      "bullish": 19,
+      "count": 41,
+      "bullish": 20,
       "bearish": 8,
-      "neutral": 12
+      "neutral": 13
     },
     {
       "name": "道瓊指數",
       "ticker": "DJIA",
-      "count": 37,
-      "bullish": 7,
+      "count": 39,
+      "bullish": 8,
       "bearish": 14,
-      "neutral": 16
+      "neutral": 17
     },
     {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "count": 34,
-      "bullish": 24,
+      "count": 36,
+      "bullish": 26,
       "bearish": 0,
       "neutral": 10
     },
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 33,
-      "bullish": 27,
+      "count": 35,
+      "bullish": 28,
       "bearish": 0,
-      "neutral": 6
+      "neutral": 7
     },
     {
       "name": "Meta",
@@ -73,28 +73,28 @@
       "neutral": 18
     },
     {
+      "name": "羅素2000",
+      "ticker": "RUT",
+      "count": 21,
+      "bullish": 4,
+      "bearish": 5,
+      "neutral": 12
+    },
+    {
+      "name": "微軟",
+      "ticker": "MSFT",
+      "count": 21,
+      "bullish": 11,
+      "bearish": 1,
+      "neutral": 9
+    },
+    {
       "name": "Anthropic",
       "ticker": null,
       "count": 20,
       "bullish": 7,
       "bearish": 1,
       "neutral": 12
-    },
-    {
-      "name": "羅素2000",
-      "ticker": "RUT",
-      "count": 19,
-      "bullish": 3,
-      "bearish": 5,
-      "neutral": 11
-    },
-    {
-      "name": "微軟",
-      "ticker": "MSFT",
-      "count": 19,
-      "bullish": 10,
-      "bearish": 1,
-      "neutral": 8
     },
     {
       "name": "Intel",
@@ -107,10 +107,10 @@
     {
       "name": "特斯拉",
       "ticker": "TSLA",
-      "count": 16,
+      "count": 17,
       "bullish": 5,
       "bearish": 2,
-      "neutral": 9
+      "neutral": 10
     },
     {
       "name": "亞馬遜",
@@ -147,9 +147,17 @@
     {
       "name": "納斯達克100",
       "ticker": "NDX",
-      "count": 13,
+      "count": 14,
       "bullish": 6,
       "bearish": 2,
+      "neutral": 6
+    },
+    {
+      "name": "博通",
+      "ticker": "AVGO",
+      "count": 13,
+      "bullish": 8,
+      "bearish": 0,
       "neutral": 5
     },
     {
@@ -177,14 +185,6 @@
       "neutral": 2
     },
     {
-      "name": "博通",
-      "ticker": "AVGO",
-      "count": 12,
-      "bullish": 7,
-      "bearish": 0,
-      "neutral": 5
-    },
-    {
       "name": "Lumentum",
       "ticker": "LITE",
       "count": 12,
@@ -209,20 +209,28 @@
       "neutral": 2
     },
     {
+      "name": "比特幣",
+      "ticker": "BTC",
+      "count": 11,
+      "bullish": 1,
+      "bearish": 5,
+      "neutral": 5
+    },
+    {
+      "name": "那斯達克",
+      "ticker": "IXIC",
+      "count": 10,
+      "bullish": 2,
+      "bearish": 2,
+      "neutral": 6
+    },
+    {
       "name": "納斯達克指數",
       "ticker": "IXIC",
       "count": 10,
       "bullish": 2,
       "bearish": 5,
       "neutral": 3
-    },
-    {
-      "name": "比特幣",
-      "ticker": "BTC",
-      "count": 10,
-      "bullish": 1,
-      "bearish": 4,
-      "neutral": 5
     },
     {
       "name": "標普500指數",
@@ -263,14 +271,6 @@
       "bullish": 7,
       "bearish": 1,
       "neutral": 2
-    },
-    {
-      "name": "那斯達克",
-      "ticker": "IXIC",
-      "count": 9,
-      "bullish": 1,
-      "bearish": 2,
-      "neutral": 6
     },
     {
       "name": "布蘭特原油",
@@ -369,6 +369,14 @@
       "neutral": 5
     },
     {
+      "name": "黃金",
+      "ticker": "GLD",
+      "count": 6,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "甲骨文",
       "ticker": "ORCL",
       "count": 6,
@@ -407,14 +415,6 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 4
-    },
-    {
-      "name": "黃金",
-      "ticker": "GLD",
-      "count": 5,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "台股",
@@ -2025,6 +2025,14 @@
       "neutral": 0
     },
     {
+      "name": "大盤ETF",
+      "ticker": null,
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
       "name": "國際航空集團",
       "ticker": null,
       "count": 1,
@@ -2515,6 +2523,14 @@
     {
       "name": "Talen Energy",
       "ticker": "TLN",
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "TIPS",
+      "ticker": "TIPS",
       "count": 1,
       "bullish": 1,
       "bearish": 0,
@@ -3384,23 +3400,23 @@
     },
     {
       "name": "美股",
-      "count": 56
+      "count": 58
     },
     {
       "name": "半導體",
-      "count": 51
+      "count": 52
     },
     {
       "name": "能源",
-      "count": 28
+      "count": 29
+    },
+    {
+      "name": "總體經濟",
+      "count": 29
     },
     {
       "name": "台股",
       "count": 28
-    },
-    {
-      "name": "總體經濟",
-      "count": 27
     },
     {
       "name": "科技",
@@ -3862,6 +3878,26 @@
         "元太",
         "台積電",
         "三星電機"
+      ]
+    },
+    "J7ARFz1MLBs": {
+      "industries": [
+        "美股",
+        "總體經濟",
+        "能源"
+      ],
+      "mentions": [
+        "NVIDIA",
+        "微軟",
+        "台積電",
+        "特斯拉",
+        "S&P 500",
+        "那斯達克",
+        "道瓊指數",
+        "羅素2000",
+        "費城半導體指數",
+        "比特幣",
+        "大盤ETF"
       ]
     },
     "JPDxWnDUtAw": {
@@ -5450,6 +5486,26 @@
         "羅素2000"
       ]
     },
+    "woAVn4U79v4": {
+      "industries": [
+        "美股",
+        "總體經濟",
+        "半導體"
+      ],
+      "mentions": [
+        "道瓊指數",
+        "S&P 500",
+        "納斯達克100",
+        "費城半導體指數",
+        "羅素2000",
+        "微軟",
+        "NVIDIA",
+        "博通",
+        "台積電",
+        "黃金",
+        "TIPS"
+      ]
+    },
     "x6IUl6C0wrM": {
       "industries": [
         "台股",
@@ -5576,5 +5632,5 @@
       ]
     }
   },
-  "generated_at": "2026-04-19T10:13:21"
+  "generated_at": "2026-04-20T13:14:28"
 }
