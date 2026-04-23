@@ -381,9 +381,9 @@ def parse_summary(md_path: Path) -> dict:
     # Remove markdown links  [text](url) → text
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
 
-    # Extract ## sections (standard markdown format)
+    # Extract ## or ### sections (support both heading levels)
     sections: dict[str, str] = {}
-    for m in re.finditer(r"^## ([^\n]+)\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL):
+    for m in re.finditer(r"^#{2,4} ([^\n]+)\n(.*?)(?=^#{2,4} |\Z)", text, re.MULTILINE | re.DOTALL):
         key = m.group(1).strip()
         val = m.group(2).strip()
         if val:
@@ -397,7 +397,7 @@ def parse_summary(md_path: Path) -> dict:
         current_section: str | None = None
         current_lines: list[str] = []
         for line in text.splitlines():
-            stripped = line.strip()
+            stripped = re.sub(r"^#{1,4}\s*", "", line).strip()
             if stripped in known:
                 if current_section:
                     sections[current_section] = "\n".join(current_lines).strip()
