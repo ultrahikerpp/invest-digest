@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-04-22
 processed: 2026-04-23
+hashtags: #台股 #聯發科 #被動元件 #動能操作 #AI供應鏈 #Gooaye股癌
 industries: 台股, 半導體, AI
 ---
 
@@ -44,8 +45,6 @@ industries: 台股, 半導體, AI
 - 三太氏：作者在四十幾塊買入，四百多塊賣出
 
 - 正美：作者在七十幾塊買入，約一兩百塊時賣出大部分
-
-- AOI（美股光通訊相關標的）：Q&A 中聽眾提問，作者曾公開討論
 
 - Nuflton（4919）：提及其 BMC 題材，兩年前節目已討論
 

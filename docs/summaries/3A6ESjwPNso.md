@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-04-23
 processed: 2026-04-23
+hashtags: #費半 #AI算力 #台股 #半導體 #地緣風險 #游庭皓的財經皓角
 industries: 半導體, AI, 台股
 ---
 
