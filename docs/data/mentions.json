@@ -3,26 +3,34 @@
     {
       "name": "S&P 500",
       "ticker": "SPX",
-      "count": 48,
+      "count": 49,
       "bullish": 13,
       "bearish": 7,
-      "neutral": 28
+      "neutral": 29
     },
     {
       "name": "費城半導體指數",
-      "ticker": "SOX",
-      "count": 47,
-      "bullish": 26,
+      "ticker": "SOXX",
+      "count": 48,
+      "bullish": 27,
       "bearish": 8,
       "neutral": 13
     },
     {
       "name": "道瓊指數",
       "ticker": "DJIA",
-      "count": 45,
+      "count": 46,
       "bullish": 9,
       "bearish": 15,
-      "neutral": 21
+      "neutral": 22
+    },
+    {
+      "name": "台積電",
+      "ticker": "TSM",
+      "count": 39,
+      "bullish": 32,
+      "bearish": 0,
+      "neutral": 7
     },
     {
       "name": "NVIDIA",
@@ -31,14 +39,6 @@
       "bullish": 29,
       "bearish": 0,
       "neutral": 10
-    },
-    {
-      "name": "台積電",
-      "ticker": "TSM",
-      "count": 38,
-      "bullish": 31,
-      "bearish": 0,
-      "neutral": 7
     },
     {
       "name": "Meta",
@@ -185,6 +185,14 @@
       "neutral": 11
     },
     {
+      "name": "那斯達克",
+      "ticker": "NDX",
+      "count": 12,
+      "bullish": 3,
+      "bearish": 2,
+      "neutral": 7
+    },
+    {
       "name": "納斯達克指數",
       "ticker": "IXIC",
       "count": 12,
@@ -223,14 +231,6 @@
       "bullish": 11,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "那斯達克",
-      "ticker": "IXIC",
-      "count": 11,
-      "bullish": 3,
-      "bearish": 2,
-      "neutral": 6
     },
     {
       "name": "西德州原油",
@@ -321,6 +321,14 @@
       "neutral": 1
     },
     {
+      "name": "IGV",
+      "ticker": "IGV",
+      "count": 8,
+      "bullish": 1,
+      "bearish": 6,
+      "neutral": 1
+    },
+    {
       "name": "高盛",
       "ticker": "GS",
       "count": 7,
@@ -335,14 +343,6 @@
       "bullish": 1,
       "bearish": 2,
       "neutral": 4
-    },
-    {
-      "name": "IGV",
-      "ticker": "IGV",
-      "count": 7,
-      "bullish": 1,
-      "bearish": 5,
-      "neutral": 1
     },
     {
       "name": "CrowdStrike",
@@ -3556,7 +3556,7 @@
   "industries": [
     {
       "name": "AI",
-      "count": 76
+      "count": 77
     },
     {
       "name": "美股",
@@ -3564,18 +3564,18 @@
     },
     {
       "name": "半導體",
-      "count": 57
+      "count": 58
     },
     {
       "name": "總體經濟",
       "count": 31
     },
     {
-      "name": "能源",
-      "count": 30
+      "name": "台股",
+      "count": 31
     },
     {
-      "name": "台股",
+      "name": "能源",
       "count": 30
     },
     {
@@ -5522,6 +5522,21 @@
         "西德州原油"
       ]
     },
+    "oiblLZqqC2w": {
+      "industries": [
+        "半導體",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "費城半導體指數",
+        "道瓊指數",
+        "S&P 500",
+        "那斯達克",
+        "IGV",
+        "台積電"
+      ]
+    },
     "pAhVKbSUvLo": {
       "industries": [
         "總體經濟",
@@ -5973,5 +5988,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-04-23T15:55:10"
+  "generated_at": "2026-04-24T15:28:48"
 }
