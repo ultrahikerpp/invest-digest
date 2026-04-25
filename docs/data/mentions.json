@@ -27,8 +27,8 @@
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 40,
-      "bullish": 33,
+      "count": 41,
+      "bullish": 34,
       "bearish": 0,
       "neutral": 7
     },
@@ -89,20 +89,20 @@
       "neutral": 11
     },
     {
+      "name": "Intel",
+      "ticker": "INTC",
+      "count": 22,
+      "bullish": 7,
+      "bearish": 4,
+      "neutral": 11
+    },
+    {
       "name": "Anthropic",
       "ticker": null,
       "count": 22,
       "bullish": 9,
       "bearish": 1,
       "neutral": 12
-    },
-    {
-      "name": "Intel",
-      "ticker": "INTC",
-      "count": 21,
-      "bullish": 7,
-      "bearish": 4,
-      "neutral": 10
     },
     {
       "name": "特斯拉",
@@ -345,6 +345,22 @@
       "neutral": 4
     },
     {
+      "name": "聯發科",
+      "ticker": "2454",
+      "count": 7,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "元大台灣50",
+      "ticker": "0050",
+      "count": 7,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
       "name": "Salesforce",
       "ticker": "CRM",
       "count": 7,
@@ -385,28 +401,12 @@
       "neutral": 2
     },
     {
-      "name": "聯發科",
-      "ticker": "2454",
-      "count": 6,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 3
-    },
-    {
       "name": "甲骨文",
       "ticker": "ORCL",
       "count": 6,
       "bullish": 4,
       "bearish": 1,
       "neutral": 1
-    },
-    {
-      "name": "元大台灣50",
-      "ticker": "0050",
-      "count": 6,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 4
     },
     {
       "name": "SK海力士",
@@ -2353,6 +2353,14 @@
       "neutral": 0
     },
     {
+      "name": "元大台灣50反1",
+      "ticker": "00620",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "任天堂",
       "ticker": "7974",
       "count": 1,
@@ -3588,7 +3596,7 @@
   "industries": [
     {
       "name": "AI",
-      "count": 78
+      "count": 79
     },
     {
       "name": "美股",
@@ -3596,14 +3604,14 @@
     },
     {
       "name": "半導體",
-      "count": 59
-    },
-    {
-      "name": "總體經濟",
-      "count": 31
+      "count": 60
     },
     {
       "name": "台股",
+      "count": 32
+    },
+    {
+      "name": "總體經濟",
       "count": 31
     },
     {
@@ -3662,6 +3670,20 @@
         "道瓊指數",
         "MSCI亞太指數",
         "新興市場指數"
+      ]
+    },
+    "-SBOKVzL6S0": {
+      "industries": [
+        "台股",
+        "半導體",
+        "AI"
+      ],
+      "mentions": [
+        "台積電",
+        "聯發科",
+        "Intel",
+        "元大台灣50反1",
+        "元大台灣50"
       ]
     },
     "07H01I-xdr0": {
@@ -6050,5 +6072,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-04-25T06:07:31"
+  "generated_at": "2026-04-25T16:34:36"
 }

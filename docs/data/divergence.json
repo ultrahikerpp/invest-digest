@@ -134,69 +134,6 @@
       }
     },
     {
-      "name": "Intel",
-      "ticker": "INTC",
-      "total_mentions": 21,
-      "channel_count": 4,
-      "total_bullish": 7,
-      "total_bearish": 4,
-      "total_neutral": 10,
-      "bull_channels": 1,
-      "bear_channels": 1,
-      "neutral_channels": 2,
-      "consensus": "多空分歧",
-      "divergence_score": 0.5,
-      "channels": [
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 8,
-          "bullish": 4,
-          "bearish": 1,
-          "neutral": 3,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 6,
-          "bullish": 2,
-          "bearish": 2,
-          "neutral": 2,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 6,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 5,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 1,
-          "neutral": 0,
-          "stance": "看空"
-        }
-      ],
-      "fundamentals": {
-        "pe": null,
-        "fwd_pe": 59.4,
-        "mkt_cap": 414846025728,
-        "currency": "USD",
-        "w52_low": 18.97,
-        "w52_high": 85.22,
-        "price": 82.54,
-        "eps_growth": null,
-        "rev_growth": -0.041
-      }
-    },
-    {
       "name": "S&P 500",
       "ticker": "SPX",
       "total_mentions": 49,
@@ -321,9 +258,9 @@
     {
       "name": "台積電",
       "ticker": "TSM",
-      "total_mentions": 40,
+      "total_mentions": 41,
       "channel_count": 4,
-      "total_bullish": 33,
+      "total_bullish": 34,
       "total_bearish": 0,
       "total_neutral": 7,
       "bull_channels": 4,
@@ -344,8 +281,8 @@
         {
           "channel_id": "UC23rnlQU_qE3cec9x709peA",
           "channel_name": "Gooaye 股癌",
-          "mentions": 11,
-          "bullish": 8,
+          "mentions": 12,
+          "bullish": 9,
           "bearish": 0,
           "neutral": 3,
           "stance": "看多"
@@ -826,6 +763,69 @@
       ]
     },
     {
+      "name": "Intel",
+      "ticker": "INTC",
+      "total_mentions": 22,
+      "channel_count": 4,
+      "total_bullish": 7,
+      "total_bearish": 4,
+      "total_neutral": 11,
+      "bull_channels": 0,
+      "bear_channels": 1,
+      "neutral_channels": 3,
+      "consensus": "偏空",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 9,
+          "bullish": 4,
+          "bearish": 1,
+          "neutral": 4,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 6,
+          "bullish": 2,
+          "bearish": 2,
+          "neutral": 2,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 6,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 5,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 1,
+          "neutral": 0,
+          "stance": "看空"
+        }
+      ],
+      "fundamentals": {
+        "pe": null,
+        "fwd_pe": 59.4,
+        "mkt_cap": 414846025728,
+        "currency": "USD",
+        "w52_low": 18.97,
+        "w52_high": 85.22,
+        "price": 82.54,
+        "eps_growth": null,
+        "rev_growth": 0.072
+      }
+    },
+    {
       "name": "特斯拉",
       "ticker": "TSLA",
       "total_mentions": 20,
@@ -869,7 +869,7 @@
       ],
       "fundamentals": {
         "pe": 345.2,
-        "fwd_pe": 142.7,
+        "fwd_pe": 149.7,
         "mkt_cap": 1413278859264,
         "currency": "USD",
         "w52_low": 270.78,
@@ -1101,7 +1101,7 @@
       ],
       "fundamentals": {
         "pe": 345.2,
-        "fwd_pe": 142.7,
+        "fwd_pe": 149.7,
         "mkt_cap": 1413278859264,
         "currency": "USD",
         "w52_low": 270.78,
@@ -1368,7 +1368,7 @@
         }
       ],
       "fundamentals": {
-        "pe": 54.0,
+        "pe": 53.5,
         "fwd_pe": 30.3,
         "mkt_cap": 143682224128,
         "currency": "USD",
@@ -2061,7 +2061,7 @@
         "w52_high": 85.22,
         "price": 82.54,
         "eps_growth": null,
-        "rev_growth": -0.041
+        "rev_growth": 0.072
       }
     },
     {
@@ -2278,6 +2278,123 @@
         "price": 178.16,
         "eps_growth": 0.179,
         "rev_growth": 0.121
+      }
+    },
+    {
+      "name": "元大台灣50",
+      "ticker": "0050",
+      "total_mentions": 7,
+      "channel_count": 3,
+      "total_bullish": 2,
+      "total_bearish": 0,
+      "total_neutral": 5,
+      "bull_channels": 1,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "偏多",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 5,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 4,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        }
+      ],
+      "fundamentals": {
+        "pe": 29.4,
+        "fwd_pe": null,
+        "mkt_cap": null,
+        "currency": "TWD",
+        "w52_low": 41.62,
+        "w52_high": 89.95,
+        "price": 89.95,
+        "eps_growth": null,
+        "rev_growth": null
+      }
+    },
+    {
+      "name": "聯發科",
+      "ticker": "2454",
+      "total_mentions": 7,
+      "channel_count": 4,
+      "total_bullish": 4,
+      "total_bearish": 0,
+      "total_neutral": 3,
+      "bull_channels": 2,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "偏多",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 4,
+          "bullish": 3,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "看多"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        }
+      ],
+      "fundamentals": {
+        "pe": 36.9,
+        "fwd_pe": 24.5,
+        "mkt_cap": 3886528331776,
+        "currency": "TWD",
+        "w52_low": 1130.0,
+        "w52_high": 2435.0,
+        "price": 2435.0,
+        "eps_growth": -0.037,
+        "rev_growth": 0.088
       }
     },
     {
@@ -2539,7 +2656,7 @@
         }
       ],
       "fundamentals": {
-        "pe": 31.1,
+        "pe": 31.2,
         "fwd_pe": 21.7,
         "mkt_cap": 498361270272,
         "currency": "USD",
@@ -2585,60 +2702,6 @@
       ]
     },
     {
-      "name": "元大台灣50",
-      "ticker": "0050",
-      "total_mentions": 6,
-      "channel_count": 3,
-      "total_bullish": 2,
-      "total_bearish": 0,
-      "total_neutral": 4,
-      "bull_channels": 1,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "偏多",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 4,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 3,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        }
-      ],
-      "fundamentals": {
-        "pe": 29.4,
-        "fwd_pe": null,
-        "mkt_cap": null,
-        "currency": "TWD",
-        "w52_low": 41.62,
-        "w52_high": 89.95,
-        "price": 89.95,
-        "eps_growth": null,
-        "rev_growth": null
-      }
-    },
-    {
       "name": "甲骨文",
       "ticker": "ORCL",
       "total_mentions": 6,
@@ -2672,7 +2735,7 @@
         }
       ],
       "fundamentals": {
-        "pe": 31.1,
+        "pe": 31.2,
         "fwd_pe": 21.7,
         "mkt_cap": 498361270272,
         "currency": "USD",
@@ -2681,69 +2744,6 @@
         "price": 173.28,
         "eps_growth": 0.245,
         "rev_growth": 0.217
-      }
-    },
-    {
-      "name": "聯發科",
-      "ticker": "2454",
-      "total_mentions": 6,
-      "channel_count": 4,
-      "total_bullish": 3,
-      "total_bearish": 0,
-      "total_neutral": 3,
-      "bull_channels": 2,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "偏多",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 3,
-          "bullish": 2,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        }
-      ],
-      "fundamentals": {
-        "pe": 36.9,
-        "fwd_pe": 24.5,
-        "mkt_cap": 3886528331776,
-        "currency": "TWD",
-        "w52_low": 1130.0,
-        "w52_high": 2435.0,
-        "price": 2435.0,
-        "eps_growth": -0.037,
-        "rev_growth": 0.088
       }
     },
     {
@@ -3363,7 +3363,7 @@
         }
       ],
       "fundamentals": {
-        "pe": 1471.6,
+        "pe": 1226.3,
         "fwd_pe": -144.8,
         "mkt_cap": 37233979392,
         "currency": "USD",
@@ -3492,8 +3492,8 @@
         "w52_low": 67.67,
         "w52_high": 89.96,
         "price": 83.88,
-        "eps_growth": -0.066,
-        "rev_growth": 0.02
+        "eps_growth": 0.047,
+        "rev_growth": 0.006
       }
     },
     {
@@ -3798,7 +3798,7 @@
         }
       ],
       "fundamentals": {
-        "pe": 54.0,
+        "pe": 53.5,
         "fwd_pe": 30.3,
         "mkt_cap": 143682224128,
         "currency": "USD",
@@ -5139,5 +5139,5 @@
       }
     }
   ],
-  "generated_at": "2026-04-25T06:07:31"
+  "generated_at": "2026-04-25T16:34:36"
 }
