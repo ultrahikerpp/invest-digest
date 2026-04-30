@@ -15,6 +15,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+
 BASE_DIR = Path(__file__).parent
 SUMMARIES_DIR = BASE_DIR / "data" / "summaries"
 CARDS_DIR = BASE_DIR / "data" / "cards"
@@ -25,6 +26,7 @@ SITE_DIR = BASE_DIR / "docs"
 SITE_SUMMARIES_DIR = SITE_DIR / "summaries"
 SITE_CARDS_DIR = SITE_DIR / "cards"
 SITE_DATA_DIR = SITE_DIR / "data"
+
 
 
 def _load_channels() -> dict[str, dict]:

@@ -21,6 +21,7 @@ Usage:
   python3 runner.py score --all            # M4 only for all episodes
   python3 runner.py score --all --force    # M1 + M4 for all episodes
   python3 runner.py weekly                 # synthesize cross-channel weekly digest from past 7 days
+  python3 runner.py earnings <ticker>      # fetch quarterly earnings data + Claude analysis → docs/data/earnings/<ticker>.json
 
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
@@ -1559,6 +1560,48 @@ def cmd_weekly():
     print(f"✓ Weekly digest saved: {out_path}")
 
 
+# ── Earnings command ──────────────────────────────────────
+
+def cmd_earnings(ticker: str):
+    """Fetch quarterly earnings data and generate Claude analysis."""
+    import json
+    from backend import earnings_fetcher
+    from backend.claude_browser import generate_earnings_analysis
+
+    ticker = ticker.upper()
+
+    if earnings_fetcher.is_index(ticker):
+        print(f"ERROR: {ticker} 是指數，不支援財報分析", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"抓取 {ticker} 財報數據...")
+    try:
+        data = earnings_fetcher.fetch_earnings_data(ticker)
+    except Exception as e:
+        print(f"ERROR: 無法取得財報數據: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    n_quarters = len(data['charts']['revenue']['labels'])
+    print(f"  公司：{data['company_name']} ({data['currency']})")
+    print(f"  取得 {n_quarters} 季數據")
+
+    print("生成 Claude 分析...")
+    data['analysis'] = generate_earnings_analysis(
+        ticker, data['company_name'], data, data['currency']
+    )
+
+    out_dir = BASE_DIR / "docs" / "data" / "earnings"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"{ticker}.json"
+
+    with open(out_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+    print(f"✓ 已儲存：{out_path}")
+    print(f"\n完成！執行以下指令發布：")
+    print(f"  python3 runner.py deploy")
+
+
 # ── Deploy command ────────────────────────────────────────
 
 def cmd_deploy():
@@ -1686,6 +1729,12 @@ def main():
 
     elif cmd == "weekly":
         cmd_weekly()
+
+    elif cmd == "earnings":
+        if len(args) < 2:
+            print("Usage: runner.py earnings <ticker>", file=sys.stderr)
+            sys.exit(1)
+        cmd_earnings(args[1])
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)

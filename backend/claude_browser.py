@@ -1020,3 +1020,58 @@ def setup_login() -> None:
         print("✓ 設定完成！執行 python3 runner.py run 即可開始使用 Claude 摘要")
     except Exception as e:
         print(f"❌ {e}")
+
+
+def generate_earnings_analysis(ticker: str, company_name: str, data: dict, currency: str = 'USD') -> str:
+    """Generate quarterly earnings analysis via Claude browser automation."""
+    charts = data.get('charts', {})
+    labels = charts.get('revenue', {}).get('labels', [])
+    rev = charts.get('revenue', {}).get('values_m', [])
+    rev_yoy = charts.get('revenue', {}).get('yoy_pct', [])
+    eps_vals = charts.get('eps', {}).get('values', [])
+    eps_yoy = charts.get('eps', {}).get('yoy_pct', [])
+    gross_m = charts.get('margins', {}).get('gross', [])
+    op_m = charts.get('margins', {}).get('operating', [])
+    net_m = charts.get('margins', {}).get('net', [])
+    fcf = charts.get('fcf', {}).get('values_m', [])
+
+    def _f(lst, i, suffix=''):
+        v = lst[i] if i < len(lst) else None
+        return f"{v}{suffix}" if v is not None else 'N/A'
+
+    header = "| 季度 | 營收(M) | 營收YoY | EPS | EPS YoY | 毛利率 | 營業利益率 | 淨利率 | FCF(M) |"
+    sep = "|------|---------|---------|-----|---------|--------|-----------|--------|--------|"
+    rows = [
+        f"| {lbl} | {_f(rev,i)} | {_f(rev_yoy,i,'%')} | {_f(eps_vals,i)} | {_f(eps_yoy,i,'%')} "
+        f"| {_f(gross_m,i,'%')} | {_f(op_m,i,'%')} | {_f(net_m,i,'%')} | {_f(fcf,i)} |"
+        for i, lbl in enumerate(labels)
+    ]
+    table = "\n".join([header, sep] + rows)
+
+    prompt = f"""你是一位專業的財報分析師。以下是 {company_name}（{ticker}）近期季度財報數據（幣別：{currency}，金額單位：百萬）：
+
+{table}
+
+（最新季度在最上方）
+
+請用繁體中文產出以下格式的 Markdown 分析：
+
+## 季度趨勢解讀
+（近幾季成長動能、加速/減速趨勢，最新季與前季或去年同期的關鍵變化）
+
+## 利潤結構分析
+（毛利率與營業利益率趨勢，是否擴張或壓縮）
+
+## 現金流健康度
+（FCF 趨勢與淨利比較，說明公司是否真的在賺錢）
+
+## 值得注意的訊號
+（異常數字、反轉跡象、風險點或亮點；若數據不足請說明）
+
+---
+**⚠️ 資料來自 yfinance，可能有延遲或誤差，僅供參考，不構成投資建議。**"""
+
+    try:
+        return chat(prompt, timeout_secs=120)
+    except Exception as e:
+        return f"⚠️ Claude 分析失敗：{e}"
