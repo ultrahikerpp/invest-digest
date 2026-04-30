@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-04-30
 processed: 2026-04-30
+hashtags: #大稻埕 #台北雙子星 #不動產投資 #台北西區 #都市更新 #JC趨勢財經觀點
 industries: 房地產, 總體經濟
 ---
 

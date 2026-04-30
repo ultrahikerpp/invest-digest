@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 直播時間：23 小時
 processed: 2026-04-30
+hashtags: #美股 #財報 #GLW #CLS #STX #JC趨勢財經觀點
 ---
 
 # 2026/04/29(三) 美股爲什麼又跌了？ #GLW #CLS #STX 財報

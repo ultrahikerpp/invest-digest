@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-04-30
 processed: 2026-04-30
+hashtags: #油價通膨 #聯準會 #AI資本支出 #科技巨頭 #台股供應鏈 #游庭皓的財經皓角
 industries: 美股, 半導體, AI
 ---
 

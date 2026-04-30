@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-04-29
 processed: 2026-04-30
+hashtags: #費半 #AI競爭 #OpenAI #軟體股 #半導體 #游庭皓的財經皓角
 industries: 半導體, AI, 科技
 ---
 

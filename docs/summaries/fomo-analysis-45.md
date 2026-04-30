@@ -7,6 +7,7 @@ source_type: newsletter
 source_url: https://www.fomosoc.com/p/aimlcctlvr-45
 published: 2026-04-29
 processed: 2026-04-30
+hashtags: #被動元件 #MLCC #AI伺服器 #國巨 #K型復甦 #FOMO研究院
 industries: 半導體, AI, 科技
 ---
 

@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-04-29
 processed: 2026-04-30
+hashtags: #台積電 #Intel封裝 #記憶體 #ETF配置 #AI基礎建設 #Gooaye股癌
 industries: 台股, 半導體, AI
 ---
 

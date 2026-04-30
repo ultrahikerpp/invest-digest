@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 直播時間：4 小時前
 processed: 2026-04-30
+hashtags: #FED降息 #AI基礎建設 #美股財報 #雲端運算 #車用半導體 #JC趨勢財經觀點
 ---
 
 # 2026/04/30(四) FED最大分歧，巨頭財報穩了？#GOOG #AMZN #MSFT #META #TER #NXPI
