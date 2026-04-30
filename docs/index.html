@@ -21,6 +21,7 @@
     })();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <style>
     /* ─────────────────────────────────────────────────────────
@@ -2349,6 +2350,59 @@
       background: rgba(255, 152, 0, 0.10);
     }
 
+    /* ── Earnings page ── */
+    .earnings-btn {
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 6px 12px;
+      color: var(--text-dim);
+      font-size: 14px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 8px;
+    }
+    .earnings-btn:hover {
+      background: rgba(41, 98, 255, 0.08);
+      border-color: var(--vibe1);
+      color: var(--vibe1);
+    }
+    .earnings-chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+    @media (max-width: 700px) {
+      .earnings-chart-grid { grid-template-columns: 1fr; }
+    }
+    .earnings-chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .earnings-chart-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .earnings-analysis {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      line-height: 1.7;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
     /* ── Industry bar ── */
     .industry-bar-fill {
       background: linear-gradient(90deg, #2962FF, #26C6DA);
@@ -2658,6 +2712,9 @@
       if (hash === '#/weekly' || hash.startsWith('#/weekly/')) {
         const week = hash.startsWith('#/weekly/') ? hash.slice('#/weekly/'.length) : null;
         return { type: 'weekly', week };
+      }
+      if (hash.startsWith('#/stock/')) {
+        return { type: 'stock', ticker: decodeURIComponent(hash.slice(8)) };
       }
       return { type: 'all' };
     }
@@ -3763,6 +3820,201 @@
 
     // ── Entity History view (C1) ───────────────────────────────
 
+    // ── Stock Earnings Page ────────────────────────────────
+
+    const _earningsChartInstances = {};
+
+    function _destroyEarningsCharts() {
+      for (const id in _earningsChartInstances) {
+        _earningsChartInstances[id].destroy();
+        delete _earningsChartInstances[id];
+      }
+    }
+
+    function _earningsColor(isDark) {
+      return {
+        blue: isDark ? '#2962FF' : '#1565C0',
+        green: '#26A69A',
+        red: '#EF5350',
+        yellow: '#FFA726',
+        gridColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)',
+        tickColor: isDark ? '#6B7280' : '#888',
+        tooltipBg: isDark ? '#1E222D' : '#fff',
+        tooltipText: isDark ? '#D1D4DC' : '#131722',
+      };
+    }
+
+    function _makeChart(id, config) {
+      const ctx = document.getElementById(id);
+      if (!ctx) return;
+      if (_earningsChartInstances[id]) _earningsChartInstances[id].destroy();
+      _earningsChartInstances[id] = new Chart(ctx, config);
+    }
+
+    function _chartDefaults(isDark) {
+      const c = _earningsColor(isDark);
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: c.tickColor, font: { size: 12 } } },
+          tooltip: {
+            backgroundColor: c.tooltipBg,
+            titleColor: c.tooltipText,
+            bodyColor: c.tooltipText,
+            borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+            borderWidth: 1,
+          },
+        },
+        scales: {
+          x: { ticks: { color: c.tickColor }, grid: { color: c.gridColor } },
+          y: { ticks: { color: c.tickColor }, grid: { color: c.gridColor } },
+        },
+      };
+    }
+
+    async function renderStockEarnings(ticker) {
+      _destroyEarningsCharts();
+      const mc = document.getElementById('mainContent');
+      mc.innerHTML = `<div class="page-header"><h1 class="page-title">📈 ${ticker} 季度財報</h1></div>
+        <div class="empty-state"><div class="empty-icon" style="font-size:32px">⏳</div><div class="empty-title">載入中...</div></div>`;
+
+      let data;
+      try {
+        const resp = await fetch(BASE + `data/earnings/${encodeURIComponent(ticker)}.json`);
+        if (!resp.ok) throw new Error('not_found');
+        data = await resp.json();
+      } catch (e) {
+        const cmd = `python3 runner.py earnings ${ticker}`;
+        mc.innerHTML = `
+          <div class="page-header"><h1 class="page-title">📈 ${ticker} 季度財報</h1></div>
+          <div class="empty-state">
+            <div class="empty-icon">${ICONS.inbox}</div>
+            <div class="empty-title">尚未生成財報分析</div>
+            <div class="empty-text">在本機執行以下指令後部署即可：<br><code>${cmd}</code></div>
+          </div>`;
+        return;
+      }
+
+      const isDark = !document.documentElement.hasAttribute('data-theme');
+      const c = _earningsColor(isDark);
+      const defaults = _chartDefaults(isDark);
+
+      const { company_name, currency, updated_at, analysis, charts } = data;
+      const rev = charts.revenue, eps = charts.eps, mar = charts.margins, fcf = charts.fcf;
+      // Reverse so oldest quarter is on the left
+      const rev_labels = [...rev.labels].reverse();
+      const eps_labels = [...eps.labels].reverse();
+      const mar_labels = [...mar.labels].reverse();
+      const fcf_labels = [...fcf.labels].reverse();
+
+      mc.innerHTML = `
+        <div class="page-header" style="display:flex;align-items:baseline;flex-wrap:wrap;gap:12px">
+          <h1 class="page-title" style="margin:0">📈 ${company_name} (${ticker})</h1>
+          <span style="font-size:13px;color:var(--text-dim)">更新：${updated_at} · 幣別：${currency}</span>
+        </div>
+
+        ${analysis ? `<div class="earnings-analysis">${marked.parse(analysis)}</div>` : ''}
+
+        <div class="earnings-chart-grid">
+          <div class="earnings-chart-card">
+            <div class="earnings-chart-title">季度營收 (${currency} M)</div>
+            <div style="height:220px"><canvas id="ec-revenue"></canvas></div>
+          </div>
+          <div class="earnings-chart-card">
+            <div class="earnings-chart-title">每股盈餘 EPS (${currency})</div>
+            <div style="height:220px"><canvas id="ec-eps"></canvas></div>
+          </div>
+          <div class="earnings-chart-card">
+            <div class="earnings-chart-title">利潤率趨勢 (%)</div>
+            <div style="height:220px"><canvas id="ec-margins"></canvas></div>
+          </div>
+          <div class="earnings-chart-card">
+            <div class="earnings-chart-title">自由現金流 (${currency} M)</div>
+            <div style="height:220px"><canvas id="ec-fcf"></canvas></div>
+          </div>
+        </div>`;
+
+      // Revenue bar chart
+      _makeChart('ec-revenue', {
+        type: 'bar',
+        data: {
+          labels: rev_labels,
+          datasets: [{
+            label: `營收 (M)`,
+            data: [...rev.values_m].reverse(),
+            backgroundColor: c.blue + 'CC',
+            borderColor: c.blue,
+            borderWidth: 1,
+          }],
+        },
+        options: { ...defaults, plugins: { ...defaults.plugins,
+          tooltip: { ...defaults.plugins.tooltip, callbacks: {
+            afterLabel: (ctx) => {
+              const yoy = [...rev.yoy_pct].reverse()[ctx.dataIndex];
+              return yoy != null ? `YoY: ${yoy > 0 ? '+' : ''}${yoy}%` : '';
+            }
+          }}
+        }},
+      });
+
+      // EPS bar chart
+      _makeChart('ec-eps', {
+        type: 'bar',
+        data: {
+          labels: eps_labels,
+          datasets: [{
+            label: 'EPS',
+            data: [...eps.values].reverse(),
+            backgroundColor: c.green + 'CC',
+            borderColor: c.green,
+            borderWidth: 1,
+          }],
+        },
+        options: { ...defaults, plugins: { ...defaults.plugins,
+          tooltip: { ...defaults.plugins.tooltip, callbacks: {
+            afterLabel: (ctx) => {
+              const yoy = [...eps.yoy_pct].reverse()[ctx.dataIndex];
+              return yoy != null ? `YoY: ${yoy > 0 ? '+' : ''}${yoy}%` : '';
+            }
+          }}
+        }},
+      });
+
+      // Margins line chart
+      _makeChart('ec-margins', {
+        type: 'line',
+        data: {
+          labels: mar_labels,
+          datasets: [
+            { label: '毛利率', data: [...mar.gross].reverse(), borderColor: c.blue, backgroundColor: 'transparent', tension: 0.3, pointRadius: 4 },
+            { label: '營業利益率', data: [...mar.operating].reverse(), borderColor: c.green, backgroundColor: 'transparent', tension: 0.3, pointRadius: 4 },
+            { label: '淨利率', data: [...mar.net].reverse(), borderColor: c.yellow, backgroundColor: 'transparent', tension: 0.3, pointRadius: 4 },
+          ],
+        },
+        options: { ...defaults, scales: { ...defaults.scales,
+          y: { ...defaults.scales.y, ticks: { ...defaults.scales.y.ticks, callback: v => v + '%' } }
+        }},
+      });
+
+      // FCF bar chart
+      const fcfData = [...fcf.values_m].reverse();
+      _makeChart('ec-fcf', {
+        type: 'bar',
+        data: {
+          labels: fcf_labels,
+          datasets: [{
+            label: `FCF (M)`,
+            data: fcfData,
+            backgroundColor: fcfData.map(v => v >= 0 ? c.green + 'CC' : c.red + 'CC'),
+            borderColor: fcfData.map(v => v >= 0 ? c.green : c.red),
+            borderWidth: 1,
+          }],
+        },
+        options: defaults,
+      });
+    }
+
     function renderEntityHistory(entityName) {
       const mc = document.getElementById('mainContent');
       renderSidebar(allEpisodes, null);
@@ -3830,11 +4082,16 @@
 
       // Find ticker from entity history data
       const ticker = (episodes[0] && episodes[0].ticker) || '';
+      const _INDEX_TICKERS = new Set(['SPX','SOX','DJI','DJIA','RUT','IXIC','NDX','VIX','TWII','KOSPI','NASDAQ','NYSE']);
+      const _renderEarningsBtn = () => ticker && !_INDEX_TICKERS.has(ticker.toUpperCase())
+        ? `<button class="earnings-btn" onclick="location.hash='#/stock/${encodeURIComponent(ticker)}'">📈 季報分析</button>`
+        : '';
 
       mc.innerHTML = `
         <div class="page-header" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
           <h1 class="page-title" style="margin:0">🔍 ${entityName}</h1>
           ${_renderStarBtn()}
+          ${_renderEarningsBtn()}
         </div>
         <div class="stats-bar">
           <div class="stat-chip">${ICONS.doc} <strong>${total}</strong> 次提及</div>
@@ -4154,6 +4411,11 @@
       }
       if (r.type === 'weekly') {
         renderWeekly(r.week || null);
+        return;
+      }
+      if (r.type === 'stock') {
+        renderSidebar(allEpisodes, null);
+        renderStockEarnings(r.ticker);
         return;
       }
 
