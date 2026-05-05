@@ -160,7 +160,7 @@
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 45
+        "count": 46
       },
       {
         "name": "道瓊指數",
@@ -173,6 +173,11 @@
         "count": 26
       },
       {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 23
+      },
+      {
         "name": "羅素2000",
         "ticker": "RUT",
         "count": 23
@@ -180,11 +185,6 @@
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 22
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
         "count": 22
       },
       {
@@ -264,11 +264,16 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 9
+        "count": 10
       },
       {
         "name": "Intel",
         "ticker": "INTC",
+        "count": 6
+      },
+      {
+        "name": "聯發科",
+        "ticker": "2454",
         "count": 6
       },
       {
@@ -277,13 +282,13 @@
         "count": 5
       },
       {
-        "name": "聯發科",
-        "ticker": "2454",
-        "count": 5
-      },
-      {
         "name": "Amazon",
         "ticker": "AMZN",
+        "count": 4
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
         "count": 4
       },
       {
@@ -297,18 +302,13 @@
         "count": 3
       },
       {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 3
-      },
-      {
         "name": "三星",
         "ticker": "005930",
         "count": 3
       },
       {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
         "count": 3
       }
     ],
@@ -316,17 +316,17 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
+        "count": 23
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
         "count": 22
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
         "count": 22
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 21
       },
       {
         "name": "道瓊指數",
@@ -470,14 +470,14 @@
     ],
     "費城半導體指數": [
       {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
+        "name": "S&P 500",
+        "ticker": "SPX",
         "count": 46
       },
       {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 45
+        "name": "道瓊指數",
+        "ticker": "DJIA",
+        "count": 46
       },
       {
         "name": "羅素2000",
@@ -492,7 +492,7 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 21
+        "count": 22
       },
       {
         "name": "Meta",
@@ -628,7 +628,7 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 9
+        "count": 10
       },
       {
         "name": "Intel",
@@ -638,7 +638,7 @@
       {
         "name": "元大台灣50",
         "ticker": "0050",
-        "count": 5
+        "count": 6
       },
       {
         "name": "美光",
@@ -661,18 +661,18 @@
         "count": 4
       },
       {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 3
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
+        "count": 3
+      },
+      {
         "name": "Marvell",
         "ticker": "MRVL",
-        "count": 3
-      },
-      {
-        "name": "Google",
-        "ticker": "GOOGL",
-        "count": 3
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
         "count": 3
       }
     ],
@@ -1615,12 +1615,17 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
-        "count": 11
+        "count": 12
       },
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 10
+        "count": 11
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 8
       },
       {
         "name": "道瓊指數",
@@ -1628,18 +1633,13 @@
         "count": 8
       },
       {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 7
+        "name": "納斯達克",
+        "ticker": "IXIC",
+        "count": 6
       },
       {
         "name": "比特幣",
         "ticker": "BTC",
-        "count": 5
-      },
-      {
-        "name": "納斯達克",
-        "ticker": "IXIC",
         "count": 5
       },
       {
@@ -1719,21 +1719,26 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
-        "count": 11
+        "count": 12
       },
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 7
+        "count": 8
       },
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 6
+        "count": 7
       },
       {
         "name": "台股加權指數",
         "ticker": "TWII",
+        "count": 6
+      },
+      {
+        "name": "道瓊",
+        "ticker": "DJI",
         "count": 5
       },
       {
@@ -1759,11 +1764,6 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 4
-      },
-      {
-        "name": "道瓊",
-        "ticker": "DJI",
         "count": 4
       }
     ],
@@ -2493,17 +2493,27 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
-        "count": 6
+        "count": 7
       },
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 5
+        "count": 6
       },
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 5
+        "count": 6
+      },
+      {
+        "name": "台股加權指數",
+        "ticker": "TWII",
+        "count": 3
+      },
+      {
+        "name": "納斯達克",
+        "ticker": "IXIC",
+        "count": 3
       },
       {
         "name": "比特幣",
@@ -2523,16 +2533,6 @@
       {
         "name": "Google",
         "ticker": "GOOGL",
-        "count": 2
-      },
-      {
-        "name": "Intel",
-        "ticker": "INTC",
-        "count": 2
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
         "count": 2
       }
     ],
@@ -2614,7 +2614,17 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
-        "count": 6
+        "count": 7
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
+        "count": 5
+      },
+      {
+        "name": "納斯達克",
+        "ticker": "IXIC",
+        "count": 5
       },
       {
         "name": "微軟",
@@ -2622,13 +2632,8 @@
         "count": 4
       },
       {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 4
-      },
-      {
-        "name": "納斯達克",
-        "ticker": "IXIC",
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 4
       },
       {
@@ -2637,8 +2642,8 @@
         "count": 3
       },
       {
-        "name": "台積電",
-        "ticker": "TSM",
+        "name": "台股加權指數",
+        "ticker": "TWII",
         "count": 3
       },
       {
@@ -2654,11 +2659,6 @@
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 2
-      },
-      {
-        "name": "博通",
-        "ticker": "AVGO",
         "count": 2
       }
     ],
@@ -2912,6 +2912,18 @@
         "name": "NVIDIA",
         "ticker": "NVDA",
         "count": 4
+      }
+    ],
+    "日經指數": [
+      {
+        "name": "台股加權指數",
+        "ticker": "TWII",
+        "count": 2
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
+        "count": 2
       }
     ],
     "Apple": [
@@ -3327,6 +3339,45 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
+        "count": 2
+      }
+    ],
+    "鴻海": [
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 3
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
+        "count": 3
+      },
+      {
+        "name": "SK海力士",
+        "ticker": "000660",
+        "count": 2
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 2
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 2
+      }
+    ],
+    "台達電": [
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 2
+      },
+      {
+        "name": "聯發科",
+        "ticker": "2454",
         "count": 2
       }
     ],
@@ -5695,24 +5746,7 @@
         "ticker": "MU",
         "count": 2
       }
-    ],
-    "鴻海": [
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 2
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 2
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 2
-      }
     ]
   },
-  "generated_at": "2026-05-04T14:51:46"
+  "generated_at": "2026-05-05T15:01:59"
 }
