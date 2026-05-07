@@ -1,6 +1,14 @@
 {
   "trending": [
     {
+      "name": "費城半導體指數",
+      "ticker": "SOXX",
+      "count": 59,
+      "bullish": 33,
+      "bearish": 10,
+      "neutral": 16
+    },
+    {
       "name": "S&P 500",
       "ticker": "SPX",
       "count": 59,
@@ -9,20 +17,12 @@
       "neutral": 35
     },
     {
-      "name": "費城半導體指數",
-      "ticker": "SOXX",
-      "count": 58,
-      "bullish": 33,
-      "bearish": 9,
-      "neutral": 16
-    },
-    {
       "name": "道瓊指數",
       "ticker": "DJIA",
-      "count": 53,
+      "count": 54,
       "bullish": 11,
       "bearish": 16,
-      "neutral": 26
+      "neutral": 27
     },
     {
       "name": "台積電",
@@ -59,8 +59,8 @@
     {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 33,
-      "bullish": 14,
+      "count": 34,
+      "bullish": 15,
       "bearish": 1,
       "neutral": 18
     },
@@ -193,6 +193,14 @@
       "neutral": 3
     },
     {
+      "name": "納斯達克指數",
+      "ticker": "IXIC",
+      "count": 14,
+      "bullish": 3,
+      "bearish": 5,
+      "neutral": 6
+    },
+    {
       "name": "那斯達克",
       "ticker": "NDX",
       "count": 13,
@@ -201,11 +209,11 @@
       "neutral": 8
     },
     {
-      "name": "納斯達克指數",
-      "ticker": "IXIC",
+      "name": "聯發科",
+      "ticker": "2454",
       "count": 13,
-      "bullish": 3,
-      "bearish": 5,
+      "bullish": 8,
+      "bearish": 0,
       "neutral": 5
     },
     {
@@ -249,12 +257,12 @@
       "neutral": 1
     },
     {
-      "name": "聯發科",
-      "ticker": "2454",
+      "name": "標普500指數",
+      "ticker": "SPX",
       "count": 12,
-      "bullish": 8,
-      "bearish": 0,
-      "neutral": 4
+      "bullish": 3,
+      "bearish": 3,
+      "neutral": 6
     },
     {
       "name": "Palantir",
@@ -279,14 +287,6 @@
       "bullish": 6,
       "bearish": 3,
       "neutral": 2
-    },
-    {
-      "name": "標普500指數",
-      "ticker": "SPX",
-      "count": 11,
-      "bullish": 3,
-      "bearish": 3,
-      "neutral": 5
     },
     {
       "name": "布蘭特原油",
@@ -745,6 +745,14 @@
       "neutral": 3
     },
     {
+      "name": "美超微",
+      "ticker": "SMCI",
+      "count": 3,
+      "bullish": 2,
+      "bearish": 1,
+      "neutral": 0
+    },
+    {
       "name": "美股",
       "ticker": "NASDAQ",
       "count": 3,
@@ -943,14 +951,6 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "美超微",
-      "ticker": "SMCI",
-      "count": 2,
-      "bullish": 1,
-      "bearish": 1,
-      "neutral": 0
     },
     {
       "name": "羅素2000指數",
@@ -3924,11 +3924,11 @@
   "industries": [
     {
       "name": "AI",
-      "count": 92
+      "count": 93
     },
     {
       "name": "半導體",
-      "count": 73
+      "count": 74
     },
     {
       "name": "美股",
@@ -3939,12 +3939,12 @@
       "count": 37
     },
     {
-      "name": "總體經濟",
+      "name": "能源",
       "count": 34
     },
     {
-      "name": "能源",
-      "count": 33
+      "name": "總體經濟",
+      "count": 34
     },
     {
       "name": "科技",
@@ -6613,6 +6613,22 @@
         "TIPS"
       ]
     },
+    "wzSQiSqD5yI": {
+      "industries": [
+        "半導體",
+        "能源",
+        "AI"
+      ],
+      "mentions": [
+        "AMD",
+        "美超微",
+        "聯發科",
+        "費城半導體指數",
+        "標普500指數",
+        "納斯達克指數",
+        "道瓊指數"
+      ]
+    },
     "x6IUl6C0wrM": {
       "industries": [
         "台股",
@@ -6809,5 +6825,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-05-06T15:38:47"
+  "generated_at": "2026-05-07T15:57:25"
 }
