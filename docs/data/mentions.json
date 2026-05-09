@@ -43,42 +43,50 @@
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 44,
-      "bullish": 12,
+      "count": 45,
+      "bullish": 13,
       "bearish": 4,
       "neutral": 28
     },
     {
       "name": "Google",
       "ticker": "GOOGL",
-      "count": 36,
-      "bullish": 12,
+      "count": 37,
+      "bullish": 13,
       "bearish": 1,
       "neutral": 23
     },
     {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 36,
-      "bullish": 15,
+      "count": 37,
+      "bullish": 16,
       "bearish": 1,
       "neutral": 20
     },
     {
       "name": "微軟",
       "ticker": "MSFT",
-      "count": 30,
-      "bullish": 12,
+      "count": 31,
+      "bullish": 13,
       "bearish": 1,
       "neutral": 17
     },
     {
       "name": "OpenAI",
       "ticker": null,
-      "count": 30,
-      "bullish": 6,
+      "count": 31,
+      "bullish": 7,
       "bearish": 2,
       "neutral": 22
+    },
+    {
+      "name": "Intel",
+      "ticker": "INTC",
+      "count": 29,
+      "bullish": 8,
+      "bearish": 4,
+      "neutral": 17
     },
     {
       "name": "羅素2000",
@@ -89,26 +97,18 @@
       "neutral": 15
     },
     {
-      "name": "Intel",
-      "ticker": "INTC",
-      "count": 28,
-      "bullish": 8,
-      "bearish": 4,
-      "neutral": 16
-    },
-    {
       "name": "Anthropic",
       "ticker": null,
-      "count": 26,
-      "bullish": 11,
+      "count": 27,
+      "bullish": 12,
       "bearish": 1,
       "neutral": 14
     },
     {
       "name": "Amazon",
       "ticker": "AMZN",
-      "count": 23,
-      "bullish": 9,
+      "count": 24,
+      "bullish": 10,
       "bearish": 0,
       "neutral": 14
     },
@@ -249,12 +249,28 @@
       "neutral": 5
     },
     {
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "count": 13,
+      "bullish": 5,
+      "bearish": 1,
+      "neutral": 7
+    },
+    {
       "name": "Marvell",
       "ticker": "MRVL",
       "count": 13,
       "bullish": 9,
       "bearish": 1,
       "neutral": 3
+    },
+    {
+      "name": "Broadcom",
+      "ticker": "AVGO",
+      "count": 13,
+      "bullish": 6,
+      "bearish": 0,
+      "neutral": 7
     },
     {
       "name": "標普500指數",
@@ -265,12 +281,12 @@
       "neutral": 6
     },
     {
-      "name": "Palantir",
-      "ticker": "PLTR",
+      "name": "Nvidia",
+      "ticker": "NVDA",
       "count": 12,
-      "bullish": 5,
-      "bearish": 1,
-      "neutral": 6
+      "bullish": 8,
+      "bearish": 0,
+      "neutral": 4
     },
     {
       "name": "IGV",
@@ -279,14 +295,6 @@
       "bullish": 2,
       "bearish": 7,
       "neutral": 3
-    },
-    {
-      "name": "Broadcom",
-      "ticker": "AVGO",
-      "count": 12,
-      "bullish": 5,
-      "bearish": 0,
-      "neutral": 7
     },
     {
       "name": "Apple",
@@ -329,14 +337,6 @@
       "neutral": 3
     },
     {
-      "name": "Nvidia",
-      "ticker": "NVDA",
-      "count": 11,
-      "bullish": 7,
-      "bearish": 0,
-      "neutral": 4
-    },
-    {
       "name": "SK海力士",
       "ticker": "000660",
       "count": 10,
@@ -351,6 +351,14 @@
       "bullish": 2,
       "bearish": 3,
       "neutral": 5
+    },
+    {
+      "name": "Cloudflare",
+      "ticker": "NET",
+      "count": 10,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 6
     },
     {
       "name": "Alphabet",
@@ -377,12 +385,12 @@
       "neutral": 2
     },
     {
-      "name": "Cloudflare",
-      "ticker": "NET",
+      "name": "ARM",
+      "ticker": "ARM",
       "count": 9,
-      "bullish": 3,
+      "bullish": 2,
       "bearish": 0,
-      "neutral": 6
+      "neutral": 7
     },
     {
       "name": "高盛",
@@ -423,14 +431,6 @@
       "bullish": 0,
       "bearish": 6,
       "neutral": 2
-    },
-    {
-      "name": "ARM",
-      "ticker": "ARM",
-      "count": 8,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 6
     },
     {
       "name": "道瓊",
@@ -863,6 +863,14 @@
       "bullish": 0,
       "bearish": 2,
       "neutral": 1
+    },
+    {
+      "name": "Accenture",
+      "ticker": "ACN",
+      "count": 3,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 0
     },
     {
       "name": "AST SpaceMobile",
@@ -1329,6 +1337,14 @@
       "neutral": 1
     },
     {
+      "name": "Blackstone",
+      "ticker": "BX",
+      "count": 2,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "BlackRock",
       "ticker": "BLK",
       "count": 2,
@@ -1359,14 +1375,6 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "Accenture",
-      "ticker": "ACN",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 2,
-      "neutral": 0
     },
     {
       "name": "AWS",
@@ -3409,6 +3417,14 @@
       "neutral": 1
     },
     {
+      "name": "Goldman Sachs",
+      "ticker": "GS",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "GoPro",
       "ticker": "GPRO",
       "count": 1,
@@ -3697,14 +3713,6 @@
       "neutral": 1
     },
     {
-      "name": "Blackstone",
-      "ticker": "BX",
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "BlackStone",
       "ticker": "BX",
       "count": 1,
@@ -3956,11 +3964,11 @@
   "industries": [
     {
       "name": "AI",
-      "count": 96
+      "count": 97
     },
     {
       "name": "半導體",
-      "count": 76
+      "count": 77
     },
     {
       "name": "美股",
@@ -3980,7 +3988,7 @@
     },
     {
       "name": "科技",
-      "count": 27
+      "count": 28
     },
     {
       "name": "加密貨幣",
@@ -6200,6 +6208,31 @@
         "Anthropic"
       ]
     },
+    "kp-newsletter-41": {
+      "industries": [
+        "AI",
+        "半導體",
+        "科技"
+      ],
+      "mentions": [
+        "Broadcom",
+        "Nvidia",
+        "AMD",
+        "ARM",
+        "Intel",
+        "Amazon",
+        "Google",
+        "Meta",
+        "微軟",
+        "Cloudflare",
+        "Accenture",
+        "Palantir",
+        "Anthropic",
+        "OpenAI",
+        "Blackstone",
+        "Goldman Sachs"
+      ]
+    },
     "leh1Zp5LljI": {
       "industries": [
         "能源",
@@ -6940,5 +6973,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-05-08T16:34:30"
+  "generated_at": "2026-05-09T07:18:05"
 }
