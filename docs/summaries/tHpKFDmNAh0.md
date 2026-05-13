@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-05-13
 processed: 2026-05-13
+hashtags: #被動元件 #MLCC #鋁電容排擠效應 #CPU外溢 #光通訊 #Gooaye股癌
 industries: 半導體, 台股, 科技
 ---
 
@@ -32,15 +33,15 @@ industries: 半導體, 台股, 科技
 
 
 **個股／公司**
-國巨、華新科、信昌、立農（電容）、玉帆、Murata、Samsung Electro-Mechanics（三星電機）、Nichicon、Nippon Chemi-Con、Panasonic、德州儀器（TI）、羅姆（ROHM）、世界先進、聯發科、台積電、高通（Qualcomm）、新唐、加折（CPU socket）、盛輝、藏物（漢堂）、VPG、延華、原態
+國巨、華新科、信昌、立隆電、Murata、Samsung Electro-Mechanics（三星電機）、Nichicon、Nippon Chemi-Con、Panasonic、德州儀器（TI）、羅姆（ROHM）、世界先進、聯發科、台積電、高通（Qualcomm）、新唐、加折（CPU socket）、盛輝、藏物（漢堂）、VPG、延華、原態
 
 
 **族群／產業**
-被動元件（MLCC、鋁電容、鉭電容、TLVR電感）、記憶體（HBM、DDR4、DDR5）、散熱、光通訊、功率半導體、IC design、CPU、載板、數值（銅箔基板）、剝線布、工具機、腳踏車
+被動元件（MLCC、鋁電容、鉭電容、TLVR電感）、記憶體（HBM、DDR4、DDR5）、散熱、光通訊、功率半導體、IC design、CPU、載板、數值（銅箔基板）、玻纖布、工具機、腳踏車
 
 
 **指數／市場**
-台股加權指數、費半（Philadelphia Semiconductor Index）
+台股加權指數、費半
 
 
 ### 關鍵數據
@@ -49,13 +50,7 @@ industries: 半導體, 台股, 科技
 
 - 台股加權指數本波從33,000點噴至約42,000多點，當日回落至41,300多點
 
-- 林口房價：作者搬入時一坪約20幾至30萬，現已開價80幾至90萬並成交
-
 - MLCC最缺規格：47UF（日韓供應）；國巨對應規格為22UF（約一半數值）
-
-- 伯根地（Burgundy）好年份參考：2005、2010、2015、2019年
-
-- Sassicaia（義大利酒）單瓶約新台幣一萬元
 
 - 高通AIPC：作者提及約兩年前（2024年前後）首代產品體驗極差
 
@@ -69,7 +64,7 @@ industries: 半導體, 台股, 科技
 
 - **鋁電容漲價潮**：Panasonic退出OS固態電容業務，日系同業承接但產能不足，已開始啟動漲價，低階標準品漲價幅度或超預期（類比DDR4/DDR5跑贏HBM的情境）。
 
-- **CPU外溢題材**：CPU socket相關（加折）、MCU（新唐）業績改善，被視為CPU主題的延伸標的。
+- **CPU外溢題材**：CPU socket相關（嘉澤）、MCU（新唐）業績改善，被視為CPU主題的延伸標的。
 
 - **光通訊**：美股光通持續創高，台股光通相對落後，作者暗示未來有機會補漲。
 

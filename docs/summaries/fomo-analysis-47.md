@@ -7,6 +7,7 @@ source_type: newsletter
 source_url: https://www.fomosoc.com/p/aiagentic-ai-47cloudflare
 published: 2026-05-13
 processed: 2026-05-13
+hashtags: #Cloudflare #邊緣AI #零信任 #雲端基礎設施 #AI推論 #FOMO研究院
 industries: 科技, AI, 美股
 ---
 

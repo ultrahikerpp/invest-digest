@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-05-13
 processed: 2026-05-13
+hashtags: #通膨 #費城半導體 #ASTS #CRCL #川習會 #JC趨勢財經觀點
 industries: 美股, 半導體, 加密貨幣
 ---
 
