@@ -5,6 +5,7 @@ channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
 published: 2026-05-14T01:07:35+00:00
 processed: 2026-05-14
+hashtags: #川習會 #輝達 #PPI通膨 #AI裂員潮 #美股創高 #游庭皓的財經皓角
 ---
 
 # 2026/5/14(四)川習會登場 PPI失控!輝達創高!還能漲多久?【早晨財經速解讀】

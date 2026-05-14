@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-05-14
 processed: 2026-05-14
+hashtags: #Neocloud #AI晶片 #通膨 #CRWV #NBIS #JC趨勢財經觀點
 industries: 美股, AI, 半導體
 ---
 
@@ -65,7 +66,6 @@ industries: 美股, AI, 半導體
 
 - Clickhouse（CoreWeave投資之私有公司）
 
-- Aetherbitch（財報中提及之客戶，逐字稿原文拼法）
 
 
 
@@ -188,7 +188,7 @@ industries: 美股, AI, 半導體
 
 - **台灣議題敏感性**：作者提醒，若川普為換取稀土或AI協議而在台灣問題上軟化，台灣投資人需特別留意。
 
-- **CoreWeave與Nebius財務結構風險**：兩家公司目前仍處虧損，CoreWeave IPO後股權費用尚未消化；Nebius本季EPS含非現金股權重估利得，金調整後實為虧損，不宜單以EPS判斷。
+- **CoreWeave與Nebius財務結構風險**：兩家公司目前仍處虧損，CoreWeave IPO後股權費用尚未消化；Nebius本季EPS含非現金股權重估利得，經調整後實為虧損，不宜單以EPS判斷。
 
 - **Nebius股價追高風險**：作者明確表示Nebius漲多、已脫離5日線，現階段不建議追高，提醒投資人評估自身風險承受度。
 
