@@ -1436,7 +1436,7 @@
 
     .divergence-chart-container {
       width: 100%;
-      height: 400px;
+      height: 450px;
       background: rgba(0,0,0,0.1);
     }
 
@@ -3599,7 +3599,7 @@
         btn.innerHTML = '📊 價量趨勢';
       } else {
         container.style.display = 'block';
-        container.style.height = '400px';
+        container.style.height = '450px';
         btn.classList.add('active');
         btn.innerHTML = '關閉圖表';
 
@@ -3626,7 +3626,7 @@
             url.searchParams.set('symboledit', '0');
             url.searchParams.set('saveimage', '0');
             url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
-            url.searchParams.set('studies', '["Volume@tv-basicstudies"]');
+            url.searchParams.set('studies', JSON.stringify(["Volume@tv-basicstudies", "MASimple@tv-basicstudies"]));
             url.searchParams.set('theme', isDark ? 'dark' : 'light');
             url.searchParams.set('style', '1');
             url.searchParams.set('timezone', 'Asia/Taipei');
@@ -3705,16 +3705,78 @@
         return;
       }
 
+      // Calculate moving averages
+      function calcMA(arr, period) {
+        if (arr.length < period) return [];
+        const result = [];
+        for (let i = period - 1; i < arr.length; i++) {
+          let sum = 0;
+          for (let j = 0; j < period; j++) sum += arr[i - j].close;
+          result.push({ time: arr[i].time, value: Math.round(sum / period * 100) / 100 });
+        }
+        return result;
+      }
+
+      const ma5  = calcMA(data, 5);
+      const ma20 = calcMA(data, 20);
+      const ma60 = calcMA(data, 60);
+
+      const last  = data[data.length - 1];
+      const lMa5  = ma5.length  ? ma5[ma5.length - 1].value   : null;
+      const lMa20 = ma20.length ? ma20[ma20.length - 1].value : null;
+      const lMa60 = ma60.length ? ma60[ma60.length - 1].value : null;
+      const prev  = data.length > 1 ? data[data.length - 2].close : null;
+      const chgPct = prev ? +((last.close - prev) / prev * 100).toFixed(2) : null;
+      const chgStr = chgPct !== null ? `${chgPct >= 0 ? '+' : ''}${chgPct}%` : '';
+      const chgColor = chgPct > 0 ? 'var(--red)' : chgPct < 0 ? 'var(--green)' : 'var(--text-dim)';
+
+      let trendText, trendColor;
+      if (lMa5 && lMa20) {
+        if (last.close > lMa5 && lMa5 > lMa20 && (!lMa60 || lMa20 > lMa60)) {
+          trendText = '多頭排列 ▲'; trendColor = 'var(--red)';
+        } else if (last.close < lMa5 && lMa5 < lMa20 && (!lMa60 || lMa20 < lMa60)) {
+          trendText = '空頭排列 ▼'; trendColor = 'var(--green)';
+        } else if (last.close > lMa20) {
+          trendText = '站上均線 ↗'; trendColor = '#ff9800';
+        } else {
+          trendText = '跌破均線 ↘'; trendColor = '#9e9e9e';
+        }
+      } else {
+        trendText = '資料不足'; trendColor = 'var(--text-dim)';
+      }
+
+      const maLegend = [
+        ma5.length  ? `<span style="color:#ff9800">● MA5 ${lMa5}</span>`  : '',
+        ma20.length ? `<span style="color:#2196f3">● MA20 ${lMa20}</span>` : '',
+        ma60.length ? `<span style="color:#9c27b0">● MA60 ${lMa60}</span>` : '',
+      ].filter(Boolean).join('');
+
       container.innerHTML = '';
+
+      const trendPanel = document.createElement('div');
+      trendPanel.style.cssText = 'padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12px;background:var(--card)';
+      trendPanel.innerHTML = `
+        <span style="font-weight:600;color:var(--text)">收盤 ${last.close}</span>
+        ${chgStr ? `<span style="font-weight:600;color:${chgColor}">${chgStr}</span>` : ''}
+        <span style="font-weight:600;color:${trendColor}">${trendText}</span>
+        <span style="margin-left:auto;display:flex;gap:10px;color:var(--text-dim)">${maLegend}</span>
+      `;
+      container.appendChild(trendPanel);
+
+      const panelH = trendPanel.offsetHeight || 42;
+      const chartDiv = document.createElement('div');
+      const totalH = container.clientHeight || 450;
+      chartDiv.style.cssText = `width:100%;height:${totalH - panelH}px`;
+      container.appendChild(chartDiv);
+
       const isDark = !document.documentElement.hasAttribute('data-theme');
       const bg        = isDark ? '#131722' : '#ffffff';
       const textColor = isDark ? '#d1d4dc' : '#333333';
       const lineColor = isDark ? '#2a2e39' : '#e0e3eb';
-      const w = container.clientWidth  || container.parentElement?.clientWidth  || 400;
-      const h = container.clientHeight || 400;
 
-      const chart = LightweightCharts.createChart(container, {
-        width: w, height: h,
+      const chart = LightweightCharts.createChart(chartDiv, {
+        width: chartDiv.clientWidth || container.clientWidth || 400,
+        height: totalH - panelH,
         layout: { background: { color: bg }, textColor },
         grid:   { vertLines: { color: lineColor }, horzLines: { color: lineColor } },
         crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
@@ -3732,6 +3794,13 @@
       });
       candleSeries.setData(data.map(({ time, open, high, low, close }) => ({ time, open, high, low, close })));
 
+      [{ data: ma5, color: '#ff9800', width: 1 }, { data: ma20, color: '#2196f3', width: 1.5 }, { data: ma60, color: '#9c27b0', width: 1.5 }]
+        .filter(({ data }) => data.length)
+        .forEach(({ data, color, width }) => {
+          const s = chart.addLineSeries({ color, lineWidth: width, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+          s.setData(data);
+        });
+
       const volSeries = chart.addHistogramSeries({
         priceScaleId: 'volume',
         color: isDark ? 'rgba(99,102,241,0.45)' : 'rgba(99,102,241,0.35)',
@@ -3741,9 +3810,13 @@
       volSeries.setData(data.map(({ time, volume }) => ({ time, value: volume })));
 
       chart.timeScale().fitContent();
-      new ResizeObserver(() => {
-        chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
-      }).observe(container);
+      if (container._ro) container._ro.disconnect();
+      container._ro = new ResizeObserver(() => {
+        const newH = container.clientHeight - panelH;
+        chart.applyOptions({ width: container.clientWidth, height: newH });
+        chartDiv.style.height = `${newH}px`;
+      });
+      container._ro.observe(container);
     }
 
     // ── Watchlist page ─────────────────────────────────────────
