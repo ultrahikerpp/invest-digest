@@ -3,10 +3,10 @@
     {
       "name": "費城半導體指數",
       "ticker": "SOXX",
-      "count": 79,
+      "count": 80,
       "bullish": 42,
       "bearish": 15,
-      "neutral": 22
+      "neutral": 23
     },
     {
       "name": "S&P 500",
@@ -17,6 +17,14 @@
       "neutral": 39
     },
     {
+      "name": "NVIDIA",
+      "ticker": "NVDA",
+      "count": 68,
+      "bullish": 49,
+      "bearish": 0,
+      "neutral": 19
+    },
+    {
       "name": "道瓊指數",
       "ticker": "DJIA",
       "count": 67,
@@ -25,20 +33,12 @@
       "neutral": 35
     },
     {
-      "name": "NVIDIA",
-      "ticker": "NVDA",
-      "count": 67,
-      "bullish": 49,
-      "bearish": 0,
-      "neutral": 18
-    },
-    {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 66,
+      "count": 67,
       "bullish": 57,
       "bearish": 0,
-      "neutral": 9
+      "neutral": 10
     },
     {
       "name": "Meta",
@@ -51,8 +51,8 @@
     {
       "name": "Google",
       "ticker": "GOOGL",
-      "count": 45,
-      "bullish": 17,
+      "count": 46,
+      "bullish": 18,
       "bearish": 1,
       "neutral": 27
     },
@@ -113,20 +113,20 @@
       "neutral": 13
     },
     {
+      "name": "Anthropic",
+      "ticker": null,
+      "count": 29,
+      "bullish": 13,
+      "bearish": 1,
+      "neutral": 15
+    },
+    {
       "name": "三星",
       "ticker": "005930",
       "count": 28,
       "bullish": 4,
       "bearish": 4,
       "neutral": 20
-    },
-    {
-      "name": "Anthropic",
-      "ticker": null,
-      "count": 28,
-      "bullish": 12,
-      "bearish": 1,
-      "neutral": 15
     },
     {
       "name": "納斯達克100",
@@ -177,19 +177,19 @@
       "neutral": 6
     },
     {
+      "name": "聯發科",
+      "ticker": "2454",
+      "count": 18,
+      "bullish": 10,
+      "bearish": 0,
+      "neutral": 8
+    },
+    {
       "name": "納斯達克",
       "ticker": "NDX",
       "count": 18,
       "bullish": 9,
       "bearish": 2,
-      "neutral": 7
-    },
-    {
-      "name": "聯發科",
-      "ticker": "2454",
-      "count": 17,
-      "bullish": 10,
-      "bearish": 0,
       "neutral": 7
     },
     {
@@ -521,6 +521,14 @@
       "neutral": 0
     },
     {
+      "name": "台股",
+      "ticker": null,
+      "count": 6,
+      "bullish": 5,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "Sandisk",
       "ticker": "SNDK",
       "count": 6,
@@ -559,14 +567,6 @@
       "bullish": 3,
       "bearish": 0,
       "neutral": 2
-    },
-    {
-      "name": "台股",
-      "ticker": null,
-      "count": 5,
-      "bullish": 4,
-      "bearish": 0,
-      "neutral": 1
     },
     {
       "name": "xAI",
@@ -967,6 +967,14 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "Blackstone",
+      "ticker": "BX",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 3
     },
     {
       "name": "Arista Networks",
@@ -1607,14 +1615,6 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "Blackstone",
-      "ticker": "BX",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "BlackRock",
@@ -4516,11 +4516,11 @@
   "industries": [
     {
       "name": "AI",
-      "count": 118
+      "count": 119
     },
     {
       "name": "半導體",
-      "count": 97
+      "count": 98
     },
     {
       "name": "美股",
@@ -4540,7 +4540,7 @@
     },
     {
       "name": "科技",
-      "count": 33
+      "count": 34
     },
     {
       "name": "加密貨幣",
@@ -6214,6 +6214,23 @@
         "Lyft",
         "西德州原油",
         "布蘭特原油"
+      ]
+    },
+    "ag-5hqHbqZo": {
+      "industries": [
+        "半導體",
+        "AI",
+        "科技"
+      ],
+      "mentions": [
+        "Anthropic",
+        "Google",
+        "Blackstone",
+        "NVIDIA",
+        "台積電",
+        "聯發科",
+        "費城半導體指數",
+        "台股"
       ]
     },
     "ahv1h7eXBiw": {
@@ -8135,5 +8152,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-05-22T05:38:46"
+  "generated_at": "2026-05-23T13:44:00"
 }

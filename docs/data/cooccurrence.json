@@ -316,12 +316,12 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 35
+        "count": 36
       },
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 32
+        "count": 33
       },
       {
         "name": "S&P 500",
@@ -356,7 +356,7 @@
       {
         "name": "Google",
         "ticker": "GOOGL",
-        "count": 20
+        "count": 21
       },
       {
         "name": "Amazon",
@@ -482,16 +482,16 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 43
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 32
+        "count": 44
       },
       {
         "name": "台積電",
         "ticker": "TSM",
+        "count": 33
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
         "count": 32
       },
       {
@@ -665,16 +665,21 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 15
-      },
-      {
-        "name": "AMD",
-        "ticker": "AMD",
-        "count": 8
+        "count": 16
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
+        "count": 9
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
+        "count": 8
+      },
+      {
+        "name": "AMD",
+        "ticker": "AMD",
         "count": 8
       },
       {
@@ -690,11 +695,6 @@
       {
         "name": "美光",
         "ticker": "MU",
-        "count": 7
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
         "count": 7
       },
       {
@@ -1578,7 +1578,7 @@
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 43
+        "count": 44
       },
       {
         "name": "S&P 500",
@@ -1588,7 +1588,7 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 35
+        "count": 36
       },
       {
         "name": "道瓊指數",
@@ -1606,14 +1606,14 @@
         "count": 31
       },
       {
-        "name": "微軟",
-        "ticker": "MSFT",
+        "name": "Google",
+        "ticker": "GOOGL",
         "count": 28
       },
       {
-        "name": "Google",
-        "ticker": "GOOGL",
-        "count": 27
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 28
       },
       {
         "name": "羅素2000",
@@ -1818,6 +1818,11 @@
       {
         "name": "台積電",
         "ticker": "TSM",
+        "count": 15
+      },
+      {
+        "name": "Google",
+        "ticker": "GOOGL",
         "count": 14
       },
       {
@@ -1831,11 +1836,6 @@
         "count": 13
       },
       {
-        "name": "Google",
-        "ticker": "GOOGL",
-        "count": 13
-      },
-      {
         "name": "AMD",
         "ticker": "AMD",
         "count": 12
@@ -1843,12 +1843,12 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 10
+        "count": 11
       },
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 10
+        "count": 11
       },
       {
         "name": "道瓊指數",
@@ -2224,7 +2224,7 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 27
+        "count": 28
       },
       {
         "name": "Meta",
@@ -2234,16 +2234,16 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 20
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 20
+        "count": 21
       },
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
+        "count": 21
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "DJIA",
         "count": 20
       },
       {
@@ -5981,13 +5981,18 @@
     ],
     "台股": [
       {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 3
+      },
+      {
         "name": "AMD",
         "ticker": "AMD",
         "count": 2
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 2
       },
       {
@@ -6779,6 +6784,43 @@
         "count": 2
       }
     ],
+    "Blackstone": [
+      {
+        "name": "Google",
+        "ticker": "GOOGL",
+        "count": 3
+      },
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 2
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 2
+      },
+      {
+        "name": "聯發科",
+        "ticker": "2454",
+        "count": 2
+      },
+      {
+        "name": "Broadcom",
+        "ticker": "AVGO",
+        "count": 2
+      },
+      {
+        "name": "Intel",
+        "ticker": "INTC",
+        "count": 2
+      },
+      {
+        "name": "Nvidia",
+        "ticker": "NVDA",
+        "count": 2
+      }
+    ],
     "科林研發": [
       {
         "name": "NVIDIA",
@@ -7388,28 +7430,6 @@
         "count": 2
       }
     ],
-    "Blackstone": [
-      {
-        "name": "Broadcom",
-        "ticker": "AVGO",
-        "count": 2
-      },
-      {
-        "name": "Google",
-        "ticker": "GOOGL",
-        "count": 2
-      },
-      {
-        "name": "Intel",
-        "ticker": "INTC",
-        "count": 2
-      },
-      {
-        "name": "Nvidia",
-        "ticker": "NVDA",
-        "count": 2
-      }
-    ],
     "Cerebras": [
       {
         "name": "AMD",
@@ -7602,5 +7622,5 @@
       }
     ]
   },
-  "generated_at": "2026-05-22T05:38:46"
+  "generated_at": "2026-05-23T13:44:00"
 }
