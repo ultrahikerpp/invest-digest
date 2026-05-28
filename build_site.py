@@ -168,6 +168,7 @@ def build():
     _build_flips_json(SITE_DATA_DIR, generated_at)
     _build_cooccurrence_json(SITE_DATA_DIR, generated_at)
     _build_weekly_json(SITE_DATA_DIR, generated_at)
+    _build_earnings_index_json(SITE_DATA_DIR, generated_at)
     _build_rss_feed(SITE_DIR, episodes, generated_at)
 
     print(f"\n✓ docs/data/episodes.json — {len(episodes)} episodes")
@@ -714,6 +715,59 @@ def _build_rss_feed(site_dir: Path, episodes: list, generated_at: str) -> None:
     out_path = site_dir / "feed.xml"
     out_path.write_text(rss, encoding="utf-8")
     print(f"✓ docs/feed.xml — {len(recent)} episodes")
+
+
+def _build_earnings_index_json(site_data_dir: Path, generated_at: str) -> None:
+    """Generate docs/data/earnings/index.json summarising all per-ticker earnings files."""
+    earnings_dir = site_data_dir / "earnings"
+    if not earnings_dir.exists():
+        print("  (skipping earnings index — docs/data/earnings/ not found)")
+        return
+
+    tickers = []
+    for path in sorted(earnings_dir.glob("*.json")):
+        if path.stem == "index":
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+
+        charts = data.get("charts", {})
+        rev = charts.get("revenue", {})
+        eps_c = charts.get("eps", {})
+        mar = charts.get("margins", {})
+
+        def _first(lst):
+            return next((v for v in (lst or []) if v is not None), None)
+
+        tickers.append({
+            "ticker":           data.get("ticker", path.stem),
+            "company_name":     data.get("company_name", ""),
+            "currency":         data.get("currency", "USD"),
+            "updated_at":       data.get("updated_at", ""),
+            "latest_quarter":   (rev.get("labels") or [None])[0],
+            "revenue_m":        _first(rev.get("values_m")),
+            "revenue_yoy":      _first(rev.get("yoy_pct")),
+            "eps":              _first(eps_c.get("values")),
+            "eps_yoy":          _first(eps_c.get("yoy_pct")),
+            "gross_margin":     _first(mar.get("gross")),
+            "operating_margin": _first(mar.get("operating")),
+            "net_margin":       _first(mar.get("net")),
+        })
+
+    # Sort: US tickers first (non-numeric), then Taiwan tickers, each alphabetically
+    def _sort_key(t):
+        ticker = t["ticker"]
+        is_tw = bool(re.fullmatch(r"\d{4,5}", ticker))
+        return (1 if is_tw else 0, ticker)
+
+    tickers.sort(key=_sort_key)
+
+    out = {"tickers": tickers, "generated_at": generated_at}
+    out_path = earnings_dir / "index.json"
+    out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"✓ docs/data/earnings/index.json — {len(tickers)} tickers")
 
 
 if __name__ == "__main__":
