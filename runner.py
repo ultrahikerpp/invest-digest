@@ -22,9 +22,13 @@ Usage:
   python3 runner.py score --all --force    # M1 + M4 for all episodes
   python3 runner.py weekly                 # synthesize cross-channel weekly digest from past 7 days
   python3 runner.py earnings <ticker>      # fetch quarterly earnings data + Claude analysis → docs/data/earnings/<ticker>.json
+  python3 runner.py refresh-earnings       # smart refresh all tickers in earnings_watchlist.json
+  python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
+  python3 runner.py refresh-earnings --force   # force full refresh (ignore staleness)
 
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
+  0 9 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1
 """
 
 from __future__ import annotations
@@ -1602,6 +1606,105 @@ def cmd_earnings(ticker: str):
     print(f"  python3 runner.py deploy")
 
 
+# ── Refresh Earnings command ──────────────────────────────
+
+def cmd_refresh_earnings(deploy: bool = False, force: bool = False):
+    """Smart refresh all tickers in earnings_watchlist.json."""
+    import json as _json
+    from datetime import date
+    from backend import earnings_fetcher
+    from backend.claude_browser import generate_earnings_analysis
+
+    watchlist_path = BASE_DIR / "earnings_watchlist.json"
+    if not watchlist_path.exists():
+        print("ERROR: earnings_watchlist.json not found", file=sys.stderr)
+        sys.exit(1)
+
+    tickers = _json.loads(watchlist_path.read_text(encoding="utf-8")).get("tickers", [])
+    if not tickers:
+        print("earnings_watchlist.json has no tickers.", file=sys.stderr)
+        sys.exit(1)
+
+    earnings_dir = BASE_DIR / "docs" / "data" / "earnings"
+    earnings_dir.mkdir(parents=True, exist_ok=True)
+
+    today = date.today().isoformat()
+    results = {"full": [], "update": [], "skip": [], "error": []}
+
+    for ticker in tickers:
+        ticker = ticker.upper()
+        out_path = earnings_dir / f"{ticker}.json"
+
+        print(f"\n── {ticker} ──")
+        try:
+            new_data = earnings_fetcher.fetch_earnings_data(ticker)
+        except Exception as e:
+            print(f"  ERROR 抓取失敗：{e}")
+            results["error"].append(ticker)
+            continue
+
+        new_quarter = (new_data["charts"]["revenue"]["labels"] or [None])[0]
+
+        existing = None
+        if out_path.exists():
+            try:
+                existing = _json.loads(out_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+
+        old_quarter = None
+        if existing:
+            old_quarter = (existing.get("charts", {}).get("revenue", {}).get("labels") or [None])[0]
+
+        def _days_since(iso_date: str) -> int:
+            try:
+                return (date.today() - date.fromisoformat(iso_date)).days
+            except Exception:
+                return 999
+
+        if force or not existing:
+            action = "FULL"
+        elif new_quarter != old_quarter:
+            action = "FULL"
+            print(f"  新季度：{old_quarter} → {new_quarter}")
+        elif _days_since(existing.get("updated_at", "")) > 7:
+            action = "UPDATE"
+        else:
+            action = "SKIP"
+
+        if action == "SKIP":
+            print(f"  SKIP（資料新鮮，季度 {new_quarter}）")
+            results["skip"].append(ticker)
+            continue
+
+        if action == "FULL":
+            print(f"  FULL 刷新（yfinance + Claude 分析）")
+            new_data["analysis"] = generate_earnings_analysis(
+                ticker, new_data["company_name"], new_data, new_data["currency"]
+            )
+            results["full"].append(ticker)
+        else:
+            print(f"  UPDATE（更新數字，保留 Claude 分析）")
+            new_data["analysis"] = existing.get("analysis", "")
+            results["update"].append(ticker)
+
+        new_data["updated_at"] = today
+        out_path.write_text(_json.dumps(new_data, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"  ✓ 已儲存 {out_path.name}")
+
+    print(f"\n── 完成 ──")
+    print(f"  FULL: {results['full']} | UPDATE: {results['update']} | SKIP: {results['skip']} | ERROR: {results['error']}")
+
+    # Always rebuild earnings index
+    from build_site import _build_earnings_index_json
+    from datetime import timezone
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
+    _build_earnings_index_json(BASE_DIR / "docs" / "data", generated_at)
+
+    if deploy:
+        cmd_deploy()
+
+
 # ── Deploy command ────────────────────────────────────────
 
 def cmd_deploy():
@@ -1735,6 +1838,10 @@ def main():
             print("Usage: runner.py earnings <ticker>", file=sys.stderr)
             sys.exit(1)
         cmd_earnings(args[1])
+
+    elif cmd == "refresh-earnings":
+        flags = set(args[1:])
+        cmd_refresh_earnings(deploy="--deploy" in flags, force="--force" in flags)
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)

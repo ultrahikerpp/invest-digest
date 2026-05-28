@@ -35,12 +35,18 @@ python3 runner.py video <video_id>
 # One-time Claude browser login setup (run before first use)
 python3 runner.py setup-browser
 
+# Smart refresh all earnings in earnings_watchlist.json (skip if fresh, update numbers if same quarter, full refresh if new quarter)
+python3 runner.py refresh-earnings
+python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
+python3 runner.py refresh-earnings --force   # force full refresh for all tickers
+
 # Preview static site locally
 cd docs && python3 -m http.server 8000
 
-# Crontab (daily at 8:30am run, 9:00am notify)
+# Crontab (daily at 8:30am run, 9:00am notify, Saturday 9am earnings refresh)
 # 30 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
 # 0 9 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py notify >> data/runner.log 2>&1
+# 0 9 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1
 ```
 
 **Workflow:** `run` fetches + summarises → sends review email → user reviews → `approve` generates hashtags/cards/video + auto-deploys to GitHub Pages.
