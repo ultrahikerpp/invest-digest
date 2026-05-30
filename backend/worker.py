@@ -52,7 +52,51 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-# ── YouTube Transcript (yt-dlp 下載音訊 + faster-whisper 轉文字) ──
+# ── YouTube Transcript ──
+
+def _fetch_yt_transcript(video_id: str) -> str | None:
+    """直接從 YouTube 下載字幕（手動或自動生成），優先繁中 → 簡中 → 自動中文。"""
+    from youtube_transcript_api import YouTubeTranscriptApi
+    from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisabled
+
+    ZH_LANGS = ["zh-TW", "zh-Hant", "zh", "zh-Hans"]
+
+    try:
+        api = YouTubeTranscriptApi()
+        transcript_list = api.list(video_id)
+    except TranscriptsDisabled:
+        print(f"  字幕已停用 {video_id}")
+        return None
+    except Exception as e:
+        print(f"  取得字幕清單失敗 {video_id}: {e}")
+        return None
+
+    # 嘗試順序：手動繁中/簡中 → 自動生成中文
+    transcript = None
+    try:
+        transcript = transcript_list.find_manually_created_transcript(ZH_LANGS)
+        print(f"  找到手動字幕：{transcript.language_code}")
+    except NoTranscriptFound:
+        pass
+
+    if not transcript:
+        try:
+            transcript = transcript_list.find_generated_transcript(ZH_LANGS)
+            print(f"  找到自動字幕：{transcript.language_code}")
+        except NoTranscriptFound:
+            pass
+
+    if not transcript:
+        return None
+
+    try:
+        entries = transcript.fetch()
+        lines = [e.text.strip() for e in entries if e.text.strip()]
+        return "\n".join(lines) if lines else None
+    except Exception as e:
+        print(f"  字幕下載失敗 {video_id}: {e}")
+        return None
+
 
 _whisper_model = None
 
@@ -66,12 +110,10 @@ def _get_whisper_model():
     return _whisper_model
 
 
-def get_youtube_transcript(video_id: str) -> str | None:
-    """下載音訊並用 faster-whisper 轉成文字。"""
+def _whisper_transcript(video_id: str) -> str | None:
+    """Fallback：下載音訊並用 faster-whisper 轉成文字。"""
     import tempfile
-
     with tempfile.TemporaryDirectory() as tmpdir:
-        # 下載最佳音訊（使用 pytubefix）
         try:
             from pytubefix import YouTube
             yt = YouTube(f"https://www.youtube.com/watch?v={video_id}")
@@ -84,7 +126,6 @@ def get_youtube_transcript(video_id: str) -> str | None:
             print(f"  音訊下載失敗 {video_id}: {e}")
             return None
 
-        # 語音轉文字
         print(f"  轉文字中（需要數分鐘）...")
         try:
             model = _get_whisper_model()
@@ -107,6 +148,16 @@ def get_youtube_transcript(video_id: str) -> str | None:
         except Exception as e:
             print(f"  轉文字失敗 {video_id}: {e}")
             return None
+
+
+def get_youtube_transcript(video_id: str) -> str | None:
+    """取得逐字稿：優先從 YouTube 字幕下載，無字幕時 fallback 至 Whisper。"""
+    print(f"  嘗試下載 YouTube 字幕...")
+    text = _fetch_yt_transcript(video_id)
+    if text:
+        return text
+    print(f"  無可用字幕，改用 Whisper 轉錄...")
+    return _whisper_transcript(video_id)
 
 # ── Fetch new videos from channel ───────────────────────
 
