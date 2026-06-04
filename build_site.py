@@ -170,6 +170,7 @@ def build():
     _build_weekly_json(SITE_DATA_DIR, generated_at)
     _build_earnings_index_json(SITE_DATA_DIR, generated_at)
     _build_rss_feed(SITE_DIR, episodes, generated_at)
+    _build_subscribe_config_json(SITE_DATA_DIR)
 
     print(f"\n✓ docs/data/episodes.json — {len(episodes)} episodes")
     print(f"✓ docs/summaries/ — {len(episodes)} files")
@@ -768,6 +769,31 @@ def _build_earnings_index_json(site_data_dir: Path, generated_at: str) -> None:
     out_path = earnings_dir / "index.json"
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"✓ docs/data/earnings/index.json — {len(tickers)} tickers")
+
+
+def _build_subscribe_config_json(site_data_dir: Path) -> None:
+    """Write docs/data/subscribe_config.json from env vars (if Supabase is configured)."""
+    env_path = BASE_DIR / ".env"
+    if not env_path.exists():
+        return
+
+    def _read_env(key: str) -> str:
+        with open(env_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith(f"{key}="):
+                    return line.split("=", 1)[1].strip().strip('"').strip("'")
+        return ""
+
+    url = _read_env("SUPABASE_URL")
+    anon_key = _read_env("SUPABASE_ANON_KEY")
+    if not url or not anon_key or "your-project" in url or anon_key.startswith("eyJ..."):
+        return  # not configured yet
+
+    config = {"supabase_url": url, "supabase_anon_key": anon_key}
+    out = site_data_dir / "subscribe_config.json"
+    out.write_text(json.dumps(config), encoding="utf-8")
+    print("✓ docs/data/subscribe_config.json")
 
 
 if __name__ == "__main__":

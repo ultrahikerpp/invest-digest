@@ -17,6 +17,7 @@ import smtplib
 import urllib.request
 import urllib.parse
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -344,6 +345,25 @@ def send_notification_email(subject: str, body: str) -> None:
         smtp.starttls()
         smtp.login(GMAIL_USER, app_password)
         smtp.sendmail(GMAIL_USER, [GMAIL_USER], msg.as_string())
+
+
+def send_html_email(subject: str, html_body: str, to: str) -> None:
+    """Send an HTML email via Gmail SMTP App Password."""
+    app_password = _read_env_value("GMAIL_APP_PASSWORD")
+    if not app_password:
+        raise RuntimeError("GMAIL_APP_PASSWORD not set in .env")
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = GMAIL_USER
+    msg["To"] = to
+    msg.attach(MIMEText(html_body, "html", "utf-8"))
+
+    with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
+        smtp.ehlo()
+        smtp.starttls()
+        smtp.login(GMAIL_USER, app_password)
+        smtp.sendmail(GMAIL_USER, [to], msg.as_string())
 
 
 # ── Main Commands ────────────────────────────────────────

@@ -25,6 +25,8 @@ Usage:
   python3 runner.py refresh-earnings       # smart refresh all tickers in earnings_watchlist.json
   python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
   python3 runner.py refresh-earnings --force   # force full refresh (ignore staleness)
+  python3 runner.py send-confirmations     # send confirmation emails to new subscribers
+  python3 runner.py weekly-digest          # send weekly investment digest to subscribers
 
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
@@ -414,6 +416,12 @@ def cmd_run(channel_id: str | None = None):
 
     conn.close()
     print(f"\nTotal new episodes processed: {total_new}")
+
+    # Send confirmation emails to new subscribers (non-fatal)
+    try:
+        cmd_send_confirmations()
+    except Exception as e:
+        print(f"⚠️ 訂閱確認信發送失敗（不影響主流程）：{e}")
 
 
 # ── Build command ─────────────────────────────────────────
@@ -965,9 +973,11 @@ def cmd_approve():
         print(f"  ✓ 完成")
         results.append({
             "channel_name": channel_name,
+            "channel_id": channel_id,
             "title": title,
             "hashtags": hashtags,
             "video_id": video_id,
+            "summary_path": str(summary_path) if summary_path else None,
             "fb_post_path": fb_post_path,
         })
 
@@ -1006,6 +1016,132 @@ def cmd_approve():
             print("❌ 部署失敗，請手動執行 runner.py deploy")
     else:
         print("❌ 找不到 deploy.sh，請手動執行 runner.py deploy")
+
+    # Send subscriber notifications (non-fatal)
+    try:
+        _send_subscriber_notifications(results)
+    except Exception as e:
+        print(f"⚠️ 訂閱通知發送失敗（不影響部署）：{e}")
+
+
+# ── Subscriber notifications ──────────────────────────────
+
+def _send_subscriber_notifications(results: list[dict]) -> None:
+    """Send episode notification emails to confirmed subscribers after approve."""
+    from backend import subscriber as sub
+    from backend.subscriber import _excerpt
+
+    seen_emails: set[str] = set()
+    sent = 0
+
+    for ep in results:
+        channel_id = ep.get("channel_id", "")
+        try:
+            subscribers = sub.get_confirmed_subscribers(channel_id)
+        except Exception as e:
+            print(f"  ⚠️ 無法查詢訂閱者（{channel_id}）：{e}")
+            continue
+
+        episode_data = {
+            "channel_name": ep.get("channel_name", ""),
+            "title": ep.get("title", ""),
+            "video_id": ep.get("video_id", ""),
+            "summary_excerpt": _excerpt(ep.get("summary_path")),
+        }
+
+        for s in subscribers:
+            key = f"{s['email']}:{ep['video_id']}"
+            if key in seen_emails:
+                continue
+            seen_emails.add(key)
+            try:
+                sub.send_episode_notification(s["email"], s["unsubscribe_token"], episode_data)
+                sent += 1
+                print(f"  ✉ 通知已寄出 → {s['email']}")
+            except Exception as e:
+                print(f"  ❌ 通知寄送失敗 {s['email']}：{e}")
+
+    if sent:
+        print(f"\n✓ 共寄出 {sent} 封節目通知")
+    else:
+        print("\n（無訂閱者需通知）")
+
+
+# ── Send confirmations command ────────────────────────────
+
+def cmd_send_confirmations() -> None:
+    """Send confirmation emails to new subscribers who haven't been confirmed yet."""
+    from backend import subscriber as sub
+
+    pending = sub.get_pending_confirmation()
+    if not pending:
+        print("無待確認的訂閱者")
+        return
+
+    print(f"找到 {len(pending)} 位待確認訂閱者")
+    for s in pending:
+        try:
+            sub.send_confirmation_email(s["email"], str(s["confirm_token"]))
+            sub.mark_confirmation_sent(str(s["id"]))
+            print(f"  ✉ 確認信已寄出 → {s['email']}")
+        except Exception as e:
+            print(f"  ❌ 確認信寄送失敗 {s['email']}：{e}")
+
+
+# ── Weekly digest command ─────────────────────────────────
+
+def cmd_weekly_digest() -> None:
+    """Send the weekly investment digest to all confirmed weekly_digest subscribers."""
+    from backend import subscriber as sub
+    from backend.subscriber import _excerpt
+    from datetime import timedelta
+
+    conn = _get_db()
+    today = datetime.now()
+    week_ago = today - timedelta(days=7)
+
+    rows = conn.execute(
+        "SELECT video_id, channel_id, channel_name, title, summary_path FROM episodes "
+        "WHERE status='done' AND published_at >= ? ORDER BY published_at DESC",
+        (week_ago.strftime("%Y-%m-%d"),),
+    ).fetchall()
+    conn.close()
+
+    if not rows:
+        print("本週無已發布節目，不寄送週報")
+        return
+
+    episodes = [
+        {
+            "video_id": r["video_id"],
+            "channel_id": r["channel_id"],
+            "channel_name": r["channel_name"] or r["channel_id"],
+            "title": r["title"],
+            "summary_excerpt": _excerpt(r["summary_path"]),
+        }
+        for r in rows
+    ]
+
+    week_start = week_ago.strftime("%m/%d")
+    week_end = today.strftime("%m/%d")
+    week_label = f"{week_start}–{week_end}"
+
+    subscribers = sub.get_weekly_digest_subscribers()
+    if not subscribers:
+        print("無週報訂閱者")
+        return
+
+    print(f"寄送投資週報給 {len(subscribers)} 位訂閱者（{len(episodes)} 集節目）...")
+    sent = 0
+    for s in subscribers:
+        try:
+            sub.send_weekly_digest(s["email"], s["unsubscribe_token"], episodes, week_label)
+            sent += 1
+            print(f"  ✉ 週報已寄出 → {s['email']}")
+        except Exception as e:
+            print(f"  ❌ 週報寄送失敗 {s['email']}：{e}")
+
+    print(f"\n✓ 共寄出 {sent} 封投資週報")
 
 
 # ── Notify Latest command ─────────────────────────────────
@@ -1842,6 +1978,12 @@ def main():
     elif cmd == "refresh-earnings":
         flags = set(args[1:])
         cmd_refresh_earnings(deploy="--deploy" in flags, force="--force" in flags)
+
+    elif cmd == "send-confirmations":
+        cmd_send_confirmations()
+
+    elif cmd == "weekly-digest":
+        cmd_weekly_digest()
 
     else:
         print(f"Unknown command: {cmd}", file=sys.stderr)
