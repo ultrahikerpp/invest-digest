@@ -2502,6 +2502,231 @@
     @media (prefers-reduced-motion: reduce) {
       .episode-card { transition: none; }
     }
+
+    /* ── Subscribe button ── */
+    .subscribe-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--primary-lt);
+      color: var(--primary);
+      border: 1px solid rgba(41, 98, 255, 0.25);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+    .subscribe-btn:hover {
+      background: rgba(41, 98, 255, 0.2);
+      border-color: rgba(41, 98, 255, 0.45);
+    }
+    .subscribe-btn svg { flex-shrink: 0; }
+
+    /* ── Subscribe modal ── */
+    .sub-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--modal-overlay-bg);
+      z-index: 300;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+    }
+    .sub-overlay.open { display: flex; }
+    .sub-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: var(--shadow-lg);
+      animation: slideIn 0.22s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .sub-modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--vibe1), var(--vibe2));
+    }
+    .sub-modal-header {
+      padding: 24px 28px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .sub-modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .sub-modal-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .sub-modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 2px;
+      flex-shrink: 0;
+    }
+    .sub-modal-close:hover { color: var(--text); }
+    .sub-modal-body { padding: 20px 28px 28px; }
+    .sub-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      margin-top: 18px;
+    }
+    .sub-label:first-child { margin-top: 0; }
+    .sub-email-input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .sub-email-input:focus { border-color: var(--primary); }
+    .sub-channels {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sub-channel-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .sub-channel-item:hover { border-color: var(--primary); }
+    .sub-channel-item input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .sub-channel-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      flex: 1;
+    }
+    .sub-channel-badge {
+      font-size: 11px;
+      color: var(--text-dim);
+      background: var(--surface);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .sub-submit-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+    .sub-submit-btn:hover { opacity: 0.88; }
+    .sub-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .sub-message {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+    }
+    .sub-message.success {
+      display: block;
+      background: var(--green-lt);
+      color: var(--green);
+    }
+    .sub-message.error {
+      display: block;
+      background: var(--red-lt);
+      color: var(--red);
+    }
+
+    /* ── Confirm / unsubscribe page ── */
+    .action-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .action-page-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 24px;
+    }
+    .action-page-icon.success { background: var(--green-lt); color: var(--green); }
+    .action-page-icon.loading { background: var(--primary-lt); color: var(--primary); }
+    .action-page-icon.error { background: var(--red-lt); color: var(--red); }
+    .action-page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .action-page-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 360px;
+    }
+    .action-page-link {
+      margin-top: 24px;
+      display: inline-block;
+      padding: 10px 24px;
+      background: var(--primary-lt);
+      color: var(--primary);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .action-page-link:hover { background: rgba(41,98,255,0.2); }
   </style>
 </head>
 
@@ -2529,6 +2754,14 @@
     </div>
     <div class="header-actions">
       <div class="header-right" id="lastUpdated"></div>
+      <button class="subscribe-btn" id="subscribeBtn" aria-label="訂閱通知">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        訂閱通知
+      </button>
       <button class="theme-toggle" id="themeToggle" aria-label="切換主題">
         <!-- Sun icon (shown in dark mode → click to go light) -->
         <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -2644,6 +2877,34 @@
       <div class="modal-footer">
         <a class="btn btn-primary" id="modalYtLink" href="#" target="_blank" rel="noopener"></a>
         <button class="btn btn-ghost" id="modalCloseBtn">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscribe modal -->
+  <div class="sub-overlay" id="subOverlay">
+    <div class="sub-modal" role="dialog" aria-modal="true" aria-labelledby="subModalTitle">
+      <div class="sub-modal-header">
+        <div>
+          <div class="sub-modal-title" id="subModalTitle">訂閱節目通知</div>
+          <div class="sub-modal-sub">新節目上線時自動收到 Email 通知</div>
+        </div>
+        <button class="sub-modal-close" id="subModalClose" aria-label="關閉">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="sub-modal-body">
+        <div class="sub-label">Email 信箱</div>
+        <input class="sub-email-input" type="email" id="subEmail" placeholder="your@email.com" autocomplete="email">
+        <div class="sub-label">訂閱頻道</div>
+        <div class="sub-channels" id="subChannels">
+          <!-- populated by JS from allEpisodes -->
+        </div>
+        <button class="sub-submit-btn" id="subSubmit">訂閱</button>
+        <div class="sub-message" id="subMessage"></div>
       </div>
     </div>
   </div>
@@ -2793,6 +3054,14 @@
       }
       if (hash === '#/earnings') {
         return { type: 'earnings' };
+      }
+      if (hash.startsWith('#/confirm')) {
+        const token = new URLSearchParams(hash.includes('?') ? hash.slice(hash.indexOf('?')) : '').get('token') || '';
+        return { type: 'confirm', token };
+      }
+      if (hash.startsWith('#/unsubscribe')) {
+        const token = new URLSearchParams(hash.includes('?') ? hash.slice(hash.indexOf('?')) : '').get('token') || '';
+        return { type: 'unsubscribe', token };
       }
       return { type: 'all' };
     }
@@ -4704,6 +4973,14 @@
         renderEarningsList();
         return;
       }
+      if (r.type === 'confirm') {
+        renderConfirmPage(r.token);
+        return;
+      }
+      if (r.type === 'unsubscribe') {
+        renderUnsubscribePage(r.token);
+        return;
+      }
 
       if (r.type === 'industry') {
         filtered = _getEpisodesForIndustry(r.name);
@@ -4725,7 +5002,7 @@
 
     (async () => {
       try {
-        await loadData();
+        await Promise.all([loadData(), _loadSubConfig()]);
         route();
       } catch (e) {
         document.getElementById('mainContent').innerHTML = `
@@ -4786,6 +5063,7 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
+        else if (document.getElementById('subOverlay').classList.contains('open')) closeSubModal();
         else closeModal();
       }
       if (document.getElementById('lightbox').classList.contains('open')) {
@@ -4796,6 +5074,228 @@
 
     document.getElementById('mobileMenuBtn').addEventListener('click', openSidebar);
     document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
+
+    // ── Subscription feature ───────────────────────────────────
+
+    let _subConfig = null;
+
+    async function _loadSubConfig() {
+      try {
+        const r = await fetch('data/subscribe_config.json');
+        if (!r.ok) return;
+        _subConfig = await r.json();
+        if (_subConfig.supabase_url && _subConfig.supabase_anon_key) {
+          document.getElementById('subscribeBtn').style.display = 'flex';
+        }
+      } catch (_) { /* not configured */ }
+    }
+
+    function _subHeaders() {
+      return {
+        'apikey': _subConfig.supabase_anon_key,
+        'Authorization': 'Bearer ' + _subConfig.supabase_anon_key,
+        'Content-Type': 'application/json',
+      };
+    }
+
+    function _buildChannelCheckboxes() {
+      const seen = new Set();
+      const channels = [];
+      for (const ep of allEpisodes) {
+        if (!seen.has(ep.channel_id)) {
+          seen.add(ep.channel_id);
+          channels.push({ id: ep.channel_id, name: ep.channel_name, count: 0 });
+        }
+        channels.find(c => c.id === ep.channel_id).count++;
+      }
+
+      const container = document.getElementById('subChannels');
+      container.innerHTML = channels.map(ch => `
+        <label class="sub-channel-item">
+          <input type="checkbox" name="channel" value="${ch.id}" checked>
+          <span class="sub-channel-name">${ch.name || ch.id}</span>
+          <span class="sub-channel-badge">${ch.count} 集</span>
+        </label>
+      `).join('') + `
+        <label class="sub-channel-item">
+          <input type="checkbox" name="channel" value="__weekly__" checked>
+          <span class="sub-channel-name">投資週報</span>
+          <span class="sub-channel-badge">每週摘要</span>
+        </label>
+      `;
+    }
+
+    function openSubModal() {
+      _buildChannelCheckboxes();
+      document.getElementById('subOverlay').classList.add('open');
+      document.getElementById('subEmail').focus();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSubModal() {
+      document.getElementById('subOverlay').classList.remove('open');
+      document.getElementById('subMessage').className = 'sub-message';
+      document.getElementById('subMessage').textContent = '';
+      document.getElementById('subEmail').value = '';
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('subscribeBtn').addEventListener('click', openSubModal);
+    document.getElementById('subModalClose').addEventListener('click', closeSubModal);
+    document.getElementById('subOverlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('subOverlay')) closeSubModal();
+    });
+
+    document.getElementById('subSubmit').addEventListener('click', async () => {
+      const email = document.getElementById('subEmail').value.trim();
+      const msg = document.getElementById('subMessage');
+      const btn = document.getElementById('subSubmit');
+
+      msg.className = 'sub-message';
+      msg.textContent = '';
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msg.className = 'sub-message error';
+        msg.textContent = '請輸入有效的 Email 信箱';
+        return;
+      }
+
+      const checkboxes = document.querySelectorAll('#subChannels input[name="channel"]:checked');
+      const weeklyChecked = [...checkboxes].find(cb => cb.value === '__weekly__');
+      const channels = [...checkboxes]
+        .filter(cb => cb.value !== '__weekly__')
+        .map(cb => cb.value);
+
+      if (channels.length === 0) {
+        msg.className = 'sub-message error';
+        msg.textContent = '請至少選擇一個頻道';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '處理中…';
+
+      try {
+        const resp = await fetch(_subConfig.supabase_url + '/rest/v1/subscribers', {
+          method: 'POST',
+          headers: { ..._subHeaders(), 'Prefer': 'return=minimal' },
+          body: JSON.stringify({
+            email,
+            channels,
+            weekly_digest: !!weeklyChecked,
+          }),
+        });
+
+        if (resp.status === 201 || resp.status === 200) {
+          msg.className = 'sub-message success';
+          msg.textContent = '訂閱成功！請至信箱確認訂閱連結 ✓';
+          btn.textContent = '已訂閱';
+        } else if (resp.status === 409) {
+          msg.className = 'sub-message error';
+          msg.textContent = '此 Email 已訂閱，請確認信箱中的確認信';
+          btn.disabled = false;
+          btn.textContent = '訂閱';
+        } else {
+          const err = await resp.text();
+          throw new Error(err);
+        }
+      } catch (e) {
+        msg.className = 'sub-message error';
+        msg.textContent = '訂閱失敗，請稍後再試';
+        btn.disabled = false;
+        btn.textContent = '訂閱';
+      }
+    });
+
+    // ── Confirm / Unsubscribe pages ────────────────────────────
+
+    async function renderConfirmPage(token) {
+      const mc = document.getElementById('mainContent');
+      mc.innerHTML = `
+        <div class="action-page">
+          <div class="action-page-icon loading">
+            <div class="spinner"></div>
+          </div>
+          <div class="action-page-title">確認訂閱中…</div>
+        </div>`;
+
+      if (!_subConfig) {
+        mc.innerHTML = `<div class="action-page">
+          <div class="action-page-icon error">✗</div>
+          <div class="action-page-title">設定錯誤</div>
+          <div class="action-page-text">訂閱功能尚未設定</div>
+        </div>`;
+        return;
+      }
+
+      try {
+        const resp = await fetch(_subConfig.supabase_url + '/rest/v1/rpc/confirm_subscription', {
+          method: 'POST',
+          headers: _subHeaders(),
+          body: JSON.stringify({ token }),
+        });
+        if (!resp.ok) throw new Error(await resp.text());
+        mc.innerHTML = `
+          <div class="action-page">
+            <div class="action-page-icon success">✓</div>
+            <div class="action-page-title">訂閱確認成功！</div>
+            <div class="action-page-text">您已成功訂閱投資文摘，新節目上線時將收到 Email 通知。</div>
+            <a class="action-page-link" href="#/">回首頁</a>
+          </div>`;
+      } catch (_) {
+        mc.innerHTML = `
+          <div class="action-page">
+            <div class="action-page-icon error">✗</div>
+            <div class="action-page-title">確認失敗</div>
+            <div class="action-page-text">連結無效或已失效，請重新訂閱。</div>
+            <a class="action-page-link" href="#/">回首頁</a>
+          </div>`;
+      }
+    }
+
+    async function renderUnsubscribePage(token) {
+      const mc = document.getElementById('mainContent');
+      mc.innerHTML = `
+        <div class="action-page">
+          <div class="action-page-icon loading">
+            <div class="spinner"></div>
+          </div>
+          <div class="action-page-title">退訂中…</div>
+        </div>`;
+
+      if (!_subConfig) {
+        mc.innerHTML = `<div class="action-page">
+          <div class="action-page-icon error">✗</div>
+          <div class="action-page-title">設定錯誤</div>
+        </div>`;
+        return;
+      }
+
+      try {
+        const resp = await fetch(_subConfig.supabase_url + '/rest/v1/rpc/unsubscribe_by_token', {
+          method: 'POST',
+          headers: _subHeaders(),
+          body: JSON.stringify({ token }),
+        });
+        if (!resp.ok) throw new Error(await resp.text());
+        mc.innerHTML = `
+          <div class="action-page">
+            <div class="action-page-icon success">✓</div>
+            <div class="action-page-title">已成功退訂</div>
+            <div class="action-page-text">您已退訂投資文摘，將不再收到通知信。<br>歡迎隨時重新訂閱。</div>
+            <a class="action-page-link" href="#/">回首頁</a>
+          </div>`;
+      } catch (_) {
+        mc.innerHTML = `
+          <div class="action-page">
+            <div class="action-page-icon error">✗</div>
+            <div class="action-page-title">退訂失敗</div>
+            <div class="action-page-text">連結無效，請聯繫管理員。</div>
+            <a class="action-page-link" href="#/">回首頁</a>
+          </div>`;
+      }
+    }
+
 
 
     // ── Search input (B1) ──────────────────────────────────────
