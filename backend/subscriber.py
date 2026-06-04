@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timezone
+from html import escape
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
@@ -172,10 +173,10 @@ def send_episode_notification(email: str, unsubscribe_token: str, episode: dict)
     from backend.worker import send_html_email
     site = _site_base()
     unsub_url = f"{site}/#/unsubscribe?token={unsubscribe_token}"
-    channel_name = episode.get("channel_name", "")
-    title = episode.get("title", "")
+    channel_name = escape(episode.get("channel_name", ""))
+    title = escape(episode.get("title", ""))
     video_id = episode.get("video_id", "")
-    excerpt = episode.get("summary_excerpt", "")
+    excerpt = escape(episode.get("summary_excerpt", ""))
     source_type = episode.get("source_type", "youtube")
 
     if source_type == "newsletter":
@@ -239,16 +240,16 @@ def send_weekly_digest(email: str, unsubscribe_token: str, episodes: list[dict],
         episodes_html += (
             f'<div style="margin-bottom:28px;">'
             f'<div style="font-size:12px;font-weight:600;color:#5C9EFF;margin-bottom:10px;'
-            f'text-transform:uppercase;letter-spacing:0.06em;">{channel_name}</div>'
+            f'text-transform:uppercase;letter-spacing:0.06em;">{escape(channel_name)}</div>'
         )
         for ep in eps:
             episodes_html += (
                 f'<div style="margin-bottom:14px;padding:16px;background:#131722;'
                 f'border-radius:8px;border-left:3px solid #2962FF;">'
                 f'<div style="font-size:15px;font-weight:600;color:#D1D4DC;margin-bottom:8px;">'
-                f'{ep.get("title", "")}</div>'
+                f'{escape(ep.get("title", ""))}</div>'
                 f'<div style="font-size:13px;color:#9598A1;line-height:1.7;">'
-                f'{ep.get("summary_excerpt", "")}</div>'
+                f'{escape(ep.get("summary_excerpt", ""))}</div>'
                 f'</div>'
             )
         episodes_html += "</div>"
