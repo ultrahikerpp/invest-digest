@@ -117,7 +117,8 @@ def _excerpt(summary_path) -> str:
     if content.startswith("---"):
         end = content.find("---", 3)
         content = content[end + 3:].lstrip("\n") if end != -1 else content
-    # Strip markdown: remove headings, links, bold, etc.
+    # Strip markdown: remove headings, emoji-link lines (🔗), links, bold, etc.
+    content = re.sub(r'^🔗.+$', '', content, flags=re.MULTILINE)
     content = re.sub(r'^#{1,6}\s+', '', content, flags=re.MULTILINE)
     content = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', content)
     content = re.sub(r'[*_`]', '', content)
@@ -205,7 +206,7 @@ def send_episode_notification(email: str, unsubscribe_token: str, episode: dict)
     <p style="margin:0 0 24px;font-size:14px;color:#9598A1;line-height:1.8;">{excerpt}</p>
     <div style="display:flex;gap:12px;justify-content:center;margin:24px 0;
                 text-align:center;flex-wrap:wrap;">
-      <a href="{site}/#/" style="display:inline-block;background:#2962FF;color:#fff;
+      <a href="{site}/#/episode/{video_id}" style="display:inline-block;background:#2962FF;color:#fff;
          font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;
          text-decoration:none;margin:4px;">閱讀完整摘要</a>
       {watch_btn}

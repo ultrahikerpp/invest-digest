@@ -3055,6 +3055,9 @@
       if (hash === '#/earnings') {
         return { type: 'earnings' };
       }
+      if (hash.startsWith('#/episode/')) {
+        return { type: 'episode', videoId: decodeURIComponent(hash.slice(10)) };
+      }
       if (hash.startsWith('#/confirm')) {
         const token = new URLSearchParams(hash.includes('?') ? hash.slice(hash.indexOf('?')) : '').get('token') || '';
         return { type: 'confirm', token };
@@ -4971,6 +4974,28 @@
       if (r.type === 'earnings') {
         renderSidebar(allEpisodes, null);
         renderEarningsList();
+        return;
+      }
+      if (r.type === 'episode') {
+        const ep = allEpisodes.find(e => e.video_id === r.videoId);
+        if (ep) {
+          renderSidebar(allEpisodes, null);
+          renderEpisodes(allEpisodes, '全部節目');
+          setTimeout(() => openModal({
+            videoId: ep.video_id,
+            channelName: ep.channel_name,
+            title: ep.title,
+            date: ep.published_at,
+            summaryUrl: ep.summary_url,
+            cards: ep.cards || [],
+            hashtags: ep.hashtags || '',
+            sourceType: ep.source_type || 'youtube',
+            sourceUrl: ep.source_url || '',
+          }), 50);
+        } else {
+          renderSidebar(allEpisodes, null);
+          renderEpisodes(allEpisodes, '全部節目');
+        }
         return;
       }
       if (r.type === 'confirm') {
