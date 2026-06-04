@@ -978,6 +978,7 @@ def cmd_approve():
             "hashtags": hashtags,
             "video_id": video_id,
             "summary_path": str(summary_path) if summary_path else None,
+            "source_type": meta.get("source_type", "youtube"),
             "fb_post_path": fb_post_path,
         })
 
@@ -1046,6 +1047,7 @@ def _send_subscriber_notifications(results: list[dict]) -> None:
             "channel_name": ep.get("channel_name", ""),
             "title": ep.get("title", ""),
             "video_id": ep.get("video_id", ""),
+            "source_type": ep.get("source_type", "youtube"),
             "summary_excerpt": _excerpt(ep.get("summary_path")),
         }
 
@@ -1101,7 +1103,7 @@ def cmd_weekly_digest() -> None:
     week_ago = today - timedelta(days=7)
 
     rows = conn.execute(
-        "SELECT video_id, channel_id, channel_name, title, summary_path FROM episodes "
+        "SELECT video_id, channel_id, title, summary_path FROM episodes "
         "WHERE status='done' AND published_at >= ? ORDER BY published_at DESC",
         (week_ago.strftime("%Y-%m-%d"),),
     ).fetchall()
@@ -1111,16 +1113,16 @@ def cmd_weekly_digest() -> None:
         print("本週無已發布節目，不寄送週報")
         return
 
-    episodes = [
-        {
+    episodes = []
+    for r in rows:
+        meta = _parse_summary_meta(Path(r["summary_path"])) if r["summary_path"] else {}
+        episodes.append({
             "video_id": r["video_id"],
             "channel_id": r["channel_id"],
-            "channel_name": r["channel_name"] or r["channel_id"],
+            "channel_name": meta.get("channel_name") or r["channel_id"],
             "title": r["title"],
             "summary_excerpt": _excerpt(r["summary_path"]),
-        }
-        for r in rows
-    ]
+        })
 
     week_start = week_ago.strftime("%m/%d")
     week_end = today.strftime("%m/%d")
