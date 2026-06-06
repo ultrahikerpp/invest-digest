@@ -19,16 +19,16 @@
     {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "count": 86,
-      "bullish": 64,
+      "count": 87,
+      "bullish": 65,
       "bearish": 0,
       "neutral": 22
     },
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 80,
-      "bullish": 68,
+      "count": 81,
+      "bullish": 69,
       "bearish": 0,
       "neutral": 12
     },
@@ -43,10 +43,10 @@
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 60,
+      "count": 61,
       "bullish": 17,
       "bearish": 4,
-      "neutral": 39
+      "neutral": 40
     },
     {
       "name": "Google",
@@ -59,34 +59,42 @@
     {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 52,
+      "count": 53,
       "bullish": 19,
       "bearish": 2,
-      "neutral": 31
+      "neutral": 32
     },
     {
       "name": "微軟",
       "ticker": "MSFT",
-      "count": 46,
-      "bullish": 20,
+      "count": 47,
+      "bullish": 21,
       "bearish": 1,
       "neutral": 25
     },
     {
       "name": "OpenAI",
       "ticker": null,
-      "count": 46,
+      "count": 47,
       "bullish": 14,
       "bearish": 2,
-      "neutral": 30
+      "neutral": 31
     },
     {
       "name": "Intel",
       "ticker": "INTC",
-      "count": 43,
+      "count": 44,
       "bullish": 11,
       "bearish": 4,
-      "neutral": 28
+      "neutral": 29
+    },
+    {
+      "name": "Anthropic",
+      "ticker": null,
+      "count": 40,
+      "bullish": 20,
+      "bearish": 1,
+      "neutral": 19
     },
     {
       "name": "羅素2000",
@@ -97,12 +105,12 @@
       "neutral": 21
     },
     {
-      "name": "Anthropic",
-      "ticker": null,
+      "name": "Amazon",
+      "ticker": "AMZN",
       "count": 39,
-      "bullish": 20,
-      "bearish": 1,
-      "neutral": 18
+      "bullish": 12,
+      "bearish": 0,
+      "neutral": 27
     },
     {
       "name": "美光",
@@ -113,18 +121,10 @@
       "neutral": 15
     },
     {
-      "name": "Amazon",
-      "ticker": "AMZN",
-      "count": 38,
-      "bullish": 12,
-      "bearish": 0,
-      "neutral": 26
-    },
-    {
       "name": "三星",
       "ticker": "005930",
-      "count": 37,
-      "bullish": 9,
+      "count": 38,
+      "bullish": 10,
       "bearish": 4,
       "neutral": 24
     },
@@ -241,28 +241,28 @@
       "neutral": 17
     },
     {
+      "name": "Apple",
+      "ticker": "AAPL",
+      "count": 20,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 16
+    },
+    {
+      "name": "Alphabet",
+      "ticker": "GOOGL",
+      "count": 20,
+      "bullish": 8,
+      "bearish": 1,
+      "neutral": 11
+    },
+    {
       "name": "Marvell",
       "ticker": "MRVL",
       "count": 19,
       "bullish": 13,
       "bearish": 1,
       "neutral": 5
-    },
-    {
-      "name": "Apple",
-      "ticker": "AAPL",
-      "count": 19,
-      "bullish": 4,
-      "bearish": 0,
-      "neutral": 15
-    },
-    {
-      "name": "Alphabet",
-      "ticker": "GOOGL",
-      "count": 19,
-      "bullish": 7,
-      "bearish": 1,
-      "neutral": 11
     },
     {
       "name": "那斯達克",
@@ -681,6 +681,22 @@
       "neutral": 4
     },
     {
+      "name": "SK Hynix",
+      "ticker": "000660",
+      "count": 5,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "Micron",
+      "ticker": "MU",
+      "count": 5,
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "GE Vernova",
       "ticker": "GEV",
       "count": 5,
@@ -817,24 +833,8 @@
       "neutral": 2
     },
     {
-      "name": "SK Hynix",
-      "ticker": "000660",
-      "count": 4,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "Palo Alto Networks",
       "ticker": "PANW",
-      "count": 4,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
-      "name": "Micron",
-      "ticker": "MU",
       "count": 4,
       "bullish": 2,
       "bearish": 0,
@@ -862,6 +862,14 @@
       "count": 4,
       "bullish": 1,
       "bearish": 1,
+      "neutral": 2
+    },
+    {
+      "name": "Dell",
+      "ticker": "DELL",
+      "count": 4,
+      "bullish": 2,
+      "bearish": 0,
       "neutral": 2
     },
     {
@@ -1097,6 +1105,14 @@
       "neutral": 2
     },
     {
+      "name": "Qualcomm",
+      "ticker": "QCOM",
+      "count": 3,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "Nokia",
       "ticker": "NOK",
       "count": 3,
@@ -1145,20 +1161,20 @@
       "neutral": 0
     },
     {
-      "name": "Dell",
-      "ticker": "DELL",
-      "count": 3,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "Ciena",
       "ticker": "CIEN",
       "count": 3,
       "bullish": 3,
       "bearish": 0,
       "neutral": 0
+    },
+    {
+      "name": "Berkshire Hathaway",
+      "ticker": "BRK.B",
+      "count": 3,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 2
     },
     {
       "name": "Arista Networks",
@@ -1633,8 +1649,8 @@
       "neutral": 0
     },
     {
-      "name": "Qualcomm",
-      "ticker": "QCOM",
+      "name": "Perplexity",
+      "ticker": null,
       "count": 2,
       "bullish": 1,
       "bearish": 0,
@@ -1838,14 +1854,6 @@
       "count": 2,
       "bullish": 0,
       "bearish": 1,
-      "neutral": 1
-    },
-    {
-      "name": "Berkshire Hathaway",
-      "ticker": "BRK.B",
-      "count": 2,
-      "bullish": 1,
-      "bearish": 0,
       "neutral": 1
     },
     {
@@ -3929,6 +3937,14 @@
       "neutral": 1
     },
     {
+      "name": "SambaNova",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "SQQQ",
       "ticker": "SQQQ",
       "count": 1,
@@ -4081,20 +4097,20 @@
       "neutral": 0
     },
     {
-      "name": "Perplexity AI",
-      "ticker": null,
+      "name": "Petrobras",
+      "ticker": "PBR",
       "count": 1,
       "bullish": 0,
       "bearish": 0,
       "neutral": 1
     },
     {
-      "name": "Perplexity",
+      "name": "Perplexity AI",
       "ticker": null,
       "count": 1,
-      "bullish": 1,
+      "bullish": 0,
       "bearish": 0,
-      "neutral": 0
+      "neutral": 1
     },
     {
       "name": "Panasonic SPCAP",
@@ -5188,11 +5204,11 @@
   "industries": [
     {
       "name": "AI",
-      "count": 142
+      "count": 143
     },
     {
       "name": "半導體",
-      "count": 120
+      "count": 121
     },
     {
       "name": "美股",
@@ -5208,7 +5224,7 @@
     },
     {
       "name": "科技",
-      "count": 40
+      "count": 41
     },
     {
       "name": "能源",
@@ -8343,6 +8359,35 @@
         "SK Hynix"
       ]
     },
+    "kp-newsletter-45": {
+      "industries": [
+        "AI",
+        "半導體",
+        "科技"
+      ],
+      "mentions": [
+        "NVIDIA",
+        "微軟",
+        "Intel",
+        "Alphabet",
+        "Apple",
+        "AMD",
+        "三星",
+        "SK Hynix",
+        "Micron",
+        "台積電",
+        "Berkshire Hathaway",
+        "Qualcomm",
+        "Meta",
+        "Amazon",
+        "OpenAI",
+        "Anthropic",
+        "SambaNova",
+        "Perplexity",
+        "Dell",
+        "Petrobras"
+      ]
+    },
     "leh1Zp5LljI": {
       "industries": [
         "能源",
@@ -9528,5 +9573,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-06-06T01:01:11"
+  "generated_at": "2026-06-06T07:35:39"
 }
