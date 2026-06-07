@@ -52,14 +52,13 @@ CARDS_DIR = BASE_DIR / "data" / "cards"
 VIDEOS_DIR = BASE_DIR / "data" / "videos"
 CARDS_SHORTS_DIR = BASE_DIR / "data" / "cards_shorts"
 VIDEOS_SHORTS_DIR = BASE_DIR / "data" / "videos_shorts"
-FB_POSTS_DIR = BASE_DIR / "data" / "fb_posts"
 WIKI_BASE_DIR = Path("/Users/miroppp/Side Projects/LLM Wiki/raw/invest/podcast_summaries")
 
 # ── Setup ─────────────────────────────────────────────────
 
 def _ensure_dirs():
     for d in [SUMMARIES_DIR, TRANSCRIPTS_DIR, CARDS_DIR, VIDEOS_DIR,
-              CARDS_SHORTS_DIR, VIDEOS_SHORTS_DIR, FB_POSTS_DIR]:
+              CARDS_SHORTS_DIR, VIDEOS_SHORTS_DIR]:
         d.mkdir(parents=True, exist_ok=True)
 
 
@@ -898,7 +897,7 @@ def cmd_reprocess():
 # ── Approve command ────────────────────────────────────────
 
 def cmd_approve():
-    """Process all pending_review episodes: generate hashtags + Shorts cards + Facebook post, then email summary and deploy."""
+    """Process all pending_review episodes: generate hashtags + Shorts cards, then email summary and deploy."""
     _ensure_dirs()
     worker = _import_worker()
     conn = _get_db()
@@ -948,18 +947,6 @@ def cmd_approve():
         _update_frontmatter_hashtags(summary_path, hashtags)
         print(f"  ✓ Hashtags: {hashtags}")
 
-        # Generate Facebook post text
-        print(f"  產生 Facebook 貼文...")
-        try:
-            from backend.fb_post_generator import generate_facebook_post
-            fb_post_text = generate_facebook_post(summary_path)
-            fb_post_path = FB_POSTS_DIR / f"{video_id}.txt"
-            fb_post_path.write_text(fb_post_text, encoding="utf-8")
-            print(f"  ✓ Facebook 貼文：{fb_post_path}")
-        except Exception as e:
-            print(f"  ⚠️ Facebook 貼文產生失敗（不影響主流程）：{e}")
-            fb_post_path = None
-
         # Generate Shorts cards (1080x1920)
         print(f"  產生 Shorts 字卡...")
         try:
@@ -979,7 +966,6 @@ def cmd_approve():
             "video_id": video_id,
             "summary_path": str(summary_path) if summary_path else None,
             "source_type": meta.get("source_type", "youtube"),
-            "fb_post_path": fb_post_path,
         })
 
     conn.close()
@@ -994,8 +980,6 @@ def cmd_approve():
     lines = [f"共 {n} 集摘要已完成審閱\n"]
     for r in results:
         lines.append(f"{r['channel_name']}｜{r['title']}｜{r['hashtags']}")
-        if r.get("fb_post_path"):
-            lines.append(f"  Facebook 貼文：{r['fb_post_path']}")
         lines.append("")
     body = "\n".join(lines)
 
