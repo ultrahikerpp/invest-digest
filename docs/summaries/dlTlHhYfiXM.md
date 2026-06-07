@@ -3,7 +3,7 @@ title: 我的美股研究秘密武器：一鍵生成法說會摘要、預判主�
 video_id: dlTlHhYfiXM
 channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
-published: 2 個月前
+published: 2026-04-08
 processed: 2026-04-08
 hashtags: #富邦AIPRO #美股選股 #AI投資工具 #法說會分析 #籌碼追蹤 #JC趨勢財經觀點
 ---

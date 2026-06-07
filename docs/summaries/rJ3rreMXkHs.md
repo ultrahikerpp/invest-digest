@@ -3,7 +3,7 @@ title: 2026/04/03 (五）美股為什麼又Ｖ轉了？終於要講微軟....為
 video_id: rJ3rreMXkHs
 channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
-published: 
+published: 2026-04-03
 processed: 2026-04-03
 hashtags: #美股 #微軟 #特斯拉 #AI算力 #霍爾木茲海峽 #
 ---

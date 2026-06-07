@@ -3,7 +3,7 @@ title: 【市場觀察】2026 台灣人如何迎接 少子化海嘯?
 video_id: kFvdul25GQI
 channel_id: UC0lbAQVpenvfA2QqzsRtL_g
 channel_name: 游庭皓的財經皓角
-published: 1 個月前
+published: 2026-04-08
 processed: 2026-04-08
 hashtags: #少子化 #缺工 #台商出海 #人口結構 #房市分化 #游庭皓的財經皓角
 ---
