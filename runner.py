@@ -1414,10 +1414,14 @@ def cmd_renormalize():
 # ── Fix Dates command ─────────────────────────────────────
 
 def cmd_fix_dates():
-    """Fix episodes where published_at is a relative string (e.g. '1 天前') by using created_at as fallback."""
+    """Fix episodes where published_at is a relative string (e.g. '1 天前') by using created_at as fallback.
+
+    Also propagates the corrected date into each summary's frontmatter `published`
+    field, since cmd_weekly() reads dates from the .md files directly (not the DB).
+    """
     import re as _re
     conn = _get_db()
-    rows = conn.execute("SELECT video_id, published_at, created_at FROM episodes").fetchall()
+    rows = conn.execute("SELECT video_id, published_at, created_at, summary_path FROM episodes").fetchall()
 
     fixed = 0
     for row in rows:
@@ -1437,6 +1441,11 @@ def cmd_fix_dates():
         )
         fixed += 1
         print(f"  Fixed {row['video_id']}: '{pub}' → '{fallback}'")
+
+        summary_path = Path(row["summary_path"]) if row["summary_path"] else None
+        if summary_path and summary_path.exists():
+            _update_frontmatter_field(summary_path, "published", fallback)
+            print(f"    ↳ frontmatter published 同步更新：{summary_path.name}")
 
     conn.commit()
     conn.close()
@@ -1576,7 +1585,6 @@ def cmd_weekly():
     WEEKLY_DIR.mkdir(parents=True, exist_ok=True)
 
     cutoff = datetime.now() - timedelta(days=7)
-    cutoff_str = cutoff.strftime("%Y-%m-%d")
 
     # Collect summaries published in the past 7 days
     md_files = sorted(SUMMARIES_DIR.glob("*/*.md"))
@@ -1600,7 +1608,11 @@ def cmd_weekly():
             body = content
 
         published = meta.get("published", "")
-        if not published or published < cutoff_str:
+        try:
+            pub_date = datetime.strptime(published[:10], "%Y-%m-%d")
+        except ValueError:
+            continue  # skip episodes with unparseable published dates (e.g. relative time strings)
+        if pub_date < cutoff:
             continue
 
         title = meta.get("title", md_path.stem)
