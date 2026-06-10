@@ -265,8 +265,10 @@ def _build_mentions_json(site_data_dir: Path, generated_at: str) -> None:
 
 
 def _enrich_us_fundamentals(entities: list[dict]) -> None:
-    """Fetch Yahoo Finance fundamentals for US and Taiwan stock tickers (in-place)."""
+    """Fetch Yahoo Finance fundamentals for US, Taiwan, Korea, and HK stock tickers (in-place)."""
     import time
+
+    from backend.earnings_fetcher import is_index
 
     try:
         import yfinance as yf
@@ -274,12 +276,29 @@ def _enrich_us_fundamentals(entities: list[dict]) -> None:
         print("  (skipping fundamentals — yfinance not installed)")
         return
 
-    eligible = [e for e in entities if e.get("ticker")]
+    # Indices (e.g. TWII) have no PE/market cap — skip rather than 404
+    eligible = [e for e in entities if e.get("ticker") and not is_index(e["ticker"])]
     if not eligible:
         return
 
-    def _is_tw(ticker: str) -> bool:
-        return bool(re.fullmatch(r"\d{4,5}", ticker))
+    # Bare 4-digit tickers that are actually Japanese (Tokyo), not Taiwan —
+    # without this, 6762 resolves to an unrelated TPEx stock (6762.TWO)
+    _SYMBOL_OVERRIDES = {
+        "6981": "6981.T",   # Murata (Japan, Tokyo)
+        "6762": "6762.T",   # TDK (Japan, Tokyo)
+    }
+
+    def _yf_symbols(ticker: str) -> list[str]:
+        """Map a raw ticker to candidate Yahoo Finance symbols to try, in order."""
+        if ticker in _SYMBOL_OVERRIDES:
+            return [_SYMBOL_OVERRIDES[ticker]]
+        if re.fullmatch(r"\d{4,5}", ticker):   # Taiwan (TWSE/TPEx)
+            return [f"{ticker}.TW", f"{ticker}.TWO"]
+        if re.fullmatch(r"\d{6}", ticker):     # Korea (KOSPI/KOSDAQ)
+            return [f"{ticker}.KS", f"{ticker}.KQ"]
+        if re.fullmatch(r"\d{1,3}", ticker):   # Hong Kong
+            return [f"{int(ticker):04d}.HK"]
+        return [ticker]
 
     # Deduplicate by ticker
     seen: dict[str, dict] = {}
@@ -290,8 +309,7 @@ def _enrich_us_fundamentals(entities: list[dict]) -> None:
 
     info_map: dict[str, dict] = {}
     for ticker, _e in seen.items():
-        # For Taiwan tickers, try .TW then .TWO
-        yf_symbols = ([f"{ticker}.TW", f"{ticker}.TWO"] if _is_tw(ticker) else [ticker])
+        yf_symbols = _yf_symbols(ticker)
         info = {}
         for sym in yf_symbols:
             try:
