@@ -53,6 +53,7 @@ VIDEOS_DIR = BASE_DIR / "data" / "videos"
 CARDS_SHORTS_DIR = BASE_DIR / "data" / "cards_shorts"
 VIDEOS_SHORTS_DIR = BASE_DIR / "data" / "videos_shorts"
 WIKI_BASE_DIR = Path("/Users/miroppp/Side Projects/LLM Wiki/raw/invest/podcast_summaries")
+RESEARCH_DATA_BASE_DIR = Path("/Users/miroppp/Side Projects/ultra-invest-agent/research_data/podcast_summaries")
 
 # ── Setup ─────────────────────────────────────────────────
 
@@ -93,9 +94,9 @@ def _get_channel_name(channel_id: str, channels: list[dict]) -> str:
     return channel_id
 
 
-def _sync_to_wiki(summary_path: Path, channel_id: str):
-    """Copy a summary markdown file to the external LLM Wiki based on wiki_dir in channels.json."""
-    if not WIKI_BASE_DIR.exists():
+def _copy_summary_by_wiki_dir(summary_path: Path, channel_id: str, base_dir: Path, label: str):
+    """Copy a summary markdown file into base_dir/<wiki_dir>/ based on wiki_dir in channels.json."""
+    if not base_dir.exists():
         return
 
     # Load all sources (channels + newsletters)
@@ -109,13 +110,23 @@ def _sync_to_wiki(summary_path: Path, channel_id: str):
     if not wiki_dir:
         return
 
-    dest_dir = WIKI_BASE_DIR / wiki_dir
+    dest_dir = base_dir / wiki_dir
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest_path = dest_dir / summary_path.name
-    
+
     import shutil
     shutil.copy2(summary_path, dest_path)
-    print(f"  ✓ 已同步至 Wiki：{dest_path}")
+    print(f"  ✓ 已同步至 {label}：{dest_path}")
+
+
+def _sync_to_wiki(summary_path: Path, channel_id: str):
+    """Copy a summary markdown file to the external LLM Wiki based on wiki_dir in channels.json."""
+    _copy_summary_by_wiki_dir(summary_path, channel_id, WIKI_BASE_DIR, "Wiki")
+
+
+def _sync_to_research_data(summary_path: Path, channel_id: str):
+    """Copy a summary markdown file to the ultra-invest-agent research_data based on wiki_dir in channels.json."""
+    _copy_summary_by_wiki_dir(summary_path, channel_id, RESEARCH_DATA_BASE_DIR, "ultra-invest-agent research_data")
 
 
 # ── Database ──────────────────────────────────────────────
@@ -956,6 +967,7 @@ def cmd_approve():
             continue
 
         _sync_to_wiki(summary_path, channel_id)
+        _sync_to_research_data(summary_path, channel_id)
         _mark_done(conn, video_id)
         print(f"  ✓ 完成")
         results.append({
