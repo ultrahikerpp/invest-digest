@@ -316,7 +316,7 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 52
+        "count": 53
       },
       {
         "name": "費城半導體指數",
@@ -1105,7 +1105,7 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 52
+        "count": 53
       },
       {
         "name": "道瓊指數",
@@ -1199,6 +1199,11 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
+        "count": 5
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 4
       },
       {
@@ -1207,13 +1212,13 @@
         "count": 3
       },
       {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "name": "英飛凌",
+        "ticker": "IFX",
         "count": 3
       },
       {
-        "name": "台積電",
-        "ticker": "TSM",
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
         "count": 3
       },
       {
@@ -1239,11 +1244,6 @@
       {
         "name": "Marvell",
         "ticker": "MRVL",
-        "count": 2
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
         "count": 2
       }
     ],
@@ -1415,14 +1415,14 @@
         "count": 31
       },
       {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 28
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 27
+        "name": "道瓊指數",
+        "ticker": "DJIA",
+        "count": 28
       },
       {
         "name": "微軟",
@@ -1608,14 +1608,14 @@
     ],
     "Vertiv": [
       {
-        "name": "S&P 500",
-        "ticker": "SPX",
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 8
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 7
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 8
       },
       {
         "name": "費城半導體指數",
@@ -1628,13 +1628,13 @@
         "count": 7
       },
       {
-        "name": "博通",
-        "ticker": "AVGO",
-        "count": 5
-      },
-      {
         "name": "特斯拉",
         "ticker": "TSLA",
+        "count": 6
+      },
+      {
+        "name": "博通",
+        "ticker": "AVGO",
         "count": 5
       },
       {
@@ -1726,11 +1726,26 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 2
+        "count": 3
       },
       {
         "name": "台達電",
         "ticker": "2308",
+        "count": 3
+      },
+      {
+        "name": "Vertiv",
+        "ticker": "VRT",
+        "count": 2
+      },
+      {
+        "name": "特斯拉",
+        "ticker": "TSLA",
+        "count": 2
+      },
+      {
+        "name": "意法半導體",
+        "ticker": "STM",
         "count": 2
       }
     ],
@@ -3975,14 +3990,19 @@
     ],
     "超微": [
       {
-        "name": "美光",
-        "ticker": "MU",
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 4
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 3
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 4
+      },
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 4
       },
       {
         "name": "SK海力士",
@@ -3992,11 +4012,6 @@
       {
         "name": "三星",
         "ticker": "005930",
-        "count": 3
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
         "count": 3
       },
       {
@@ -4402,7 +4417,7 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 14
+        "count": 15
       },
       {
         "name": "費城半導體指數",
@@ -4427,7 +4442,7 @@
       {
         "name": "台積電",
         "ticker": "TSM",
-        "count": 10
+        "count": 11
       },
       {
         "name": "美光",
@@ -8937,6 +8952,45 @@
         "count": 2
       }
     ],
+    "意法半導體": [
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 2
+      },
+      {
+        "name": "台達電",
+        "ticker": "2308",
+        "count": 2
+      },
+      {
+        "name": "英飛凌",
+        "ticker": "IFX",
+        "count": 2
+      }
+    ],
+    "安森美": [
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 3
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 2
+      },
+      {
+        "name": "高通",
+        "ticker": "QCOM",
+        "count": 2
+      },
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 2
+      }
+    ],
     "威剛": [
       {
         "name": "Google",
@@ -9402,18 +9456,6 @@
         "count": 2
       }
     ],
-    "安森美": [
-      {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 2
-      },
-      {
-        "name": "美光",
-        "ticker": "MU",
-        "count": 2
-      }
-    ],
     "德州儀器": [
       {
         "name": "台積電",
@@ -9550,5 +9592,5 @@
       }
     ]
   },
-  "generated_at": "2026-06-17T15:28:04"
+  "generated_at": "2026-06-17T15:34:11"
 }
