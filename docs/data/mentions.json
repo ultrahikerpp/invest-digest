@@ -9,20 +9,20 @@
       "neutral": 31
     },
     {
+      "name": "S&P 500",
+      "ticker": "SPX",
+      "count": 104,
+      "bullish": 41,
+      "bearish": 14,
+      "neutral": 49
+    },
+    {
       "name": "NVIDIA",
       "ticker": "NVDA",
       "count": 104,
       "bullish": 78,
       "bearish": 0,
       "neutral": 26
-    },
-    {
-      "name": "S&P 500",
-      "ticker": "SPX",
-      "count": 103,
-      "bullish": 41,
-      "bearish": 14,
-      "neutral": 48
     },
     {
       "name": "台積電",
@@ -73,20 +73,20 @@
       "neutral": 41
     },
     {
+      "name": "美光",
+      "ticker": "MU",
+      "count": 54,
+      "bullish": 32,
+      "bearish": 2,
+      "neutral": 20
+    },
+    {
       "name": "微軟",
       "ticker": "MSFT",
       "count": 54,
       "bullish": 23,
       "bearish": 2,
       "neutral": 29
-    },
-    {
-      "name": "美光",
-      "ticker": "MU",
-      "count": 53,
-      "bullish": 31,
-      "bearish": 2,
-      "neutral": 20
     },
     {
       "name": "Intel",
@@ -155,9 +155,9 @@
     {
       "name": "蘋果",
       "ticker": "AAPL",
-      "count": 33,
+      "count": 34,
       "bullish": 8,
-      "bearish": 2,
+      "bearish": 3,
       "neutral": 23
     },
     {
@@ -209,19 +209,19 @@
       "neutral": 10
     },
     {
+      "name": "比特幣",
+      "ticker": "BTC",
+      "count": 27,
+      "bullish": 2,
+      "bearish": 13,
+      "neutral": 12
+    },
+    {
       "name": "納斯達克指數",
       "ticker": "NDX",
       "count": 26,
       "bullish": 7,
       "bearish": 7,
-      "neutral": 12
-    },
-    {
-      "name": "比特幣",
-      "ticker": "BTC",
-      "count": 26,
-      "bullish": 2,
-      "bearish": 12,
       "neutral": 12
     },
     {
@@ -281,12 +281,28 @@
       "neutral": 16
     },
     {
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "count": 19,
+      "bullish": 7,
+      "bearish": 4,
+      "neutral": 8
+    },
+    {
       "name": "Coherent",
       "ticker": "COHR",
       "count": 19,
       "bullish": 16,
       "bearish": 1,
       "neutral": 2
+    },
+    {
+      "name": "那斯達克",
+      "ticker": "NDX",
+      "count": 18,
+      "bullish": 4,
+      "bearish": 4,
+      "neutral": 10
     },
     {
       "name": "標普500指數",
@@ -305,28 +321,12 @@
       "neutral": 10
     },
     {
-      "name": "Palantir",
-      "ticker": "PLTR",
-      "count": 18,
-      "bullish": 7,
-      "bearish": 3,
-      "neutral": 8
-    },
-    {
       "name": "Lumentum",
       "ticker": "LITE",
       "count": 18,
       "bullish": 15,
       "bearish": 1,
       "neutral": 2
-    },
-    {
-      "name": "那斯達克",
-      "ticker": "NDX",
-      "count": 17,
-      "bullish": 4,
-      "bearish": 3,
-      "neutral": 10
     },
     {
       "name": "Broadcom",
@@ -401,6 +401,14 @@
       "neutral": 5
     },
     {
+      "name": "道瓊",
+      "ticker": "DJI",
+      "count": 12,
+      "bullish": 2,
+      "bearish": 1,
+      "neutral": 9
+    },
+    {
       "name": "布蘭特原油",
       "ticker": "BZ",
       "count": 12,
@@ -415,14 +423,6 @@
       "bullish": 6,
       "bearish": 0,
       "neutral": 6
-    },
-    {
-      "name": "道瓊",
-      "ticker": "DJI",
-      "count": 11,
-      "bullish": 2,
-      "bearish": 1,
-      "neutral": 8
     },
     {
       "name": "西德州原油",
@@ -569,6 +569,14 @@
       "neutral": 6
     },
     {
+      "name": "費半",
+      "ticker": "SOX",
+      "count": 7,
+      "bullish": 5,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "納斯達克 100",
       "ticker": "NDX",
       "count": 7,
@@ -647,14 +655,6 @@
       "bullish": 3,
       "bearish": 0,
       "neutral": 3
-    },
-    {
-      "name": "費半",
-      "ticker": "SOX",
-      "count": 6,
-      "bullish": 4,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "美超微",
@@ -1313,6 +1313,14 @@
       "neutral": 2
     },
     {
+      "name": "Nike",
+      "ticker": "NKE",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 2
+    },
+    {
       "name": "NASDAQ 100",
       "ticker": "NDX",
       "count": 3,
@@ -1871,14 +1879,6 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 0
-    },
-    {
-      "name": "Nike",
-      "ticker": "NKE",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "NextEra Energy",
@@ -2777,6 +2777,14 @@
       "neutral": 1
     },
     {
+      "name": "科技七雄",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "矽格",
       "ticker": "6257",
       "count": 1,
@@ -2958,6 +2966,14 @@
       "count": 1,
       "bullish": 1,
       "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "比特幣現貨ETF",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 1,
       "neutral": 0
     },
     {
@@ -5656,11 +5672,11 @@
     },
     {
       "name": "半導體",
-      "count": 147
+      "count": 148
     },
     {
       "name": "美股",
-      "count": 107
+      "count": 108
     },
     {
       "name": "台股",
@@ -5668,7 +5684,7 @@
     },
     {
       "name": "總體經濟",
-      "count": 45
+      "count": 46
     },
     {
       "name": "科技",
@@ -7932,6 +7948,26 @@
         "費城半導體指數",
         "0050",
         "比特幣"
+      ]
+    },
+    "Z7U5YQRlz68": {
+      "industries": [
+        "半導體",
+        "美股",
+        "總體經濟"
+      ],
+      "mentions": [
+        "美光",
+        "蘋果",
+        "Nike",
+        "Palantir",
+        "費半",
+        "道瓊",
+        "S&P 500",
+        "那斯達克",
+        "比特幣",
+        "比特幣現貨ETF",
+        "科技七雄"
       ]
     },
     "ZB9oxcv7aGQ": {
@@ -10774,5 +10810,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-06-25T12:09:02"
+  "generated_at": "2026-06-27T01:01:03"
 }
