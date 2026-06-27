@@ -302,14 +302,14 @@
         "count": 5
       },
       {
-        "name": "Google",
-        "ticker": "GOOGL",
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
         "count": 5
       },
       {
-        "name": "Amazon",
-        "ticker": "AMZN",
-        "count": 4
+        "name": "CrowdStrike",
+        "ticker": "CRWD",
+        "count": 5
       }
     ],
     "台積電": [
@@ -1676,7 +1676,7 @@
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
-        "count": 26
+        "count": 27
       },
       {
         "name": "Anthropic",
@@ -2736,6 +2736,11 @@
         "count": 13
       },
       {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
+        "count": 13
+      },
+      {
         "name": "道瓊指數",
         "ticker": "DJIA",
         "count": 13
@@ -2749,11 +2754,6 @@
         "name": "Amazon",
         "ticker": "AMZN",
         "count": 13
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 12
       }
     ],
     "Coherent": [
@@ -3144,13 +3144,13 @@
     ],
     "Palantir": [
       {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 10
-      },
-      {
         "name": "費城半導體指數",
         "ticker": "SOXX",
+        "count": 11
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
         "count": 10
       },
       {
@@ -3174,6 +3174,11 @@
         "count": 7
       },
       {
+        "name": "CrowdStrike",
+        "ticker": "CRWD",
+        "count": 7
+      },
+      {
         "name": "Cloudflare",
         "ticker": "NET",
         "count": 7
@@ -3187,11 +3192,6 @@
         "name": "OpenAI",
         "ticker": "",
         "count": 7
-      },
-      {
-        "name": "CrowdStrike",
-        "ticker": "CRWD",
-        "count": 6
       }
     ],
     "Salesforce": [
@@ -3273,28 +3273,28 @@
         "count": 10
       },
       {
+        "name": "Apple",
+        "ticker": "AAPL",
+        "count": 10
+      },
+      {
         "name": "OpenAI",
         "ticker": "",
         "count": 10
       },
       {
-        "name": "Apple",
-        "ticker": "AAPL",
+        "name": "Microsoft",
+        "ticker": "MSFT",
+        "count": 9
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
         "count": 9
       },
       {
         "name": "Amazon",
         "ticker": "AMZN",
-        "count": 8
-      },
-      {
-        "name": "Microsoft",
-        "ticker": "MSFT",
-        "count": 8
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
         "count": 8
       }
     ],
@@ -4269,6 +4269,11 @@
     ],
     "Alphabet": [
       {
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
+        "count": 19
+      },
+      {
         "name": "NVIDIA",
         "ticker": "NVDA",
         "count": 18
@@ -4276,11 +4281,6 @@
       {
         "name": "S&P 500",
         "ticker": "SPX",
-        "count": 18
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
         "count": 18
       },
       {
@@ -4487,6 +4487,11 @@
         "count": 13
       },
       {
+        "name": "Apple",
+        "ticker": "AAPL",
+        "count": 12
+      },
+      {
         "name": "NVIDIA",
         "ticker": "NVDA",
         "count": 12
@@ -4495,11 +4500,6 @@
         "name": "台積電",
         "ticker": "TSM",
         "count": 12
-      },
-      {
-        "name": "Apple",
-        "ticker": "AAPL",
-        "count": 11
       },
       {
         "name": "OpenAI",
@@ -4512,14 +4512,14 @@
         "count": 11
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
+        "name": "費城半導體指數",
+        "ticker": "SOXX",
         "count": 10
       },
       {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 9
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 10
       }
     ],
     "Groq": [
@@ -4642,6 +4642,11 @@
         "count": 8
       },
       {
+        "name": "Palantir",
+        "ticker": "PLTR",
+        "count": 7
+      },
+      {
         "name": "Intel",
         "ticker": "INTC",
         "count": 6
@@ -4657,13 +4662,18 @@
         "count": 6
       },
       {
-        "name": "Palantir",
-        "ticker": "PLTR",
-        "count": 6
-      },
-      {
         "name": "Meta",
         "ticker": "META",
+        "count": 5
+      },
+      {
+        "name": "Tesla",
+        "ticker": "TSLA",
+        "count": 5
+      },
+      {
+        "name": "元大台灣50",
+        "ticker": "00505O",
         "count": 5
       },
       {
@@ -4672,18 +4682,8 @@
         "count": 5
       },
       {
-        "name": "Salesforce",
-        "ticker": "CRM",
-        "count": 4
-      },
-      {
-        "name": "Tesla",
-        "ticker": "TSLA",
-        "count": 4
-      },
-      {
-        "name": "元大台灣50",
-        "ticker": "00505O",
+        "name": "Apple",
+        "ticker": "AAPL",
         "count": 4
       }
     ],
@@ -5108,6 +5108,58 @@
         "name": "道瓊指數",
         "ticker": "DJIA",
         "count": 2
+      }
+    ],
+    "Micron": [
+      {
+        "name": "Google",
+        "ticker": "GOOGL",
+        "count": 4
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 4
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 4
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 4
+      },
+      {
+        "name": "Apple",
+        "ticker": "AAPL",
+        "count": 3
+      },
+      {
+        "name": "Microsoft",
+        "ticker": "MSFT",
+        "count": 3
+      },
+      {
+        "name": "Tesla",
+        "ticker": "TSLA",
+        "count": 3
+      },
+      {
+        "name": "Amazon",
+        "ticker": "AMZN",
+        "count": 3
+      },
+      {
+        "name": "Intel",
+        "ticker": "INTC",
+        "count": 3
+      },
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 3
       }
     ],
     "Adobe": [
@@ -9413,58 +9465,6 @@
         "count": 2
       }
     ],
-    "Micron": [
-      {
-        "name": "Google",
-        "ticker": "GOOGL",
-        "count": 4
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 4
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 4
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 4
-      },
-      {
-        "name": "Amazon",
-        "ticker": "AMZN",
-        "count": 3
-      },
-      {
-        "name": "Intel",
-        "ticker": "INTC",
-        "count": 3
-      },
-      {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 3
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 3
-      },
-      {
-        "name": "AMD",
-        "ticker": "AMD",
-        "count": 2
-      },
-      {
-        "name": "Apple",
-        "ticker": "AAPL",
-        "count": 2
-      }
-    ],
     "Arista": [
       {
         "name": "AMD",
@@ -10217,5 +10217,5 @@
       }
     ]
   },
-  "generated_at": "2026-06-27T08:46:14"
+  "generated_at": "2026-06-27T13:52:20"
 }

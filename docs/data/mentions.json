@@ -3,10 +3,10 @@
     {
       "name": "費城半導體指數",
       "ticker": "SOXX",
-      "count": 113,
+      "count": 114,
       "bullish": 59,
       "bearish": 23,
-      "neutral": 31
+      "neutral": 32
     },
     {
       "name": "NVIDIA",
@@ -129,20 +129,20 @@
       "neutral": 29
     },
     {
+      "name": "SpaceX",
+      "ticker": "SPCX",
+      "count": 42,
+      "bullish": 25,
+      "bearish": 3,
+      "neutral": 14
+    },
+    {
       "name": "Amazon",
       "ticker": "AMZN",
       "count": 42,
       "bullish": 13,
       "bearish": 0,
       "neutral": 29
-    },
-    {
-      "name": "SpaceX",
-      "ticker": "SPCX",
-      "count": 41,
-      "bullish": 25,
-      "bearish": 3,
-      "neutral": 13
     },
     {
       "name": "博通",
@@ -217,6 +217,14 @@
       "neutral": 12
     },
     {
+      "name": "Apple",
+      "ticker": "AAPL",
+      "count": 27,
+      "bullish": 7,
+      "bearish": 0,
+      "neutral": 20
+    },
+    {
       "name": "納斯達克指數",
       "ticker": "NDX",
       "count": 26,
@@ -225,34 +233,26 @@
       "neutral": 12
     },
     {
-      "name": "Apple",
-      "ticker": "AAPL",
-      "count": 26,
-      "bullish": 6,
-      "bearish": 0,
-      "neutral": 20
-    },
-    {
       "name": "Tesla",
       "ticker": "TSLA",
-      "count": 23,
+      "count": 24,
       "bullish": 1,
       "bearish": 3,
-      "neutral": 19
+      "neutral": 20
     },
     {
       "name": "Microsoft",
       "ticker": "MSFT",
-      "count": 23,
-      "bullish": 9,
+      "count": 24,
+      "bullish": 10,
       "bearish": 1,
       "neutral": 13
     },
     {
       "name": "Alphabet",
       "ticker": "GOOGL",
-      "count": 23,
-      "bullish": 10,
+      "count": 24,
+      "bullish": 11,
       "bearish": 1,
       "neutral": 12
     },
@@ -273,6 +273,14 @@
       "neutral": 12
     },
     {
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "count": 20,
+      "bullish": 7,
+      "bearish": 4,
+      "neutral": 9
+    },
+    {
       "name": "英特爾",
       "ticker": "INTC",
       "count": 19,
@@ -281,12 +289,12 @@
       "neutral": 16
     },
     {
-      "name": "Palantir",
-      "ticker": "PLTR",
+      "name": "元大台灣50",
+      "ticker": "00505O",
       "count": 19,
-      "bullish": 7,
-      "bearish": 4,
-      "neutral": 8
+      "bullish": 8,
+      "bearish": 0,
+      "neutral": 11
     },
     {
       "name": "Coherent",
@@ -311,14 +319,6 @@
       "bullish": 4,
       "bearish": 3,
       "neutral": 11
-    },
-    {
-      "name": "元大台灣50",
-      "ticker": "00505O",
-      "count": 18,
-      "bullish": 8,
-      "bearish": 0,
-      "neutral": 10
     },
     {
       "name": "Lumentum",
@@ -417,6 +417,14 @@
       "neutral": 1
     },
     {
+      "name": "CrowdStrike",
+      "ticker": "CRWD",
+      "count": 12,
+      "bullish": 6,
+      "bearish": 0,
+      "neutral": 6
+    },
+    {
       "name": "Cloudflare",
       "ticker": "NET",
       "count": 12,
@@ -439,14 +447,6 @@
       "bullish": 1,
       "bearish": 2,
       "neutral": 8
-    },
-    {
-      "name": "CrowdStrike",
-      "ticker": "CRWD",
-      "count": 11,
-      "bullish": 6,
-      "bearish": 0,
-      "neutral": 5
     },
     {
       "name": "高盛",
@@ -689,6 +689,14 @@
       "neutral": 3
     },
     {
+      "name": "Micron",
+      "ticker": "MU",
+      "count": 6,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "MSCI新興市場指數",
       "ticker": "NSEI",
       "count": 6,
@@ -791,14 +799,6 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 3
-    },
-    {
-      "name": "Micron",
-      "ticker": "MU",
-      "count": 5,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "GE Vernova",
@@ -5649,8 +5649,24 @@
       "neutral": 1
     },
     {
+      "name": "00670L",
+      "ticker": "00670",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "006208",
       "ticker": "006208",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "006200",
+      "ticker": "006200",
       "count": 1,
       "bullish": 0,
       "bearish": 0,
@@ -5680,15 +5696,15 @@
     },
     {
       "name": "半導體",
-      "count": 149
+      "count": 150
     },
     {
       "name": "美股",
-      "count": 109
+      "count": 110
     },
     {
       "name": "台股",
-      "count": 61
+      "count": 62
     },
     {
       "name": "總體經濟",
@@ -6380,6 +6396,27 @@
         "布蘭特原油",
         "西德州原油",
         "任天堂"
+      ]
+    },
+    "AxPGXInx1EA": {
+      "industries": [
+        "美股",
+        "台股",
+        "半導體"
+      ],
+      "mentions": [
+        "元大台灣50",
+        "00670L",
+        "006200",
+        "Tesla",
+        "Alphabet",
+        "Apple",
+        "Microsoft",
+        "Palantir",
+        "CrowdStrike",
+        "Micron",
+        "SpaceX",
+        "費城半導體指數"
       ]
     },
     "BKHfdu5h5Eg": {
@@ -10834,5 +10871,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-06-27T08:46:14"
+  "generated_at": "2026-06-27T13:52:20"
 }
