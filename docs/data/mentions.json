@@ -9,20 +9,20 @@
       "neutral": 31
     },
     {
+      "name": "NVIDIA",
+      "ticker": "NVDA",
+      "count": 105,
+      "bullish": 79,
+      "bearish": 0,
+      "neutral": 26
+    },
+    {
       "name": "S&P 500",
       "ticker": "SPX",
       "count": 104,
       "bullish": 41,
       "bearish": 14,
       "neutral": 49
-    },
-    {
-      "name": "NVIDIA",
-      "ticker": "NVDA",
-      "count": 104,
-      "bullish": 78,
-      "bearish": 0,
-      "neutral": 26
     },
     {
       "name": "台積電",
@@ -75,8 +75,8 @@
     {
       "name": "美光",
       "ticker": "MU",
-      "count": 54,
-      "bullish": 32,
+      "count": 55,
+      "bullish": 33,
       "bearish": 2,
       "neutral": 20
     },
@@ -106,11 +106,11 @@
     },
     {
       "name": "三星",
-      "ticker": "005930",
-      "count": 45,
+      "ticker": "005930.KS",
+      "count": 46,
       "bullish": 15,
       "bearish": 4,
-      "neutral": 26
+      "neutral": 27
     },
     {
       "name": "羅素2000",
@@ -155,9 +155,9 @@
     {
       "name": "蘋果",
       "ticker": "AAPL",
-      "count": 34,
+      "count": 35,
       "bullish": 8,
-      "bearish": 3,
+      "bearish": 4,
       "neutral": 23
     },
     {
@@ -177,20 +177,20 @@
       "neutral": 11
     },
     {
+      "name": "SK海力士",
+      "ticker": "000660.KS",
+      "count": 33,
+      "bullish": 15,
+      "bearish": 1,
+      "neutral": 17
+    },
+    {
       "name": "台股加權指數",
       "ticker": "TWII",
       "count": 32,
       "bullish": 21,
       "bearish": 3,
       "neutral": 8
-    },
-    {
-      "name": "SK海力士",
-      "ticker": "000660",
-      "count": 32,
-      "bullish": 14,
-      "bearish": 1,
-      "neutral": 17
     },
     {
       "name": "亞馬遜",
@@ -785,6 +785,14 @@
       "neutral": 1
     },
     {
+      "name": "Nokia",
+      "ticker": "NOK",
+      "count": 5,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
       "name": "Micron",
       "ticker": "MU",
       "count": 5,
@@ -947,14 +955,6 @@
     {
       "name": "Palo Alto Networks",
       "ticker": "PANW",
-      "count": 4,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
-      "name": "Nokia",
-      "ticker": "NOK",
       "count": 4,
       "bullish": 2,
       "bearish": 0,
@@ -4657,6 +4657,14 @@
       "neutral": 1
     },
     {
+      "name": "MicroStrategy",
+      "ticker": "MSTR",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 0
+    },
+    {
       "name": "Meituan",
       "ticker": "3690",
       "count": 1,
@@ -5668,15 +5676,15 @@
   "industries": [
     {
       "name": "AI",
-      "count": 168
+      "count": 169
     },
     {
       "name": "半導體",
-      "count": 148
+      "count": 149
     },
     {
       "name": "美股",
-      "count": 108
+      "count": 109
     },
     {
       "name": "台股",
@@ -9511,6 +9519,22 @@
         "Visa"
       ]
     },
+    "kp-newsletter-48": {
+      "industries": [
+        "半導體",
+        "AI",
+        "美股"
+      ],
+      "mentions": [
+        "蘋果",
+        "美光",
+        "SK海力士",
+        "三星",
+        "Nokia",
+        "MicroStrategy",
+        "NVIDIA"
+      ]
+    },
     "leh1Zp5LljI": {
       "industries": [
         "能源",
@@ -10810,5 +10834,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-06-27T08:08:33"
+  "generated_at": "2026-06-27T08:31:54"
 }
