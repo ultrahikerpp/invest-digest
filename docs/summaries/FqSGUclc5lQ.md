@@ -5,7 +5,6 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-07-04
 processed: 2026-07-04
-hashtags: #被動元件 #功率元件 #封裝封測 #缺料漲價 #Meta #Gooaye股癌
 industries: 半導體, AI, 台股
 ---
 
@@ -23,7 +22,7 @@ industries: 半導體, AI, 台股
 
 - **作者認為功率元件已出現斷貨、封裝端出現排擠效應，掌握產能者為王。** ODM／EMS 朋友已買不到 Mosfet；IDM 一條龍（設計到封測出貨）或能透過母公司、集團、長約 secure 產能的 fabless 受惠。封裝端因 AI 需求太強，封裝廠可以挑客人，design house 下一季被報價漲 30%、甚至聽到 40%（肺炎期間僅漲 10–20%），作者認為封裝有機會是「下一棒」。
 
-- **作者認為 Meta 投入 Neocloud 不是退出 AI 競賽，而是 double down。** 市場多把此舉解讀為 Meta 不玩了，但作者認為 Meta 是把 legacy 算力（如 Hopper）外租找到出海口、內部因此形成續衝共識，反而可能加速建置；對既有 Neocloud 業者則是搶生意的壞消息，也暗示 AI 供需未必如想像緊俏。
+- **作者認為 Meta 投入 Neocloud 不是退出 AI 競賽，而是 Double Down 雙倍下注。** 市場多把此舉解讀為 Meta 不玩了，但作者認為 Meta 是把 legacy 算力（如 Hopper）外租找到出海口、內部因此形成續衝共識，反而可能加速建置；對既有 Neocloud 業者則是搶生意的壞消息，也暗示 AI 供需未必如想像緊俏。
 
 - **作者認為選股要跟著市場資金與法人流向，而非只看產業好壞；股價常領先基本面。** 以光通為例，產業好但「資金不在、不會漲就沒用」；驅動 IC 業績平淡但股價先跑，反映的是 transition 階段與 PE rating 上修，而非 earning 改善。
 
@@ -73,7 +72,7 @@ industries: 半導體, AI, 台股
 
 - **封裝／封測（下一棒）**：含成熟製程晶圓製造、功率封裝、導線架，敘事邏輯類似「掌握產能為王」
 
-- **缺料受惠者**：IDM 一條龍，或能透過母公司／集團資源／長約 secure 產能的 fabless
+- **缺料受惠者**：IDM 一條龍，或能透過母公司／集團資源／長約能確保產能的Fabless
 
 - **記憶體模組廠**：雖無自有產能，但敢賭又賭對者仍可能獲利
 
@@ -119,7 +118,7 @@ industries: 半導體, AI, 台股
 
 - 封裝廠報價漲幅，以及功率封裝的後續發展
 
-- 各企業對 Meta Neocloud 的跟進動向，用以驗證「double down」判斷
+- 各企業對 Meta Neocloud 的跟進動向，用以驗證「Double Down」判斷
 
 - Semi Analysis 光 ETF 的選股，以及能否帶動光通族群（拉起後是否馬上軟掉）
 
