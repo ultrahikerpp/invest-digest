@@ -421,6 +421,7 @@ def generate_cards(
     channel_name: str,
     output_dir: Path,
     hashtags: str = "",
+    provider: str = "claude",
 ) -> list[Path]:
     """
     Generate all PNG cards for a summary file.
@@ -439,29 +440,29 @@ def generate_cards(
 
     total_section_cards = len(ordered)
 
-    # Generate bullet points + hook in one Claude browser session
-    print(f"  [card] 用 Claude 批次生成金句 + Hook...")
+    # Generate bullet points + hook in one browser session
+    print(f"  [card] 用 {provider} 批次生成金句 + Hook...")
     sections_dict = {t: c for t, c in ordered}
 
     _NEWSLETTER_SECTIONS = {"本期主題總覽", "各主題重點", "核心觀點"}
     is_newsletter = any(k in sections for k in _NEWSLETTER_SECTIONS)
 
     if is_newsletter:
-        from backend.claude_browser import generate_newsletter_card_points
-        # Pre-extract structured sections; only send the rest to Claude
+        from backend.ai_provider import generate_newsletter_card_points
+        # Pre-extract structured sections; only send the rest to the AI provider
         pre_extracted = {}
-        claude_sections = {}
+        ai_sections = {}
         for name, content in sections_dict.items():
             pts = _extract_structured_points(name, content)
             if pts:
                 pre_extracted[name] = pts
             else:
-                claude_sections[name] = content[:500]  # cap content per section
-        all_points, hook_text = generate_newsletter_card_points(claude_sections)
+                ai_sections[name] = content[:500]  # cap content per section
+        all_points, hook_text = generate_newsletter_card_points(ai_sections, provider=provider)
         all_points.update(pre_extracted)
     else:
-        from backend.claude_browser import generate_card_points
-        all_points, hook_text = generate_card_points(sections_dict)
+        from backend.ai_provider import generate_card_points
+        all_points, hook_text = generate_card_points(sections_dict, provider=provider)
 
     cards: list[Path] = []
 

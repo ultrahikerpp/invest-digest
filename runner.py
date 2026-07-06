@@ -28,6 +28,11 @@ Usage:
   python3 runner.py send-confirmations     # send confirmation emails to new subscribers
   python3 runner.py weekly-digest          # send weekly investment digest to subscribers
 
+  --provider claude|chatgpt applies to any command above that calls an AI
+  provider (run, approve, retry, reprocess, cards, shorts-cards, notify,
+  backfill-analysis, score, weekly, earnings, refresh-earnings, setup-browser).
+  Default is claude. Example: python3 runner.py run --provider chatgpt
+
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
   0 9 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1
@@ -209,12 +214,35 @@ def _import_worker():
     return w
 
 
+def _extract_provider(args: list[str]) -> str:
+    """Pull --provider <name> out of an argv-style list; default 'claude'; validate."""
+    if "--provider" in args:
+        i = args.index("--provider")
+        if i + 1 >= len(args):
+            print("ERROR: --provider requires a value (choices: claude, chatgpt)", file=sys.stderr)
+            sys.exit(1)
+        provider = args[i + 1]
+        if provider not in ("claude", "chatgpt"):
+            print(f"ERROR: unknown --provider {provider!r} (choices: claude, chatgpt)", file=sys.stderr)
+            sys.exit(1)
+        return provider
+    return "claude"
+
+
+def _strip_provider(args: list[str]) -> list[str]:
+    """Remove --provider <name> from an args list, leaving other tokens untouched."""
+    if "--provider" not in args:
+        return args
+    i = args.index("--provider")
+    return args[:i] + args[i + 2:]
+
+
 # ── Newsletter fetch ──────────────────────────────────────
 
-def _run_newsletter_channel(conn, nl: dict, worker) -> int:
+def _run_newsletter_channel(conn, nl: dict, worker, provider: str = "claude") -> int:
     """Fetch and process a single newsletter source. Returns count of new items."""
     from backend.newsletter_fetcher import fetch_newsletters
-    from backend.claude_browser import generate_newsletter_summary, extract_analysis
+    from backend.ai_provider import generate_newsletter_summary, extract_analysis
     from backend.analyzer import save_mentions, save_industries
 
     cid = nl["channel_id"]
@@ -237,7 +265,7 @@ def _run_newsletter_channel(conn, nl: dict, worker) -> int:
 
         # Generate summary (body is already plain text — no transcription needed)
         print(f"  Generating summary...")
-        summary_body = generate_newsletter_summary(item["body"], item["title"])
+        summary_body = generate_newsletter_summary(item["body"], item["title"], provider=provider)
 
         # Build source link (Substack URL if available)
         source_link = item.get("substack_url", "")
@@ -266,7 +294,7 @@ def _run_newsletter_channel(conn, nl: dict, worker) -> int:
         # Extract structured analysis (mentions + industries)
         print(f"  萃取標的與產業分析...")
         try:
-            analysis = extract_analysis(summary_body)
+            analysis = extract_analysis(summary_body, provider=provider)
             save_mentions(conn, vid, cid, analysis["mentions"])
             save_industries(conn, vid, cid, analysis["industries"])
             if analysis["industries"]:
@@ -306,7 +334,7 @@ def _run_newsletter_channel(conn, nl: dict, worker) -> int:
 
 # ── Run command ───────────────────────────────────────────
 
-def cmd_run(channel_id: str | None = None):
+def cmd_run(channel_id: str | None = None, provider: str = "claude"):
     _ensure_dirs()
     channels = _load_channels()
     worker = _import_worker()
@@ -352,7 +380,7 @@ def cmd_run(channel_id: str | None = None):
 
             # Generate summary
             print(f"  Generating summary...")
-            summary_body = worker.generate_summary(transcript, v["title"])
+            summary_body = worker.generate_summary(transcript, v["title"], provider=provider)
 
             # Build frontmatter without hashtags (added later in approve step)
             now = datetime.now().strftime("%Y-%m-%d")
@@ -376,9 +404,9 @@ def cmd_run(channel_id: str | None = None):
             # Extract structured analysis (mentions + industries)
             print(f"  萃取標的與產業分析...")
             try:
-                from backend.claude_browser import extract_analysis
+                from backend.ai_provider import extract_analysis
                 from backend.analyzer import save_mentions, save_industries
-                analysis = extract_analysis(summary_body)
+                analysis = extract_analysis(summary_body, provider=provider)
                 save_mentions(conn, v["video_id"], cid, analysis["mentions"])
                 save_industries(conn, v["video_id"], cid, analysis["industries"])
                 if analysis["industries"]:
@@ -422,7 +450,7 @@ def cmd_run(channel_id: str | None = None):
     if channel_id is None:  # newsletters only on full run, not single-channel
         newsletters = _load_newsletters()
         for nl in newsletters:
-            total_new += _run_newsletter_channel(conn, nl, worker)
+            total_new += _run_newsletter_channel(conn, nl, worker, provider)
 
     conn.close()
     print(f"\nTotal new episodes processed: {total_new}")
@@ -448,7 +476,7 @@ def cmd_build():
 
 # ── Cards command ─────────────────────────────────────────
 
-def cmd_cards(video_id: str):
+def cmd_cards(video_id: str, provider: str = "claude"):
     _ensure_dirs()
     channels = _load_channels()
     summary_path = _find_summary_path(video_id)
@@ -477,7 +505,7 @@ def cmd_cards(video_id: str):
     output_dir = _cards_output_dir(video_id, channel_name or "unknown")
 
     from backend.card_generator import generate_cards
-    card_paths = generate_cards(summary_path, channel_name, output_dir, hashtags=hashtags)
+    card_paths = generate_cards(summary_path, channel_name, output_dir, hashtags=hashtags, provider=provider)
     print(f"Generated {len(card_paths)} cards in {output_dir}")
     for p in card_paths:
         print(f"  {p}")
@@ -559,7 +587,7 @@ def _shorts_video_output_path(video_id: str, channel_name: str) -> Path:
     return channel_dir / f"{video_id}_shorts.mp4"
 
 
-def cmd_shorts_cards(video_id: str):
+def cmd_shorts_cards(video_id: str, provider: str = "claude"):
     """Generate Shorts-optimised 1080x1920 cards (hook + sections + CTA)."""
     _ensure_dirs()
     channels = _load_channels()
@@ -578,7 +606,7 @@ def cmd_shorts_cards(video_id: str):
     output_dir = _shorts_cards_output_dir(video_id, channel_name)
 
     from backend.card_generator_shorts import generate_cards_shorts
-    card_paths = generate_cards_shorts(summary_path, channel_name, output_dir, hashtags)
+    card_paths = generate_cards_shorts(summary_path, channel_name, output_dir, hashtags, provider=provider)
     print(f"Generated {len(card_paths)} Shorts cards in {output_dir}")
     for p in card_paths:
         print(f"  {p}")
@@ -732,7 +760,7 @@ def _update_frontmatter_hashtags(md_path: Path, hashtags: str):
 
 # ── Retry command ─────────────────────────────────────────
 
-def cmd_retry(video_id: str):
+def cmd_retry(video_id: str, provider: str = "claude"):
     """Retry summary generation for a single failed episode."""
     _ensure_dirs()
     channels = _load_channels()
@@ -785,7 +813,7 @@ def cmd_retry(video_id: str):
 
     # Generate summary
     print(f"  產生摘要（透過 Claude 瀏覽器）...")
-    summary_body = worker.generate_summary(transcript, title)
+    summary_body = worker.generate_summary(transcript, title, provider=provider)
 
     now = datetime.now().strftime("%Y-%m-%d")
     frontmatter = (
@@ -825,7 +853,7 @@ def _find_transcript_path(video_id: str) -> Path | None:
     return flat if flat.exists() else None
 
 
-def cmd_reprocess():
+def cmd_reprocess(provider: str = "claude"):
     """Re-generate summaries for all episodes using the current prompt, then approve all."""
     _ensure_dirs()
     channels = _load_channels()
@@ -867,7 +895,7 @@ def cmd_reprocess():
 
         # Re-generate summary with new prompt
         print(f"  重新產製摘要...")
-        summary_body = worker.generate_summary(transcript, title)
+        summary_body = worker.generate_summary(transcript, title, provider=provider)
 
         frontmatter = (
             f"---\n"
@@ -902,12 +930,12 @@ def cmd_reprocess():
         return
 
     print("開始執行 approve（產出 hashtags、字卡、影片、部署）...\n")
-    cmd_approve()
+    cmd_approve(provider=provider)
 
 
 # ── Approve command ────────────────────────────────────────
 
-def cmd_approve():
+def cmd_approve(provider: str = "claude"):
     """Process all pending_review episodes: generate hashtags + Shorts cards, then email summary and deploy."""
     _ensure_dirs()
     worker = _import_worker()
@@ -952,7 +980,7 @@ def cmd_approve():
 
         # Generate hashtags from (possibly edited) summary
         print(f"  產生 hashtags...")
-        hashtags = worker.generate_hashtags(summary_body, channel_name)
+        hashtags = worker.generate_hashtags(summary_body, channel_name, provider=provider)
 
         # Write hashtags back into frontmatter
         _update_frontmatter_hashtags(summary_path, hashtags)
@@ -961,7 +989,7 @@ def cmd_approve():
         # Generate Shorts cards (1080x1920)
         print(f"  產生 Shorts 字卡...")
         try:
-            cmd_shorts_cards(video_id)
+            cmd_shorts_cards(video_id, provider=provider)
         except SystemExit:
             print(f"  ❌ Shorts 字卡產生失敗")
             continue
@@ -1160,7 +1188,7 @@ def _parse_summary_meta(md_path: Path) -> dict:
     return meta
 
 
-def cmd_notify_latest():
+def cmd_notify_latest(provider: str = "claude"):
     """Generate video for latest episode per channel and send email notification."""
     _ensure_dirs()
     channels = _load_channels()
@@ -1221,7 +1249,7 @@ def cmd_notify_latest():
                 continue
             cards_dir = _cards_output_dir(vid, cname)
             from backend.card_generator import generate_cards
-            card_paths = generate_cards(summary_path, cname, cards_dir)
+            card_paths = generate_cards(summary_path, cname, cards_dir, provider=provider)
             print(f"  ✓ {len(card_paths)} 張字卡")
 
         # Generate video if missing
@@ -1248,9 +1276,9 @@ def cmd_notify_latest():
 
 # ── Backfill Analysis command ─────────────────────────────
 
-def cmd_backfill_analysis():
+def cmd_backfill_analysis(provider: str = "claude"):
     """Run extract_analysis on all historical summaries that haven't been analysed yet."""
-    from backend.claude_browser import extract_analysis
+    from backend.ai_provider import extract_analysis
     from backend.analyzer import has_analysis, save_mentions, save_industries
 
     conn = _get_db()
@@ -1284,7 +1312,7 @@ def cmd_backfill_analysis():
         print(f"\n=== {title[:60]} ===")
         print(f"  萃取分析...")
         try:
-            analysis = extract_analysis(summary_body)
+            analysis = extract_analysis(summary_body, provider=provider)
             save_mentions(conn, video_id, channel_id, analysis["mentions"])
             save_industries(conn, video_id, channel_id, analysis["industries"])
             if analysis["industries"]:
@@ -1475,7 +1503,7 @@ def _read_summary_body(md_path: Path) -> str:
     return content
 
 
-def _score_episode(video_id: str, run_m1: bool = True) -> None:
+def _score_episode(video_id: str, run_m1: bool = True, provider: str = "claude") -> None:
     """Score a single episode with M1 (optional) and M4, display results."""
     from backend.dqs import score_m4
 
@@ -1503,9 +1531,9 @@ def _score_episode(video_id: str, run_m1: bool = True) -> None:
     # ── M1 (Claude browser) ───────────────────────────────
     m1_score: float | None = None
     if run_m1:
-        print(f"  [M1] 使用 Claude 評分訊號品質...")
-        from backend.claude_browser import score_m1
-        m1_score = score_m1(summary_body)
+        print(f"  [M1] 使用 {provider} 評分訊號品質...")
+        from backend.ai_provider import score_m1
+        m1_score = score_m1(summary_body, provider=provider)
 
     # ── Display ───────────────────────────────────────────
     print(f"\n{'═'*55}")
@@ -1528,7 +1556,7 @@ def _score_episode(video_id: str, run_m1: bool = True) -> None:
         _update_frontmatter_field(summary_path, "dqs_m1", str(m1_score))
 
 
-def cmd_score(video_id: str | None = None, all_episodes: bool = False, run_m1: bool = True) -> None:
+def cmd_score(video_id: str | None = None, all_episodes: bool = False, run_m1: bool = True, provider: str = "claude") -> None:
     """Score episodes with M1 (Claude) + M4 (rule-based) DQS metrics."""
     _ensure_dirs()
 
@@ -1563,9 +1591,9 @@ def cmd_score(video_id: str | None = None, all_episodes: bool = False, run_m1: b
 
             m1_score: float | None = None
             if run_m1:
-                from backend.claude_browser import score_m1
+                from backend.ai_provider import score_m1
                 print(f"  [M1] {title[:40]}...")
-                m1_score = score_m1(summary_body)
+                m1_score = score_m1(summary_body, provider=provider)
                 if m1_score >= 0:
                     _update_frontmatter_field(md_path, "dqs_m1", str(m1_score))
 
@@ -1578,7 +1606,7 @@ def cmd_score(video_id: str | None = None, all_episodes: bool = False, run_m1: b
         print(f"dqs_m4{' + dqs_m1' if run_m1 else ''} 欄位已寫入各摘要 frontmatter")
 
     elif video_id:
-        _score_episode(video_id, run_m1=run_m1)
+        _score_episode(video_id, run_m1=run_m1, provider=provider)
 
     else:
         print("Usage: runner.py score <video_id>  |  runner.py score --all", file=sys.stderr)
@@ -1589,7 +1617,7 @@ def cmd_score(video_id: str | None = None, all_episodes: bool = False, run_m1: b
 
 WEEKLY_DIR = BASE_DIR / "data" / "weekly"
 
-def cmd_weekly():
+def cmd_weekly(provider: str = "claude"):
     """Synthesize a cross-channel weekly digest from the past 7 days of summaries."""
     from datetime import timedelta
     import re
@@ -1667,9 +1695,9 @@ def cmd_weekly():
 
 {summaries_block}"""
 
-    print("Synthesizing weekly digest via Claude...")
-    from backend.claude_browser import chat as claude_chat
-    result = claude_chat(prompt)
+    print(f"Synthesizing weekly digest via {provider}...")
+    from backend.ai_provider import chat as ai_chat
+    result = ai_chat(prompt, provider=provider)
 
     # Strip page-UI artifacts that bleed into the extracted response.
     # Patterns seen: ::view-transition CSS, "V", "visualize", "show_widget"
@@ -1712,11 +1740,11 @@ def cmd_weekly():
 
 # ── Earnings command ──────────────────────────────────────
 
-def cmd_earnings(ticker: str):
-    """Fetch quarterly earnings data and generate Claude analysis."""
+def cmd_earnings(ticker: str, provider: str = "claude"):
+    """Fetch quarterly earnings data and generate AI analysis."""
     import json
     from backend import earnings_fetcher
-    from backend.claude_browser import generate_earnings_analysis
+    from backend.ai_provider import generate_earnings_analysis
 
     ticker = ticker.upper()
 
@@ -1735,9 +1763,9 @@ def cmd_earnings(ticker: str):
     print(f"  公司：{data['company_name']} ({data['currency']})")
     print(f"  取得 {n_quarters} 季數據")
 
-    print("生成 Claude 分析...")
+    print(f"生成 {provider} 分析...")
     data['analysis'] = generate_earnings_analysis(
-        ticker, data['company_name'], data, data['currency']
+        ticker, data['company_name'], data, data['currency'], provider=provider
     )
 
     out_dir = BASE_DIR / "docs" / "data" / "earnings"
@@ -1754,12 +1782,12 @@ def cmd_earnings(ticker: str):
 
 # ── Refresh Earnings command ──────────────────────────────
 
-def cmd_refresh_earnings(deploy: bool = False, force: bool = False):
+def cmd_refresh_earnings(deploy: bool = False, force: bool = False, provider: str = "claude"):
     """Smart refresh all tickers in earnings_watchlist.json."""
     import json as _json
     from datetime import date
     from backend import earnings_fetcher
-    from backend.claude_browser import generate_earnings_analysis
+    from backend.ai_provider import generate_earnings_analysis
 
     watchlist_path = BASE_DIR / "earnings_watchlist.json"
     if not watchlist_path.exists():
@@ -1824,13 +1852,13 @@ def cmd_refresh_earnings(deploy: bool = False, force: bool = False):
             continue
 
         if action == "FULL":
-            print(f"  FULL 刷新（yfinance + Claude 分析）")
+            print(f"  FULL 刷新（yfinance + {provider} 分析）")
             new_data["analysis"] = generate_earnings_analysis(
-                ticker, new_data["company_name"], new_data, new_data["currency"]
+                ticker, new_data["company_name"], new_data, new_data["currency"], provider=provider
             )
             results["full"].append(ticker)
         else:
-            print(f"  UPDATE（更新數字，保留 Claude 分析）")
+            print(f"  UPDATE（更新數字，保留既有分析）")
             new_data["analysis"] = existing.get("analysis", "")
             results["update"].append(ticker)
 
@@ -1877,28 +1905,32 @@ def main():
         channel_id = None
         if len(args) >= 3 and args[1] == "--channel":
             channel_id = args[2]
-        cmd_run(channel_id)
+        cmd_run(channel_id, provider=_extract_provider(args))
 
     elif cmd == "approve":
-        cmd_approve()
+        cmd_approve(provider=_extract_provider(args))
 
     elif cmd == "retry":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py retry <video_id>", file=sys.stderr)
             sys.exit(1)
-        cmd_retry(args[1])
+        cmd_retry(rest[1], provider=provider)
 
     elif cmd == "reprocess":
-        cmd_reprocess()
+        cmd_reprocess(provider=_extract_provider(args))
 
     elif cmd == "build":
         cmd_build()
 
     elif cmd == "cards":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py cards <video_id>", file=sys.stderr)
             sys.exit(1)
-        cmd_cards(args[1])
+        cmd_cards(rest[1], provider=provider)
 
     elif cmd == "video":
         if len(args) < 2:
@@ -1907,10 +1939,12 @@ def main():
         cmd_video(args[1])
 
     elif cmd == "shorts-cards":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py shorts-cards <video_id>", file=sys.stderr)
             sys.exit(1)
-        cmd_shorts_cards(args[1])
+        cmd_shorts_cards(rest[1], provider=provider)
 
     elif cmd == "shorts-video":
         if len(args) < 2:
@@ -1922,14 +1956,14 @@ def main():
         cmd_deploy()
 
     elif cmd == "notify":
-        cmd_notify_latest()
+        cmd_notify_latest(provider=_extract_provider(args))
 
     elif cmd == "setup-browser":
-        from backend.claude_browser import setup_login
-        setup_login()
+        from backend.ai_provider import setup_login
+        setup_login(provider=_extract_provider(args))
 
     elif cmd == "backfill-analysis":
-        cmd_backfill_analysis()
+        cmd_backfill_analysis(provider=_extract_provider(args))
 
     elif cmd == "trending":
         days = 30
@@ -1966,28 +2000,32 @@ def main():
         cmd_fix_dates()
 
     elif cmd == "score":
-        flags = set(a for a in args[1:] if a.startswith("--"))
-        positional = [a for a in args[1:] if not a.startswith("--")]
+        provider = _extract_provider(args)
+        rest = _strip_provider(args[1:])
+        flags = set(a for a in rest if a.startswith("--"))
+        positional = [a for a in rest if not a.startswith("--")]
         m4_only = "--m4-only" in flags
         force_m1 = "--force" in flags
         run_m1 = force_m1 or (not m4_only)
         if "--all" in flags or (not positional):
-            cmd_score(all_episodes=True, run_m1=run_m1)
+            cmd_score(all_episodes=True, run_m1=run_m1, provider=provider)
         else:
-            cmd_score(video_id=positional[0], run_m1=run_m1)
+            cmd_score(video_id=positional[0], run_m1=run_m1, provider=provider)
 
     elif cmd == "weekly":
-        cmd_weekly()
+        cmd_weekly(provider=_extract_provider(args))
 
     elif cmd == "earnings":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py earnings <ticker>", file=sys.stderr)
             sys.exit(1)
-        cmd_earnings(args[1])
+        cmd_earnings(rest[1], provider=provider)
 
     elif cmd == "refresh-earnings":
         flags = set(args[1:])
-        cmd_refresh_earnings(deploy="--deploy" in flags, force="--force" in flags)
+        cmd_refresh_earnings(deploy="--deploy" in flags, force="--force" in flags, provider=_extract_provider(args))
 
     elif cmd == "send-confirmations":
         cmd_send_confirmations()

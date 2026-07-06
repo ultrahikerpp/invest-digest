@@ -293,19 +293,19 @@ def get_latest_videos(channel_id: str, max_results: int = 10) -> list[dict]:
         print(f"  Error fetching videos for {channel_id}: {e}")
         return []
 
-# ── Summary (Claude browser) ─────────────────────────────
+# ── Summary (AI browser provider) ─────────────────────────
 
-def generate_summary(transcript: str, title: str) -> str:
-    """Generate investment summary via Claude browser automation."""
-    from backend.claude_browser import generate_summary as _claude_summary
-    return _claude_summary(transcript, title)
+def generate_summary(transcript: str, title: str, provider: str = "claude") -> str:
+    """Generate investment summary via the selected AI browser provider."""
+    from backend.ai_provider import generate_summary as _generate_summary
+    return _generate_summary(transcript, title, provider=provider)
 
-# ── Hashtag Generation (Claude browser) ──────────────────
+# ── Hashtag Generation (AI browser provider) ──────────────
 
-def generate_hashtags(summary_body: str, channel_name: str) -> str:
-    """Generate 5 keyword hashtags + 1 channel hashtag via Claude browser."""
-    from backend.claude_browser import generate_hashtags as _claude_hashtags
-    return _claude_hashtags(summary_body, channel_name)
+def generate_hashtags(summary_body: str, channel_name: str, provider: str = "claude") -> str:
+    """Generate 5 keyword hashtags + 1 channel hashtag via the selected AI browser provider."""
+    from backend.ai_provider import generate_hashtags as _generate_hashtags
+    return _generate_hashtags(summary_body, channel_name, provider=provider)
 
 
 # ── Email Notification ───────────────────────────────────

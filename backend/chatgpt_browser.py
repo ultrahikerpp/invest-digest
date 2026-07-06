@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Generate summaries/hashtags by automating Claude's web UI via Playwright.
+Generate summaries/hashtags by automating ChatGPT's web UI via Playwright.
 
-Strategy: extract claude.ai session cookies directly from the user's Chrome
-browser (no login step needed), inject them into a Playwright context, and
-interact with the chat interface headlessly.
+Mirrors backend/claude_browser.py's approach: extract chatgpt.com session
+cookies directly from the user's Chrome browser (no login step needed),
+inject them into a Playwright context, and interact with the chat interface
+headlessly.
 
 Prerequisites:
-  1. Be logged in to claude.ai in Chrome at least once.
+  1. Be logged in to chatgpt.com in Chrome at least once.
   2. On first run, macOS may prompt "python3 wants to access your keychain" —
      click Allow. This is needed to decrypt Chrome's cookie database.
 """
@@ -15,35 +16,15 @@ from __future__ import annotations
 
 import re
 import time
-from pathlib import Path
 
-CLAUDE_NEW_CHAT_URL = "https://claude.ai/new"
-
-
-# ── Prompt builders (shared across providers) ─────────────────
-
-from backend.prompts import (
-    build_summary_prompt as _build_summary_prompt,
-    build_fomo_analysis_prompt as _build_fomo_analysis_prompt,
-    build_analysis_prompt as _build_analysis_prompt,
-    build_m1_prompt as _build_m1_prompt,
-    build_hashtag_prompt as _build_hashtag_prompt,
-    build_newsletter_summary_prompt as _build_newsletter_summary_prompt,
-    build_card_points_prompt,
-    build_newsletter_card_points_prompt,
-    build_card_points_shorts_prompt,
-    build_newsletter_card_points_shorts_prompt,
-    build_earnings_analysis_prompt,
-)
+CHATGPT_NEW_CHAT_URL = "https://chatgpt.com/"
 
 
 # ── Cookie extraction ─────────────────────────────────────
 
-def _get_claude_cookies() -> list[dict]:
+def _get_chatgpt_cookies() -> list[dict]:
     """
-    Extract claude.ai and Google account cookies from the user's Chrome browser.
-    Google cookies are needed so that if claude.ai redirects to Google OAuth,
-    the Playwright session can re-authenticate silently without prompting for login.
+    Extract chatgpt.com and openai.com cookies from the user's Chrome browser.
 
     macOS: Chrome encrypts cookies with a key stored in the system Keychain.
            On first run, macOS will ask 'python3 wants to access your keychain' — click Allow.
@@ -62,15 +43,15 @@ def _get_claude_cookies() -> list[dict]:
                 "sameSite": "Lax",
             }
 
-        claude_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="claude.ai")]
-        google_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="google.com")]
+        chatgpt_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="chatgpt.com")]
+        openai_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="openai.com")]
 
-        if not claude_cookies:
+        if not chatgpt_cookies:
             raise RuntimeError(
-                "未找到 claude.ai cookies，請確認已在 Chrome 中登入 claude.ai"
+                "未找到 chatgpt.com cookies，請確認已在 Chrome 中登入 chatgpt.com"
             )
 
-        return claude_cookies + google_cookies
+        return chatgpt_cookies + openai_cookies
 
     except ImportError:
         raise RuntimeError(
@@ -82,17 +63,22 @@ def _get_claude_cookies() -> list[dict]:
         raise RuntimeError(
             f"無法從 Chrome 取得登入狀態：{e}\n"
             "請確認：\n"
-            "  1. Chrome 已安裝且曾登入過 claude.ai\n"
+            "  1. Chrome 已安裝且曾登入過 chatgpt.com\n"
             "  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」"
         )
 
 
 # ── Browser helpers ───────────────────────────────────────
+#
+# NOTE: the selectors below (#prompt-textarea, [data-message-author-role],
+# [data-testid="stop-button"]) are best-guess pending live verification in
+# this task's Step 2. If the smoke test fails, open chatgpt.com in Chrome
+# DevTools, inspect the prompt input and the assistant message container,
+# and update these selectors accordingly.
 
 def _extract_last_response(page) -> str:
-    """Extract the last assistant message text from the Claude page as markdown."""
+    """Extract the last assistant message text from the ChatGPT page as markdown."""
     return page.evaluate("""() => {
-        // Convert a DOM node to markdown text, preserving headings, lists, etc.
         function nodeToMd(node) {
             if (node.nodeType === 3) return node.textContent;
             const tag = (node.tagName || '').toLowerCase();
@@ -127,16 +113,8 @@ def _extract_last_response(page) -> str:
             return children();
         }
 
-        // Primary: claude.ai uses div[class*="font-claude-response"] for response body
-        let els = document.querySelectorAll('div[class*="font-claude-response"]');
+        const els = document.querySelectorAll('[data-message-author-role="assistant"]');
         if (els.length) return nodeToMd(els[els.length - 1]).trim();
-
-        // Fallback: paragraph-level response class
-        els = document.querySelectorAll('p[class*="font-claude-response-body"]');
-        if (els.length) {
-            return Array.from(els).map(el => el.innerText.trim()).join('\\n\\n');
-        }
-
         return '';
     }""") or ""
 
@@ -156,24 +134,23 @@ def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
             stable_count = 0
             prev = current
         time.sleep(1)
-    return prev  # return whatever we have on timeout
+    return prev
 
 
 def chat(prompt: str, timeout_secs: int = 180) -> str:
     """
-    Inject Chrome cookies into a Playwright browser, open claude.ai/new,
-    send `prompt`, and return Claude's response text.
+    Inject Chrome cookies into a Playwright browser, open chatgpt.com,
+    send `prompt`, and return ChatGPT's response text.
 
     No login step needed — cookies are read from the user's Chrome browser.
     """
     from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
 
-    # Extract login session from Chrome
-    cookies = _get_claude_cookies()
+    cookies = _get_chatgpt_cookies()
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            channel="chrome",  # use installed Chrome to reduce bot detection
+            channel="chrome",
             headless=False,
             args=[
                 "--no-first-run",
@@ -187,11 +164,9 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
 
         try:
             page = ctx.new_page()
-            page.goto(CLAUDE_NEW_CHAT_URL, wait_until="domcontentloaded", timeout=60000)
-            time.sleep(1)  # let JS redirect settle before checking URL
+            page.goto(CHATGPT_NEW_CHAT_URL, wait_until="domcontentloaded", timeout=60000)
+            time.sleep(1)
 
-            # ── Verify session is valid ───────────────────
-            # Give the page a moment to settle before checking state
             time.sleep(2)
             url = page.url
             page_title = page.title().lower()
@@ -205,87 +180,70 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
                     return True
                 return False
 
-            # Google OAuth redirect: cookies should handle it silently,
-            # but wait up to 15s for the redirect back to claude.ai.
-            if "accounts.google.com" in url or "google.com/signin" in url:
-                print(
-                    "\n  [claude] ⚠️  偵測到 Google 登入重導，等待自動驗證...",
-                    flush=True,
+            if "auth0.openai.com" in url or "auth.openai.com" in url:
+                raise RuntimeError(
+                    "ChatGPT 登入狀態已過期或需要重新驗證。請在 Chrome 中重新登入 chatgpt.com，"
+                    "然後重新執行 runner.py"
                 )
-                try:
-                    page.wait_for_url("**/claude.ai/**", timeout=15000)
-                    page.wait_for_selector('[contenteditable="true"]', timeout=15000)
-                    print("  [claude] Google 驗證完成，繼續執行")
-                except PWTimeout:
-                    raise RuntimeError(
-                        "Google 登入驗證逾時。請在 Chrome 中確認已登入 Google 帳號，"
-                        "然後重新執行 runner.py"
-                    )
             elif _is_cloudflare():
                 print(
-                    "\n  [claude] ⚠️  偵測到 Cloudflare 驗證，"
+                    "\n  [chatgpt] ⚠️  偵測到 Cloudflare 驗證，"
                     "請在瀏覽器視窗中手動勾選核取方塊後等待...",
                     flush=True,
                 )
                 try:
-                    page.wait_for_selector('[contenteditable="true"]', timeout=120000)
-                    print("  [claude] Cloudflare 驗證完成，繼續執行")
+                    page.wait_for_selector('#prompt-textarea', timeout=120000)
+                    print("  [chatgpt] Cloudflare 驗證完成，繼續執行")
                 except PWTimeout:
                     raise RuntimeError(
                         "等待 Cloudflare 驗證逾時（120 秒）。"
-                        "請在 Chrome 中重新登入 claude.ai 後再試。"
+                        "請在 Chrome 中重新登入 chatgpt.com 後再試。"
                     )
             else:
-                print("  [claude] 等待介面載入...", end="", flush=True)
+                print("  [chatgpt] 等待介面載入...", end="", flush=True)
                 try:
-                    page.wait_for_selector('[contenteditable="true"]', timeout=30000)
+                    page.wait_for_selector('#prompt-textarea', timeout=30000)
                     print(" 完成")
                 except PWTimeout:
                     raise RuntimeError(
-                        "Claude 登入狀態已過期。請在 Chrome 中重新登入 claude.ai，"
+                        "ChatGPT 登入狀態已過期。請在 Chrome 中重新登入 chatgpt.com，"
                         "然後重新執行 runner.py"
                     )
 
-            # ── Input prompt ──────────────────────────────
-            input_el = page.locator('[contenteditable="true"]').first
+            input_el = page.locator('#prompt-textarea').first
             input_el.click()
 
-            # execCommand is reliable for React contenteditable
             page.evaluate(
                 "(text) => document.execCommand('insertText', false, text)",
                 prompt,
             )
             time.sleep(0.4)
 
-            # ── Submit ────────────────────────────────────
             page.keyboard.press("Enter")
-            print("  [claude] 傳送完成，等待回應...", end="", flush=True)
+            print("  [chatgpt] 傳送完成，等待回應...", end="", flush=True)
 
-            # ── Wait for generation to complete ───────────
-            # Strategy A: "Stop response" button appears → disappears
             stop_appeared = False
             try:
                 page.wait_for_selector(
-                    'button[aria-label="Stop response"]',
+                    '[data-testid="stop-button"]',
                     timeout=12000,
                 )
                 stop_appeared = True
                 page.wait_for_selector(
-                    'button[aria-label="Stop response"]',
+                    '[data-testid="stop-button"]',
                     state="hidden",
                     timeout=timeout_secs * 1000,
                 )
             except PWTimeout:
                 if not stop_appeared:
-                    pass  # fall through to stability check
+                    pass
 
-            # Strategy B: stability check (handles edge cases)
             time.sleep(1)
             response = _wait_for_stable_response(page, timeout_secs=30)
             print(" 完成")
 
             if not response:
-                raise RuntimeError("無法擷取回應內容，請確認 claude.ai 已正常回應")
+                raise RuntimeError("無法擷取回應內容，請確認 chatgpt.com 已正常回應")
 
             return response
 
@@ -297,18 +255,19 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
 # ── Public API ────────────────────────────────────────────
 
 def generate_summary(transcript: str, title: str) -> str:
-    """Generate investment summary via Claude browser automation."""
+    """Generate investment summary via ChatGPT browser automation."""
+    from backend import prompts
+
     is_fomo_analysis = "深入分析" in title or "深入分析" in transcript[:300]
-    
+
     if is_fomo_analysis:
-        prompt = _build_fomo_analysis_prompt(transcript, title)
+        prompt = prompts.build_fomo_analysis_prompt(transcript, title)
     else:
-        prompt = _build_summary_prompt(transcript, title)
-        
+        prompt = prompts.build_summary_prompt(transcript, title)
+
     try:
         summary = chat(prompt, timeout_secs=180)
-        
-        # Post-processing: Append Disclaimer for accountability
+
         disclaimer = (
             "\n\n---\n"
             "**⚠️ 負責任 AI 聲明與投資風險提示：**\n"
@@ -320,15 +279,32 @@ def generate_summary(transcript: str, title: str) -> str:
     except Exception as e:
         return (
             f"# {title}\n\n"
-            f"⚠️ Claude 瀏覽器摘要失敗：{e}\n\n"
+            f"⚠️ ChatGPT 瀏覽器摘要失敗：{e}\n\n"
             f"## 內容前段\n\n{transcript[:1000]}"
         )
 
 
+def generate_newsletter_summary(body: str, title: str) -> str:
+    """Generate investment summary for a newsletter article via ChatGPT browser automation."""
+    from backend import prompts
+
+    prompt = prompts.build_newsletter_summary_prompt(body, title)
+    try:
+        return chat(prompt, timeout_secs=180)
+    except Exception as e:
+        return (
+            f"# {title}\n\n"
+            f"⚠️ ChatGPT 瀏覽器摘要失敗：{e}\n\n"
+            f"## 電子報前段\n\n{body[:1000]}"
+        )
+
+
 def generate_hashtags(summary_body: str, channel_name: str) -> str:
-    """Generate 5 keyword hashtags via Claude browser automation."""
+    """Generate 5 keyword hashtags via ChatGPT browser automation."""
+    from backend import prompts
+
     channel_tag = "#" + re.sub(r'\s+', '', channel_name)
-    prompt = _build_hashtag_prompt(summary_body)
+    prompt = prompts.build_hashtag_prompt(summary_body)
     try:
         raw = chat(prompt, timeout_secs=30)
         tags = [t if t.startswith("#") else f"#{t}" for t in raw.split() if t][:5]
@@ -342,87 +318,117 @@ def generate_card_points(sections: dict[str, str]) -> tuple[dict[str, list[str]]
     """
     Given a dict of {section_title: content}, return ({section_title: [bullet points]}, hook_text).
     All sections are processed in a single browser session (one chat call).
-
-    Points: 4-5 per section, 8-14 Chinese characters each (short, punchy).
-    Hook: 15-20 character sentence for the opening card.
     """
+    from backend import prompts
     from backend.browser_common import parse_hook_sections
 
     section_names = list(sections.keys())
     sections_text = "\n\n".join(
         f"## {title}\n{content}" for title, content in sections.items()
     )
-    prompt = build_card_points_prompt(sections_text)
+    prompt = prompts.build_card_points_prompt(sections_text)
 
     try:
         raw = chat(prompt, timeout_secs=120)
     except Exception as e:
-        print(f"  [claude] 批次金句生成失敗：{e}")
+        print(f"  [chatgpt] 批次金句生成失敗：{e}")
         return {name: [] for name in section_names}, ""
 
     return parse_hook_sections(raw, max_points=5)
 
 
 def generate_newsletter_card_points(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
-    """
-    Newsletter-specific variant of generate_card_points.
-
-    Newsletter content is analytically dense (6+ sub-topics, long sentences).
-    Uses relaxed constraints: 15-25 Chinese chars per bullet, 3-4 bullets per section.
-    The 各主題重點 section is summarised across all sub-topics into key takeaways.
-    """
+    """Newsletter-specific variant of generate_card_points."""
+    from backend import prompts
     from backend.browser_common import parse_hook_sections
 
     section_names = list(sections.keys())
     sections_text = "\n\n".join(
         f"## {title}\n{content}" for title, content in sections.items()
     )
-    prompt = build_newsletter_card_points_prompt(sections_text)
+    prompt = prompts.build_newsletter_card_points_prompt(sections_text)
 
     try:
         raw = chat(prompt, timeout_secs=120)
     except Exception as e:
-        print(f"  [claude] 電子報批次金句生成失敗：{e}")
+        print(f"  [chatgpt] 電子報批次金句生成失敗：{e}")
         return {name: [] for name in section_names}, ""
 
     return parse_hook_sections(raw, max_points=4)
 
 
-# ── JSON cleanup (shared across providers) ─────────────────
+def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
+    """Generate Shorts-optimised bullet points for each section, plus a HOOK sentence."""
+    from backend import prompts
+    from backend.browser_common import parse_hook_sections
 
-from backend.browser_common import clean_json_raw as _clean_json_raw
+    section_names = list(sections.keys())
+    sections_text = "\n\n".join(
+        f"## {title}\n{content}" for title, content in sections.items()
+    )
+    prompt = prompts.build_card_points_shorts_prompt(sections_text)
+
+    try:
+        raw = chat(prompt, timeout_secs=120)
+    except Exception as e:
+        print(f"  [chatgpt] Shorts 金句生成失敗：{e}")
+        return {name: [] for name in section_names}, ""
+
+    return parse_hook_sections(raw, max_points=5)
+
+
+def generate_newsletter_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
+    """Newsletter-specific variant of generate_card_points_shorts."""
+    from backend import prompts
+    from backend.browser_common import parse_hook_sections
+
+    section_names = list(sections.keys())
+    sections_text = "\n\n".join(
+        f"## {title}\n{content}" for title, content in sections.items()
+    )
+    prompt = prompts.build_newsletter_card_points_shorts_prompt(sections_text)
+
+    try:
+        raw = chat(prompt, timeout_secs=120)
+    except Exception as e:
+        print(f"  [chatgpt] 電子報 Shorts 金句生成失敗：{e}")
+        return {name: [] for name in section_names}, ""
+
+    return parse_hook_sections(raw, max_points=4)
 
 
 def extract_analysis(summary_body: str) -> dict:
     """
-    Extract structured mentions and industries from a summary via Claude.
+    Extract structured mentions and industries from a summary via ChatGPT.
     Returns {"mentions": [...], "industries": [...]} or empty lists on failure.
     Retries once on transient errors (empty response, JSON parse failure).
     """
     import json
+    from backend import prompts
+    from backend.browser_common import clean_json_raw
 
-    prompt = _build_analysis_prompt(summary_body)
+    prompt = prompts.build_analysis_prompt(summary_body)
 
     for attempt in range(2):
         try:
             raw = chat(prompt, timeout_secs=60)
         except RuntimeError as e:
             if attempt == 0:
-                print(f"  [claude] 回應擷取失敗，重試... ({e})")
+                print(f"  [chatgpt] 回應擷取失敗，重試... ({e})")
                 continue
-            print(f"  [claude] 分析萃取失敗：{e}")
+            print(f"  [chatgpt] 分析萃取失敗：{e}")
             return {"mentions": [], "industries": []}
 
         raw = raw.strip()
         if not raw:
             if attempt == 0:
-                print(f"  [claude] 回應為空，重試...")
+                print(f"  [chatgpt] 回應為空，重試...")
                 continue
-            print(f"  [claude] 分析萃取失敗：回應為空")
+            print(f"  [chatgpt] 分析萃取失敗：回應為空")
             return {"mentions": [], "industries": []}
 
         try:
-            cleaned = _clean_json_raw(raw)
+            cleaned = clean_json_raw(raw)
             if not cleaned:
                 raise ValueError("清理後內容為空")
             data = json.loads(cleaned)
@@ -432,39 +438,26 @@ def extract_analysis(summary_body: str) -> dict:
             }
         except Exception as e:
             if attempt == 0:
-                print(f"  [claude] JSON 解析失敗，重試... ({e})")
+                print(f"  [chatgpt] JSON 解析失敗，重試... ({e})")
                 continue
-            print(f"  [claude] 分析萃取失敗：{e}")
-            print(f"  [claude] 原始回應前 200 字：{raw[:200]!r}")
+            print(f"  [chatgpt] 分析萃取失敗：{e}")
+            print(f"  [chatgpt] 原始回應前 200 字：{raw[:200]!r}")
 
     return {"mentions": [], "industries": []}
 
 
-# ── Newsletter summary ─────────────────────────────────────
-
-def generate_newsletter_summary(body: str, title: str) -> str:
-    """Generate investment summary for a newsletter article via Claude browser automation."""
-    prompt = _build_newsletter_summary_prompt(body, title)
-    try:
-        return chat(prompt, timeout_secs=180)
-    except Exception as e:
-        return (
-            f"# {title}\n\n"
-            f"⚠️ Claude 瀏覽器摘要失敗：{e}\n\n"
-            f"## 電子報前段\n\n{body[:1000]}"
-        )
-
-
 def score_m1(summary_body: str) -> float:
     """
-    Score summary on M1 (signal quality) via Claude browser.
+    Score summary on M1 (signal quality) via ChatGPT browser.
 
-    Returns total/3 normalised to 0.0–1.0.
+    Returns total/3 normalised to 0.0-1.0.
     Returns -1.0 on failure (distinguishable from a genuine 0 score).
     """
     import json
+    from backend import prompts
+    from backend.browser_common import clean_json_raw
 
-    prompt = _build_m1_prompt(summary_body)
+    prompt = prompts.build_m1_prompt(summary_body)
     try:
         raw = chat(prompt, timeout_secs=30)
     except Exception as e:
@@ -477,7 +470,7 @@ def score_m1(summary_body: str) -> float:
         return -1.0
 
     try:
-        cleaned = _clean_json_raw(raw)
+        cleaned = clean_json_raw(raw)
         if not cleaned:
             raise ValueError("清理後內容為空")
         data = json.loads(cleaned)
@@ -488,73 +481,26 @@ def score_m1(summary_body: str) -> float:
         return -1.0
 
 
-def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
-    """
-    Generate Shorts-optimised bullet points for each section, plus a HOOK sentence.
+def generate_earnings_analysis(ticker: str, company_name: str, data: dict, currency: str = 'USD') -> str:
+    """Generate quarterly earnings analysis via ChatGPT browser automation."""
+    from backend import prompts
 
-    Points: 2-3 per section, 8-12 Chinese characters each.
-    Hook: 15-20 character sentence for the opening card.
-
-    Returns (points_dict, hook_text).
-    """
-    from backend.browser_common import parse_hook_sections
-
-    section_names = list(sections.keys())
-    sections_text = "\n\n".join(
-        f"## {title}\n{content}" for title, content in sections.items()
-    )
-    prompt = build_card_points_shorts_prompt(sections_text)
-
+    prompt = prompts.build_earnings_analysis_prompt(ticker, company_name, data, currency)
     try:
-        raw = chat(prompt, timeout_secs=120)
+        return chat(prompt, timeout_secs=120)
     except Exception as e:
-        print(f"  [claude] Shorts 金句生成失敗：{e}")
-        return {name: [] for name in section_names}, ""
-
-    return parse_hook_sections(raw, max_points=5)
-
-
-def generate_newsletter_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
-    """
-    Newsletter-specific variant of generate_card_points_shorts.
-
-    Relaxed constraints for dense analytical content: 15-25 chars per bullet, 3-4 per section.
-    """
-    from backend.browser_common import parse_hook_sections
-
-    section_names = list(sections.keys())
-    sections_text = "\n\n".join(
-        f"## {title}\n{content}" for title, content in sections.items()
-    )
-    prompt = build_newsletter_card_points_shorts_prompt(sections_text)
-
-    try:
-        raw = chat(prompt, timeout_secs=120)
-    except Exception as e:
-        print(f"  [claude] 電子報 Shorts 金句生成失敗：{e}")
-        return {name: [] for name in section_names}, ""
-
-    return parse_hook_sections(raw, max_points=4)
+        return f"⚠️ ChatGPT 分析失敗：{e}"
 
 
 def setup_login() -> None:
     """
-    Verify that claude.ai cookies are accessible from Chrome.
+    Verify that chatgpt.com cookies are accessible from Chrome.
     No browser login needed — this just confirms the setup is correct.
     """
-    print("驗證 Chrome 中的 claude.ai 登入狀態...")
+    print("驗證 Chrome 中的 chatgpt.com 登入狀態...")
     try:
-        cookies = _get_claude_cookies()
-        print(f"✓ 找到 {len(cookies)} 個 claude.ai cookies")
-        print("✓ 設定完成！執行 python3 runner.py run 即可開始使用 Claude 摘要")
+        cookies = _get_chatgpt_cookies()
+        print(f"✓ 找到 {len(cookies)} 個 chatgpt.com cookies")
+        print("✓ 設定完成！執行 python3 runner.py run --provider chatgpt 即可開始使用 ChatGPT 摘要")
     except Exception as e:
         print(f"❌ {e}")
-
-
-def generate_earnings_analysis(ticker: str, company_name: str, data: dict, currency: str = 'USD') -> str:
-    """Generate quarterly earnings analysis via Claude browser automation."""
-    prompt = build_earnings_analysis_prompt(ticker, company_name, data, currency)
-    try:
-        return chat(prompt, timeout_secs=120)
-    except Exception as e:
-        return f"⚠️ Claude 分析失敗：{e}"

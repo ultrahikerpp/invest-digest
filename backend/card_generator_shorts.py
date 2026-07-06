@@ -316,6 +316,7 @@ def generate_cards_shorts(
     channel_name: str,
     output_dir: Path,
     hashtags: str = "",
+    provider: str = "claude",
 ) -> list[Path]:
     """
     Generate Shorts-optimised PNG cards (1080×1920, 9:16).
@@ -324,7 +325,7 @@ def generate_cards_shorts(
       [hook_card, section_card×N, cta_card]
     """
     from backend.card_generator import parse_summary, SECTION_ORDER, _fallback_points, _extract_structured_points, _get_claude_points
-    from backend.claude_browser import generate_card_points_shorts
+    from backend.ai_provider import generate_card_points_shorts
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -338,28 +339,28 @@ def generate_cards_shorts(
 
     total_section_cards = len(ordered)
 
-    # Generate Shorts bullet points + hook via Claude
-    print(f"  [shorts] 用 Claude 批次生成 Shorts 金句 + Hook...")
+    # Generate Shorts bullet points + hook via the selected AI provider
+    print(f"  [shorts] 用 {provider} 批次生成 Shorts 金句 + Hook...")
     sections_dict = {t: c for t, c in ordered}
 
     _NEWSLETTER_SECTIONS = {"本期主題總覽", "各主題重點", "核心觀點"}
     is_newsletter = any(k in sections for k in _NEWSLETTER_SECTIONS)
 
     if is_newsletter:
-        from backend.claude_browser import generate_newsletter_card_points_shorts
-        # Pre-extract structured sections; only send the rest to Claude
+        from backend.ai_provider import generate_newsletter_card_points_shorts
+        # Pre-extract structured sections; only send the rest to the AI provider
         pre_extracted = {}
-        claude_sections = {}
+        ai_sections = {}
         for name, content in sections_dict.items():
             pts = _extract_structured_points(name, content)
             if pts:
                 pre_extracted[name] = pts
             else:
-                claude_sections[name] = content[:500]  # cap content per section
-        all_points, hook_text = generate_newsletter_card_points_shorts(claude_sections)
+                ai_sections[name] = content[:500]  # cap content per section
+        all_points, hook_text = generate_newsletter_card_points_shorts(ai_sections, provider=provider)
         all_points.update(pre_extracted)
     else:
-        all_points, hook_text = generate_card_points_shorts(sections_dict)
+        all_points, hook_text = generate_card_points_shorts(sections_dict, provider=provider)
 
     cards: list[Path] = []
 
