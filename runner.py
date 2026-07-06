@@ -218,12 +218,14 @@ def _extract_provider(args: list[str]) -> str:
     """Pull --provider <name> out of an argv-style list; default 'claude'; validate."""
     if "--provider" in args:
         i = args.index("--provider")
-        if i + 1 < len(args):
-            provider = args[i + 1]
-            if provider not in ("claude", "chatgpt"):
-                print(f"ERROR: unknown --provider {provider!r} (choices: claude, chatgpt)", file=sys.stderr)
-                sys.exit(1)
-            return provider
+        if i + 1 >= len(args):
+            print("ERROR: --provider requires a value (choices: claude, chatgpt)", file=sys.stderr)
+            sys.exit(1)
+        provider = args[i + 1]
+        if provider not in ("claude", "chatgpt"):
+            print(f"ERROR: unknown --provider {provider!r} (choices: claude, chatgpt)", file=sys.stderr)
+            sys.exit(1)
+        return provider
     return "claude"
 
 
@@ -1909,10 +1911,12 @@ def main():
         cmd_approve(provider=_extract_provider(args))
 
     elif cmd == "retry":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py retry <video_id>", file=sys.stderr)
             sys.exit(1)
-        cmd_retry(args[1], provider=_extract_provider(args))
+        cmd_retry(rest[1], provider=provider)
 
     elif cmd == "reprocess":
         cmd_reprocess(provider=_extract_provider(args))
@@ -1921,10 +1925,12 @@ def main():
         cmd_build()
 
     elif cmd == "cards":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py cards <video_id>", file=sys.stderr)
             sys.exit(1)
-        cmd_cards(args[1], provider=_extract_provider(args))
+        cmd_cards(rest[1], provider=provider)
 
     elif cmd == "video":
         if len(args) < 2:
@@ -1933,10 +1939,12 @@ def main():
         cmd_video(args[1])
 
     elif cmd == "shorts-cards":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py shorts-cards <video_id>", file=sys.stderr)
             sys.exit(1)
-        cmd_shorts_cards(args[1], provider=_extract_provider(args))
+        cmd_shorts_cards(rest[1], provider=provider)
 
     elif cmd == "shorts-video":
         if len(args) < 2:
@@ -2008,10 +2016,12 @@ def main():
         cmd_weekly(provider=_extract_provider(args))
 
     elif cmd == "earnings":
-        if len(args) < 2:
+        provider = _extract_provider(args)
+        rest = _strip_provider(args)
+        if len(rest) < 2:
             print("Usage: runner.py earnings <ticker>", file=sys.stderr)
             sys.exit(1)
-        cmd_earnings(args[1], provider=_extract_provider(args))
+        cmd_earnings(rest[1], provider=provider)
 
     elif cmd == "refresh-earnings":
         flags = set(args[1:])
