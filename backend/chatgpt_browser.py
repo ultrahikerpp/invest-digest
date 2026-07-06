@@ -14,6 +14,7 @@ Prerequisites:
 """
 from __future__ import annotations
 
+import re
 import time
 
 CHATGPT_NEW_CHAT_URL = "https://chatgpt.com/"
@@ -249,3 +250,257 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
         finally:
             ctx.close()
             browser.close()
+
+
+# ── Public API ────────────────────────────────────────────
+
+def generate_summary(transcript: str, title: str) -> str:
+    """Generate investment summary via ChatGPT browser automation."""
+    from backend import prompts
+
+    is_fomo_analysis = "深入分析" in title or "深入分析" in transcript[:300]
+
+    if is_fomo_analysis:
+        prompt = prompts.build_fomo_analysis_prompt(transcript, title)
+    else:
+        prompt = prompts.build_summary_prompt(transcript, title)
+
+    try:
+        summary = chat(prompt, timeout_secs=180)
+
+        disclaimer = (
+            "\n\n---\n"
+            "**⚠️ 負責任 AI 聲明與投資風險提示：**\n"
+            "1. 本摘要由 AI 自動生成，旨在萃取作者之邏輯框架與分析觀點，不代表本平台立場。\n"
+            "2. 投資涉及風險，摘要內容可能遺漏原文關鍵細節或產生解讀偏差，**請務必點擊上方連結閱讀原文** 以獲得完整資訊。\n"
+            "3. 摘要中提及之情境規劃與機率分佈均為作者個人觀點，不應視為具體投資建議或獲利保證。\n"
+        )
+        return summary + disclaimer
+    except Exception as e:
+        return (
+            f"# {title}\n\n"
+            f"⚠️ ChatGPT 瀏覽器摘要失敗：{e}\n\n"
+            f"## 內容前段\n\n{transcript[:1000]}"
+        )
+
+
+def generate_newsletter_summary(body: str, title: str) -> str:
+    """Generate investment summary for a newsletter article via ChatGPT browser automation."""
+    from backend import prompts
+
+    prompt = prompts.build_newsletter_summary_prompt(body, title)
+    try:
+        return chat(prompt, timeout_secs=180)
+    except Exception as e:
+        return (
+            f"# {title}\n\n"
+            f"⚠️ ChatGPT 瀏覽器摘要失敗：{e}\n\n"
+            f"## 電子報前段\n\n{body[:1000]}"
+        )
+
+
+def generate_hashtags(summary_body: str, channel_name: str) -> str:
+    """Generate 5 keyword hashtags via ChatGPT browser automation."""
+    from backend import prompts
+
+    channel_tag = "#" + re.sub(r'\s+', '', channel_name)
+    prompt = prompts.build_hashtag_prompt(summary_body)
+    try:
+        raw = chat(prompt, timeout_secs=30)
+        tags = [t if t.startswith("#") else f"#{t}" for t in raw.split() if t][:5]
+        tags.append(channel_tag)
+        return " ".join(tags)
+    except Exception:
+        return f"#投資 #財經 #重點摘要 #市場分析 #股市 {channel_tag}"
+
+
+def generate_card_points(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
+    """
+    Given a dict of {section_title: content}, return ({section_title: [bullet points]}, hook_text).
+    All sections are processed in a single browser session (one chat call).
+    """
+    from backend import prompts
+    from backend.browser_common import parse_hook_sections
+
+    section_names = list(sections.keys())
+    sections_text = "\n\n".join(
+        f"## {title}\n{content}" for title, content in sections.items()
+    )
+    prompt = prompts.build_card_points_prompt(sections_text)
+
+    try:
+        raw = chat(prompt, timeout_secs=120)
+    except Exception as e:
+        print(f"  [chatgpt] 批次金句生成失敗：{e}")
+        return {name: [] for name in section_names}, ""
+
+    return parse_hook_sections(raw, max_points=5)
+
+
+def generate_newsletter_card_points(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
+    """Newsletter-specific variant of generate_card_points."""
+    from backend import prompts
+    from backend.browser_common import parse_hook_sections
+
+    section_names = list(sections.keys())
+    sections_text = "\n\n".join(
+        f"## {title}\n{content}" for title, content in sections.items()
+    )
+    prompt = prompts.build_newsletter_card_points_prompt(sections_text)
+
+    try:
+        raw = chat(prompt, timeout_secs=120)
+    except Exception as e:
+        print(f"  [chatgpt] 電子報批次金句生成失敗：{e}")
+        return {name: [] for name in section_names}, ""
+
+    return parse_hook_sections(raw, max_points=4)
+
+
+def generate_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
+    """Generate Shorts-optimised bullet points for each section, plus a HOOK sentence."""
+    from backend import prompts
+    from backend.browser_common import parse_hook_sections
+
+    section_names = list(sections.keys())
+    sections_text = "\n\n".join(
+        f"## {title}\n{content}" for title, content in sections.items()
+    )
+    prompt = prompts.build_card_points_shorts_prompt(sections_text)
+
+    try:
+        raw = chat(prompt, timeout_secs=120)
+    except Exception as e:
+        print(f"  [chatgpt] Shorts 金句生成失敗：{e}")
+        return {name: [] for name in section_names}, ""
+
+    return parse_hook_sections(raw, max_points=5)
+
+
+def generate_newsletter_card_points_shorts(sections: dict[str, str]) -> tuple[dict[str, list[str]], str]:
+    """Newsletter-specific variant of generate_card_points_shorts."""
+    from backend import prompts
+    from backend.browser_common import parse_hook_sections
+
+    section_names = list(sections.keys())
+    sections_text = "\n\n".join(
+        f"## {title}\n{content}" for title, content in sections.items()
+    )
+    prompt = prompts.build_newsletter_card_points_shorts_prompt(sections_text)
+
+    try:
+        raw = chat(prompt, timeout_secs=120)
+    except Exception as e:
+        print(f"  [chatgpt] 電子報 Shorts 金句生成失敗：{e}")
+        return {name: [] for name in section_names}, ""
+
+    return parse_hook_sections(raw, max_points=4)
+
+
+def extract_analysis(summary_body: str) -> dict:
+    """
+    Extract structured mentions and industries from a summary via ChatGPT.
+    Returns {"mentions": [...], "industries": [...]} or empty lists on failure.
+    Retries once on transient errors (empty response, JSON parse failure).
+    """
+    import json
+    from backend import prompts
+    from backend.browser_common import clean_json_raw
+
+    prompt = prompts.build_analysis_prompt(summary_body)
+
+    for attempt in range(2):
+        try:
+            raw = chat(prompt, timeout_secs=60)
+        except RuntimeError as e:
+            if attempt == 0:
+                print(f"  [chatgpt] 回應擷取失敗，重試... ({e})")
+                continue
+            print(f"  [chatgpt] 分析萃取失敗：{e}")
+            return {"mentions": [], "industries": []}
+
+        raw = raw.strip()
+        if not raw:
+            if attempt == 0:
+                print(f"  [chatgpt] 回應為空，重試...")
+                continue
+            print(f"  [chatgpt] 分析萃取失敗：回應為空")
+            return {"mentions": [], "industries": []}
+
+        try:
+            cleaned = clean_json_raw(raw)
+            if not cleaned:
+                raise ValueError("清理後內容為空")
+            data = json.loads(cleaned)
+            return {
+                "mentions": data.get("mentions", []),
+                "industries": data.get("industries", []),
+            }
+        except Exception as e:
+            if attempt == 0:
+                print(f"  [chatgpt] JSON 解析失敗，重試... ({e})")
+                continue
+            print(f"  [chatgpt] 分析萃取失敗：{e}")
+            print(f"  [chatgpt] 原始回應前 200 字：{raw[:200]!r}")
+
+    return {"mentions": [], "industries": []}
+
+
+def score_m1(summary_body: str) -> float:
+    """
+    Score summary on M1 (signal quality) via ChatGPT browser.
+
+    Returns total/3 normalised to 0.0-1.0.
+    Returns -1.0 on failure (distinguishable from a genuine 0 score).
+    """
+    import json
+    from backend import prompts
+    from backend.browser_common import clean_json_raw
+
+    prompt = prompts.build_m1_prompt(summary_body)
+    try:
+        raw = chat(prompt, timeout_secs=30)
+    except Exception as e:
+        print(f"  [m1] chat 失敗：{e}")
+        return -1.0
+
+    raw = raw.strip()
+    if not raw:
+        print(f"  [m1] 回應為空")
+        return -1.0
+
+    try:
+        cleaned = clean_json_raw(raw)
+        if not cleaned:
+            raise ValueError("清理後內容為空")
+        data = json.loads(cleaned)
+        total = int(data.get("total", 0))
+        return round(total / 3, 4)
+    except Exception as e:
+        print(f"  [m1] JSON 解析失敗：{e}  原始：{raw[:200]!r}")
+        return -1.0
+
+
+def generate_earnings_analysis(ticker: str, company_name: str, data: dict, currency: str = 'USD') -> str:
+    """Generate quarterly earnings analysis via ChatGPT browser automation."""
+    from backend import prompts
+
+    prompt = prompts.build_earnings_analysis_prompt(ticker, company_name, data, currency)
+    try:
+        return chat(prompt, timeout_secs=120)
+    except Exception as e:
+        return f"⚠️ ChatGPT 分析失敗：{e}"
+
+
+def setup_login() -> None:
+    """
+    Verify that chatgpt.com cookies are accessible from Chrome.
+    No browser login needed — this just confirms the setup is correct.
+    """
+    print("驗證 Chrome 中的 chatgpt.com 登入狀態...")
+    try:
+        cookies = _get_chatgpt_cookies()
+        print(f"✓ 找到 {len(cookies)} 個 chatgpt.com cookies")
+        print("✓ 設定完成！執行 python3 runner.py run --provider chatgpt 即可開始使用 ChatGPT 摘要")
+    except Exception as e:
+        print(f"❌ {e}")
