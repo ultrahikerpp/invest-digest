@@ -28,6 +28,11 @@ Usage:
   python3 runner.py send-confirmations     # send confirmation emails to new subscribers
   python3 runner.py weekly-digest          # send weekly investment digest to subscribers
 
+  --provider claude|chatgpt applies to any command above that calls an AI
+  provider (run, approve, retry, reprocess, cards, shorts-cards, notify,
+  backfill-analysis, score, weekly, earnings, refresh-earnings, setup-browser).
+  Default is claude. Example: python3 runner.py run --provider chatgpt
+
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
   0 9 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1

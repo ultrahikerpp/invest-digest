@@ -35,6 +35,10 @@ python3 runner.py video <video_id>
 # One-time Claude browser login setup (run before first use)
 python3 runner.py setup-browser
 
+# Use ChatGPT instead of Claude for any AI-calling command (default is claude)
+python3 runner.py run --provider chatgpt
+python3 runner.py setup-browser --provider chatgpt   # one-time chatgpt.com login check
+
 # Smart refresh all earnings in earnings_watchlist.json (skip if fresh, update numbers if same quarter, full refresh if new quarter)
 python3 runner.py refresh-earnings
 python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
