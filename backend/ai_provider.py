@@ -21,8 +21,9 @@ def _mod(provider: str):
     return importlib.import_module(_PROVIDERS[provider])
 
 
-def generate_summary(transcript: str, title: str, provider: str = "claude") -> str:
-    return _mod(provider).generate_summary(transcript, title)
+def generate_summary(transcript: str, title: str, provider: str = "claude",
+                     summary_style: str | None = None) -> str:
+    return _mod(provider).generate_summary(transcript, title, summary_style=summary_style)
 
 
 def generate_newsletter_summary(body: str, title: str, provider: str = "claude") -> str:

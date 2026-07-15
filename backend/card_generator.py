@@ -73,6 +73,19 @@ C_CARD  = (16,   18,  42)  # card surface      #10122A
 
 SECTION_ORDER = ["本期主題總覽", "各主題重點", "核心觀點", "提及標的", "關鍵數據", "創作者點出的機會", "風險提示", "創作者建議的觀察方向"]
 
+# Sections unique to the gooaye_notes summary style. Their topic sections have
+# dynamic headings (一、二、…) that can't be whitelisted, so these summaries
+# keep document order instead of SECTION_ORDER filtering.
+_GOOAYE_NOTE_SECTIONS = {"本集主題總覽", "聽眾 QA", "投資心法"}
+
+
+def ordered_sections(sections: dict[str, str]) -> list[tuple[str, str]]:
+    """Return the sections that become cards, in card order."""
+    if any(k in sections for k in _GOOAYE_NOTE_SECTIONS):
+        return list(sections.items())
+    return [(k, sections[k]) for k in SECTION_ORDER if k in sections]
+
+
 # Backwards-compatible aliases: map old section names → new section names
 # so that summaries generated before the prompt update still render correctly
 _SECTION_ALIASES: dict[str, str] = {
@@ -434,7 +447,7 @@ def generate_cards(
     title = data["title"]
     sections = data["sections"]
 
-    ordered = [(k, sections[k]) for k in SECTION_ORDER if k in sections]
+    ordered = ordered_sections(sections)
     if not ordered:
         return []
 

@@ -27,8 +27,8 @@ def test_generate_summary_dispatches_to_selected_provider(monkeypatch):
 
     class FakeModule:
         @staticmethod
-        def generate_summary(transcript, title):
-            calls.append((transcript, title))
+        def generate_summary(transcript, title, summary_style=None):
+            calls.append((transcript, title, summary_style))
             return "fake summary"
 
     monkeypatch.setattr(ai_provider, "_mod", lambda provider: FakeModule)
@@ -36,7 +36,7 @@ def test_generate_summary_dispatches_to_selected_provider(monkeypatch):
     result = ai_provider.generate_summary("transcript text", "title text", provider="chatgpt")
 
     assert result == "fake summary"
-    assert calls == [("transcript text", "title text")]
+    assert calls == [("transcript text", "title text", None)]
 
 
 def test_chat_dispatches_with_timeout(monkeypatch):

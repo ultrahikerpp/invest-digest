@@ -324,7 +324,7 @@ def generate_cards_shorts(
     Returns list of card paths in order:
       [hook_card, section_card×N, cta_card]
     """
-    from backend.card_generator import parse_summary, SECTION_ORDER, _fallback_points, _extract_structured_points, _get_claude_points
+    from backend.card_generator import parse_summary, ordered_sections, _fallback_points, _extract_structured_points, _get_claude_points
     from backend.ai_provider import generate_card_points_shorts
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -333,7 +333,7 @@ def generate_cards_shorts(
     title = data["title"]
     sections = data["sections"]
 
-    ordered = [(k, sections[k]) for k in SECTION_ORDER if k in sections]
+    ordered = ordered_sections(sections)
     if not ordered:
         return []
 

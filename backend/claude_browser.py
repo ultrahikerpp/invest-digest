@@ -24,6 +24,7 @@ CLAUDE_NEW_CHAT_URL = "https://claude.ai/new"
 
 from backend.prompts import (
     build_summary_prompt as _build_summary_prompt,
+    build_gooaye_summary_prompt as _build_gooaye_summary_prompt,
     build_fomo_analysis_prompt as _build_fomo_analysis_prompt,
     build_analysis_prompt as _build_analysis_prompt,
     build_m1_prompt as _build_m1_prompt,
@@ -129,7 +130,17 @@ def _extract_last_response(page) -> str:
 
         // Primary: claude.ai uses div[class*="font-claude-response"] for response body
         let els = document.querySelectorAll('div[class*="font-claude-response"]');
-        if (els.length) return nodeToMd(els[els.length - 1]).trim();
+        if (els.length) {
+            const last = els[els.length - 1];
+            // Actual answer text lives in .standard-markdown containers;
+            // thinking/tool-use block labels sit outside them and must not
+            // leak into the extracted summary.
+            const md = last.querySelectorAll('.standard-markdown');
+            if (md.length) {
+                return Array.from(md).map(nodeToMd).join('\\n\\n').trim();
+            }
+            return nodeToMd(last).trim();
+        }
 
         // Fallback: paragraph-level response class
         els = document.querySelectorAll('p[class*="font-claude-response-body"]');
@@ -141,12 +152,32 @@ def _extract_last_response(page) -> str:
     }""") or ""
 
 
+def _generation_running(page) -> bool:
+    """True while claude.ai is still thinking or streaming the response."""
+    return page.evaluate(
+        """() => !!document.querySelector('button[aria-label="Stop response"]')
+             || !!document.querySelector('[data-is-streaming="true"]')"""
+    )
+
+
 def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
-    """Poll until the response text stops changing for 3 consecutive seconds."""
+    """Wait until generation finishes, then until the response text stops
+    changing for 3 consecutive seconds.
+
+    While generation is running the visible text is a thinking status label or
+    a growing partial answer, so it must never count as stable. Returns "" on
+    timeout — a partial capture saved as a summary is worse than a visible
+    failure.
+    """
     prev = ""
     stable_count = 0
     deadline = time.time() + timeout_secs
     while time.time() < deadline:
+        if _generation_running(page):
+            prev = ""
+            stable_count = 0
+            time.sleep(2)
+            continue
         current = _extract_last_response(page)
         if current and current == prev:
             stable_count += 1
@@ -156,7 +187,7 @@ def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
             stable_count = 0
             prev = current
         time.sleep(1)
-    return prev  # return whatever we have on timeout
+    return ""
 
 
 def chat(prompt: str, timeout_secs: int = 180) -> str:
@@ -262,26 +293,19 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             print("  [claude] 傳送完成，等待回應...", end="", flush=True)
 
             # ── Wait for generation to complete ───────────
-            # Strategy A: "Stop response" button appears → disappears
-            stop_appeared = False
+            # Confirm generation started (best effort), then give the whole
+            # timeout budget to one wait that only accepts text captured
+            # after generation has fully finished. Extended thinking alone
+            # can run for minutes before any answer text appears.
             try:
                 page.wait_for_selector(
                     'button[aria-label="Stop response"]',
                     timeout=12000,
                 )
-                stop_appeared = True
-                page.wait_for_selector(
-                    'button[aria-label="Stop response"]',
-                    state="hidden",
-                    timeout=timeout_secs * 1000,
-                )
             except PWTimeout:
-                if not stop_appeared:
-                    pass  # fall through to stability check
+                pass  # generation may have finished fast or button missed
 
-            # Strategy B: stability check (handles edge cases)
-            time.sleep(1)
-            response = _wait_for_stable_response(page, timeout_secs=30)
+            response = _wait_for_stable_response(page, timeout_secs=timeout_secs)
             print(" 完成")
 
             if not response:
@@ -296,18 +320,28 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
 
 # ── Public API ────────────────────────────────────────────
 
-def generate_summary(transcript: str, title: str) -> str:
-    """Generate investment summary via Claude browser automation."""
+def generate_summary(transcript: str, title: str, summary_style: str | None = None) -> str:
+    """Generate investment summary via Claude browser automation.
+
+    summary_style: per-channel style from channels.json; "gooaye_notes" uses
+    the topic-notes prompt and takes precedence over the FOMO title sniff.
+    """
     is_fomo_analysis = "深入分析" in title or "深入分析" in transcript[:300]
-    
-    if is_fomo_analysis:
+
+    if summary_style == "gooaye_notes":
+        prompt = _build_gooaye_summary_prompt(transcript, title)
+    elif is_fomo_analysis:
         prompt = _build_fomo_analysis_prompt(transcript, title)
     else:
         prompt = _build_summary_prompt(transcript, title)
-        
+
+    # gooaye_notes produces a longer response, and claude.ai's extended
+    # thinking alone can run 4+ minutes on it; give generation more headroom
+    timeout_secs = 600 if summary_style == "gooaye_notes" else 180
+
     try:
-        summary = chat(prompt, timeout_secs=180)
-        
+        summary = chat(prompt, timeout_secs=timeout_secs)
+
         # Post-processing: Append Disclaimer for accountability
         disclaimer = (
             "\n\n---\n"

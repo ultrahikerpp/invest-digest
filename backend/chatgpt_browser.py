@@ -254,19 +254,28 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
 
 # ── Public API ────────────────────────────────────────────
 
-def generate_summary(transcript: str, title: str) -> str:
-    """Generate investment summary via ChatGPT browser automation."""
+def generate_summary(transcript: str, title: str, summary_style: str | None = None) -> str:
+    """Generate investment summary via ChatGPT browser automation.
+
+    summary_style: per-channel style from channels.json; "gooaye_notes" uses
+    the topic-notes prompt and takes precedence over the FOMO title sniff.
+    """
     from backend import prompts
 
     is_fomo_analysis = "深入分析" in title or "深入分析" in transcript[:300]
 
-    if is_fomo_analysis:
+    if summary_style == "gooaye_notes":
+        prompt = prompts.build_gooaye_summary_prompt(transcript, title)
+    elif is_fomo_analysis:
         prompt = prompts.build_fomo_analysis_prompt(transcript, title)
     else:
         prompt = prompts.build_summary_prompt(transcript, title)
 
+    # gooaye_notes produces a longer response; give generation more headroom
+    timeout_secs = 600 if summary_style == "gooaye_notes" else 180
+
     try:
-        summary = chat(prompt, timeout_secs=180)
+        summary = chat(prompt, timeout_secs=timeout_secs)
 
         disclaimer = (
             "\n\n---\n"

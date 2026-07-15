@@ -12,6 +12,18 @@ def test_build_summary_prompt_includes_title_and_transcript():
     assert "核心觀點" in result
 
 
+def test_build_gooaye_summary_prompt_includes_title_transcript_and_sections():
+    result = prompts.build_gooaye_summary_prompt("逐字稿內容 ABC", "EP999 | 🎮")
+    assert "EP999 | 🎮" in result
+    assert "逐字稿內容 ABC" in result
+    assert "本集主題總覽" in result
+    assert "聽眾 QA" in result
+    assert "投資心法" in result
+    assert "提及標的" in result
+    # 名詞小教室 was explicitly excluded by user decision
+    assert "名詞小教室" not in result
+
+
 def test_build_fomo_analysis_prompt_includes_scenario_sections():
     result = prompts.build_fomo_analysis_prompt("深入分析內容", "深入分析標題")
     assert "深入分析標題" in result
