@@ -6,6 +6,9 @@ Usage:
   python3 runner.py run --channel <id>     # single channel
   python3 runner.py approve                # process all pending_review episodes: hashtags + cards + video + email
   python3 runner.py retry <video_id>       # retry failed summary for a single episode
+  python3 runner.py reprocess              # regenerate ALL summaries with current prompt, then approve+deploy
+  python3 runner.py reprocess --channel <id>          # single channel only
+  python3 runner.py reprocess --channel <id> --limit <n>  # cap episodes regenerated this run (resumable)
   python3 runner.py build                  # regenerate static site
   python3 runner.py cards <video_id>       # generate PNG cards
   python3 runner.py video <video_id>       # generate MP4 from cards
@@ -43,6 +46,7 @@ from __future__ import annotations
 import sys
 import json
 import os
+import re
 import sqlite3
 import subprocess
 from pathlib import Path
@@ -97,6 +101,37 @@ def _get_channel_name(channel_id: str, channels: list[dict]) -> str:
         if ch["channel_id"] == channel_id:
             return ch["name"]
     return channel_id
+
+
+def _get_channel_style(channel_id: str | None, channels: list[dict]) -> str | None:
+    """Return the channel's summary_style from channels.json (None = generic prompt)."""
+    for ch in channels:
+        if ch["channel_id"] == channel_id:
+            return ch.get("summary_style")
+    return None
+
+
+def _summary_matches_style(summary_text: str, style: str | None) -> bool:
+    """True if an existing summary is already in the channel's summary_style
+    format (used by reprocess to resume an interrupted batch)."""
+    if style == "gooaye_notes":
+        return bool(re.search(r"^#{2,4} 投資心法", summary_text, re.MULTILINE))
+    return False
+
+
+def _select_episodes(conn, status: str | None = None, channel_id: str | None = None):
+    """Fetch episodes, optionally filtered by status and/or channel."""
+    query = "SELECT * FROM episodes"
+    clauses, params = [], []
+    if status:
+        clauses.append("status=?")
+        params.append(status)
+    if channel_id:
+        clauses.append("channel_id=?")
+        params.append(channel_id)
+    if clauses:
+        query += " WHERE " + " AND ".join(clauses)
+    return conn.execute(query, params).fetchall()
 
 
 def _copy_summary_by_wiki_dir(summary_path: Path, channel_id: str, base_dir: Path, label: str):
@@ -234,6 +269,25 @@ def _strip_provider(args: list[str]) -> list[str]:
     if "--provider" not in args:
         return args
     i = args.index("--provider")
+    return args[:i] + args[i + 2:]
+
+
+def _extract_limit(args: list[str]) -> int | None:
+    """Pull --limit <n> out of an argv-style list; None means no limit."""
+    if "--limit" not in args:
+        return None
+    i = args.index("--limit")
+    if i + 1 >= len(args) or not args[i + 1].isdigit() or int(args[i + 1]) < 1:
+        print("ERROR: --limit requires a positive integer", file=sys.stderr)
+        sys.exit(1)
+    return int(args[i + 1])
+
+
+def _strip_limit(args: list[str]) -> list[str]:
+    """Remove --limit <n> from an args list, leaving other tokens untouched."""
+    if "--limit" not in args:
+        return args
+    i = args.index("--limit")
     return args[:i] + args[i + 2:]
 
 
@@ -380,7 +434,10 @@ def cmd_run(channel_id: str | None = None, provider: str = "claude"):
 
             # Generate summary
             print(f"  Generating summary...")
-            summary_body = worker.generate_summary(transcript, v["title"], provider=provider)
+            summary_body = worker.generate_summary(
+                transcript, v["title"], provider=provider,
+                summary_style=ch.get("summary_style"),
+            )
 
             # Build frontmatter without hashtags (added later in approve step)
             now = datetime.now().strftime("%Y-%m-%d")
@@ -813,7 +870,10 @@ def cmd_retry(video_id: str, provider: str = "claude"):
 
     # Generate summary
     print(f"  產生摘要（透過 Claude 瀏覽器）...")
-    summary_body = worker.generate_summary(transcript, title, provider=provider)
+    summary_body = worker.generate_summary(
+        transcript, title, provider=provider,
+        summary_style=_get_channel_style(channel_id, channels),
+    )
 
     now = datetime.now().strftime("%Y-%m-%d")
     frontmatter = (
@@ -853,26 +913,38 @@ def _find_transcript_path(video_id: str) -> Path | None:
     return flat if flat.exists() else None
 
 
-def cmd_reprocess(provider: str = "claude"):
-    """Re-generate summaries for all episodes using the current prompt, then approve all."""
+def cmd_reprocess(provider: str = "claude", channel_id: str | None = None, limit: int | None = None):
+    """Re-generate summaries (all episodes, or one channel with --channel) using the current prompt, then approve.
+
+    --limit caps how many episodes are actually regenerated in this run (episodes
+    already skipped because they're already up to date don't count against it).
+    Re-running the same command later picks up where it left off.
+    """
     _ensure_dirs()
     channels = _load_channels()
     worker = _import_worker()
     conn = _get_db()
 
-    episodes = conn.execute("SELECT * FROM episodes").fetchall()
+    episodes = _select_episodes(conn, channel_id=channel_id)
     if not episodes:
         print("資料庫中沒有集數")
         conn.close()
         return
 
     print(f"找到 {len(episodes)} 集，依序重新產製摘要（使用最新 Prompt）...\n")
+    if limit is not None:
+        print(f"（--limit {limit}：本次最多重新產製 {limit} 集，其餘下次執行同一指令會繼續處理）\n")
 
     regenerated = 0
+    consecutive_fails = 0
     for ep in episodes:
+        if limit is not None and regenerated >= limit:
+            print(f"已達 --limit {limit} 集上限，停止本次批次（重新執行同一指令可繼續處理剩餘集數）")
+            break
+
         video_id = ep["video_id"]
         title = ep["title"] or video_id
-        channel_id = ep["channel_id"]
+        ep_channel_id = ep["channel_id"]
 
         # Locate transcript
         t_path = (Path(ep["transcript_path"]) if ep["transcript_path"] else None)
@@ -889,19 +961,43 @@ def cmd_reprocess(provider: str = "claude"):
         # Preserve existing frontmatter fields
         existing_path = (Path(ep["summary_path"]) if ep["summary_path"] else None) or _find_summary_path(video_id)
         meta = _parse_summary_meta(existing_path) if existing_path and existing_path.exists() else {}
-        channel_name = meta.get("channel_name", "") or _get_channel_name(channel_id, channels)
+        channel_name = meta.get("channel_name", "") or _get_channel_name(ep_channel_id, channels)
         published = meta.get("published", ep["published_at"] or "")
         processed = meta.get("processed", datetime.now().strftime("%Y-%m-%d"))
 
+        # Resume support: skip episodes already regenerated in the channel's
+        # style format (an interrupted batch can simply be re-run).
+        style = _get_channel_style(ep_channel_id, channels)
+        if existing_path and existing_path.exists() and _summary_matches_style(
+            existing_path.read_text(encoding="utf-8"), style
+        ):
+            print(f"  [skip] 已是新格式：{title[:50]}")
+            continue
+
         # Re-generate summary with new prompt
         print(f"  重新產製摘要...")
-        summary_body = worker.generate_summary(transcript, title, provider=provider)
+        summary_body = worker.generate_summary(
+            transcript, title, provider=provider, summary_style=style,
+        )
+
+        # Generation failure returns a placeholder body; keep the old summary
+        # instead of overwriting it (bulk runs may hit usage limits mid-way).
+        if "瀏覽器摘要失敗" in summary_body:
+            reason = summary_body.split("瀏覽器摘要失敗：", 1)[-1].split("\n", 1)[0]
+            print(f"  ❌ 摘要生成失敗，保留舊摘要並略過此集：{reason}")
+            consecutive_fails += 1
+            if consecutive_fails >= 3:
+                print("連續 3 集生成失敗（可能是網路中斷或用量上限），中止批次。"
+                      "問題排除後重新執行同一指令即可續跑。")
+                break
+            continue
+        consecutive_fails = 0
 
         frontmatter = (
             f"---\n"
             f"title: {title}\n"
             f"video_id: {video_id}\n"
-            f"channel_id: {channel_id}\n"
+            f"channel_id: {ep_channel_id}\n"
             f"channel_name: {channel_name}\n"
             f"published: {published}\n"
             f"processed: {processed}\n"
@@ -930,20 +1026,18 @@ def cmd_reprocess(provider: str = "claude"):
         return
 
     print("開始執行 approve（產出 hashtags、字卡、影片、部署）...\n")
-    cmd_approve(provider=provider)
+    cmd_approve(provider=provider, channel_id=channel_id)
 
 
 # ── Approve command ────────────────────────────────────────
 
-def cmd_approve(provider: str = "claude"):
+def cmd_approve(provider: str = "claude", channel_id: str | None = None):
     """Process all pending_review episodes: generate hashtags + Shorts cards, then email summary and deploy."""
     _ensure_dirs()
     worker = _import_worker()
     conn = _get_db()
 
-    pending = conn.execute(
-        "SELECT * FROM episodes WHERE status='pending_review'"
-    ).fetchall()
+    pending = _select_episodes(conn, status="pending_review", channel_id=channel_id)
 
     if not pending:
         print("沒有待審閱的集數")
@@ -1919,7 +2013,13 @@ def main():
         cmd_retry(rest[1], provider=provider)
 
     elif cmd == "reprocess":
-        cmd_reprocess(provider=_extract_provider(args))
+        provider = _extract_provider(args)
+        limit = _extract_limit(args)
+        rest = _strip_limit(_strip_provider(args))
+        channel_id = None
+        if len(rest) >= 3 and rest[1] == "--channel":
+            channel_id = rest[2]
+        cmd_reprocess(provider=provider, channel_id=channel_id, limit=limit)
 
     elif cmd == "build":
         cmd_build()

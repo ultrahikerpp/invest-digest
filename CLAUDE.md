@@ -19,6 +19,8 @@ python3 runner.py approve
 
 # Re-generate ALL episode summaries with current prompt, then approve + deploy
 python3 runner.py reprocess
+python3 runner.py reprocess --channel <channel_id>   # single channel only (also scopes the auto-approve)
+python3 runner.py reprocess --channel <channel_id> --limit <n>  # cap episodes regenerated this run; re-run to continue
 
 # Regenerate the static site (docs/)
 python3 runner.py build
@@ -67,7 +69,7 @@ Local-only Python scripts + GitHub Pages static site. No web server required.
 
 - **`build_site.py`** — Static site generator. Reads `data/summaries/**/*.md` → writes `docs/data/episodes.json` + copies `docs/summaries/*.md`.
 
-- **`channels.json`** — Channel configuration. Add new channels here.
+- **`channels.json`** — Channel configuration. Add new channels here. Optional `summary_style` field selects a channel-specific summary prompt (`"gooaye_notes"` = topic-based notes with 聽眾 QA / 投資心法 sections for Gooaye 股癌; omit for the generic six-section format).
 
 ### Backend (`backend/`)
 
