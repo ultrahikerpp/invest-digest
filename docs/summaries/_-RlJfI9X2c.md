@@ -5,6 +5,7 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-07-15
 processed: 2026-07-15
+hashtags: #韓國去槓桿 #AI成本 #Agentic #AI #被動元件 #Gooaye股癌
 industries: 總體經濟, AI, 台股
 ---
 

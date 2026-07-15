@@ -3,50 +3,58 @@
     {
       "name": "費城半導體指數",
       "ticker": "SOXX",
-      "count": 128,
-      "bullish": 64,
+      "count": 130,
+      "bullish": 66,
       "bearish": 27,
       "neutral": 37
     },
     {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "count": 125,
-      "bullish": 84,
+      "count": 127,
+      "bullish": 85,
       "bearish": 2,
-      "neutral": 39
+      "neutral": 40
     },
     {
       "name": "S&P 500",
       "ticker": "SPX",
-      "count": 118,
-      "bullish": 43,
+      "count": 119,
+      "bullish": 44,
       "bearish": 14,
       "neutral": 61
     },
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 113,
-      "bullish": 90,
+      "count": 114,
+      "bullish": 91,
       "bearish": 0,
       "neutral": 23
     },
     {
       "name": "道瓊指數",
       "ticker": "DJIA",
-      "count": 107,
+      "count": 109,
       "bullish": 30,
       "bearish": 22,
-      "neutral": 55
+      "neutral": 57
     },
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 88,
+      "count": 90,
       "bullish": 27,
       "bearish": 6,
-      "neutral": 55
+      "neutral": 57
+    },
+    {
+      "name": "Google",
+      "ticker": "GOOGL",
+      "count": 76,
+      "bullish": 25,
+      "bearish": 1,
+      "neutral": 50
     },
     {
       "name": "美光",
@@ -57,20 +65,12 @@
       "neutral": 29
     },
     {
-      "name": "Google",
-      "ticker": "GOOGL",
-      "count": 74,
-      "bullish": 25,
-      "bearish": 1,
-      "neutral": 48
-    },
-    {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 72,
+      "count": 73,
       "bullish": 26,
       "bearish": 2,
-      "neutral": 44
+      "neutral": 45
     },
     {
       "name": "微軟",
@@ -99,74 +99,74 @@
     {
       "name": "Intel",
       "ticker": "INTC",
-      "count": 54,
+      "count": 55,
       "bullish": 13,
       "bearish": 4,
-      "neutral": 37
+      "neutral": 38
     },
     {
       "name": "Anthropic",
       "ticker": null,
-      "count": 54,
-      "bullish": 22,
+      "count": 55,
+      "bullish": 23,
       "bearish": 2,
       "neutral": 30
     },
     {
       "name": "SpaceX",
       "ticker": "SPCX",
-      "count": 50,
+      "count": 51,
       "bullish": 26,
       "bearish": 5,
-      "neutral": 19
+      "neutral": 20
     },
     {
       "name": "特斯拉",
       "ticker": "TSLA",
-      "count": 49,
+      "count": 50,
       "bullish": 8,
       "bearish": 7,
-      "neutral": 34
+      "neutral": 35
     },
     {
       "name": "羅素2000",
       "ticker": "RUT",
-      "count": 48,
-      "bullish": 9,
+      "count": 49,
+      "bullish": 10,
       "bearish": 10,
       "neutral": 29
     },
     {
       "name": "博通",
       "ticker": "AVGO",
-      "count": 47,
-      "bullish": 29,
+      "count": 48,
+      "bullish": 30,
       "bearish": 0,
       "neutral": 18
     },
     {
       "name": "Amazon",
       "ticker": "AMZN",
-      "count": 47,
+      "count": 48,
       "bullish": 15,
       "bearish": 0,
-      "neutral": 32
+      "neutral": 33
     },
     {
       "name": "蘋果",
       "ticker": "AAPL",
-      "count": 45,
+      "count": 46,
       "bullish": 8,
       "bearish": 5,
-      "neutral": 32
+      "neutral": 33
     },
     {
       "name": "SK海力士",
       "ticker": "SKHY",
-      "count": 43,
+      "count": 44,
       "bullish": 21,
       "bearish": 1,
-      "neutral": 21
+      "neutral": 22
     },
     {
       "name": "亞馬遜",
@@ -175,6 +175,14 @@
       "bullish": 13,
       "bearish": 0,
       "neutral": 25
+    },
+    {
+      "name": "台股加權指數",
+      "ticker": "TWII",
+      "count": 36,
+      "bullish": 24,
+      "bearish": 4,
+      "neutral": 8
     },
     {
       "name": "聯發科",
@@ -193,18 +201,10 @@
       "neutral": 13
     },
     {
-      "name": "台股加權指數",
-      "ticker": "TWII",
-      "count": 35,
-      "bullish": 23,
-      "bearish": 4,
-      "neutral": 8
-    },
-    {
       "name": "納斯達克",
       "ticker": "NDX",
-      "count": 34,
-      "bullish": 15,
+      "count": 35,
+      "bullish": 16,
       "bearish": 4,
       "neutral": 15
     },
@@ -241,20 +241,20 @@
       "neutral": 13
     },
     {
+      "name": "Microsoft",
+      "ticker": "MSFT",
+      "count": 26,
+      "bullish": 10,
+      "bearish": 1,
+      "neutral": 15
+    },
+    {
       "name": "Tesla",
       "ticker": "TSLA",
       "count": 25,
       "bullish": 1,
       "bearish": 3,
       "neutral": 21
-    },
-    {
-      "name": "Microsoft",
-      "ticker": "MSFT",
-      "count": 25,
-      "bullish": 10,
-      "bearish": 1,
-      "neutral": 14
     },
     {
       "name": "英特爾",
@@ -265,6 +265,14 @@
       "neutral": 19
     },
     {
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "count": 23,
+      "bullish": 9,
+      "bearish": 4,
+      "neutral": 10
+    },
+    {
       "name": "Marvell",
       "ticker": "MRVL",
       "count": 23,
@@ -273,36 +281,28 @@
       "neutral": 7
     },
     {
-      "name": "Palantir",
-      "ticker": "PLTR",
-      "count": 22,
-      "bullish": 9,
-      "bearish": 4,
-      "neutral": 9
-    },
-    {
       "name": "甲骨文",
       "ticker": "ORCL",
-      "count": 21,
+      "count": 22,
       "bullish": 5,
       "bearish": 6,
-      "neutral": 10
+      "neutral": 11
     },
     {
       "name": "Lumentum",
       "ticker": "LITE",
-      "count": 21,
-      "bullish": 16,
+      "count": 22,
+      "bullish": 17,
       "bearish": 1,
       "neutral": 4
     },
     {
       "name": "Coherent",
       "ticker": "COHR",
-      "count": 21,
+      "count": 22,
       "bullish": 16,
       "bearish": 1,
-      "neutral": 4
+      "neutral": 5
     },
     {
       "name": "高通",
@@ -385,6 +385,14 @@
       "neutral": 4
     },
     {
+      "name": "Salesforce",
+      "ticker": "CRM",
+      "count": 15,
+      "bullish": 3,
+      "bearish": 7,
+      "neutral": 5
+    },
+    {
       "name": "Sandisk",
       "ticker": "SNDK",
       "count": 14,
@@ -393,12 +401,20 @@
       "neutral": 5
     },
     {
-      "name": "Salesforce",
-      "ticker": "CRM",
+      "name": "CrowdStrike",
+      "ticker": "CRWD",
       "count": 14,
-      "bullish": 3,
-      "bearish": 6,
-      "neutral": 5
+      "bullish": 8,
+      "bearish": 0,
+      "neutral": 6
+    },
+    {
+      "name": "Cloudflare",
+      "ticker": "NET",
+      "count": 14,
+      "bullish": 8,
+      "bearish": 0,
+      "neutral": 6
     },
     {
       "name": "ARM",
@@ -417,20 +433,20 @@
       "neutral": 6
     },
     {
-      "name": "CrowdStrike",
-      "ticker": "CRWD",
+      "name": "西德州原油",
+      "ticker": "WTI",
       "count": 13,
-      "bullish": 7,
-      "bearish": 0,
-      "neutral": 6
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 4
     },
     {
-      "name": "Cloudflare",
-      "ticker": "NET",
+      "name": "布蘭特原油",
+      "ticker": "BZ",
       "count": 13,
-      "bullish": 7,
-      "bearish": 0,
-      "neutral": 6
+      "bullish": 6,
+      "bearish": 5,
+      "neutral": 2
     },
     {
       "name": "鴻海",
@@ -441,20 +457,12 @@
       "neutral": 5
     },
     {
-      "name": "西德州原油",
-      "ticker": "WTI",
+      "name": "高盛",
+      "ticker": "GS",
       "count": 12,
-      "bullish": 6,
-      "bearish": 3,
-      "neutral": 3
-    },
-    {
-      "name": "布蘭特原油",
-      "ticker": "BZ",
-      "count": 12,
-      "bullish": 6,
-      "bearish": 5,
-      "neutral": 1
+      "bullish": 4,
+      "bearish": 1,
+      "neutral": 7
     },
     {
       "name": "Oracle",
@@ -489,12 +497,12 @@
       "neutral": 4
     },
     {
-      "name": "高盛",
-      "ticker": "GS",
-      "count": 10,
-      "bullish": 2,
+      "name": "ASML",
+      "ticker": "ASML",
+      "count": 11,
+      "bullish": 5,
       "bearish": 1,
-      "neutral": 7
+      "neutral": 5
     },
     {
       "name": "那斯達克100",
@@ -545,12 +553,20 @@
       "neutral": 4
     },
     {
-      "name": "ASML",
-      "ticker": "ASML",
+      "name": "IBM",
+      "ticker": "IBM",
       "count": 10,
-      "bullish": 5,
-      "bearish": 1,
+      "bullish": 1,
+      "bearish": 5,
       "neutral": 4
+    },
+    {
+      "name": "Adobe",
+      "ticker": "ADBE",
+      "count": 10,
+      "bullish": 0,
+      "bearish": 8,
+      "neutral": 2
     },
     {
       "name": "費半",
@@ -583,14 +599,6 @@
       "bullish": 1,
       "bearish": 2,
       "neutral": 6
-    },
-    {
-      "name": "Adobe",
-      "ticker": "ADBE",
-      "count": 9,
-      "bullish": 0,
-      "bearish": 7,
-      "neutral": 2
     },
     {
       "name": "騰訊",
@@ -641,6 +649,14 @@
       "neutral": 2
     },
     {
+      "name": "SanDisk",
+      "ticker": "SNDK",
+      "count": 8,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
       "name": "SPY",
       "ticker": "SPY",
       "count": 8,
@@ -649,12 +665,12 @@
       "neutral": 1
     },
     {
-      "name": "IBM",
-      "ticker": "IBM",
+      "name": "Micron",
+      "ticker": "MU",
       "count": 8,
-      "bullish": 1,
-      "bearish": 3,
-      "neutral": 4
+      "bullish": 5,
+      "bearish": 0,
+      "neutral": 3
     },
     {
       "name": "Constellation Energy",
@@ -670,6 +686,14 @@
       "count": 7,
       "bullish": 3,
       "bearish": 0,
+      "neutral": 4
+    },
+    {
+      "name": "花旗",
+      "ticker": "C",
+      "count": 7,
+      "bullish": 2,
+      "bearish": 1,
       "neutral": 4
     },
     {
@@ -689,20 +713,28 @@
       "neutral": 3
     },
     {
-      "name": "SanDisk",
-      "ticker": "SNDK",
+      "name": "Western Digital",
+      "ticker": "WDC",
       "count": 7,
-      "bullish": 4,
+      "bullish": 1,
       "bearish": 0,
+      "neutral": 6
+    },
+    {
+      "name": "ServiceNow",
+      "ticker": "NOW",
+      "count": 7,
+      "bullish": 1,
+      "bearish": 3,
       "neutral": 3
     },
     {
-      "name": "Micron",
-      "ticker": "MU",
-      "count": 7,
-      "bullish": 4,
-      "bearish": 0,
-      "neutral": 3
+      "name": "韓國股市",
+      "ticker": "KOSPI",
+      "count": 6,
+      "bullish": 1,
+      "bearish": 1,
+      "neutral": 4
     },
     {
       "name": "美超微",
@@ -713,20 +745,28 @@
       "neutral": 0
     },
     {
+      "name": "美國銀行",
+      "ticker": "BAC",
+      "count": 6,
+      "bullish": 4,
+      "bearish": 1,
+      "neutral": 1
+    },
+    {
+      "name": "台股大盤",
+      "ticker": "TWII",
+      "count": 6,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "台灣加權指數",
       "ticker": "TWII",
       "count": 6,
       "bullish": 2,
       "bearish": 2,
       "neutral": 2
-    },
-    {
-      "name": "Western Digital",
-      "ticker": "WDC",
-      "count": 6,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 5
     },
     {
       "name": "VIX恐慌指數",
@@ -745,16 +785,24 @@
       "neutral": 5
     },
     {
-      "name": "ServiceNow",
-      "ticker": "NOW",
-      "count": 6,
-      "bullish": 1,
-      "bearish": 2,
-      "neutral": 3
-    },
-    {
       "name": "MSCI新興市場指數",
       "ticker": "NSEI",
+      "count": 6,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
+      "name": "JP Morgan",
+      "ticker": "JPM",
+      "count": 6,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
+      "name": "Dell",
+      "ticker": "DELL",
       "count": 6,
       "bullish": 2,
       "bearish": 0,
@@ -785,14 +833,6 @@
       "neutral": 1
     },
     {
-      "name": "花旗",
-      "ticker": "C",
-      "count": 5,
-      "bullish": 1,
-      "bearish": 1,
-      "neutral": 3
-    },
-    {
       "name": "聯電",
       "ticker": "2303",
       "count": 5,
@@ -809,20 +849,20 @@
       "neutral": 4
     },
     {
+      "name": "沃爾瑪",
+      "ticker": "WMT",
+      "count": 5,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
       "name": "安森美",
       "ticker": "ON",
       "count": 5,
       "bullish": 2,
       "bearish": 0,
       "neutral": 3
-    },
-    {
-      "name": "台股大盤",
-      "ticker": "TWII",
-      "count": 5,
-      "bullish": 4,
-      "bearish": 0,
-      "neutral": 1
     },
     {
       "name": "三星電子",
@@ -881,28 +921,12 @@
       "neutral": 3
     },
     {
-      "name": "JP Morgan",
-      "ticker": "JPM",
-      "count": 5,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
       "name": "GE Vernova",
       "ticker": "GEV",
       "count": 5,
       "bullish": 3,
       "bearish": 0,
       "neutral": 2
-    },
-    {
-      "name": "Dell",
-      "ticker": "DELL",
-      "count": 5,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 3
     },
     {
       "name": "Costco",
@@ -945,14 +969,6 @@
       "neutral": 3
     },
     {
-      "name": "韓國股市",
-      "ticker": "KOSPI",
-      "count": 4,
-      "bullish": 1,
-      "bearish": 1,
-      "neutral": 2
-    },
-    {
       "name": "軟銀",
       "ticker": "9984",
       "count": 4,
@@ -985,14 +1001,6 @@
       "neutral": 2
     },
     {
-      "name": "美國銀行",
-      "ticker": "BAC",
-      "count": 4,
-      "bullish": 2,
-      "bearish": 1,
-      "neutral": 1
-    },
-    {
       "name": "緯創",
       "ticker": "3231",
       "count": 4,
@@ -1023,14 +1031,6 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 3
-    },
-    {
-      "name": "沃爾瑪",
-      "ticker": "WMT",
-      "count": 4,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 4
     },
     {
       "name": "比亞迪",
@@ -1103,6 +1103,22 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 2
+    },
+    {
+      "name": "Seagate",
+      "ticker": "STX",
+      "count": 4,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
+      "name": "SK 海力士",
+      "ticker": "000660",
+      "count": 4,
+      "bullish": 4,
+      "bearish": 0,
+      "neutral": 0
     },
     {
       "name": "Palo Alto Networks",
@@ -1273,6 +1289,14 @@
       "neutral": 1
     },
     {
+      "name": "摩根大通",
+      "ticker": "JPM",
+      "count": 3,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "摩根士丹利",
       "ticker": "MS",
       "count": 3,
@@ -1311,6 +1335,14 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "富國銀行",
+      "ticker": "WFC",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 2
     },
     {
       "name": "台積電（TSMC）",
@@ -1409,28 +1441,12 @@
       "neutral": 3
     },
     {
-      "name": "Seagate",
-      "ticker": "STX",
-      "count": 3,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
       "name": "Samsung",
       "ticker": "005930",
       "count": 3,
       "bullish": 2,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "SK 海力士",
-      "ticker": "000660",
-      "count": 3,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 0
     },
     {
       "name": "S&P500指數",
@@ -1737,6 +1753,14 @@
       "neutral": 1
     },
     {
+      "name": "美元指數",
+      "ticker": "DXY",
+      "count": 2,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 1
+    },
+    {
       "name": "羅姆",
       "ticker": "6963",
       "count": 2,
@@ -1751,6 +1775,14 @@
       "bullish": 0,
       "bearish": 0,
       "neutral": 2
+    },
+    {
+      "name": "納斯達克 100 指數",
+      "ticker": "NDX",
+      "count": 2,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 0
     },
     {
       "name": "百度",
@@ -1833,14 +1865,6 @@
       "neutral": 1
     },
     {
-      "name": "摩根大通",
-      "ticker": "JPM",
-      "count": 2,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "房地美",
       "ticker": "FMCC",
       "count": 2,
@@ -1870,14 +1894,6 @@
       "count": 2,
       "bullish": 1,
       "bearish": 0,
-      "neutral": 1
-    },
-    {
-      "name": "富國銀行",
-      "ticker": "WFC",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 1,
       "neutral": 1
     },
     {
@@ -1915,6 +1931,14 @@
     {
       "name": "大立光",
       "ticker": "3008",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "台塑四寶",
+      "ticker": null,
       "count": 2,
       "bullish": 1,
       "bearish": 0,
@@ -2033,6 +2057,14 @@
       "neutral": 1
     },
     {
+      "name": "XLF",
+      "ticker": "XLF",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "XLE",
       "ticker": "XLE",
       "count": 2,
@@ -2142,6 +2174,14 @@
       "count": 2,
       "bullish": 0,
       "bearish": 1,
+      "neutral": 1
+    },
+    {
+      "name": "S&P 500 指數",
+      "ticker": "SPX",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
       "neutral": 1
     },
     {
@@ -2503,6 +2543,14 @@
       "bullish": 0,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "韓國股市指數",
+      "ticker": "KOSPI",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 0
     },
     {
       "name": "韓國綜合指數",
@@ -3089,14 +3137,6 @@
       "neutral": 0
     },
     {
-      "name": "美元指數",
-      "ticker": null,
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "羅素指數",
       "ticker": "RUT",
       "count": 1,
@@ -3137,6 +3177,14 @@
       "neutral": 1
     },
     {
+      "name": "羅素 2000 指數",
+      "ticker": "RUT",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "羅碩2000指數",
       "ticker": null,
       "count": 1,
@@ -3166,14 +3214,6 @@
       "count": 1,
       "bullish": 0,
       "bearish": 1,
-      "neutral": 0
-    },
-    {
-      "name": "納斯達克 100 指數",
-      "ticker": "NDX",
-      "count": 1,
-      "bullish": 1,
-      "bearish": 0,
       "neutral": 0
     },
     {
@@ -4153,14 +4193,6 @@
       "neutral": 0
     },
     {
-      "name": "台塑四寶",
-      "ticker": null,
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "台北加權指數",
       "ticker": "TWII",
       "count": 1,
@@ -4617,14 +4649,6 @@
       "neutral": 0
     },
     {
-      "name": "XLF",
-      "ticker": "XLF",
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "XLC",
       "ticker": "XLC",
       "count": 1,
@@ -5041,14 +5065,6 @@
       "neutral": 0
     },
     {
-      "name": "S&P 500 指數",
-      "ticker": "SPX",
-      "count": 1,
-      "bullish": 1,
-      "bearish": 0,
-      "neutral": 0
-    },
-    {
       "name": "Ross",
       "ticker": "ROST",
       "count": 1,
@@ -5187,6 +5203,14 @@
     {
       "name": "Panasonic SPCAP",
       "ticker": null,
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "Palo Alto",
+      "ticker": "PANW",
       "count": 1,
       "bullish": 1,
       "bearish": 0,
@@ -5425,6 +5449,14 @@
       "neutral": 0
     },
     {
+      "name": "LUNA",
+      "ticker": "LUNA",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 0
+    },
+    {
       "name": "LG",
       "ticker": null,
       "count": 1,
@@ -5475,6 +5507,14 @@
     {
       "name": "KAREX",
       "ticker": "KAREX",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "Jane Street",
+      "ticker": null,
       "count": 1,
       "bullish": 0,
       "bearish": 0,
@@ -6137,6 +6177,14 @@
       "neutral": 0
     },
     {
+      "name": "Archegos",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "Applied Optoelectronics",
       "ticker": "AOSL",
       "count": 1,
@@ -6436,27 +6484,27 @@
   "industries": [
     {
       "name": "AI",
-      "count": 197
+      "count": 200
     },
     {
       "name": "半導體",
-      "count": 177
+      "count": 178
     },
     {
       "name": "美股",
-      "count": 125
+      "count": 127
     },
     {
       "name": "台股",
-      "count": 70
+      "count": 71
+    },
+    {
+      "name": "總體經濟",
+      "count": 50
     },
     {
       "name": "科技",
       "count": 50
-    },
-    {
-      "name": "總體經濟",
-      "count": 48
     },
     {
       "name": "能源",
@@ -7693,6 +7741,51 @@
         "納斯達克指數",
         "台股加權指數",
         "南韓股市"
+      ]
+    },
+    "GV3gCpFUQcM": {
+      "industries": [
+        "美股",
+        "AI",
+        "半導體"
+      ],
+      "mentions": [
+        "道瓊指數",
+        "S&P 500 指數",
+        "納斯達克 100 指數",
+        "費城半導體指數",
+        "羅素 2000 指數",
+        "XLF",
+        "韓國股市",
+        "SK 海力士",
+        "IBM",
+        "NVIDIA",
+        "Google",
+        "Meta",
+        "AMD",
+        "Intel",
+        "Microsoft",
+        "Micron",
+        "SanDisk",
+        "Seagate",
+        "Western Digital",
+        "Lumentum",
+        "Coherent",
+        "CrowdStrike",
+        "Palo Alto",
+        "Cloudflare",
+        "ServiceNow",
+        "Adobe",
+        "Salesforce",
+        "JP Morgan",
+        "美國銀行",
+        "花旗",
+        "富國銀行",
+        "高盛",
+        "Dell",
+        "台積電",
+        "ASML",
+        "Anthropic"
       ]
     },
     "Gr-nE761T1g": {
@@ -9215,6 +9308,22 @@
         "中核集團",
         "標普指數",
         "VIX指數"
+      ]
+    },
+    "_-RlJfI9X2c": {
+      "industries": [
+        "總體經濟",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "韓國股市指數",
+        "台股大盤",
+        "特斯拉",
+        "Palantir",
+        "LUNA",
+        "Archegos",
+        "Jane Street"
       ]
     },
     "_CPEVxMZAe4": {
@@ -11365,6 +11474,41 @@
         "比亞迪"
       ]
     },
+    "raHycpE_6Z4": {
+      "industries": [
+        "美股",
+        "AI",
+        "總體經濟"
+      ],
+      "mentions": [
+        "SK海力士",
+        "IBM",
+        "摩根大通",
+        "高盛",
+        "花旗",
+        "美國銀行",
+        "蘋果",
+        "博通",
+        "Google",
+        "Amazon",
+        "Meta",
+        "甲骨文",
+        "NVIDIA",
+        "SpaceX",
+        "沃爾瑪",
+        "台塑四寶",
+        "道瓊指數",
+        "S&P 500",
+        "納斯達克",
+        "費城半導體指數",
+        "羅素2000",
+        "台股加權指數",
+        "韓國股市",
+        "美元指數",
+        "布蘭特原油",
+        "西德州原油"
+      ]
+    },
     "sRm0n7EBfyI": {
       "industries": [
         "半導體",
@@ -12407,5 +12551,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-07-15T04:37:32"
+  "generated_at": "2026-07-15T15:07:00"
 }
