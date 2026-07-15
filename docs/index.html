@@ -76,7 +76,6 @@
       --header-bg: rgba(19, 23, 34, 0.96);
       --sidebar-bg: rgba(22, 26, 38, 0.98);
       --modal-overlay-bg: rgba(8, 10, 16, 0.80);
-      --modal-footer-bg: rgba(20, 24, 35, 0.80);
       --sidebar-backdrop-bg: rgba(8, 10, 16, 0.55);
       --disclaimer-bg: rgba(41, 98, 255, 0.06);
       --disclaimer-border: rgba(41, 98, 255, 0.18);
@@ -123,7 +122,6 @@
       --header-bg: rgba(255, 255, 255, 0.97);
       --sidebar-bg: rgba(247, 249, 252, 0.99);
       --modal-overlay-bg: rgba(19, 23, 34, 0.55);
-      --modal-footer-bg: rgba(243, 246, 251, 0.98);
       --sidebar-backdrop-bg: rgba(19, 23, 34, 0.35);
       --disclaimer-bg: rgba(21, 101, 192, 0.05);
       --disclaimer-border: rgba(21, 101, 192, 0.18);
@@ -342,6 +340,7 @@
     /* ── Main Content ── */
     .main {
       padding: 32px 36px;
+      min-width: 0;  /* let the grid column shrink below content min-width (cards strip, tables) */
     }
 
     .page-header {
@@ -480,14 +479,14 @@
       white-space: nowrap;
     }
 
-    .modal-hashtags {
+    .article-hashtags {
       display: flex;
       flex-wrap: wrap;
       gap: 7px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
-    .modal-hashtags .hashtag {
+    .article-hashtags .hashtag {
       font-size: 12px;
       padding: 3px 10px;
     }
@@ -567,77 +566,65 @@
       }
     }
 
-    /* ── Summary Modal ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: var(--modal-overlay-bg);
-      z-index: 200;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+    /* ── Article View (inline reading page) ── */
+    .article-view {
+      max-width: 780px;
+      margin: 0 auto;
+      animation: articleIn 0.22s ease;
     }
 
-    .modal-overlay.open {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 20px;
-    }
-
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      width: 100%;
-      max-width: 960px;
-      max-height: calc(100vh - 48px);
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow-lg);
-      animation: slideIn 0.24s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Tri-colour top strip on modal */
-    .modal::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(to right, var(--vibe1), var(--vibe2), var(--vibe3));
-      z-index: 1;
-    }
-
-    @keyframes slideIn {
+    @keyframes articleIn {
       from {
         opacity: 0;
-        transform: translateY(18px) scale(0.99);
+        transform: translateY(10px);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
     }
 
-    .modal-header {
-      padding: 22px 36px 18px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      background: linear-gradient(to bottom, rgba(99, 102, 241, .06), transparent);
+    /* Tri-colour reading progress bar (fixed under sticky header) */
+    .reading-progress {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      height: 3px;
+      width: 0;
+      background: linear-gradient(to right, var(--vibe1), var(--vibe2), var(--vibe3));
+      z-index: 90;
+      pointer-events: none;
     }
 
-    .modal-title-block {
-      flex: 1;
+    .article-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 22px;
     }
 
-    .modal-channel {
+    .article-back:hover {
+      color: var(--vibe1);
+      border-color: var(--vibe1);
+      background: var(--vibe1-lt);
+    }
+
+    .article-header {
+      margin-bottom: 18px;
+    }
+
+    .article-channel {
       display: inline-flex;
       align-items: center;
       gap: 5px;
@@ -647,72 +634,61 @@
       font-weight: 600;
       padding: 4px 11px;
       border-radius: 20px;
-      margin-bottom: 12px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .modal-title {
-      font-size: 24px;
+    .article-title {
+      font-size: 26px;
       font-weight: 700;
-      line-height: 1.4;
+      line-height: 1.45;
       letter-spacing: -0.4px;
       color: var(--text);
+      margin: 12px 0 10px;
     }
 
-    .modal-meta {
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 18px;
       font-size: 14px;
       color: var(--text-dim);
-      margin-top: 9px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .modal-close {
-      background: rgba(41, 98, 255, 0.10);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 8px;
-      line-height: 0;
+    .article-meta > span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .article-meta svg {
+      color: var(--vibe2);
       flex-shrink: 0;
-      transition: all 0.15s;
-      display: flex;
+    }
+
+    .article-source-link {
+      display: inline-flex;
       align-items: center;
+      gap: 5px;
+      color: var(--vibe1);
+      font-weight: 600;
+      text-decoration: none;
     }
 
-    .modal-close:hover {
-      background: var(--red-lt);
-      color: var(--red);
-      border-color: rgba(244, 63, 94, 0.35);
+    .article-source-link:hover {
+      color: var(--vibe2);
+      text-decoration: underline;
     }
 
-    .modal-body {
-      padding: 28px 48px;
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
+    .article-body {
+      padding: 6px 0 8px;
     }
 
-    .modal-body::-webkit-scrollbar {
-      width: 7px;
-    }
-
-    .modal-body::-webkit-scrollbar-track {
-      background: var(--surface2);
-    }
-
-    .modal-body::-webkit-scrollbar-thumb {
-      background: var(--vibe1);
-      border-radius: 3px;
-    }
-
-    .modal-body h1 {
+    .article-body h1 {
       display: none;
     }
 
-    .modal-body h2 {
+    .article-body h2 {
       font-size: 17px;
       font-weight: 700;
       color: var(--vibe1);
@@ -723,46 +699,46 @@
       border-left: 3px solid var(--vibe2);
     }
 
-    .modal-body h2:first-of-type {
+    .article-body h2:first-of-type {
       margin-top: 0;
     }
 
-    .modal-body p {
+    .article-body p {
       font-size: 17px;
       line-height: 2.0;
       color: var(--text);
       margin-bottom: 14px;
     }
 
-    .modal-body ul,
-    .modal-body ol {
+    .article-body ul,
+    .article-body ol {
       padding-left: 26px;
       margin-bottom: 18px;
     }
 
-    .modal-body li {
+    .article-body li {
       font-size: 17px;
       line-height: 2.0;
       color: var(--text);
       margin-bottom: 8px;
     }
 
-    .modal-body strong {
+    .article-body strong {
       color: var(--text-strong);
       font-weight: 600;
     }
 
-    .modal-body a {
+    .article-body a {
       color: var(--vibe1);
       text-decoration: none;
     }
 
-    .modal-body a:hover {
+    .article-body a:hover {
       color: var(--vibe2);
       text-decoration: underline;
     }
 
-    .modal-body code {
+    .article-body code {
       font-family: 'IBM Plex Mono', 'SF Mono', monospace;
       background: var(--code-bg);
       border: 1px solid var(--border);
@@ -772,14 +748,14 @@
       color: var(--text-code);
     }
 
-    .modal-body table {
+    .article-body table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
       font-size: 15px;
     }
 
-    .modal-body table th {
+    .article-body table th {
       font-size: 12px;
       font-weight: 700;
       color: var(--text-dim);
@@ -790,7 +766,7 @@
       border-bottom: 2px solid var(--border);
     }
 
-    .modal-body table td {
+    .article-body table td {
       padding: 10px 14px;
       color: var(--text);
       border-bottom: 1px solid var(--border);
@@ -798,14 +774,17 @@
       line-height: 1.6;
     }
 
-    .modal-body table tr:hover td {
+    .article-body table tr:hover td {
       background: var(--vibe1-lt);
     }
 
     /* ── Cards Strip ── */
     .cards-strip {
-      padding: 12px 36px 0;
-      border-bottom: 1px solid var(--border);
+      margin: 20px 0 26px;
+      padding: 14px 16px 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
     }
 
     .cards-strip-label {
@@ -951,15 +930,17 @@
       font-family: var(--sans);
     }
 
-    /* ── Modal Footer ── */
-    .modal-footer {
-      padding: 22px 36px;
-      border-top: 1px solid var(--border);
+    /* ── Article End CTA ── */
+    .article-end {
+      margin-top: 34px;
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
       display: flex;
       gap: 10px;
       align-items: center;
-      background: var(--modal-footer-bg);
-      border-radius: 0 0 18px 18px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -1063,45 +1044,16 @@
         font-size: 24px;
       }
 
-      .modal-overlay {
-        padding: 0;
-        align-items: flex-end;
-      }
-
-      .modal {
-        border-radius: 18px 18px 0 0;
-        max-height: 94vh;
-        animation: slideUp 0.26s ease;
-      }
-
-      @keyframes slideUp {
-        from {
-          transform: translateY(100%);
-        }
-
-        to {
-          transform: translateY(0);
-        }
-      }
-
-      .modal-header {
-        padding: 22px 22px 18px;
+      .article-title {
+        font-size: 21px;
       }
 
       .cards-strip {
-        padding: 18px 22px 0;
+        padding: 12px 14px 2px;
       }
 
-      .modal-body {
-        padding: 22px 24px;
-      }
-
-      .modal-footer {
-        padding: 18px 22px;
-      }
-
-      .modal-title {
-        font-size: 20px;
+      .article-end {
+        padding: 16px 18px;
       }
 
       .episodes-grid {
@@ -1156,7 +1108,7 @@
       transition: background 0.25s ease;
     }
 
-    body, header, .sidebar, .episode-card, .modal, .stat-chip, .hashtag {
+    body, header, .sidebar, .episode-card, .cards-strip, .article-end, .stat-chip, .hashtag {
       transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
 
@@ -1201,20 +1153,6 @@
       line-height: 1;
     }
 
-    /* ── Modal view count ── */
-    .modal-view-count {
-      display: none;
-      align-items: center;
-      gap: 5px;
-      font-size: 13px;
-      color: var(--text-dim);
-      margin-top: 4px;
-    }
-
-    .modal-view-count svg {
-      color: var(--vibe2);
-      flex-shrink: 0;
-    }
 
     /* ── Trending / Analysis view ───────────────────────── */
 
@@ -2246,7 +2184,7 @@
 
     /* ── Channel badge: ticker-style monospace ── */
     .episode-channel-badge,
-    .modal-channel {
+    .article-channel {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
       letter-spacing: 0.4px;
@@ -2279,23 +2217,19 @@
       border-color: rgba(0, 96, 100, 0.20);
     }
 
-    /* ── Modal: accent strip ── */
-    .modal::before {
+    /* ── Reading progress bar: accent gradient ── */
+    .reading-progress {
       background: linear-gradient(90deg, #2962FF 0%, #26C6DA 55%, #26A69A 100%);
     }
 
-    .modal-header {
-      background: linear-gradient(to bottom, rgba(41, 98, 255, 0.05), transparent);
-    }
-
-    /* ── Section headers in modal/weekly ── */
-    .modal-body h2,
+    /* ── Section headers in article/weekly ── */
+    .article-body h2,
     .weekly-body h2 {
       background: rgba(41, 98, 255, 0.07);
       border-left: 3px solid var(--vibe1);
       color: var(--vibe1);
     }
-    html[data-theme="light"] .modal-body h2,
+    html[data-theme="light"] .article-body h2,
     html[data-theme="light"] .weekly-body h2 {
       background: rgba(21, 101, 192, 0.06);
       color: var(--vibe1);
@@ -2332,7 +2266,6 @@
     }
 
     /* ── Scrollbars ── */
-    .modal-body::-webkit-scrollbar-thumb,
     .cards-scroll::-webkit-scrollbar-thumb,
     .sidebar::-webkit-scrollbar-thumb {
       background: rgba(41, 98, 255, 0.35);
@@ -2843,44 +2776,6 @@
   </div>
 
 
-  <!-- Summary Modal -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modal">
-      <div class="modal-header">
-        <div class="modal-title-block">
-          <div class="modal-channel" id="modalChannel"></div>
-          <div class="modal-title" id="modalTitle"></div>
-          <div class="modal-hashtags" id="modalHashtags" style="display:none"></div>
-          <div class="modal-meta" id="modalMeta"></div>
-          <div class="modal-view-count" id="modalViewCount">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            <span id="modalViewCountText"></span>
-          </div>
-        </div>
-        <button class="modal-close" id="modalClose" aria-label="關閉">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <div class="cards-strip" id="cardsStrip" style="display:none">
-        <div class="cards-strip-label">精華字卡</div>
-        <div class="cards-scroll" id="cardsScroll"></div>
-      </div>
-      <div class="modal-body" id="modalBody">
-        <div class="loading">
-          <div class="spinner"></div> 載入中…
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a class="btn btn-primary" id="modalYtLink" href="#" target="_blank" rel="noopener"></a>
-        <button class="btn btn-ghost" id="modalCloseBtn">關閉</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Subscribe modal -->
   <div class="sub-overlay" id="subOverlay">
     <div class="sub-modal" role="dialog" aria-modal="true" aria-labelledby="subModalTitle">
@@ -3238,17 +3133,10 @@
       let cards = '';
       for (const ep of filtered) {
         const date = fmt(ep.published_at || ep.processed_at);
-        const cardsJson = JSON.stringify(ep.cards || []).replace(/"/g, '&quot;');
         const hashtagsHtml = (ep.hashtags || '').split(/\s+/).filter(t => t)
           .map(t => `<span class="hashtag">${t}</span>`).join('');
         cards += `
-      <div class="episode-card" data-video-id="${ep.video_id}"
-           data-channel-name="${ep.channel_name || ''}"
-           data-channel-id="${ep.channel_id || ''}"
-           data-date="${date}"
-           data-summary-url="${ep.summary_url}"
-           data-cards="${cardsJson}"
-           data-hashtags="${(ep.hashtags || '').replace(/"/g, '&quot;')}">
+      <div class="episode-card" data-video-id="${ep.video_id}">
         <div class="episode-card-top">
           <span class="episode-channel-badge">${ep.channel_name || ep.channel_id}</span>
         </div>
@@ -3306,18 +3194,8 @@
 
       document.querySelectorAll('.episode-card').forEach(card => {
         card.addEventListener('click', () => {
-          const epData = allEpisodes.find(e => e.video_id === card.dataset.videoId) || {};
-          openModal({
-            videoId: card.dataset.videoId,
-            channelName: card.dataset.channelName,
-            title: card.querySelector('.episode-title').textContent,
-            date: card.dataset.date,
-            summaryUrl: card.dataset.summaryUrl,
-            cards: card.dataset.cards ? JSON.parse(card.dataset.cards) : [],
-            hashtags: card.dataset.hashtags || '',
-            sourceType: epData.source_type || 'youtube',
-            sourceUrl: epData.source_url || '',
-          });
+          _rememberListScroll();
+          location.hash = '#/episode/' + encodeURIComponent(card.dataset.videoId);
         });
       });
     }
@@ -3335,85 +3213,113 @@
       });
     }
 
-    // ── Modal ──────────────────────────────────────────────────
+    // ── Article View ───────────────────────────────────────────
 
-    async function openModal({ videoId, channelName, title, date, summaryUrl, cards, hashtags, sourceType, sourceUrl }) {
-      const overlay = document.getElementById('modalOverlay');
-      const body = document.getElementById('modalBody');
-      const strip = document.getElementById('cardsStrip');
-      const scroll = document.getElementById('cardsScroll');
+    // Remember list scroll position so「返回列表」lands where the user left off
+    let savedListScroll = null;   // { hash, y }
 
-      document.getElementById('modalChannel').textContent = channelName;
-      document.getElementById('modalTitle').textContent = title;
+    function _rememberListScroll() {
+      savedListScroll = { hash: location.hash || '#/', y: window.scrollY };
+    }
 
-      const hashtagsEl = document.getElementById('modalHashtags');
-      if (hashtags) {
-        hashtagsEl.innerHTML = hashtags.split(/\s+/).filter(t => t)
-          .map(t => `<span class="hashtag">${t}</span>`).join('');
-        hashtagsEl.style.display = 'flex';
-      } else {
-        hashtagsEl.innerHTML = '';
-        hashtagsEl.style.display = 'none';
-      }
+    function _maybeRestoreListScroll() {
+      if (!savedListScroll) return;
+      if ((location.hash || '#/') !== savedListScroll.hash) return;
+      const y = savedListScroll.y;
+      savedListScroll = null;
+      requestAnimationFrame(() => window.scrollTo(0, y));
+    }
 
-      const metaEl = document.getElementById('modalMeta');
-      metaEl.innerHTML = date ? `${ICONS.calendar} ${date}` : '';
-      const ytLinkEl = document.getElementById('modalYtLink');
-      if (sourceType === 'newsletter' && sourceUrl) {
-        ytLinkEl.href = sourceUrl;
-        ytLinkEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> 閱讀原文於 Substack`;
-      } else {
-        ytLinkEl.href = `https://youtube.com/watch?v=${videoId}`;
-        ytLinkEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg> YouTube 觀看原片`;
-      }
-      body.innerHTML = '<div class="loading"><div class="spinner"></div> 載入中…</div>';
+    async function renderArticle(ep) {
+      const mc = document.getElementById('mainContent');
+      const date = fmt(ep.published_at || ep.processed_at);
+      const hashtagsHtml = (ep.hashtags || '').split(/\s+/).filter(t => t)
+        .map(t => `<span class="hashtag">${t}</span>`).join('');
 
-      if (cards && cards.length) {
-        scroll.innerHTML = cards.map((url, i) =>
-          `<div class="card-thumb" data-index="${i}">
-        <img src="${BASE + url}" alt="字卡 ${i + 1}" loading="lazy">
-      </div>`
-        ).join('');
-        strip.style.display = 'block';
-        scroll.querySelectorAll('.card-thumb').forEach(thumb => {
-          thumb.addEventListener('click', () => openLightbox(cards, +thumb.dataset.index));
-        });
-      } else {
-        strip.style.display = 'none';
-        scroll.innerHTML = '';
-      }
+      const isNewsletter = ep.source_type === 'newsletter' && ep.source_url;
+      const sourceHref = isNewsletter ? ep.source_url : `https://youtube.com/watch?v=${ep.video_id}`;
+      const sourceIcon = isNewsletter
+        ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+      const sourceLabel = isNewsletter ? '閱讀原文於 Substack' : 'YouTube 觀看原片';
+      const backIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`;
+      const cards = ep.cards || [];
 
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
+      mc.innerHTML = `
+    <div class="reading-progress" id="readingProgress"></div>
+    <article class="article-view">
+      <button class="article-back" id="articleBack">${backIcon} 返回列表</button>
+      <div class="article-header">
+        <span class="article-channel">${ep.channel_name || ep.channel_id}</span>
+        <h1 class="article-title">${ep.title}</h1>
+        <div class="article-meta">
+          <span>${ICONS.calendar} ${date}</span>
+          <span id="articleViews" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span id="articleViewsText"></span>
+          </span>
+          <a class="article-source-link" href="${sourceHref}" target="_blank" rel="noopener">${sourceIcon} ${sourceLabel}</a>
+        </div>
+        ${hashtagsHtml ? `<div class="article-hashtags">${hashtagsHtml}</div>` : ''}
+      </div>
+      ${cards.length ? `
+      <div class="cards-strip">
+        <div class="cards-strip-label">精華字卡</div>
+        <div class="cards-scroll" id="cardsScroll">${cards.map((url, i) =>
+          `<div class="card-thumb" data-index="${i}"><img src="${BASE + url}" alt="字卡 ${i + 1}" loading="lazy"></div>`
+        ).join('')}</div>
+      </div>` : ''}
+      <div class="article-body" id="articleBody">
+        <div class="loading"><div class="spinner"></div> 載入中…</div>
+      </div>
+      <div class="article-end">
+        <a class="btn btn-primary" href="${sourceHref}" target="_blank" rel="noopener">${sourceIcon} ${sourceLabel}</a>
+        <button class="btn btn-ghost" id="articleBackBottom">返回列表</button>
+      </div>
+    </article>
+  `;
+      window.scrollTo(0, 0);
 
-      // Track & display per-article view count
-      const viewEl = document.getElementById('modalViewCount');
-      const viewTextEl = document.getElementById('modalViewCountText');
-      viewEl.style.display = 'none';
-      const articleUrl = `${location.origin}${location.pathname}#/article/${videoId}`;
+      const goBack = () => {
+        location.hash = savedListScroll ? savedListScroll.hash : '#/';
+      };
+      document.getElementById('articleBack').addEventListener('click', goBack);
+      document.getElementById('articleBackBottom').addEventListener('click', goBack);
+
+      mc.querySelectorAll('.card-thumb').forEach(thumb => {
+        thumb.addEventListener('click', () => openLightbox(cards, +thumb.dataset.index));
+      });
+
+      // Track & display per-article view count (same key as the old modal view)
+      const articleUrl = `${location.origin}${location.pathname}#/article/${ep.video_id}`;
       fetchArticleViews(articleUrl).then(count => {
-        if (count !== null) {
-          viewTextEl.textContent = `${Number(count).toLocaleString('zh-TW')} 次瀏覽`;
-          viewEl.style.display = 'flex';
+        const viewEl = document.getElementById('articleViews');
+        if (count !== null && viewEl) {
+          document.getElementById('articleViewsText').textContent =
+            `${Number(count).toLocaleString('zh-TW')} 次瀏覽`;
+          viewEl.style.display = 'inline-flex';
         }
       });
 
+      const body = document.getElementById('articleBody');
       try {
-        const resp = await fetch(BASE + summaryUrl);
+        const resp = await fetch(BASE + ep.summary_url);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const md = await resp.text();
-        const bodyMd = stripFrontmatter(md);
-        body.innerHTML = marked.parse(bodyMd);
+        body.innerHTML = marked.parse(stripFrontmatter(md));
         body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
       } catch (e) {
         body.innerHTML = `<p style="color:var(--red)">⚠️ 載入摘要失敗：${e.message}</p>`;
       }
     }
 
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
+    // Reading progress bar (only active while an article is rendered)
+    window.addEventListener('scroll', () => {
+      const bar = document.getElementById('readingProgress');
+      if (!bar) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = max > 0 ? `${Math.min(100, window.scrollY / max * 100)}%` : '0%';
+    }, { passive: true });
 
     // ── Mobile Sidebar ─────────────────────────────────────────
 
@@ -4694,23 +4600,13 @@
       }
 
 
-      // Bind click to open modal
+      // Bind click to open article view
       mc.querySelectorAll('.entity-history-item[data-video-id]').forEach(item => {
         item.addEventListener('click', () => {
           const vid = item.dataset.videoId;
-          const ep = allEpisodes.find(e => e.video_id === vid);
-          if (ep) {
-            openModal({
-              videoId: ep.video_id,
-              channelName: ep.channel_name,
-              title: ep.title,
-              date: fmt(ep.published_at || ep.processed_at),
-              summaryUrl: ep.summary_url,
-              cards: ep.cards || [],
-              hashtags: ep.hashtags || '',
-              sourceType: ep.source_type || 'youtube',
-              sourceUrl: ep.source_url || '',
-            });
+          if (allEpisodes.some(e => e.video_id === vid)) {
+            _rememberListScroll();
+            location.hash = '#/episode/' + encodeURIComponent(vid);
           }
         });
       });
@@ -4978,22 +4874,10 @@
       }
       if (r.type === 'episode') {
         const ep = allEpisodes.find(e => e.video_id === r.videoId);
+        renderSidebar(allEpisodes, null);
         if (ep) {
-          renderSidebar(allEpisodes, null);
-          renderEpisodes(allEpisodes, '全部節目');
-          setTimeout(() => openModal({
-            videoId: ep.video_id,
-            channelName: ep.channel_name,
-            title: ep.title,
-            date: ep.published_at,
-            summaryUrl: ep.summary_url,
-            cards: ep.cards || [],
-            hashtags: ep.hashtags || '',
-            sourceType: ep.source_type || 'youtube',
-            sourceUrl: ep.source_url || '',
-          }), 50);
+          renderArticle(ep);
         } else {
-          renderSidebar(allEpisodes, null);
           renderEpisodes(allEpisodes, '全部節目');
         }
         return;
@@ -5078,18 +4962,15 @@
       if (lbIndex < lbCards.length - 1) { lbIndex++; _lbShow(); }
     });
 
-    window.addEventListener('hashchange', route);
-
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
-    document.getElementById('modalOverlay').addEventListener('click', e => {
-      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    window.addEventListener('hashchange', () => {
+      route();
+      _maybeRestoreListScroll();
     });
+
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
         else if (document.getElementById('subOverlay').classList.contains('open')) closeSubModal();
-        else closeModal();
       }
       if (document.getElementById('lightbox').classList.contains('open')) {
         if (e.key === 'ArrowLeft' && lbIndex > 0) { lbIndex--; _lbShow(); }
