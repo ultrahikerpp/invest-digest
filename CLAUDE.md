@@ -69,7 +69,7 @@ Local-only Python scripts + GitHub Pages static site. No web server required.
 
 - **`build_site.py`** — Static site generator. Reads `data/summaries/**/*.md` → writes `docs/data/episodes.json` + copies `docs/summaries/*.md`.
 
-- **`channels.json`** — Channel configuration. Add new channels here. Optional `summary_style` field selects a channel-specific summary prompt (`"gooaye_notes"` = topic-based notes with 聽眾 QA / 投資心法 sections for Gooaye 股癌; omit for the generic six-section format).
+- **`channels.json`** — Channel configuration. Add new channels here. Optional `summary_style` field selects a channel-specific summary prompt (`"gooaye_notes"` = topic-based notes with 聽眾 QA / 投資心法 sections for Gooaye 股癌; `"topic_notes"` = topic-based notes with 關鍵數據 / 投資觀念 sections for daily news-style channels, pair with `host_name` for the 「◯◯認為」 voice; omit for the generic six-section format).
 
 ### Backend (`backend/`)
 

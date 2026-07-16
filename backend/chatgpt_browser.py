@@ -254,11 +254,13 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
 
 # ── Public API ────────────────────────────────────────────
 
-def generate_summary(transcript: str, title: str, summary_style: str | None = None) -> str:
+def generate_summary(transcript: str, title: str, summary_style: str | None = None,
+                     host_name: str | None = None) -> str:
     """Generate investment summary via ChatGPT browser automation.
 
-    summary_style: per-channel style from channels.json; "gooaye_notes" uses
-    the topic-notes prompt and takes precedence over the FOMO title sniff.
+    summary_style: per-channel style from channels.json; "gooaye_notes" and
+    "topic_notes" use topic-based prompts and take precedence over the FOMO
+    title sniff. host_name: 主持人稱謂 for topic_notes（如「游庭皓」「Jenny」）.
     """
     from backend import prompts
 
@@ -266,13 +268,21 @@ def generate_summary(transcript: str, title: str, summary_style: str | None = No
 
     if summary_style == "gooaye_notes":
         prompt = prompts.build_gooaye_summary_prompt(transcript, title)
+    elif summary_style == "topic_notes":
+        prompt = prompts.build_topic_notes_prompt(transcript, title, host_name)
     elif is_fomo_analysis:
         prompt = prompts.build_fomo_analysis_prompt(transcript, title)
     else:
         prompt = prompts.build_summary_prompt(transcript, title)
 
-    # gooaye_notes produces a longer response; give generation more headroom
-    timeout_secs = 600 if summary_style == "gooaye_notes" else 180
+    # Topic-based styles produce longer responses; give generation more headroom
+    # (gooaye episodes are ~2x the transcript length of topic_notes channels).
+    if summary_style == "gooaye_notes":
+        timeout_secs = 600
+    elif summary_style == "topic_notes":
+        timeout_secs = 300
+    else:
+        timeout_secs = 180
 
     try:
         summary = chat(prompt, timeout_secs=timeout_secs)

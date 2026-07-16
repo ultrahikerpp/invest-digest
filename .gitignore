@@ -26,6 +26,10 @@
 !backend/
 !backend/*.py
 
+# Allow tests
+!tests/
+!tests/*.py
+
 # Allow core scripts and config
 !runner.py
 !build_site.py

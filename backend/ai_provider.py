@@ -22,8 +22,9 @@ def _mod(provider: str):
 
 
 def generate_summary(transcript: str, title: str, provider: str = "claude",
-                     summary_style: str | None = None) -> str:
-    return _mod(provider).generate_summary(transcript, title, summary_style=summary_style)
+                     summary_style: str | None = None, host_name: str | None = None) -> str:
+    return _mod(provider).generate_summary(transcript, title, summary_style=summary_style,
+                                           host_name=host_name)
 
 
 def generate_newsletter_summary(body: str, title: str, provider: str = "claude") -> str:

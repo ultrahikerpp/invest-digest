@@ -73,9 +73,10 @@ C_CARD  = (16,   18,  42)  # card surface      #10122A
 
 SECTION_ORDER = ["本期主題總覽", "各主題重點", "核心觀點", "提及標的", "關鍵數據", "創作者點出的機會", "風險提示", "創作者建議的觀察方向"]
 
-# Sections unique to the gooaye_notes summary style. Their topic sections have
-# dynamic headings (一、二、…) that can't be whitelisted, so these summaries
-# keep document order instead of SECTION_ORDER filtering.
+# Sections unique to the topic-based summary styles (gooaye_notes /
+# topic_notes). Their topic sections have dynamic headings (一、二、…) that
+# can't be whitelisted, so these summaries keep document order instead of
+# SECTION_ORDER filtering. 「本集主題總覽」 is present in both styles.
 _GOOAYE_NOTE_SECTIONS = {"本集主題總覽", "聽眾 QA", "投資心法"}
 
 

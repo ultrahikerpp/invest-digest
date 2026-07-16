@@ -296,10 +296,11 @@ def get_latest_videos(channel_id: str, max_results: int = 10) -> list[dict]:
 # ── Summary (AI browser provider) ─────────────────────────
 
 def generate_summary(transcript: str, title: str, provider: str = "claude",
-                     summary_style: str | None = None) -> str:
+                     summary_style: str | None = None, host_name: str | None = None) -> str:
     """Generate investment summary via the selected AI browser provider."""
     from backend.ai_provider import generate_summary as _generate_summary
-    return _generate_summary(transcript, title, provider=provider, summary_style=summary_style)
+    return _generate_summary(transcript, title, provider=provider,
+                             summary_style=summary_style, host_name=host_name)
 
 # ── Hashtag Generation (AI browser provider) ──────────────
 

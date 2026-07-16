@@ -111,11 +111,25 @@ def _get_channel_style(channel_id: str | None, channels: list[dict]) -> str | No
     return None
 
 
+def _get_channel_host(channel_id: str | None, channels: list[dict]) -> str | None:
+    """Return the channel's host_name from channels.json (topic_notes 語氣詞)."""
+    for ch in channels:
+        if ch["channel_id"] == channel_id:
+            return ch.get("host_name")
+    return None
+
+
 def _summary_matches_style(summary_text: str, style: str | None) -> bool:
     """True if an existing summary is already in the channel's summary_style
     format (used by reprocess to resume an interrupted batch)."""
     if style == "gooaye_notes":
         return bool(re.search(r"^#{2,4} 投資心法", summary_text, re.MULTILINE))
+    if style == "topic_notes":
+        # 舊六段式也有「關鍵數據」但沒有「本集主題總覽」；gooaye 相反。
+        return bool(
+            re.search(r"^#{2,4} 本集主題總覽", summary_text, re.MULTILINE)
+            and re.search(r"^#{2,4} 關鍵數據", summary_text, re.MULTILINE)
+        )
     return False
 
 
@@ -437,6 +451,7 @@ def cmd_run(channel_id: str | None = None, provider: str = "claude"):
             summary_body = worker.generate_summary(
                 transcript, v["title"], provider=provider,
                 summary_style=ch.get("summary_style"),
+                host_name=ch.get("host_name"),
             )
 
             # Build frontmatter without hashtags (added later in approve step)
@@ -873,6 +888,7 @@ def cmd_retry(video_id: str, provider: str = "claude"):
     summary_body = worker.generate_summary(
         transcript, title, provider=provider,
         summary_style=_get_channel_style(channel_id, channels),
+        host_name=_get_channel_host(channel_id, channels),
     )
 
     now = datetime.now().strftime("%Y-%m-%d")
@@ -978,6 +994,7 @@ def cmd_reprocess(provider: str = "claude", channel_id: str | None = None, limit
         print(f"  重新產製摘要...")
         summary_body = worker.generate_summary(
             transcript, title, provider=provider, summary_style=style,
+            host_name=_get_channel_host(ep_channel_id, channels),
         )
 
         # Generation failure returns a placeholder body; keep the old summary

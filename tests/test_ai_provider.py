@@ -27,7 +27,7 @@ def test_generate_summary_dispatches_to_selected_provider(monkeypatch):
 
     class FakeModule:
         @staticmethod
-        def generate_summary(transcript, title, summary_style=None):
+        def generate_summary(transcript, title, summary_style=None, host_name=None):
             calls.append((transcript, title, summary_style))
             return "fake summary"
 
