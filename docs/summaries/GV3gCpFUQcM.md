@@ -210,7 +210,7 @@ CrowdStrike 上漲約 10%、逼近歷史高點，Palo Alto、Cloudflare 同步�
 ### 提及標的
 
 
-**個股**：IBM、輝達（NVDA）、微軟、Google、Meta、AMD、Intel、美光、SanDisk、Seagate、Western Digital、Lumentum（逐字稿原文「Lubuntan」）、Coherent、SK 海力士、台積電、艾司摩爾（ASML）、Dell、CrowdStrike、Palo Alto Networks、Cloudflare、ServiceNow、Salesforce、JP Morgan（摩根大通）、美國銀行、花旗、富國銀行、高盛、波克夏
+**個股**：IBM、輝達（NVDA）、微軟、Google、Meta、AMD、Intel、美光、SanDisk、Seagate、Western Digital、Lumentum、Coherent、SK 海力士、台積電、艾司摩爾（ASML）、Dell、CrowdStrike、Palo Alto Networks、Cloudflare、ServiceNow、Salesforce、JP Morgan（摩根大通）、美國銀行、花旗、富國銀行、高盛、波克夏
 
 
 **ETF**：XLF
