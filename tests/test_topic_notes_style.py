@@ -20,6 +20,9 @@ def test_build_topic_notes_prompt_includes_host_title_transcript_and_sections():
     assert "關鍵數據" in result
     assert "投資觀念" in result
     assert "提及標的" in result
+    # Regression: 「host認為」must not be mandated as the only sentence-opener
+    # (same 80%-repetition issue fixed in build_gooaye_summary_prompt).
+    assert "避免每句話都用「游庭皓認為」開頭" in result
 
 
 def test_build_topic_notes_prompt_falls_back_to_generic_host():

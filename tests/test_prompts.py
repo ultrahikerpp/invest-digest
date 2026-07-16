@@ -22,6 +22,9 @@ def test_build_gooaye_summary_prompt_includes_title_transcript_and_sections():
     assert "提及標的" in result
     # 名詞小教室 was explicitly excluded by user decision
     assert "名詞小教室" not in result
+    # Regression: 「主委認為」must not be mandated as the only sentence-opener
+    # (caused ~80% of sentences to repeat the same prefix — user complaint).
+    assert "避免每句話都用「主委認為」開頭" in result
 
 
 def test_build_fomo_analysis_prompt_includes_scenario_sections():
