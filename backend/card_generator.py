@@ -7,15 +7,38 @@ import re
 from pathlib import Path
 
 
+# Fallback bullets keep full sentences (27-45 chars is typical for 投資觀念-style
+# content) intact rather than chopping them at an arbitrary short length — the
+# card layouts already wrap long lines across multiple lines. Only very long
+# list-style content (e.g. 提及標的's comma-separated tickers) still needs a cap
+# to avoid overflowing the card; when it does, cut at a list/clause boundary
+# instead of mid-word.
+_FALLBACK_MAX_CHARS = 48
+_FALLBACK_BREAK_CHARS = "、，；,;"
+
+
+def _truncate_at_boundary(text: str, max_chars: int) -> str:
+    if len(text) <= max_chars:
+        return text
+    window = text[:max_chars]
+    boundary = max((window.rfind(c) for c in _FALLBACK_BREAK_CHARS), default=-1)
+    cut = boundary + 1 if boundary >= max_chars * 0.4 else max_chars
+    return text[:cut] + "…"
+
+
 def _fallback_points(content: str) -> list[str]:
     """Simple fallback: extract bullet points from content."""
     points = []
     for raw in content.split("\n"):
-        cleaned = re.sub(r"\*+", "", raw).strip()
+        stripped = raw.strip()
+        if re.match(r"^[-=_*]{3,}$", stripped):  # skip "---" style horizontal rules
+            continue
+        cleaned = re.sub(r"\*+", "", stripped).strip()
         cleaned = re.sub(r"^#{1,6}\s*", "", cleaned).strip()   # strip markdown headers
         cleaned = re.sub(r"^[-•·]\s*", "", cleaned).strip()
-        if cleaned:
-            points.append(cleaned[:25] + "…" if len(cleaned) > 25 else cleaned)
+        if not cleaned:
+            continue
+        points.append(_truncate_at_boundary(cleaned, _FALLBACK_MAX_CHARS))
     return points[:5]
 
 
@@ -387,6 +410,12 @@ def parse_summary(md_path: Path) -> dict:
 
     # Remove YAML frontmatter
     text = re.sub(r"^---.*?---\s*\n", "", text, flags=re.DOTALL)
+
+    # Strip the auto-appended disclaimer block (see generate_summary()'s
+    # post-processing in claude_browser.py / chatgpt_browser.py) — it has no
+    # heading of its own, so without this it gets swallowed into the last
+    # section's content and can surface as a stray bullet point on a card.
+    text = re.sub(r"\n+-{3,}\n\*\*⚠️ 負責任 AI 聲明.*\Z", "\n", text, flags=re.DOTALL)
 
     # Title (first # heading)
     title_match = re.search(r"^# (.+)$", text, re.MULTILINE)
