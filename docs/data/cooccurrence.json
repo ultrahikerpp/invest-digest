@@ -108,7 +108,7 @@
       {
         "name": "Anthropic",
         "ticker": "",
-        "count": 50
+        "count": 51
       },
       {
         "name": "Meta",
@@ -148,7 +148,7 @@
       {
         "name": "Google",
         "ticker": "GOOGL",
-        "count": 26
+        "count": 27
       },
       {
         "name": "AMD",
@@ -398,22 +398,22 @@
       {
         "name": "Google",
         "ticker": "GOOGL",
-        "count": 29
+        "count": 30
       },
       {
         "name": "亞馬遜",
         "ticker": "AMZN",
-        "count": 28
-      },
-      {
-        "name": "特斯拉",
-        "ticker": "TSLA",
-        "count": 28
+        "count": 29
       },
       {
         "name": "美光",
         "ticker": "MU",
-        "count": 28
+        "count": 29
+      },
+      {
+        "name": "蘋果",
+        "ticker": "AAPL",
+        "count": 29
       }
     ],
     "納斯達克指數": [
@@ -1178,7 +1178,7 @@
       {
         "name": "微軟",
         "ticker": "MSFT",
-        "count": 28
+        "count": 29
       }
     ],
     "蘋果": [
@@ -1205,7 +1205,7 @@
       {
         "name": "微軟",
         "ticker": "MSFT",
-        "count": 28
+        "count": 29
       },
       {
         "name": "道瓊指數",
@@ -1220,12 +1220,12 @@
       {
         "name": "美光",
         "ticker": "MU",
-        "count": 23
+        "count": 24
       },
       {
         "name": "亞馬遜",
         "ticker": "AMZN",
-        "count": 20
+        "count": 21
       },
       {
         "name": "台積電",
@@ -2191,7 +2191,7 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 50
+        "count": 51
       },
       {
         "name": "Meta",
@@ -2224,13 +2224,13 @@
         "count": 27
       },
       {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 25
-      },
-      {
         "name": "Google",
         "ticker": "GOOGL",
+        "count": 26
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "DJIA",
         "count": 25
       },
       {
@@ -2825,13 +2825,13 @@
         "count": 34
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
-        "count": 29
-      },
-      {
         "name": "微軟",
         "ticker": "MSFT",
+        "count": 30
+      },
+      {
+        "name": "AMD",
+        "ticker": "AMD",
         "count": 29
       },
       {
@@ -2842,10 +2842,15 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 26
+        "count": 27
       }
     ],
     "亞馬遜": [
+      {
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 29
+      },
       {
         "name": "費城半導體指數",
         "ticker": "SOXX",
@@ -2862,11 +2867,6 @@
         "count": 28
       },
       {
-        "name": "微軟",
-        "ticker": "MSFT",
-        "count": 28
-      },
-      {
         "name": "道瓊指數",
         "ticker": "DJIA",
         "count": 26
@@ -2877,24 +2877,24 @@
         "count": 24
       },
       {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 21
+      },
+      {
+        "name": "蘋果",
+        "ticker": "AAPL",
+        "count": 21
+      },
+      {
         "name": "台積電",
         "ticker": "TSM",
         "count": 20
       },
       {
-        "name": "美光",
-        "ticker": "MU",
-        "count": 20
-      },
-      {
-        "name": "蘋果",
-        "ticker": "AAPL",
-        "count": 20
-      },
-      {
         "name": "Google",
         "ticker": "GOOGL",
-        "count": 17
+        "count": 18
       }
     ],
     "費半": [
@@ -3570,12 +3570,17 @@
         "count": 11
       },
       {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 10
+      },
+      {
         "name": "S&P 500",
         "ticker": "SPX",
         "count": 10
       },
       {
-        "name": "Anthropic",
+        "name": "OpenAI",
         "ticker": "",
         "count": 9
       },
@@ -3595,6 +3600,11 @@
         "count": 8
       },
       {
+        "name": "Google",
+        "ticker": "GOOGL",
+        "count": 8
+      },
+      {
         "name": "Intel",
         "ticker": "INTC",
         "count": 8
@@ -3603,16 +3613,6 @@
         "name": "Meta",
         "ticker": "META",
         "count": 8
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 8
-      },
-      {
-        "name": "Salesforce",
-        "ticker": "CRM",
-        "count": 7
       }
     ],
     "Salesforce": [
@@ -4022,7 +4022,12 @@
       {
         "name": "Anthropic",
         "ticker": "",
-        "count": 4
+        "count": 5
+      },
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 5
       },
       {
         "name": "Meta",
@@ -4035,8 +4040,8 @@
         "count": 4
       },
       {
-        "name": "美光",
-        "ticker": "MU",
+        "name": "OpenAI",
+        "ticker": "",
         "count": 4
       },
       {
@@ -4045,28 +4050,23 @@
         "count": 4
       },
       {
+        "name": "亞馬遜",
+        "ticker": "AMZN",
+        "count": 4
+      },
+      {
+        "name": "蘋果",
+        "ticker": "AAPL",
+        "count": 4
+      },
+      {
         "name": "AMD",
         "ticker": "AMD",
         "count": 3
       },
       {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 3
-      },
-      {
         "name": "三星",
         "ticker": "005930.KS",
-        "count": 3
-      },
-      {
-        "name": "博通",
-        "ticker": "AVGO",
-        "count": 3
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
         "count": 3
       }
     ],
@@ -9266,6 +9266,11 @@
         "count": 11
       },
       {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 10
+      },
+      {
         "name": "S&P 500",
         "ticker": "SPX",
         "count": 10
@@ -9276,24 +9281,19 @@
         "count": 10
       },
       {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 9
-      },
-      {
         "name": "道瓊指數",
         "ticker": "DJIA",
         "count": 9
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
+        "name": "Anthropic",
+        "ticker": "",
         "count": 8
       },
       {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 7
+        "name": "AMD",
+        "ticker": "AMD",
+        "count": 8
       },
       {
         "name": "納斯達克100",
@@ -12032,5 +12032,5 @@
       }
     ]
   },
-  "generated_at": "2026-07-18T06:20:23"
+  "generated_at": "2026-07-18T07:07:35"
 }

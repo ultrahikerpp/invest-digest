@@ -51,18 +51,18 @@
     {
       "name": "Google",
       "ticker": "GOOGL",
-      "count": 77,
+      "count": 78,
       "bullish": 26,
       "bearish": 1,
-      "neutral": 50
+      "neutral": 51
     },
     {
       "name": "美光",
       "ticker": "MU",
-      "count": 76,
+      "count": 77,
       "bullish": 41,
       "bearish": 6,
-      "neutral": 29
+      "neutral": 30
     },
     {
       "name": "AMD",
@@ -75,18 +75,18 @@
     {
       "name": "微軟",
       "ticker": "MSFT",
-      "count": 66,
-      "bullish": 26,
+      "count": 67,
+      "bullish": 27,
       "bearish": 4,
       "neutral": 36
     },
     {
       "name": "OpenAI",
       "ticker": null,
-      "count": 65,
+      "count": 66,
       "bullish": 14,
       "bearish": 4,
-      "neutral": 47
+      "neutral": 48
     },
     {
       "name": "三星",
@@ -99,9 +99,9 @@
     {
       "name": "Anthropic",
       "ticker": null,
-      "count": 56,
+      "count": 57,
       "bullish": 23,
-      "bearish": 2,
+      "bearish": 3,
       "neutral": 31
     },
     {
@@ -137,20 +137,20 @@
       "neutral": 29
     },
     {
+      "name": "蘋果",
+      "ticker": "AAPL",
+      "count": 49,
+      "bullish": 10,
+      "bearish": 5,
+      "neutral": 34
+    },
+    {
       "name": "博通",
       "ticker": "AVGO",
       "count": 49,
       "bullish": 31,
       "bearish": 0,
       "neutral": 18
-    },
-    {
-      "name": "蘋果",
-      "ticker": "AAPL",
-      "count": 48,
-      "bullish": 10,
-      "bearish": 5,
-      "neutral": 33
     },
     {
       "name": "Amazon",
@@ -171,10 +171,10 @@
     {
       "name": "亞馬遜",
       "ticker": "AMZN",
-      "count": 40,
+      "count": 41,
       "bullish": 15,
       "bearish": 0,
-      "neutral": 25
+      "neutral": 26
     },
     {
       "name": "台股加權指數",
@@ -265,20 +265,20 @@
       "neutral": 21
     },
     {
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "count": 24,
+      "bullish": 9,
+      "bearish": 4,
+      "neutral": 11
+    },
+    {
       "name": "甲骨文",
       "ticker": "ORCL",
       "count": 23,
       "bullish": 5,
       "bearish": 7,
       "neutral": 11
-    },
-    {
-      "name": "Palantir",
-      "ticker": "PLTR",
-      "count": 23,
-      "bullish": 9,
-      "bearish": 4,
-      "neutral": 10
     },
     {
       "name": "Marvell",
@@ -347,10 +347,10 @@
     {
       "name": "CoreWeave",
       "ticker": "CRWV",
-      "count": 18,
+      "count": 19,
       "bullish": 9,
       "bearish": 3,
-      "neutral": 6
+      "neutral": 7
     },
     {
       "name": "Broadcom",
@@ -793,6 +793,14 @@
       "neutral": 5
     },
     {
+      "name": "SK 海力士",
+      "ticker": "000660",
+      "count": 6,
+      "bullish": 4,
+      "bearish": 1,
+      "neutral": 1
+    },
+    {
       "name": "MSCI新興市場指數",
       "ticker": "NSEI",
       "count": 6,
@@ -895,14 +903,6 @@
       "bullish": 4,
       "bearish": 0,
       "neutral": 1
-    },
-    {
-      "name": "SK 海力士",
-      "ticker": "000660",
-      "count": 5,
-      "bullish": 4,
-      "bearish": 1,
-      "neutral": 0
     },
     {
       "name": "SK Hynix",
@@ -3619,6 +3619,14 @@
     {
       "name": "李寧",
       "ticker": "2331",
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "月之暗面",
+      "ticker": null,
       "count": 1,
       "bullish": 1,
       "bearish": 0,
@@ -6540,15 +6548,15 @@
   "industries": [
     {
       "name": "AI",
-      "count": 201
+      "count": 202
     },
     {
       "name": "半導體",
-      "count": 182
+      "count": 183
     },
     {
       "name": "美股",
-      "count": 131
+      "count": 132
     },
     {
       "name": "台股",
@@ -11023,6 +11031,26 @@
         "KOSPI"
       ]
     },
+    "kp-newsletter-51": {
+      "industries": [
+        "AI",
+        "半導體",
+        "美股"
+      ],
+      "mentions": [
+        "微軟",
+        "亞馬遜",
+        "Google",
+        "蘋果",
+        "OpenAI",
+        "Anthropic",
+        "月之暗面",
+        "Palantir",
+        "CoreWeave",
+        "美光",
+        "SK 海力士"
+      ]
+    },
     "leh1Zp5LljI": {
       "industries": [
         "能源",
@@ -12704,5 +12732,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-07-18T06:20:23"
+  "generated_at": "2026-07-18T07:07:35"
 }
