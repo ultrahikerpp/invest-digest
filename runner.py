@@ -1808,26 +1808,8 @@ def cmd_weekly(provider: str = "claude"):
 
     print(f"Synthesizing weekly digest via {provider}...")
     from backend.ai_provider import chat as ai_chat
-    result = ai_chat(prompt, provider=provider)
-
-    # Strip page-UI artifacts that bleed into the extracted response.
-    # Patterns seen: ::view-transition CSS, "V", "visualize", "show_widget"
-    _ARTIFACT_PATTERNS = re.compile(
-        r'::view-transition|animation-duration|animation-timing-function|'
-        r'cubic-bezier|visualize|show_widget'
-    )
-    cleaned_lines = []
-    for line in result.splitlines():
-        stripped = line.strip()
-        # Drop lines that are pure UI artifacts or a lone "V"
-        if _ARTIFACT_PATTERNS.search(stripped):
-            continue
-        if stripped in ('V', '}'):
-            continue
-        cleaned_lines.append(line)
-    result = '\n'.join(cleaned_lines)
-    # Collapse runs of blank lines left by the cleanup
-    result = re.sub(r'\n{3,}', '\n\n', result).strip()
+    from backend.browser_common import clean_ui_artifacts
+    result = clean_ui_artifacts(ai_chat(prompt, provider=provider))
 
     # Determine week label (ISO year-week)
     now = datetime.now()

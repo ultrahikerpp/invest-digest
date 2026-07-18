@@ -311,7 +311,7 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             if not response:
                 raise RuntimeError("無法擷取回應內容，請確認 claude.ai 已正常回應")
 
-            return response
+            return clean_ui_artifacts(response)
 
         finally:
             ctx.close()
@@ -436,7 +436,7 @@ def generate_newsletter_card_points(sections: dict[str, str]) -> tuple[dict[str,
 
 # ── JSON cleanup (shared across providers) ─────────────────
 
-from backend.browser_common import clean_json_raw as _clean_json_raw
+from backend.browser_common import clean_json_raw as _clean_json_raw, clean_ui_artifacts
 
 
 def extract_analysis(summary_body: str) -> dict:

@@ -33,6 +33,31 @@ def clean_json_raw(raw: str) -> str:
     return raw
 
 
+_UI_ARTIFACT_PATTERNS = re.compile(
+    r'::view-transition|animation-duration|animation-timing-function|'
+    r'cubic-bezier|visualize|show_widget'
+)
+
+
+def clean_ui_artifacts(raw: str) -> str:
+    """
+    Strip Claude.ai UI chrome (view-transition CSS, the "visualize"/
+    "show_widget" artifact-panel markers, and lone "V"/"}" lines) that
+    sometimes bleeds into the extracted response text when the reply
+    renders an interactive widget (e.g. earnings chart visualizations).
+    """
+    cleaned_lines = []
+    for line in raw.splitlines():
+        stripped = line.strip()
+        if _UI_ARTIFACT_PATTERNS.search(stripped):
+            continue
+        if stripped in ('V', '}'):
+            continue
+        cleaned_lines.append(line)
+    result = '\n'.join(cleaned_lines)
+    return re.sub(r'\n{3,}', '\n\n', result).strip()
+
+
 def parse_hook_sections(raw: str, max_points: int) -> tuple[dict[str, list[str]], str]:
     """
     Parse a '[HOOK]\\n...\\n\\n[Section Name]\\npoint1\\npoint2...' formatted
