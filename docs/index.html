@@ -8,7 +8,7 @@
   <link rel="alternate" type="application/rss+xml" title="Ultra Investment Digest RSS" href="feed.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap"
     rel="stylesheet">
   <!-- Prevent flash of wrong theme -->
   <script>
@@ -25,110 +25,115 @@
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <style>
     /* ─────────────────────────────────────────────────────────
-       Design System: Professional Fintech — TradingView-inspired
-       Dark:  #131722 bg · #1E222D card · #D1D4DC text · #2962FF blue
-       Light: #F7F9FC bg · #FFFFFF  card · #131722 text · #1565C0 blue
+       Design System: Amber Terminal — Bloomberg/Koyfin-inspired
+       Dark:  #0B0D12 bg · #12151D card · #E4E7EE text · #FFB224 amber
+       Light: #F7F5F0 bg · #FFFFFF  card · #24221B text · #9E6A00 amber
+       Data (EP no., dates, counts) in IBM Plex Mono.
        Typography modular scale (Major Third 1.250):
          12 · 13 · 14 · 16 · 17 · 20 · 24 · 28
     ───────────────────────────────────────────────────────── */
 
     /* ── Dark mode (default) ── */
     :root {
-      --bg: #131722;
-      --bg2: #1C2030;
-      --surface: #1E222D;
-      --surface2: #181D2E;
+      --bg: #0B0D12;
+      --bg2: #10131A;
+      --surface: #12151D;
+      --surface2: #0E1117;
 
-      --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(41, 98, 255, 0.60);
+      --border: #232836;
+      --border-hover: rgba(255, 178, 36, 0.55);
 
-      --vibe1: #5C9EFF;
-      --vibe2: #26C6DA;
-      --vibe3: #FF9800;
-      --vibe1-lt: rgba(41, 98, 255, 0.12);
-      --vibe1-dk: #1565C0;
+      --vibe1: #FFB224;
+      --vibe2: #D9A83C;
+      --vibe3: #E8850C;
+      --vibe1-lt: rgba(255, 178, 36, 0.10);
+      --vibe1-dk: #C77700;
 
-      --primary: #5C9EFF;
-      --primary-lt: rgba(41, 98, 255, 0.12);
-      --primary-dk: #1565C0;
+      --primary: #FFB224;
+      --primary-lt: rgba(255, 178, 36, 0.10);
+      --primary-dk: #C77700;
 
-      --text: #D1D4DC;
-      --text-muted: #9598A1;
-      --text-dim: #6B7280;
+      --text: #E4E7EE;
+      --text-muted: #9BA4B8;
+      --text-dim: #6E7689;
 
-      --green: #26A69A;
-      --green-lt: rgba(38, 166, 154, 0.14);
-      --red: #EF5350;
-      --red-lt: rgba(239, 83, 80, 0.14);
+      --green: #2EBD85;
+      --green-lt: rgba(46, 189, 133, 0.14);
+      --red: #F6465D;
+      --red-lt: rgba(246, 70, 93, 0.14);
 
-      --gold: #FF9800;
-      --gold-lt: rgba(255, 152, 0, 0.12);
+      --gold: #FFB224;
+      --gold-lt: rgba(255, 178, 36, 0.12);
 
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, .50);
-      --shadow-md: 0 6px 24px rgba(0, 0, 0, .55), 0 0 20px rgba(41, 98, 255, .08);
-      --shadow-lg: 0 16px 48px rgba(0, 0, 0, .65), 0 0 40px rgba(41, 98, 255, .12);
+      --shadow-md: 0 6px 24px rgba(0, 0, 0, .55), 0 0 20px rgba(255, 178, 36, .05);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, .65), 0 0 40px rgba(255, 178, 36, .08);
 
-      --radius: 12px;
-      --radius-sm: 8px;
+      --radius: 6px;
+      --radius-sm: 4px;
       --sans: 'IBM Plex Sans', 'Noto Sans TC', 'PingFang TC', sans-serif;
+      --mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
 
       /* Theme-specific tokens (dark defaults) */
-      --header-bg: rgba(19, 23, 34, 0.96);
-      --sidebar-bg: rgba(22, 26, 38, 0.98);
-      --modal-overlay-bg: rgba(8, 10, 16, 0.80);
-      --sidebar-backdrop-bg: rgba(8, 10, 16, 0.55);
-      --disclaimer-bg: rgba(41, 98, 255, 0.06);
-      --disclaimer-border: rgba(41, 98, 255, 0.18);
-      --disclaimer-color: #90B8FF;
-      --text-strong: #90B8FF;
-      --text-code: #5C9EFF;
-      --code-bg: #181D2E;
+      --header-bg: rgba(11, 13, 18, 0.96);
+      --sidebar-bg: rgba(13, 16, 22, 0.98);
+      --modal-overlay-bg: rgba(5, 7, 11, 0.82);
+      --sidebar-backdrop-bg: rgba(5, 7, 11, 0.55);
+      --disclaimer-bg: rgba(255, 178, 36, 0.05);
+      --disclaimer-border: rgba(255, 178, 36, 0.20);
+      --disclaimer-color: #D9A83C;
+      --text-strong: #FFCE6B;
+      --text-code: #FFB224;
+      --code-bg: #10131A;
     }
 
     /* ── Light mode overrides ── */
     html[data-theme="light"] {
-      --bg: #F7F9FC;
-      --bg2: #EEF2F8;
+      --bg: #F7F5F0;
+      --bg2: #F0EDE6;
       --surface: #FFFFFF;
-      --surface2: #F3F6FB;
+      --surface2: #F3F0E9;
 
-      --border: rgba(0, 0, 0, 0.09);
-      --border-hover: rgba(21, 101, 192, 0.55);
+      --border: rgba(0, 0, 0, 0.10);
+      --border-hover: rgba(158, 106, 0, 0.50);
 
-      --vibe1: #1565C0;
-      --vibe2: #006064;
-      --vibe3: #E65100;
-      --vibe1-lt: rgba(21, 101, 192, 0.09);
-      --vibe1-dk: #0D47A1;
+      --vibe1: #9E6A00;
+      --vibe2: #8A5E00;
+      --vibe3: #B36A00;
+      --vibe1-lt: rgba(158, 106, 0, 0.09);
+      --vibe1-dk: #7A5200;
 
-      --primary: #1565C0;
-      --primary-lt: rgba(21, 101, 192, 0.09);
-      --primary-dk: #0D47A1;
+      --primary: #9E6A00;
+      --primary-lt: rgba(158, 106, 0, 0.09);
+      --primary-dk: #7A5200;
 
-      --text: #131722;
-      --text-muted: #434651;
-      --text-dim: #787B86;
+      --text: #24221B;
+      --text-muted: #56534A;
+      --text-dim: #807B6E;
 
-      --green: #00695C;
-      --green-lt: rgba(0, 105, 92, 0.10);
-      --red: #C62828;
-      --red-lt: rgba(198, 40, 40, 0.10);
+      --green: #178A5F;
+      --green-lt: rgba(23, 138, 95, 0.10);
+      --red: #D63A50;
+      --red-lt: rgba(214, 58, 80, 0.10);
+
+      --gold: #B36A00;
+      --gold-lt: rgba(179, 106, 0, 0.10);
 
       --shadow-sm: 0 1px 4px rgba(0, 0, 0, .08), 0 2px 8px rgba(0,0,0,.04);
       --shadow-md: 0 4px 16px rgba(0, 0, 0, .10), 0 2px 4px rgba(0,0,0,.06);
       --shadow-lg: 0 12px 40px rgba(0, 0, 0, .14), 0 4px 8px rgba(0,0,0,.08);
 
       /* Theme-specific tokens (light) */
-      --header-bg: rgba(255, 255, 255, 0.97);
-      --sidebar-bg: rgba(247, 249, 252, 0.99);
-      --modal-overlay-bg: rgba(19, 23, 34, 0.55);
-      --sidebar-backdrop-bg: rgba(19, 23, 34, 0.35);
-      --disclaimer-bg: rgba(21, 101, 192, 0.05);
-      --disclaimer-border: rgba(21, 101, 192, 0.18);
-      --disclaimer-color: #1565C0;
-      --text-strong: #1565C0;
-      --text-code: #1565C0;
-      --code-bg: #EEF2F8;
+      --header-bg: rgba(251, 250, 245, 0.97);
+      --sidebar-bg: rgba(247, 245, 240, 0.99);
+      --modal-overlay-bg: rgba(24, 22, 16, 0.55);
+      --sidebar-backdrop-bg: rgba(24, 22, 16, 0.35);
+      --disclaimer-bg: rgba(158, 106, 0, 0.05);
+      --disclaimer-border: rgba(158, 106, 0, 0.20);
+      --disclaimer-color: #8A5E00;
+      --text-strong: #8A5E00;
+      --text-code: #8A5E00;
+      --code-bg: #F0EDE6;
     }
 
     * {
@@ -139,7 +144,7 @@
 
     html {
       /* base fallback — overridden per-theme in enhancement section */
-      background: #131722;
+      background: #0B0D12;
       background-attachment: fixed;
       min-height: 100%;
     }
@@ -172,7 +177,7 @@
       background: var(--header-bg);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(41, 98, 255, 0.22);
+      border-bottom: 1px solid rgba(255, 178, 36, 0.22);
       padding: 0 28px;
       display: flex;
       align-items: center;
@@ -207,13 +212,13 @@
       width: 36px;
       height: 36px;
       background: linear-gradient(135deg, var(--vibe1), var(--vibe2));
-      border-radius: 10px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #0B0D12;
       flex-shrink: 0;
-      box-shadow: 0 0 14px rgba(41, 98, 255, 0.45);
+      box-shadow: 0 0 14px rgba(255, 178, 36, 0.30);
     }
 
     .logo-text {
@@ -273,7 +278,7 @@
     }
 
     .channel-item:hover {
-      background: rgba(41, 98, 255, 0.07);
+      background: rgba(255, 178, 36, 0.07);
     }
 
     .channel-item.active {
@@ -295,7 +300,7 @@
       width: 38px;
       height: 38px;
       border-radius: 10px;
-      background: rgba(41, 98, 255, 0.12);
+      background: rgba(255, 178, 36, 0.12);
       overflow: hidden;
       flex-shrink: 0;
       display: flex;
@@ -371,7 +376,7 @@
       gap: 7px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 6px;
       padding: 7px 16px;
       font-size: 14px;
       color: var(--text-muted);
@@ -447,7 +452,7 @@
       font-size: 12px;
       font-weight: 600;
       padding: 4px 11px;
-      border-radius: 20px;
+      border-radius: 4px;
       letter-spacing: 0.3px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -468,13 +473,14 @@
     }
 
     .hashtag {
-      font-size: 11px;
+      font-family: var(--mono);
+      font-size: 10.5px;
       font-weight: 500;
-      color: var(--vibe2);
-      background: rgba(168, 85, 247, 0.1);
-      border: 1px solid rgba(38, 198, 218, 0.22);
-      border-radius: 20px;
-      padding: 2px 8px;
+      color: var(--text-muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2px 7px;
       letter-spacing: 0.2px;
       white-space: nowrap;
     }
@@ -633,7 +639,7 @@
       font-size: 12px;
       font-weight: 600;
       padding: 4px 11px;
-      border-radius: 20px;
+      border-radius: 4px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -694,7 +700,7 @@
       color: var(--vibe1);
       margin: 30px 0 14px;
       padding: 10px 16px;
-      background: rgba(41, 98, 255, 0.10);
+      background: rgba(255, 178, 36, 0.10);
       border-radius: var(--radius-sm);
       border-left: 3px solid var(--vibe2);
     }
@@ -833,7 +839,7 @@
     .card-thumb:hover {
       border-color: var(--vibe2);
       transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(38, 198, 218, 0.28);
+      box-shadow: 0 6px 16px rgba(255, 178, 36, 0.28);
     }
 
     .card-thumb img {
@@ -846,7 +852,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(1, 5, 14, 0.96);
+      background: rgba(5, 7, 11, 0.96);
       z-index: 400;
       align-items: center;
       justify-content: center;
@@ -863,7 +869,7 @@
       max-width: 92vw;
       object-fit: contain;
       border-radius: 10px;
-      box-shadow: 0 0 80px rgba(41, 98, 255, 0.3);
+      box-shadow: 0 0 80px rgba(255, 178, 36, 0.3);
       cursor: default;
       animation: lbIn 0.18s ease;
     }
@@ -882,8 +888,8 @@
 
     .lightbox-close,
     .lightbox-nav {
-      background: rgba(99, 102, 241, 0.15);
-      border: 1px solid rgba(41, 98, 255, 0.3);
+      background: rgba(255, 178, 36, 0.15);
+      border: 1px solid rgba(255, 178, 36, 0.3);
       color: white;
       line-height: 0;
       padding: 11px;
@@ -897,7 +903,7 @@
 
     .lightbox-close:hover,
     .lightbox-nav:hover {
-      background: rgba(99, 102, 241, 0.35);
+      background: rgba(255, 178, 36, 0.35);
     }
 
     .lightbox-close {
@@ -959,25 +965,25 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--vibe1), var(--vibe2));
-      color: white;
-      box-shadow: 0 3px 12px rgba(41, 98, 255, 0.4);
+      background: linear-gradient(135deg, var(--vibe1), var(--vibe3));
+      color: #0B0D12;
+      box-shadow: 0 3px 12px rgba(255, 178, 36, 0.4);
     }
 
     .btn-primary:hover {
       filter: brightness(1.12);
-      box-shadow: 0 5px 20px rgba(56, 189, 248, 0.55);
-      color: white;
+      box-shadow: 0 5px 20px rgba(255, 178, 36, 0.45);
+      color: #0B0D12;
     }
 
     .btn-ghost {
-      background: rgba(41, 98, 255, 0.08);
+      background: rgba(255, 178, 36, 0.08);
       color: var(--text-muted);
       border: 1px solid var(--border);
     }
 
     .btn-ghost:hover {
-      background: rgba(41, 98, 255, 0.12);
+      background: rgba(255, 178, 36, 0.12);
       color: var(--text);
       border-color: var(--vibe1);
     }
@@ -996,7 +1002,7 @@
     }
 
     .mobile-menu-btn:hover {
-      background: rgba(41, 98, 255, 0.12);
+      background: rgba(255, 178, 36, 0.12);
     }
 
     @media (max-width: 768px) {
@@ -1279,7 +1285,7 @@
 
     .industry-chip {
       padding: 5px 12px;
-      border-radius: 20px;
+      border-radius: 4px;
       font-size: 12px;
       font-weight: 500;
       background: var(--surface2);
@@ -1306,7 +1312,7 @@
 
     .divergence-filter-chip {
       padding: 5px 14px;
-      border-radius: 20px;
+      border-radius: 4px;
       font-size: 12px;
       font-weight: 500;
       background: var(--surface2);
@@ -1338,7 +1344,7 @@
     }
 
     .divergence-card.is-diverge {
-      border-color: rgba(255, 152, 0, 0.30);
+      border-color: rgba(255, 178, 36, 0.30);
     }
 
     .divergence-card:hover {
@@ -1352,7 +1358,7 @@
       padding: 4px 10px;
       border-radius: 6px;
       cursor: pointer;
-      border: 1px solid rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(255, 178, 36, 0.2);
       transition: all 0.2s;
       display: inline-flex;
       align-items: center;
@@ -1362,13 +1368,13 @@
 
     .chart-btn:hover {
       background: var(--vibe1);
-      color: white;
+      color: #0B0D12;
       border-color: var(--vibe1);
     }
 
     .chart-btn.active {
       background: var(--vibe3);
-      color: white;
+      color: #0B0D12;
       border-color: var(--vibe3);
     }
 
@@ -1406,14 +1412,14 @@
       font-size: 11px;
       font-weight: 600;
       padding: 3px 9px;
-      border-radius: 10px;
+      border-radius: 4px;
       letter-spacing: 0.02em;
       flex-shrink: 0;
     }
 
     .consensus-badge.bull    { background: var(--green-lt);  color: var(--green); }
     .consensus-badge.bear    { background: var(--red-lt);    color: var(--red); }
-    .consensus-badge.diverge { background: rgba(245,158,11,0.12); color: #FF9800; }
+    .consensus-badge.diverge { background: var(--gold-lt); color: var(--gold); }
     .consensus-badge.neutral { background: var(--surface2);  color: var(--text-dim); }
     .consensus-badge.lean    { background: var(--vibe1-lt);  color: var(--vibe2); }
 
@@ -1695,7 +1701,7 @@
       font-size: 13px;
       font-weight: 700;
       padding: 4px 10px;
-      border-radius: 20px;
+      border-radius: 4px;
       min-width: 52px;
       text-align: center;
     }
@@ -1726,7 +1732,7 @@
       gap: 4px;
       background: var(--vibe1-lt);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 4px;
       padding: 4px 12px;
       font-size: 13px;
       color: var(--vibe1);
@@ -1734,7 +1740,7 @@
       margin: 0 6px 6px 0;
       transition: background 0.15s;
     }
-    .related-entity-chip:hover { background: rgba(99,102,241,0.25); }
+    .related-entity-chip:hover { background: rgba(255,178,36,0.25); }
     .related-entity-count { color: var(--text-dim); font-size: 11px; }
 
     /* ── Entity Search Page ── */
@@ -1868,10 +1874,10 @@
       color: var(--text-muted);
     }
     .watchlist-star-btn.active {
-      color: #FF9800;
+      color: var(--gold);
     }
     .watchlist-star-btn.active:hover {
-      color: #D97706;
+      color: #C77700;
     }
     .entity-page-star-btn {
       background: none;
@@ -1893,9 +1899,9 @@
       color: var(--text);
     }
     .entity-page-star-btn.active {
-      color: #FF9800;
-      border-color: #FF9800;
-      background: rgba(255, 152, 0, 0.10);
+      color: var(--gold);
+      border-color: var(--gold);
+      background: var(--gold-lt);
     }
 
 
@@ -1911,7 +1917,7 @@
     }
     .weekly-nav-chip {
       padding: 5px 14px;
-      border-radius: 20px;
+      border-radius: 4px;
       font-size: 12px;
       font-weight: 500;
       background: var(--surface);
@@ -1928,7 +1934,7 @@
     }
     .weekly-nav-chip.active {
       background: var(--vibe3);
-      color: white;
+      color: #0B0D12;
       border-color: var(--vibe3);
     }
     .weekly-meta-bar {
@@ -1949,7 +1955,7 @@
       color: var(--vibe1);
       margin: 28px 0 12px;
       padding: 10px 16px;
-      background: rgba(99,102,241,0.10);
+      background: rgba(255,178,36,0.10);
       border-radius: var(--radius-sm);
       border-left: 3px solid var(--vibe2);
     }
@@ -1993,7 +1999,7 @@
       bottom: 32px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(3, 14, 28, 0.96);
+      background: rgba(7, 9, 14, 0.96);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 10px 20px;
@@ -2018,8 +2024,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255, 152, 0, 0.10);
-      border: 1px solid rgba(236, 72, 153, 0.30);
+      background: rgba(255, 178, 36, 0.10);
+      border: 1px solid rgba(255, 178, 36, 0.35);
       border-radius: var(--radius-sm);
       padding: 7px 13px;
       font-size: 13px;
@@ -2029,11 +2035,11 @@
       text-decoration: none;
     }
     .flip-alert-chip:hover {
-      background: rgba(255, 152, 0, 0.12);
+      background: rgba(255, 178, 36, 0.12);
     }
     .flip-arrow {
       font-size: 12px;
-      color: #FF9800;
+      color: var(--gold);
     }
     .flip-name { font-weight: 600; }
     .flip-before { color: var(--green); font-size: 12px; }
@@ -2134,9 +2140,9 @@
     /* ── Background: grid baked into html (no z-index issues) ── */
     html:not([data-theme="light"]) {
       background:
-        linear-gradient(rgba(41, 98, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(41, 98, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(160deg, #131722 0%, #1C2030 100%);
+        linear-gradient(rgba(255, 178, 36, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 178, 36, 0.018) 1px, transparent 1px),
+        linear-gradient(160deg, #0B0D12 0%, #10131A 100%);
       background-size: 40px 40px, 40px 40px, 100% 100%;
       background-attachment: fixed;
     }
@@ -2145,7 +2151,7 @@
       background:
         linear-gradient(rgba(0, 0, 0, 0.030) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 0, 0, 0.030) 1px, transparent 1px),
-        #F7F9FC;
+        #F7F5F0;
       background-size: 40px 40px, 40px 40px, 100% 100%;
       background-attachment: fixed;
     }
@@ -2153,7 +2159,7 @@
     /* ── Header: accent strip + glass ── */
     header::before {
       height: 2px;
-      background: linear-gradient(90deg, #2962FF 0%, #26C6DA 55%, #26A69A 100%);
+      background: linear-gradient(90deg, #FFB224 0%, #E8850C 70%, rgba(232, 133, 12, 0.25) 100%);
     }
 
     header {
@@ -2166,8 +2172,8 @@
 
     /* ── Logo icon ── */
     .logo-icon {
-      background: linear-gradient(135deg, #2962FF, #26C6DA);
-      box-shadow: 0 2px 12px rgba(41, 98, 255, 0.40);
+      background: linear-gradient(135deg, #FFB224, #E8850C);
+      box-shadow: 0 2px 12px rgba(255, 178, 36, 0.40);
     }
 
     /* ── Episode cards ── */
@@ -2201,43 +2207,43 @@
 
     /* ── Sidebar active: blue left accent ── */
     .channel-item.active {
-      background: rgba(41, 98, 255, 0.10);
+      background: rgba(255, 178, 36, 0.10);
       border-left-color: var(--vibe1);
     }
 
-    /* ── Hashtags: readable teal ── */
+    /* ── Hashtags: quiet mono chips ── */
     .hashtag {
-      color: var(--vibe2);
-      background: rgba(38, 198, 218, 0.10);
-      border-color: rgba(38, 198, 218, 0.22);
+      color: var(--text-muted);
+      background: var(--surface2);
+      border-color: var(--border);
     }
     html[data-theme="light"] .hashtag {
-      color: var(--vibe2);
-      background: rgba(0, 96, 100, 0.08);
-      border-color: rgba(0, 96, 100, 0.20);
+      color: var(--text-muted);
+      background: var(--surface2);
+      border-color: var(--border);
     }
 
     /* ── Reading progress bar: accent gradient ── */
     .reading-progress {
-      background: linear-gradient(90deg, #2962FF 0%, #26C6DA 55%, #26A69A 100%);
+      background: linear-gradient(90deg, #FFB224 0%, #E8850C 100%);
     }
 
     /* ── Section headers in article/weekly ── */
     .article-body h2,
     .weekly-body h2 {
-      background: rgba(41, 98, 255, 0.07);
+      background: rgba(255, 178, 36, 0.07);
       border-left: 3px solid var(--vibe1);
       color: var(--vibe1);
     }
     html[data-theme="light"] .article-body h2,
     html[data-theme="light"] .weekly-body h2 {
-      background: rgba(21, 101, 192, 0.06);
+      background: rgba(158, 106, 0, 0.06);
       color: var(--vibe1);
     }
 
     /* ── Sentiment badges ── */
-    .consensus-badge.bull { background: rgba(38, 166, 154, 0.15); }
-    .consensus-badge.bear { background: rgba(239, 83, 80, 0.15); }
+    .consensus-badge.bull { background: rgba(46, 189, 133, 0.15); }
+    .consensus-badge.bear { background: rgba(246, 70, 93, 0.15); }
 
     /* ── Positive/negative data values ── */
     .fund-chip-value.pos { color: var(--green); }
@@ -2258,29 +2264,29 @@
 
     /* ── Buttons ── */
     .btn-primary {
-      background: linear-gradient(135deg, #2962FF, #26C6DA);
-      box-shadow: 0 2px 10px rgba(41, 98, 255, 0.30);
+      background: linear-gradient(135deg, #FFB224, #E8850C);
+      box-shadow: 0 2px 10px rgba(255, 178, 36, 0.30);
     }
     .btn-primary:hover {
-      box-shadow: 0 4px 18px rgba(41, 98, 255, 0.48);
+      box-shadow: 0 4px 18px rgba(255, 178, 36, 0.48);
     }
 
     /* ── Scrollbars ── */
     .cards-scroll::-webkit-scrollbar-thumb,
     .sidebar::-webkit-scrollbar-thumb {
-      background: rgba(41, 98, 255, 0.35);
+      background: rgba(255, 178, 36, 0.35);
     }
 
     /* ── Sentiment bars ── */
-    .sentiment-bar .seg-bullish { background: #26A69A; }
-    .sentiment-bar .seg-bearish { background: #EF5350; }
+    .sentiment-bar .seg-bullish { background: #2EBD85; }
+    .sentiment-bar .seg-bearish { background: #F6465D; }
 
     /* ── Watchlist star: gold ── */
-    .watchlist-star-btn.active { color: #FF9800; }
+    .watchlist-star-btn.active { color: var(--gold); }
     .entity-page-star-btn.active {
-      color: #FF9800;
-      border-color: #FF9800;
-      background: rgba(255, 152, 0, 0.10);
+      color: var(--gold);
+      border-color: var(--gold);
+      background: var(--gold-lt);
     }
 
     /* ── Earnings page ── */
@@ -2299,7 +2305,7 @@
       margin-left: 8px;
     }
     .earnings-btn:hover {
-      background: rgba(41, 98, 255, 0.08);
+      background: rgba(255, 178, 36, 0.08);
       border-color: var(--vibe1);
       color: var(--vibe1);
     }
@@ -2413,7 +2419,7 @@
 
     /* ── Industry bar ── */
     .industry-bar-fill {
-      background: linear-gradient(90deg, #2962FF, #26C6DA);
+      background: linear-gradient(90deg, #FFB224, #E8850C);
     }
 
     /* ── Loading spinner ── */
@@ -2444,7 +2450,7 @@
       padding: 7px 14px;
       background: var(--primary-lt);
       color: var(--primary);
-      border: 1px solid rgba(41, 98, 255, 0.25);
+      border: 1px solid rgba(255, 178, 36, 0.25);
       border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
@@ -2453,8 +2459,8 @@
       font-family: inherit;
     }
     .subscribe-btn:hover {
-      background: rgba(41, 98, 255, 0.2);
-      border-color: rgba(41, 98, 255, 0.45);
+      background: rgba(255, 178, 36, 0.2);
+      border-color: rgba(255, 178, 36, 0.45);
     }
     .subscribe-btn svg { flex-shrink: 0; }
 
@@ -2584,7 +2590,7 @@
       margin-top: 20px;
       padding: 12px;
       background: var(--primary);
-      color: #fff;
+      color: #0B0D12;
       border: none;
       border-radius: 8px;
       font-size: 14px;
@@ -2659,7 +2665,75 @@
       font-weight: 600;
       text-decoration: none;
     }
-    .action-page-link:hover { background: rgba(41,98,255,0.2); }
+    .action-page-link:hover { background: rgba(255,178,36,0.2); }
+
+    /* ══ Amber Terminal additions ══ */
+
+    /* Data values (dates, counts, tickers) in mono */
+    .episode-date,
+    .channel-meta,
+    .header-right,
+    .entity-ticker,
+    .divergence-entity-ticker,
+    .entity-search-ticker,
+    .earnings-ticker-sym,
+    .earnings-ticker-quarter,
+    .earnings-metric-val,
+    .fund-chip-value,
+    .stance-count,
+    .sentiment-counts,
+    .footer-stat strong,
+    .lightbox-counter {
+      font-family: var(--mono);
+    }
+
+    .sidebar-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+
+    /* Light mode: deep-amber fills need light text (dark mode uses ink on bright amber) */
+    html[data-theme="light"] .btn-primary,
+    html[data-theme="light"] .btn-primary:hover,
+    html[data-theme="light"] .chart-btn:hover,
+    html[data-theme="light"] .chart-btn.active,
+    html[data-theme="light"] .weekly-nav-chip.active,
+    html[data-theme="light"] .sub-submit-btn {
+      color: #FFF8EC;
+    }
+
+    /* ── Ticker strip: weekly price + channel consensus (divergence data) ── */
+    .ticker-strip {
+      display: none;
+      align-items: center;
+      gap: 26px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 28px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+    .ticker-strip::-webkit-scrollbar { display: none; }
+    .ticker-strip.on { display: flex; }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-dim);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .ticker-item b { color: var(--text-muted); font-weight: 600; }
+    .ticker-item:hover b { color: var(--vibe1); }
+    /* 与站內多空徽章一致：綠=看多、紅=看空、琥珀=分歧 */
+    .ticker-bull { color: var(--green); }
+    .ticker-bear { color: var(--red); }
+    .ticker-mixed { color: var(--vibe1); }
   </style>
 </head>
 
@@ -2725,6 +2799,9 @@
       </button>
     </div>
   </header>
+
+  <!-- 行情帶：divergence.json 的每週價格 + 頻道多空共識（綠=多、紅=空、琥珀=分歧，同多空分歧頁） -->
+  <div class="ticker-strip" id="tickerStrip" aria-label="頻道多空觀點"></div>
 
   <div class="disclaimer-bar">
     聲明：本摘要網頁由 AI 生成，僅供複習筆記之用，建議聽完整部影片，並以自身觀點評估股市，謝謝
@@ -2909,6 +2986,28 @@
         const coResp = await fetch(BASE + 'data/cooccurrence.json');
         if (coResp.ok) cooccurrenceData = await coResp.json();
       } catch (_) { /* no cooccurrence data yet */ }
+
+      renderTickerStrip();
+    }
+
+    // ── Ticker strip (header) — weekly price + channel consensus ──
+
+    function renderTickerStrip() {
+      const el = document.getElementById('tickerStrip');
+      if (!el || !divergenceData || !divergenceData.entities) return;
+      const items = divergenceData.entities
+        .filter(e => e.ticker && e.fundamentals && e.fundamentals.price != null)
+        .sort((a, b) => b.total_mentions - a.total_mentions)
+        .slice(0, 10);
+      if (!items.length) return;
+      el.innerHTML = items.map(e => {
+        const c = e.consensus || '';
+        const cls = c.includes('分歧') ? 'ticker-mixed' : c.includes('多') ? 'ticker-bull' : c.includes('空') ? 'ticker-bear' : '';
+        const mark = c.includes('分歧') ? '◆' : c.includes('多') ? '▲' : c.includes('空') ? '▼' : '·';
+        const price = e.fundamentals.price.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        return `<a class="ticker-item" href="#/entity/${encodeURIComponent(e.name)}"><b>${e.ticker}</b>${price}<span class="${cls}">${mark} ${c}</span></a>`;
+      }).join('');
+      el.classList.add('on');
     }
 
     // ── Routing ────────────────────────────────────────────────
@@ -3909,7 +4008,7 @@
             url.searchParams.set('hidesidetoolbar', '1');
             url.searchParams.set('symboledit', '0');
             url.searchParams.set('saveimage', '0');
-            url.searchParams.set('toolbarbg', isDark ? '131722' : 'f1f3f6');
+            url.searchParams.set('toolbarbg', isDark ? '0B0D12' : 'f3f0e9');
             url.searchParams.set('studies', JSON.stringify(["Volume@tv-basicstudies", "MASimple@tv-basicstudies"]));
             url.searchParams.set('theme', isDark ? 'dark' : 'light');
             url.searchParams.set('style', '1');
@@ -4021,7 +4120,7 @@
         } else if (last.close < lMa5 && lMa5 < lMa20 && (!lMa60 || lMa20 < lMa60)) {
           trendText = '空頭排列 ▼'; trendColor = 'var(--green)';
         } else if (last.close > lMa20) {
-          trendText = '站上均線 ↗'; trendColor = '#ff9800';
+          trendText = '站上均線 ↗'; trendColor = '#FFB224';
         } else {
           trendText = '跌破均線 ↘'; trendColor = '#9e9e9e';
         }
@@ -4030,7 +4129,7 @@
       }
 
       const maLegend = [
-        ma5.length  ? `<span style="color:#ff9800">● MA5 ${lMa5}</span>`  : '',
+        ma5.length  ? `<span style="color:#FFB224">● MA5 ${lMa5}</span>`  : '',
         ma20.length ? `<span style="color:#2196f3">● MA20 ${lMa20}</span>` : '',
         ma60.length ? `<span style="color:#9c27b0">● MA60 ${lMa60}</span>` : '',
       ].filter(Boolean).join('');
@@ -4054,9 +4153,9 @@
       container.appendChild(chartDiv);
 
       const isDark = !document.documentElement.hasAttribute('data-theme');
-      const bg        = isDark ? '#131722' : '#ffffff';
-      const textColor = isDark ? '#d1d4dc' : '#333333';
-      const lineColor = isDark ? '#2a2e39' : '#e0e3eb';
+      const bg        = isDark ? '#0B0D12' : '#ffffff';
+      const textColor = isDark ? '#E4E7EE' : '#333333';
+      const lineColor = isDark ? '#232836' : '#E7E3DA';
 
       const chart = LightweightCharts.createChart(chartDiv, {
         width: chartDiv.clientWidth || container.clientWidth || 400,
@@ -4072,13 +4171,13 @@
 
       // Taiwan convention: red = up, green = down
       const candleSeries = chart.addCandlestickSeries({
-        upColor: '#ef5350', downColor: '#26a69a',
-        borderUpColor: '#ef5350', borderDownColor: '#26a69a',
-        wickUpColor: '#ef5350', wickDownColor: '#26a69a',
+        upColor: '#F6465D', downColor: '#2EBD85',
+        borderUpColor: '#F6465D', borderDownColor: '#2EBD85',
+        wickUpColor: '#F6465D', wickDownColor: '#2EBD85',
       });
       candleSeries.setData(data.map(({ time, open, high, low, close }) => ({ time, open, high, low, close })));
 
-      [{ data: ma5, color: '#ff9800', width: 1 }, { data: ma20, color: '#2196f3', width: 1.5 }, { data: ma60, color: '#9c27b0', width: 1.5 }]
+      [{ data: ma5, color: '#FFB224', width: 1 }, { data: ma20, color: '#2196f3', width: 1.5 }, { data: ma60, color: '#9c27b0', width: 1.5 }]
         .filter(({ data }) => data.length)
         .forEach(({ data, color, width }) => {
           const s = chart.addLineSeries({ color, lineWidth: width, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
@@ -4087,7 +4186,7 @@
 
       const volSeries = chart.addHistogramSeries({
         priceScaleId: 'volume',
-        color: isDark ? 'rgba(99,102,241,0.45)' : 'rgba(99,102,241,0.35)',
+        color: isDark ? 'rgba(255,178,36,0.45)' : 'rgba(255,178,36,0.35)',
         priceFormat: { type: 'volume' },
       });
       volSeries.priceScale().applyOptions({ scaleMargins: { top: 0.76, bottom: 0 } });
@@ -4190,14 +4289,14 @@
 
     function _earningsColor(isDark) {
       return {
-        blue: isDark ? '#2962FF' : '#1565C0',
-        green: '#26A69A',
-        red: '#EF5350',
-        yellow: '#FFA726',
+        blue: isDark ? '#FFB224' : '#9E6A00',
+        green: '#2EBD85',
+        red: '#F6465D',
+        yellow: '#4FA8FF',
         gridColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)',
-        tickColor: isDark ? '#6B7280' : '#888',
-        tooltipBg: isDark ? '#1E222D' : '#fff',
-        tooltipText: isDark ? '#D1D4DC' : '#131722',
+        tickColor: isDark ? '#6E7689' : '#888',
+        tooltipBg: isDark ? '#12151D' : '#fff',
+        tooltipText: isDark ? '#E4E7EE' : '#0B0D12',
       };
     }
 
