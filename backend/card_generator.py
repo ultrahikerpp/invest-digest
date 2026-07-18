@@ -81,18 +81,20 @@ def _get_claude_points(all_points: dict, section_title: str) -> list:
 W, H = 1080, 1080
 PAD = 80
 
-# ── Gen Z Dark Gradient palette ───────────────────────────
-# Vibrant & Block-based style — energetic, bold, social-media
-C_BG    = (8,  10,  26)    # deep dark navy    #080A1A
-C_BG2   = (22, 12,  50)    # deep purple end   #160C32
-C_VIBE1 = (99,  102, 241)  # electric indigo   #6366F1
-C_VIBE2 = (168,  85, 247)  # vibrant purple    #A855F7
-C_VIBE3 = (236,  72, 153)  # hot pink          #EC4899
+# ── Amber Terminal palette ─────────────────────────────────
+# Matches the site's dark theme tokens (docs/index.html) — same
+# neutrals and amber accent, so cards and the web page read as one brand.
+C_BG    = (11,  13,  18)   # near-black            #0B0D12  (site --bg)
+C_BG2   = (19,  15,   9)   # warm-black gradient end #130F09
+C_VIBE1 = (255, 178,  36)  # amber (primary)       #FFB224  (site --vibe1)
+C_VIBE2 = (217, 168,  60)  # amber-2               #D9A83C  (site --vibe2)
+C_VIBE3 = (232, 133,  12)  # deep amber / ember     #E8850C  (site --vibe3)
 C_WHITE = (255, 255, 255)  # pure white (headline text)
-C_LIGHT = (226, 232, 240)  # near-white (body text)  #E2E8F0
-C_MUTED = (148, 163, 184)  # slate muted       #94A3B8
-C_DIM   = (71,   85, 105)  # dark slate        #475569
-C_CARD  = (16,   18,  42)  # card surface      #10122A
+C_LIGHT = (228, 231, 238)  # near-white (body text)  #E4E7EE (site --text)
+C_MUTED = (155, 164, 184)  # muted grey            #9BA4B8  (site --text-muted)
+C_DIM   = (110, 118, 137)  # dim grey              #6E7689  (site --text-dim)
+C_CARD  = (18,  21,  29)   # card surface          #12151D  (site --surface)
+C_INK   = (11,  13,  18)   # ink text for bright-amber fills (contrast fix)
 
 SECTION_ORDER = ["本期主題總覽", "各主題重點", "核心觀點", "提及標的", "關鍵數據", "創作者點出的機會", "風險提示", "創作者建議的觀察方向"]
 
@@ -186,20 +188,27 @@ def _draw_gradient_bg(draw: ImageDraw.ImageDraw) -> None:
         draw.line([(0, gy), (W, gy)], fill=(r, g, b))
 
 
+def _draw_amber_fade(draw: ImageDraw.ImageDraw, x1: int, y1: int, x2: int, y2: int) -> None:
+    """Draw a left-to-right amber → ember fade — the brand's single accent, not a rainbow block."""
+    width = x2 - x1
+    if width <= 0:
+        return
+    for i in range(width):
+        t = i / width
+        r = int(C_VIBE1[0] + (C_VIBE3[0] - C_VIBE1[0]) * t)
+        g = int(C_VIBE1[1] + (C_VIBE3[1] - C_VIBE1[1]) * t)
+        b = int(C_VIBE1[2] + (C_VIBE3[2] - C_VIBE1[2]) * t)
+        draw.line([(x1 + i, y1), (x1 + i, y2 - 1)], fill=(r, g, b))
+
+
 def _draw_top_strip(draw: ImageDraw.ImageDraw, height: int = 7) -> None:
-    """Draw the tri-color gradient strip at the top."""
-    seg = W // 3
-    draw.rectangle([0,       0, seg,     height], fill=C_VIBE1)
-    draw.rectangle([seg,     0, seg * 2, height], fill=C_VIBE2)
-    draw.rectangle([seg * 2, 0, W,       height], fill=C_VIBE3)
+    """Draw the amber accent strip at the top."""
+    _draw_amber_fade(draw, 0, 0, W, height)
 
 
 def _draw_gradient_line(draw: ImageDraw.ImageDraw, y: int, x1: int = PAD, x2: int = W - PAD, h: int = 2) -> None:
-    """Draw a horizontal tri-color gradient line."""
-    seg = (x2 - x1) // 3
-    draw.rectangle([x1,        y, x1 + seg,     y + h], fill=C_VIBE1)
-    draw.rectangle([x1 + seg,  y, x1 + seg * 2, y + h], fill=C_VIBE2)
-    draw.rectangle([x1 + seg * 2, y, x2,         y + h], fill=C_VIBE3)
+    """Draw a horizontal amber accent line."""
+    _draw_amber_fade(draw, x1, y, x2, y + h)
 
 
 def _make_hook_card(hook_text: str, title: str, channel: str, output_path: Path) -> Path:
@@ -292,7 +301,7 @@ def _make_title_card(title: str, channel: str, output_path: Path) -> Path:
     font_brand = _load_font(FS_BRAND)
     draw.text((PAD, 46), "Investment Digest", font=font_brand, fill=C_MUTED)
 
-    # Channel name — vibrant indigo
+    # Channel name — amber accent
     font_channel = _load_font(FS_CHANNEL)
     draw.text((PAD, 96), channel, font=font_channel, fill=C_VIBE1)
 
@@ -353,11 +362,11 @@ def _make_section_card(
     draw.rounded_rectangle([pill_x1, pill_y1, pill_x2, pill_y2], radius=20, fill=C_CARD)
     draw.text((pill_x1 + 11, 25), progress_text, font=font_prog, fill=C_MUTED)
 
-    # ── Section label pill (vibrant indigo) ──────────────
+    # ── Section label pill (bright amber fill needs ink text for contrast) ──
     font_label = _load_font(FS_LABEL)
     label_w = int(draw.textlength(section_title, font=font_label)) + 52
     draw.rounded_rectangle([PAD, 90, PAD + label_w, 152], radius=31, fill=C_VIBE1)
-    draw.text((PAD + 26, 101), section_title, font=font_label, fill=C_WHITE)
+    draw.text((PAD + 26, 101), section_title, font=font_label, fill=C_INK)
 
     # ── Gradient divider line ────────────────────────────
     _draw_gradient_line(draw, y=170, x1=PAD, x2=W - PAD, h=2)
@@ -393,7 +402,7 @@ def _make_section_card(
         y += 10  # gap between points
 
     # ── Footer ───────────────────────────────────────────
-    # Short indigo accent bar
+    # Short amber accent bar
     draw.rectangle([PAD, H - 108, PAD + 56, H - 105], fill=C_VIBE1)
 
     font_footer = _load_font(FS_FOOTER)

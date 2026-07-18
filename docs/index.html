@@ -2706,20 +2706,47 @@
     /* ── Ticker strip: weekly price + channel consensus (divergence data) ── */
     .ticker-strip {
       display: none;
-      align-items: center;
-      gap: 26px;
       background: var(--surface2);
       border-bottom: 1px solid var(--border);
-      padding: 6px 28px;
+      padding: 6px 0 6px 28px;
+      white-space: nowrap;
+      /* auto (not hidden): lets reduced-motion users swipe/scroll the static row */
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+    }
+    .ticker-strip.on { display: block; }
+    .ticker-strip::-webkit-scrollbar { display: none; }
+    /* Paused on hover/focus so a moving ticker can still be read and clicked. */
+    .ticker-strip:hover .ticker-track,
+    .ticker-strip:focus-within .ticker-track {
+      animation-play-state: paused;
+    }
+    .ticker-track {
+      display: inline-flex;
+      align-items: center;
       font-family: var(--mono);
       font-size: 12px;
       color: var(--text-dim);
-      overflow-x: auto;
-      white-space: nowrap;
-      scrollbar-width: none;
+      animation: ticker-scroll linear infinite;
+      animation-duration: 40s; /* overridden inline per render, sized to content width */
+      will-change: transform;
     }
-    .ticker-strip::-webkit-scrollbar { display: none; }
-    .ticker-strip.on { display: flex; }
+    .ticker-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 26px;
+      padding-right: 26px;
+    }
+    /* Reduced motion: no auto-scroll — static single row, manually swipeable. */
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track { animation: none; }
+      .ticker-group[aria-hidden] { display: none; }
+    }
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
     .ticker-item {
       display: inline-flex;
       align-items: center;
@@ -2992,6 +3019,8 @@
 
     // ── Ticker strip (header) — weekly price + channel consensus ──
 
+    const TICKER_PX_PER_SEC = 34; // constant visual speed regardless of item count
+
     function renderTickerStrip() {
       const el = document.getElementById('tickerStrip');
       if (!el || !divergenceData || !divergenceData.entities) return;
@@ -3000,14 +3029,32 @@
         .sort((a, b) => b.total_mentions - a.total_mentions)
         .slice(0, 10);
       if (!items.length) return;
-      el.innerHTML = items.map(e => {
+
+      const itemsHtml = items.map(e => {
         const c = e.consensus || '';
         const cls = c.includes('分歧') ? 'ticker-mixed' : c.includes('多') ? 'ticker-bull' : c.includes('空') ? 'ticker-bear' : '';
         const mark = c.includes('分歧') ? '◆' : c.includes('多') ? '▲' : c.includes('空') ? '▼' : '·';
         const price = e.fundamentals.price.toLocaleString('en-US', { maximumFractionDigits: 2 });
         return `<a class="ticker-item" href="#/entity/${encodeURIComponent(e.name)}"><b>${e.ticker}</b>${price}<span class="${cls}">${mark} ${c}</span></a>`;
       }).join('');
+      // Duplicate group is a11y-hidden and unfocusable — content is identical,
+      // it exists only so the marquee has a second copy to scroll into.
+      const dupHtml = itemsHtml.replace(/<a /g, '<a tabindex="-1" ');
+
+      el.innerHTML =
+        `<div class="ticker-track">` +
+        `<div class="ticker-group">${itemsHtml}</div>` +
+        `<div class="ticker-group" aria-hidden="true">${dupHtml}</div>` +
+        `</div>`;
       el.classList.add('on');
+
+      // Size animation duration to the actual content width so speed stays
+      // constant (px/sec) whether 3 tickers or 10 are shown.
+      const track = el.querySelector('.ticker-track');
+      const groupWidth = el.querySelector('.ticker-group').offsetWidth;
+      if (groupWidth > 0) {
+        track.style.animationDuration = (groupWidth / TICKER_PX_PER_SEC) + 's';
+      }
     }
 
     // ── Routing ────────────────────────────────────────────────
