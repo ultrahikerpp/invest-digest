@@ -10,9 +10,21 @@ create extension if not exists pg_net with schema extensions;
 create extension if not exists supabase_vault;
 
 -- 2) Store the GitHub PAT (fine-grained, scoped to this repo only,
---    "Contents: Read and write" permission) — replace the placeholder below,
---    run once, then you can delete/forget the literal token.
-select vault.create_secret('ghp_REPLACE_ME', 'github_pat');
+--    "Contents: Read and write" permission) — replace the placeholder below.
+--    Idempotent: safe to re-run (e.g. when rotating the PAT later) — creates
+--    the secret on first run, updates it in place on subsequent runs.
+do $$
+declare
+  pat text := 'ghp_REPLACE_ME';
+  existing_id uuid;
+begin
+  select id into existing_id from vault.decrypted_secrets where name = 'github_pat';
+  if existing_id is null then
+    perform vault.create_secret(pat, 'github_pat');
+  else
+    perform vault.update_secret(existing_id, new_secret => pat);
+  end if;
+end $$;
 
 -- 3) Trigger function: fires the GitHub Actions dispatch event.
 create or replace function public.trigger_send_confirmation()
