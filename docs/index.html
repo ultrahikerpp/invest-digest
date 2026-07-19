@@ -5177,6 +5177,10 @@
       `;
     }
 
+    function _subCanSubmit(channels, weeklyChecked) {
+      return channels.length > 0 || !!weeklyChecked;
+    }
+
     function openSubModal() {
       _buildChannelCheckboxes();
       document.getElementById('subOverlay').classList.add('open');
@@ -5218,9 +5222,9 @@
         .filter(cb => cb.value !== '__weekly__')
         .map(cb => cb.value);
 
-      if (channels.length === 0) {
+      if (!_subCanSubmit(channels, weeklyChecked)) {
         msg.className = 'sub-message error';
-        msg.textContent = '請至少選擇一個頻道';
+        msg.textContent = '請至少選擇一個頻道或訂閱週報';
         return;
       }
 
