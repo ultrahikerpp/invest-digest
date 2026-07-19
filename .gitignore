@@ -9,6 +9,14 @@
 # Keep .gitignore itself
 !.gitignore
 
+# Allow GitHub Actions workflows
+!.github/
+!.github/**
+
+# Allow Supabase reference SQL (run manually in the dashboard, not auto-applied)
+!supabase/
+!supabase/**
+
 # Allow root-level project files
 !README.md
 !LICENSE

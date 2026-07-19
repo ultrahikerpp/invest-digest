@@ -1,0 +1,29 @@
+name: Send subscription confirmation
+
+on:
+  repository_dispatch:
+    types: [send_confirmation]
+  workflow_dispatch: {}
+
+concurrency:
+  group: send-confirmation
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install httpx
+
+      - run: python3 runner.py send-confirmations
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          SITE_BASE_URL: ${{ secrets.SITE_BASE_URL }}
