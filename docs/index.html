@@ -22,7 +22,6 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <style>
     /* ─────────────────────────────────────────────────────────
        Design System: Amber Terminal — Bloomberg/Koyfin-inspired
@@ -2910,14 +2909,14 @@
 
   <footer class="site-footer">
     <div class="footer-stats">
-      <span id="busuanzi_container_site_pv" class="footer-stat">
+      <span class="footer-stat">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        總訪問 <strong><span id="busuanzi_value_site_pv">--</span></strong> 次
+        總訪問 <strong><span id="siteStatPv">--</span></strong> 次
       </span>
       <span class="footer-sep">·</span>
-      <span id="busuanzi_container_site_uv" class="footer-stat">
+      <span class="footer-stat">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        訪客 <strong><span id="busuanzi_value_site_uv">--</span></strong> 人
+        訪客 <strong><span id="siteStatUv">--</span></strong> 人
       </span>
     </div>
   </footer>
@@ -3436,13 +3435,13 @@
         thumb.addEventListener('click', () => openLightbox(cards, +thumb.dataset.index));
       });
 
-      // Track & display per-article view count (same key as the old modal view)
-      const articleUrl = `${location.origin}${location.pathname}#/article/${ep.video_id}`;
-      fetchArticleViews(articleUrl).then(count => {
+      // Display per-article view count from GoatCounter's recorded SPA path
+      const statPath = `${location.pathname}#/episode/${encodeURIComponent(ep.video_id)}`;
+      fetchArticleViews(statPath).then(count => {
         const viewEl = document.getElementById('articleViews');
         if (count !== null && viewEl) {
           document.getElementById('articleViewsText').textContent =
-            `${Number(count).toLocaleString('zh-TW')} 次瀏覽`;
+            `${count.toLocaleString('zh-TW')} 次瀏覽`;
           viewEl.style.display = 'inline-flex';
         }
       });
@@ -5381,39 +5380,23 @@
     _searchInput.addEventListener('compositionend',   () => { _searchComposing = false; _doSearch(); });
     _searchInput.addEventListener('input', () => { if (!_searchComposing) _doSearch(); });
 
-    // ── Article View Counter (Busuanzi JSONP) ──────────────────
+    // ── GoatCounter counter helpers ────────────────────────────
+    const GC_COUNTER = 'https://ultrainvestdigest.goatcounter.com/counter';
 
-    function fetchArticleViews(articleUrl) {
-      return new Promise((resolve) => {
-        const cbName = `_bzcb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-        const script = document.createElement('script');
-        let settled = false;
+    // GoatCounter returns pre-formatted strings like "1 153"; parse to Number.
+    function gcNum(s) {
+      const n = parseInt(String(s).replace(/[^\d]/g, ''), 10);
+      return isNaN(n) ? null : n;
+    }
 
-        const cleanup = () => {
-          settled = true;
-          delete window[cbName];
-          if (script.parentNode) script.parentNode.removeChild(script);
-        };
-
-        window[cbName] = (data) => {
-          cleanup();
-          resolve(data?.page?.pv ?? null);
-        };
-
-        const params = new URLSearchParams({
-          jsonpCallback: cbName,
-          t: Date.now(),
-          sl: navigator.language || 'zh-TW',
-          sdl: `${screen.width}x${screen.height}`,
-          su: articleUrl,
-        });
-
-        script.src = `https://busuanzi.ibruce.info/busuanzi?${params}`;
-        script.onerror = () => { cleanup(); resolve(null); };
-        document.head.appendChild(script);
-
-        setTimeout(() => { if (!settled) { cleanup(); resolve(null); } }, 6000);
-      });
+    // Per-article view count from GoatCounter. statPath is the recorded SPA
+    // path ("<pathname>#/episode/<id>"); '#' must be sent to the API as %23.
+    function fetchArticleViews(statPath) {
+      const url = `${GC_COUNTER}/${statPath.replace(/#/g, '%23')}.json`;
+      return fetch(url)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => (d ? gcNum(d.count) : null))
+        .catch(() => null);
     }
 
     // ── Theme Toggle ───────────────────────────────────────────
@@ -5453,6 +5436,24 @@
         window.goatcounter.count({ path: location.pathname + location.hash });
       }
     });
+
+    // ── Footer site counter (GoatCounter whole-site TOTAL) ─────
+    // Replaces the defunct busuanzi service. Requires the
+    // "allow using the visitor counter" setting enabled in GoatCounter.
+    (function () {
+      var stats = document.querySelector('.footer-stats');
+      var pv = document.getElementById('siteStatPv');
+      var uv = document.getElementById('siteStatUv');
+      if (!stats || !pv || !uv) return;
+      fetch(GC_COUNTER + '/TOTAL.json')
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function (d) {
+          var pvN = gcNum(d.count), uvN = gcNum(d.count_unique);
+          if (pvN != null) pv.textContent = pvN.toLocaleString('zh-TW');
+          if (uvN != null) uv.textContent = uvN.toLocaleString('zh-TW');
+        })
+        .catch(function () { stats.style.display = 'none'; });
+    })();
   </script>
 </body>
 

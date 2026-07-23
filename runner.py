@@ -1809,7 +1809,10 @@ def cmd_weekly(provider: str = "claude"):
     print(f"Synthesizing weekly digest via {provider}...")
     from backend.ai_provider import chat as ai_chat
     from backend.browser_common import clean_ui_artifacts
-    result = clean_ui_artifacts(ai_chat(prompt, provider=provider))
+    # Weekly synthesis bundles up to a week's worth of episode summaries into
+    # one prompt (routinely 30-40K+ chars); extended thinking alone can run
+    # 4+ minutes at that size, so this needs the same headroom as gooaye_notes.
+    result = clean_ui_artifacts(ai_chat(prompt, provider=provider, timeout_secs=600))
 
     # Determine week label (ISO year-week)
     now = datetime.now()

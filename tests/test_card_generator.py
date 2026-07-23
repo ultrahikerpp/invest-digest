@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from backend import card_generator, card_generator_shorts
 from backend.card_generator import _fallback_points, _truncate_at_boundary, parse_summary
 
 
@@ -49,3 +50,11 @@ def test_parse_summary_excludes_trailing_disclaimer_block(tmp_path):
     assert "⚠️" not in data["sections"]["提及標的"]
     assert "負責任 AI 聲明" not in data["sections"]["提及標的"]
     assert "台積電（2330）" in data["sections"]["提及標的"]
+
+
+def test_shorts_cards_use_same_amber_palette_as_square_cards():
+    # card_generator_shorts.py (used by `approve`/`cards`/`shorts-cards`) kept its own
+    # old indigo/purple/pink palette after the amber-terminal rebrand only touched
+    # card_generator.py — Shorts cards rendered purple while square cards went amber.
+    for attr in ("C_VIBE1", "C_VIBE2", "C_VIBE3", "C_BG", "C_BG2"):
+        assert getattr(card_generator_shorts, attr) == getattr(card_generator, attr), attr
