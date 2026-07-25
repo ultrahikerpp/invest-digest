@@ -2,11 +2,12 @@
   "ticker": "NOK",
   "company_name": "Nokia Oyj",
   "currency": "EUR",
-  "updated_at": "2026-07-23",
+  "updated_at": "2026-07-25",
   "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
   "charts": {
     "revenue": {
       "labels": [
+        "26Q2",
         "26Q1",
         "25Q4",
         "25Q3",
@@ -14,14 +15,16 @@
         "25Q1"
       ],
       "values_m": [
+        4815.0,
         4497.0,
         6125.0,
         4828.0,
-        4546.0,
-        4390.0
+        4443.0,
+        null
       ],
       "yoy_pct": [
-        2.4,
+        8.4,
+        null,
         null,
         null,
         null,
@@ -30,6 +33,7 @@
     },
     "eps": {
       "labels": [
+        "26Q2",
         "26Q1",
         "25Q4",
         "25Q3",
@@ -37,14 +41,16 @@
         "25Q1"
       ],
       "values": [
+        0.0,
         0.02,
         0.1,
         0.01,
         0.02,
-        -0.01
+        null
       ],
       "yoy_pct": [
-        300.0,
+        -100.0,
+        null,
         null,
         null,
         null,
@@ -53,6 +59,7 @@
     },
     "margins": {
       "labels": [
+        "26Q2",
         "26Q1",
         "25Q4",
         "25Q3",
@@ -60,29 +67,33 @@
         "25Q1"
       ],
       "gross": [
+        44.6,
         44.2,
         45.0,
         43.7,
-        43.4,
-        41.5
+        44.0,
+        null
       ],
       "operating": [
+        -1.0,
         1.4,
         7.1,
         5.0,
-        1.8,
-        -0.5
+        3.3,
+        null
       ],
       "net": [
+        0.0,
         1.9,
         8.8,
         1.6,
         2.0,
-        -1.3
+        null
       ]
     },
     "fcf": {
       "labels": [
+        "26Q2",
         "26Q1",
         "25Q4",
         "25Q3",
@@ -90,11 +101,12 @@
         "25Q1"
       ],
       "values_m": [
+        -749.0,
         629.0,
         227.0,
         429.0,
         88.0,
-        721.0
+        null
       ]
     }
   }
