@@ -46,13 +46,17 @@ python3 runner.py refresh-earnings
 python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
 python3 runner.py refresh-earnings --force   # force full refresh for all tickers
 
+# Synthesize cross-channel weekly digest from past 7 days, then auto-email subscribers (once per ISO week, idempotent)
+python3 runner.py weekly
+python3 runner.py weekly-digest   # send the subscriber email directly, without regenerating the digest article
+
 # Preview static site locally
 cd docs && python3 -m http.server 8000
 
-# Crontab (daily at 8:30am run, 9:00am notify, Saturday 9am earnings refresh)
+# Crontab (daily 8:30am run, Saturday 9am earnings refresh, Sunday 5:30pm weekly-digest email)
 # 30 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
-# 0 9 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py notify >> data/runner.log 2>&1
 # 0 9 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1
+# 30 17 * * 0 cd /path/to/investment-digest && ./venv/bin/python runner.py weekly-digest >> data/runner.log 2>&1
 ```
 
 **Workflow:** `run` fetches + summarises → sends review email → user reviews → `approve` generates hashtags/cards/video + auto-deploys to GitHub Pages.

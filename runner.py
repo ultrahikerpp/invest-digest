@@ -23,13 +23,13 @@ Usage:
   python3 runner.py score <video_id> --m4-only  # M4 only, skip Claude
   python3 runner.py score --all            # M4 only for all episodes
   python3 runner.py score --all --force    # M1 + M4 for all episodes
-  python3 runner.py weekly                 # synthesize cross-channel weekly digest from past 7 days
+  python3 runner.py weekly                 # synthesize cross-channel weekly digest from past 7 days, then auto-send to subscribers (once per ISO week)
   python3 runner.py earnings <ticker>      # fetch quarterly earnings data + Claude analysis → docs/data/earnings/<ticker>.json
   python3 runner.py refresh-earnings       # smart refresh all tickers in earnings_watchlist.json
   python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
   python3 runner.py refresh-earnings --force   # force full refresh (ignore staleness)
   python3 runner.py send-confirmations     # send confirmation emails to new subscribers
-  python3 runner.py weekly-digest          # send weekly investment digest to subscribers
+  python3 runner.py weekly-digest          # send weekly investment digest to subscribers directly (skips if already sent this ISO week)
 
   --provider claude|chatgpt applies to any command above that calls an AI
   provider (run, approve, retry, reprocess, cards, shorts-cards, notify,
@@ -39,6 +39,7 @@ Usage:
 Crontab (daily at 8am):
   0 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
   0 9 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1
+  30 17 * * 0 cd /path/to/investment-digest && ./venv/bin/python runner.py weekly-digest >> data/runner.log 2>&1
 """
 
 from __future__ import annotations
@@ -1227,8 +1228,19 @@ def cmd_send_confirmations() -> None:
 
 # ── Weekly digest command ─────────────────────────────────
 
+def _weekly_digest_marker(today: datetime) -> Path:
+    """Path to the marker file recording that the digest was already sent for today's ISO week."""
+    iso_year, iso_week, _ = today.isocalendar()
+    return WEEKLY_DIR / f".digest_sent_{iso_year}-{iso_week:02d}"
+
+
 def cmd_weekly_digest() -> None:
-    """Send the weekly investment digest to all confirmed weekly_digest subscribers."""
+    """Send the weekly investment digest to all confirmed weekly_digest subscribers.
+
+    Idempotent per ISO week: safe to call multiple times (manual `weekly-digest`,
+    the Sunday cron, and cmd_weekly()'s auto-trigger can all fire the same week
+    without double-sending).
+    """
     from backend import subscriber as sub
     from backend.subscriber import _excerpt
     from datetime import timedelta
@@ -1246,6 +1258,11 @@ def cmd_weekly_digest() -> None:
 
     if not rows:
         print("本週無已發布節目，不寄送週報")
+        return
+
+    marker = _weekly_digest_marker(today)
+    if marker.exists():
+        print(f"本週週報已寄送過（{marker.name}），略過")
         return
 
     episodes = []
@@ -1279,6 +1296,8 @@ def cmd_weekly_digest() -> None:
             print(f"  ❌ 週報寄送失敗 {s['email']}：{e}")
 
     print(f"\n✓ 共寄出 {sent} 封投資週報")
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    marker.touch()
 
 
 # ── Notify Latest command ─────────────────────────────────
@@ -1832,6 +1851,8 @@ def cmd_weekly(provider: str = "claude"):
     out_path = WEEKLY_DIR / f"{week_label}.md"
     out_path.write_text(full_md, encoding="utf-8")
     print(f"✓ Weekly digest saved: {out_path}")
+
+    cmd_weekly_digest()
 
 
 # ── Earnings command ──────────────────────────────────────
