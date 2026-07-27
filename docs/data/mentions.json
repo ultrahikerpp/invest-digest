@@ -3,18 +3,18 @@
     {
       "name": "費城半導體指數",
       "ticker": "SOXX",
-      "count": 144,
+      "count": 146,
       "bullish": 70,
-      "bearish": 34,
-      "neutral": 40
+      "bearish": 35,
+      "neutral": 41
     },
     {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "count": 138,
+      "count": 140,
       "bullish": 92,
       "bearish": 2,
-      "neutral": 44
+      "neutral": 46
     },
     {
       "name": "台積電",
@@ -27,18 +27,18 @@
     {
       "name": "S&P 500",
       "ticker": "SPX",
-      "count": 125,
-      "bullish": 45,
+      "count": 126,
+      "bullish": 46,
       "bearish": 15,
       "neutral": 65
     },
     {
       "name": "道瓊指數",
       "ticker": "DJIA",
-      "count": 121,
-      "bullish": 32,
+      "count": 123,
+      "bullish": 33,
       "bearish": 24,
-      "neutral": 65
+      "neutral": 66
     },
     {
       "name": "Meta",
@@ -59,9 +59,9 @@
     {
       "name": "美光",
       "ticker": "MU",
-      "count": 82,
+      "count": 83,
       "bullish": 42,
-      "bearish": 6,
+      "bearish": 7,
       "neutral": 34
     },
     {
@@ -73,20 +73,20 @@
       "neutral": 47
     },
     {
+      "name": "微軟",
+      "ticker": "MSFT",
+      "count": 75,
+      "bullish": 30,
+      "bearish": 4,
+      "neutral": 41
+    },
+    {
       "name": "OpenAI",
       "ticker": null,
       "count": 74,
       "bullish": 14,
       "bearish": 6,
       "neutral": 54
-    },
-    {
-      "name": "微軟",
-      "ticker": "MSFT",
-      "count": 73,
-      "bullish": 29,
-      "bearish": 4,
-      "neutral": 40
     },
     {
       "name": "Anthropic",
@@ -115,24 +115,24 @@
     {
       "name": "特斯拉",
       "ticker": "TSLA",
-      "count": 58,
+      "count": 59,
       "bullish": 8,
-      "bearish": 12,
+      "bearish": 13,
       "neutral": 38
     },
     {
       "name": "SpaceX",
       "ticker": "SPCX",
-      "count": 56,
+      "count": 57,
       "bullish": 27,
-      "bearish": 8,
+      "bearish": 9,
       "neutral": 21
     },
     {
       "name": "蘋果",
       "ticker": "AAPL",
-      "count": 52,
-      "bullish": 12,
+      "count": 53,
+      "bullish": 13,
       "bearish": 6,
       "neutral": 34
     },
@@ -171,10 +171,10 @@
     {
       "name": "亞馬遜",
       "ticker": "AMZN",
-      "count": 45,
+      "count": 46,
       "bullish": 15,
       "bearish": 0,
-      "neutral": 30
+      "neutral": 31
     },
     {
       "name": "台股加權指數",
@@ -211,10 +211,26 @@
     {
       "name": "Apple",
       "ticker": "AAPL",
-      "count": 33,
-      "bullish": 9,
+      "count": 34,
+      "bullish": 10,
       "bearish": 1,
       "neutral": 23
+    },
+    {
+      "name": "比特幣",
+      "ticker": "BTC",
+      "count": 32,
+      "bullish": 2,
+      "bearish": 16,
+      "neutral": 14
+    },
+    {
+      "name": "Alphabet",
+      "ticker": "GOOGL",
+      "count": 32,
+      "bullish": 16,
+      "bearish": 1,
+      "neutral": 15
     },
     {
       "name": "納斯達克指數",
@@ -225,20 +241,12 @@
       "neutral": 15
     },
     {
-      "name": "比特幣",
-      "ticker": "BTC",
-      "count": 31,
-      "bullish": 2,
-      "bearish": 15,
-      "neutral": 14
-    },
-    {
-      "name": "Alphabet",
-      "ticker": "GOOGL",
-      "count": 31,
-      "bullish": 15,
-      "bearish": 1,
-      "neutral": 15
+      "name": "Tesla",
+      "ticker": "TSLA",
+      "count": 28,
+      "bullish": 1,
+      "bearish": 4,
+      "neutral": 23
     },
     {
       "name": "英特爾",
@@ -249,20 +257,20 @@
       "neutral": 20
     },
     {
-      "name": "Tesla",
-      "ticker": "TSLA",
-      "count": 27,
-      "bullish": 1,
-      "bearish": 3,
-      "neutral": 23
-    },
-    {
       "name": "Microsoft",
       "ticker": "MSFT",
       "count": 27,
       "bullish": 10,
       "bearish": 1,
       "neutral": 16
+    },
+    {
+      "name": "Palantir",
+      "ticker": "PLTR",
+      "count": 26,
+      "bullish": 9,
+      "bearish": 5,
+      "neutral": 12
     },
     {
       "name": "Marvell",
@@ -273,11 +281,11 @@
       "neutral": 8
     },
     {
-      "name": "Palantir",
-      "ticker": "PLTR",
-      "count": 25,
-      "bullish": 9,
-      "bearish": 4,
+      "name": "那斯達克",
+      "ticker": "NDX",
+      "count": 24,
+      "bullish": 7,
+      "bearish": 5,
       "neutral": 12
     },
     {
@@ -287,14 +295,6 @@
       "bullish": 5,
       "bearish": 8,
       "neutral": 11
-    },
-    {
-      "name": "那斯達克",
-      "ticker": "NDX",
-      "count": 23,
-      "bullish": 7,
-      "bearish": 4,
-      "neutral": 12
     },
     {
       "name": "Coherent",
@@ -409,6 +409,14 @@
       "neutral": 5
     },
     {
+      "name": "黃金",
+      "ticker": "GLD",
+      "count": 14,
+      "bullish": 6,
+      "bearish": 2,
+      "neutral": 6
+    },
+    {
       "name": "布蘭特原油",
       "ticker": "BZ",
       "count": 14,
@@ -447,14 +455,6 @@
       "bullish": 5,
       "bearish": 0,
       "neutral": 9
-    },
-    {
-      "name": "黃金",
-      "ticker": "GLD",
-      "count": 13,
-      "bullish": 6,
-      "bearish": 1,
-      "neutral": 6
     },
     {
       "name": "鴻海",
@@ -513,6 +513,22 @@
       "neutral": 10
     },
     {
+      "name": "羅素2000指數",
+      "ticker": "RUT",
+      "count": 12,
+      "bullish": 3,
+      "bearish": 5,
+      "neutral": 4
+    },
+    {
+      "name": "台股",
+      "ticker": "TAIEX",
+      "count": 12,
+      "bullish": 8,
+      "bearish": 1,
+      "neutral": 3
+    },
+    {
       "name": "SanDisk",
       "ticker": "SNDK",
       "count": 12,
@@ -537,28 +553,20 @@
       "neutral": 6
     },
     {
-      "name": "羅素2000指數",
-      "ticker": "RUT",
-      "count": 11,
-      "bullish": 3,
-      "bearish": 5,
-      "neutral": 3
-    },
-    {
-      "name": "台股",
-      "ticker": "TAIEX",
-      "count": 11,
-      "bullish": 8,
-      "bearish": 0,
-      "neutral": 3
-    },
-    {
       "name": "xAI",
       "ticker": null,
       "count": 11,
       "bullish": 1,
       "bearish": 0,
       "neutral": 10
+    },
+    {
+      "name": "Adobe",
+      "ticker": "ADBE",
+      "count": 11,
+      "bullish": 0,
+      "bearish": 9,
+      "neutral": 2
     },
     {
       "name": "羅素 2000",
@@ -607,14 +615,6 @@
       "bullish": 1,
       "bearish": 3,
       "neutral": 6
-    },
-    {
-      "name": "Adobe",
-      "ticker": "ADBE",
-      "count": 10,
-      "bullish": 0,
-      "bearish": 8,
-      "neutral": 2
     },
     {
       "name": "費半",
@@ -705,6 +705,14 @@
       "neutral": 2
     },
     {
+      "name": "那斯達克100指數",
+      "ticker": "QQQ",
+      "count": 7,
+      "bullish": 2,
+      "bearish": 1,
+      "neutral": 4
+    },
+    {
       "name": "超微",
       "ticker": "AMD",
       "count": 7,
@@ -761,6 +769,30 @@
       "neutral": 3
     },
     {
+      "name": "S&P500指數",
+      "ticker": "SPX",
+      "count": 7,
+      "bullish": 3,
+      "bearish": 1,
+      "neutral": 3
+    },
+    {
+      "name": "Nokia",
+      "ticker": "NOK",
+      "count": 7,
+      "bullish": 2,
+      "bearish": 0,
+      "neutral": 5
+    },
+    {
+      "name": "GE Vernova",
+      "ticker": "GEV",
+      "count": 7,
+      "bullish": 3,
+      "bearish": 0,
+      "neutral": 4
+    },
+    {
       "name": "Dell",
       "ticker": "DELL",
       "count": 7,
@@ -775,14 +807,6 @@
       "bullish": 1,
       "bearish": 1,
       "neutral": 4
-    },
-    {
-      "name": "那斯達克100指數",
-      "ticker": "QQQ",
-      "count": 6,
-      "bullish": 2,
-      "bearish": 1,
-      "neutral": 3
     },
     {
       "name": "美國銀行",
@@ -841,28 +865,20 @@
       "neutral": 3
     },
     {
-      "name": "SK 海力士",
-      "ticker": "000660",
+      "name": "SOXX",
+      "ticker": "SOXX",
       "count": 6,
       "bullish": 4,
       "bearish": 1,
       "neutral": 1
     },
     {
-      "name": "S&P500指數",
-      "ticker": "SPX",
+      "name": "SK 海力士",
+      "ticker": "000660",
       "count": 6,
-      "bullish": 3,
+      "bullish": 4,
       "bearish": 1,
-      "neutral": 2
-    },
-    {
-      "name": "Nokia",
-      "ticker": "NOK",
-      "count": 6,
-      "bullish": 2,
-      "bearish": 0,
-      "neutral": 4
+      "neutral": 1
     },
     {
       "name": "MSCI新興市場指數",
@@ -879,14 +895,6 @@
       "bullish": 4,
       "bearish": 0,
       "neutral": 2
-    },
-    {
-      "name": "GE Vernova",
-      "ticker": "GEV",
-      "count": 6,
-      "bullish": 3,
-      "bearish": 0,
-      "neutral": 3
     },
     {
       "name": "DeepSeek",
@@ -995,14 +1003,6 @@
     {
       "name": "Vistra",
       "ticker": "VST",
-      "count": 5,
-      "bullish": 4,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
-      "name": "SOXX",
-      "ticker": "SOXX",
       "count": 5,
       "bullish": 4,
       "bearish": 0,
@@ -1375,6 +1375,22 @@
       "bullish": 0,
       "bearish": 2,
       "neutral": 1
+    },
+    {
+      "name": "房地美",
+      "ticker": "FMCC",
+      "count": 3,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
+      "name": "房利美",
+      "ticker": "FNMA",
+      "count": 3,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 2
     },
     {
       "name": "應材",
@@ -1983,22 +1999,6 @@
       "bullish": 0,
       "bearish": 1,
       "neutral": 1
-    },
-    {
-      "name": "房地美",
-      "ticker": "FMCC",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
-      "name": "房利美",
-      "ticker": "FNMA",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "思科",
@@ -4529,6 +4529,14 @@
       "neutral": 0
     },
     {
+      "name": "南韓槓桿ETF",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 0
+    },
+    {
       "name": "南亞科技",
       "ticker": "2408",
       "count": 1,
@@ -6049,6 +6057,14 @@
       "neutral": 0
     },
     {
+      "name": "Google/Alphabet",
+      "ticker": "GOOGL",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 0
+    },
+    {
       "name": "Google(Alphabet)",
       "ticker": "GOOGL",
       "count": 1,
@@ -6900,15 +6916,15 @@
   "industries": [
     {
       "name": "AI",
-      "count": 215
+      "count": 217
     },
     {
       "name": "半導體",
-      "count": 197
+      "count": 199
     },
     {
       "name": "美股",
-      "count": 138
+      "count": 140
     },
     {
       "name": "台股",
@@ -7265,6 +7281,28 @@
         "道瓊指數",
         "標普500指數",
         "MSCI全球指數"
+      ]
+    },
+    "4yjk1WBEA0Q": {
+      "industries": [
+        "美股",
+        "半導體",
+        "AI"
+      ],
+      "mentions": [
+        "GE Vernova",
+        "Nokia",
+        "Google/Alphabet",
+        "特斯拉",
+        "微軟",
+        "亞馬遜",
+        "蘋果",
+        "NVIDIA",
+        "S&P500指數",
+        "那斯達克100指數",
+        "費城半導體指數",
+        "道瓊指數",
+        "羅素2000指數"
       ]
     },
     "5DV8yGkzCH8": {
@@ -12424,6 +12462,35 @@
         "羅素2000"
       ]
     },
+    "sMSDQyQANIM": {
+      "industries": [
+        "AI",
+        "半導體",
+        "美股"
+      ],
+      "mentions": [
+        "微軟",
+        "Alphabet",
+        "Apple",
+        "Tesla",
+        "SpaceX",
+        "NVIDIA",
+        "美光",
+        "SOXX",
+        "Palantir",
+        "Adobe",
+        "房地美",
+        "房利美",
+        "比特幣",
+        "黃金",
+        "費城半導體指數",
+        "那斯達克",
+        "S&P 500",
+        "道瓊指數",
+        "台股",
+        "南韓槓桿ETF"
+      ]
+    },
     "sRm0n7EBfyI": {
       "industries": [
         "半導體",
@@ -13516,5 +13583,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-07-26T03:35:11"
+  "generated_at": "2026-07-27T14:50:52"
 }
