@@ -2979,7 +2979,7 @@
     // ── Data Fetch ─────────────────────────────────────────────
 
     async function loadData() {
-      const resp = await fetch(BASE + 'data/episodes.json');
+      const resp = await fetch(BASE + 'data/episodes.json?v=' + Date.now(), { cache: 'no-store' });
       if (!resp.ok) throw new Error('Failed to load episodes.json');
       const data = await resp.json();
       allEpisodes = data.episodes || [];
