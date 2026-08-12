@@ -9,7 +9,12 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 39
+        "count": 40
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 32
       },
       {
         "name": "台積電",
@@ -17,14 +22,9 @@
         "count": 31
       },
       {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 31
-      },
-      {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 30
+        "ticker": "^DJI",
+        "count": 31
       },
       {
         "name": "Google",
@@ -56,16 +56,16 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 86
+        "count": 88
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 76
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 66
       },
       {
@@ -81,7 +81,7 @@
       {
         "name": "微軟",
         "ticker": "MSFT",
-        "count": 56
+        "count": 57
       },
       {
         "name": "Google",
@@ -96,28 +96,33 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 49
+        "count": 50
       },
       {
         "name": "美光",
         "ticker": "MU",
-        "count": 48
+        "count": 49
       }
     ],
     "OpenAI": [
       {
         "name": "Anthropic",
         "ticker": "",
-        "count": 61
+        "count": 62
       },
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 49
+        "count": 50
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
+        "count": 46
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 46
       },
       {
@@ -126,13 +131,8 @@
         "count": 45
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 45
-      },
-      {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 38
       },
       {
@@ -159,12 +159,12 @@
     "S&P 500": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 114
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 96
       },
       {
@@ -226,7 +226,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 41
       },
       {
@@ -241,7 +241,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 34
       },
       {
@@ -293,7 +293,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -308,7 +308,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       }
     ],
@@ -320,7 +320,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 77
       },
       {
@@ -335,7 +335,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 61
       },
       {
@@ -368,17 +368,17 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 68
+        "count": 69
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 61
       },
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 56
+        "count": 57
       },
       {
         "name": "S&P 500",
@@ -387,7 +387,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 55
       },
       {
@@ -401,13 +401,13 @@
         "count": 43
       },
       {
-        "name": "亞馬遜",
-        "ticker": "AMZN",
-        "count": 40
-      },
-      {
         "name": "美光",
         "ticker": "MU",
+        "count": 41
+      },
+      {
+        "name": "亞馬遜",
+        "ticker": "AMZN",
         "count": 40
       },
       {
@@ -419,12 +419,12 @@
     "納斯達克指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 29
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 26
       },
       {
@@ -471,8 +471,8 @@
     "費城半導體指數": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 129
+        "ticker": "^DJI",
+        "count": 130
       },
       {
         "name": "S&P 500",
@@ -482,7 +482,7 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 101
+        "count": 102
       },
       {
         "name": "台積電",
@@ -523,8 +523,8 @@
     "道瓊指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 129
+        "ticker": "^SOX",
+        "count": 130
       },
       {
         "name": "S&P 500",
@@ -534,7 +534,7 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 85
+        "count": 86
       },
       {
         "name": "Meta",
@@ -600,24 +600,24 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
     "Intel": [
       {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 39
-      },
-      {
         "name": "NVIDIA",
         "ticker": "NVDA",
+        "count": 40
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 39
       },
       {
@@ -627,18 +627,18 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 30
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 29
       },
       {
         "name": "Google",
         "ticker": "GOOGL",
         "count": 29
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 28
       },
       {
         "name": "S&P 500",
@@ -647,7 +647,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 25
       },
       {
@@ -656,8 +656,8 @@
         "count": 21
       },
       {
-        "name": "OpenAI",
-        "ticker": "",
+        "name": "美光",
+        "ticker": "MU",
         "count": 20
       }
     ],
@@ -674,7 +674,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 22
       },
       {
@@ -684,7 +684,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 17
       },
       {
@@ -731,7 +731,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 42
       },
       {
@@ -746,7 +746,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 32
       },
       {
@@ -773,7 +773,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 20
       },
       {
@@ -783,7 +783,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 19
       },
       {
@@ -820,13 +820,13 @@
     "SpaceX": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 45
+        "ticker": "^SOX",
+        "count": 46
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 41
+        "count": 42
       },
       {
         "name": "S&P 500",
@@ -839,6 +839,11 @@
         "count": 40
       },
       {
+        "name": "道瓊指數",
+        "ticker": "^DJI",
+        "count": 37
+      },
+      {
         "name": "Meta",
         "ticker": "META",
         "count": 36
@@ -846,11 +851,6 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 36
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
         "count": 36
       },
       {
@@ -877,7 +877,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 6
       },
       {
@@ -981,7 +981,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -996,7 +996,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -1033,7 +1033,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 26
       },
       {
@@ -1073,7 +1073,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 14
       }
     ],
@@ -1085,12 +1085,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 52
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 50
       },
       {
@@ -1133,16 +1133,16 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 67
+        "count": 68
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 61
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 56
       },
       {
@@ -1158,7 +1158,7 @@
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 48
+        "count": 49
       },
       {
         "name": "SK海力士",
@@ -1168,7 +1168,7 @@
       {
         "name": "微軟",
         "ticker": "MSFT",
-        "count": 40
+        "count": 41
       },
       {
         "name": "三星",
@@ -1184,7 +1184,7 @@
     "蘋果": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 48
       },
       {
@@ -1209,7 +1209,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 38
       },
       {
@@ -1246,7 +1246,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 12
       },
       {
@@ -1287,6 +1287,16 @@
     ],
     "長鑫存儲": [
       {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 6
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 5
+      },
+      {
         "name": "S&P 500",
         "ticker": "SPX",
         "count": 5
@@ -1297,19 +1307,9 @@
         "count": 5
       },
       {
-        "name": "美光",
-        "ticker": "MU",
-        "count": 5
-      },
-      {
         "name": "蘋果",
         "ticker": "AAPL",
         "count": 5
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 4
       },
       {
         "name": "Sandisk",
@@ -1328,12 +1328,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
-        "name": "Google",
-        "ticker": "GOOGL",
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 4
       }
     ],
@@ -1345,7 +1345,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -1355,7 +1355,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -1412,7 +1412,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -1429,7 +1429,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 50
       },
       {
@@ -1439,7 +1439,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 44
       },
       {
@@ -1472,7 +1472,12 @@
       {
         "name": "Lumentum",
         "ticker": "LITE",
-        "count": 26
+        "count": 27
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 20
       },
       {
         "name": "AMD",
@@ -1480,23 +1485,18 @@
         "count": 19
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 19
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 16
       },
       {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "name": "道瓊指數",
+        "ticker": "^DJI",
         "count": 15
       },
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 14
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
         "count": 14
       },
       {
@@ -1524,12 +1524,12 @@
       {
         "name": "Coherent",
         "ticker": "COHR",
-        "count": 26
+        "count": 27
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 20
+        "count": 21
       },
       {
         "name": "AMD",
@@ -1537,19 +1537,19 @@
         "count": 19
       },
       {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 16
+      },
+      {
         "name": "Meta",
         "ticker": "META",
         "count": 15
       },
       {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 15
-      },
-      {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 14
+        "ticker": "^DJI",
+        "count": 15
       },
       {
         "name": "Marvell",
@@ -1575,8 +1575,13 @@
     "NVIDIA": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 101
+        "ticker": "^SOX",
+        "count": 102
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 88
       },
       {
         "name": "S&P 500",
@@ -1589,14 +1594,9 @@
         "count": 87
       },
       {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 86
-      },
-      {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 85
+        "ticker": "^DJI",
+        "count": 86
       },
       {
         "name": "AMD",
@@ -1606,12 +1606,12 @@
       {
         "name": "微軟",
         "ticker": "MSFT",
-        "count": 68
+        "count": 69
       },
       {
         "name": "美光",
         "ticker": "MU",
-        "count": 67
+        "count": 68
       },
       {
         "name": "Google",
@@ -1627,17 +1627,22 @@
     "S&P500指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 10
+        "ticker": "^SOX",
+        "count": 11
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 10
+        "ticker": "^DJI",
+        "count": 11
       },
       {
         "name": "羅素2000指數",
-        "ticker": "RUT",
+        "ticker": "^RUT",
+        "count": 10
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 9
       },
       {
@@ -1646,13 +1651,18 @@
         "count": 8
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 8
+        "name": "那斯達克100指數",
+        "ticker": "^NDX",
+        "count": 7
       },
       {
         "name": "AMD",
         "ticker": "AMD",
+        "count": 6
+      },
+      {
+        "name": "Amazon",
+        "ticker": "AMZN",
         "count": 6
       },
       {
@@ -1661,19 +1671,9 @@
         "count": 6
       },
       {
-        "name": "那斯達克100指數",
-        "ticker": "QQQ",
-        "count": 6
-      },
-      {
         "name": "美光",
         "ticker": "MU",
         "count": 6
-      },
-      {
-        "name": "Amazon",
-        "ticker": "AMZN",
-        "count": 5
       }
     ],
     "可口可樂": [
@@ -1694,7 +1694,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -1719,7 +1719,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
@@ -1736,12 +1736,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 13
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 11
       },
       {
@@ -1783,17 +1783,17 @@
     "納斯達克100指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 8
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 8
       },
       {
         "name": "羅素2000指數",
-        "ticker": "RUT",
+        "ticker": "^RUT",
         "count": 7
       },
       {
@@ -1813,7 +1813,7 @@
       },
       {
         "name": "S&P500指數",
-        "ticker": "SPX",
+        "ticker": "^GSPC",
         "count": 5
       },
       {
@@ -1835,28 +1835,28 @@
     "羅素2000指數": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 18
+        "ticker": "^DJI",
+        "count": 19
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 16
+        "ticker": "^SOX",
+        "count": 17
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 9
+        "count": 10
       },
       {
         "name": "S&P500指數",
-        "ticker": "SPX",
-        "count": 9
+        "ticker": "^GSPC",
+        "count": 10
       },
       {
         "name": "那斯達克100指數",
-        "ticker": "QQQ",
-        "count": 9
+        "ticker": "^NDX",
+        "count": 10
       },
       {
         "name": "Meta",
@@ -1869,6 +1869,11 @@
         "count": 7
       },
       {
+        "name": "Coherent",
+        "ticker": "COHR",
+        "count": 7
+      },
+      {
         "name": "納斯達克100指數",
         "ticker": "NDX",
         "count": 7
@@ -1876,11 +1881,6 @@
       {
         "name": "微軟",
         "ticker": "MSFT",
-        "count": 7
-      },
-      {
-        "name": "美光",
-        "ticker": "MU",
         "count": 7
       }
     ],
@@ -1892,12 +1892,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -1927,7 +1927,7 @@
       },
       {
         "name": "S&P500指數",
-        "ticker": "SPX",
+        "ticker": "^GSPC",
         "count": 2
       },
       {
@@ -1939,12 +1939,12 @@
     "QQQ": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 14
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 14
       },
       {
@@ -1991,12 +1991,12 @@
     "SPY": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -2055,12 +2055,12 @@
     "標普500指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 24
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 24
       },
       {
@@ -2112,12 +2112,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -2164,12 +2164,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -2258,7 +2258,7 @@
     "台股加權指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 39
       },
       {
@@ -2273,7 +2273,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 32
       },
       {
@@ -2335,7 +2335,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -2431,7 +2431,7 @@
     "特斯拉": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 48
       },
       {
@@ -2446,7 +2446,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 44
       },
       {
@@ -2577,12 +2577,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -2604,12 +2604,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -2621,12 +2621,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 41
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 35
       },
       {
@@ -2678,7 +2678,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 6
       },
       {
@@ -2703,7 +2703,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -2721,12 +2721,12 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 61
+        "count": 62
       },
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 42
+        "count": 43
       },
       {
         "name": "台積電",
@@ -2736,11 +2736,11 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 37
+        "count": 38
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 37
       },
       {
@@ -2755,7 +2755,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 31
       },
       {
@@ -2777,7 +2777,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 17
       },
       {
@@ -2817,7 +2817,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 13
       }
     ],
@@ -2829,12 +2829,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 33
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 32
       },
       {
@@ -2896,12 +2896,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -2938,12 +2938,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 8
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 8
       },
       {
@@ -2997,19 +2997,19 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
     "Rocket Lab": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -3024,7 +3024,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -3039,7 +3039,7 @@
       },
       {
         "name": "S&P500指數",
-        "ticker": "SPX",
+        "ticker": "^GSPC",
         "count": 3
       },
       {
@@ -3076,7 +3076,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 8
       },
       {
@@ -3101,7 +3101,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -3123,12 +3123,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -3190,7 +3190,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -3200,7 +3200,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -3232,12 +3232,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -3311,12 +3311,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 51
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 47
       },
       {
@@ -3353,12 +3353,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 40
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 37
       },
       {
@@ -3487,7 +3487,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -3534,12 +3534,12 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -3576,7 +3576,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 13
       },
       {
@@ -3586,7 +3586,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 12
       },
       {
@@ -3623,7 +3623,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 19
       },
       {
@@ -3633,7 +3633,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 18
       },
       {
@@ -3665,7 +3665,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -3685,7 +3685,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -3717,12 +3717,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 15
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 15
       },
       {
@@ -3789,12 +3789,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -3821,7 +3821,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -3851,7 +3851,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -3909,23 +3909,23 @@
     ],
     "IBM": [
       {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 8
-      },
-      {
         "name": "Meta",
         "ticker": "META",
-        "count": 7
+        "count": 8
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 7
+        "count": 8
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 8
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -3962,28 +3962,28 @@
     "Palantir": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 18
       },
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 14
+        "count": 15
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 14
+      },
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 13
       },
       {
         "name": "S&P 500",
         "ticker": "SPX",
         "count": 13
-      },
-      {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 12
       },
       {
         "name": "Google",
@@ -4008,7 +4008,7 @@
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 10
+        "count": 11
       }
     ],
     "Salesforce": [
@@ -4034,7 +4034,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 8
       },
       {
@@ -4049,7 +4049,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -4065,13 +4065,13 @@
     ],
     "Tesla": [
       {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 16
-      },
-      {
         "name": "NVIDIA",
         "ticker": "NVDA",
+        "count": 17
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
         "count": 16
       },
       {
@@ -4087,17 +4087,22 @@
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 12
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 11
+        "count": 13
       },
       {
         "name": "Anthropic",
         "ticker": "",
-        "count": 10
+        "count": 11
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 11
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 11
       },
       {
         "name": "S&P 500",
@@ -4105,20 +4110,15 @@
         "count": 10
       },
       {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 10
-      },
-      {
-        "name": "SpaceX",
-        "ticker": "SPCX",
+        "name": "Microsoft",
+        "ticker": "MSFT",
         "count": 10
       }
     ],
     "比特幣": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 24
       },
       {
@@ -4128,7 +4128,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 19
       },
       {
@@ -4180,12 +4180,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -4212,12 +4212,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 6
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -4289,12 +4289,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -4311,27 +4311,32 @@
     "那斯達克100指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 11
+        "ticker": "^SOX",
+        "count": 12
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 10
+        "ticker": "^DJI",
+        "count": 11
       },
       {
         "name": "羅素2000指數",
-        "ticker": "RUT",
-        "count": 9
+        "ticker": "^RUT",
+        "count": 10
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 8
+        "count": 9
       },
       {
         "name": "S&P500指數",
-        "ticker": "SPX",
+        "ticker": "^GSPC",
+        "count": 7
+      },
+      {
+        "name": "SpaceX",
+        "ticker": "SPCX",
         "count": 6
       },
       {
@@ -4347,11 +4352,6 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 5
-      },
-      {
-        "name": "SpaceX",
-        "ticker": "SPCX",
         "count": 5
       },
       {
@@ -4373,7 +4373,7 @@
       },
       {
         "name": "羅素2000指數",
-        "ticker": "RUT",
+        "ticker": "^RUT",
         "count": 2
       },
       {
@@ -4383,17 +4383,17 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
         "name": "那斯達克100指數",
-        "ticker": "QQQ",
+        "ticker": "^NDX",
         "count": 2
       },
       {
@@ -4492,12 +4492,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -4519,12 +4519,12 @@
     "黃金": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 10
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 10
       },
       {
@@ -4623,7 +4623,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
@@ -4635,7 +4635,7 @@
     "台積電ADR": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -4655,7 +4655,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -4687,8 +4687,13 @@
     "甲骨文": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 22
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 20
       },
       {
         "name": "S&P 500",
@@ -4697,18 +4702,13 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 19
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
+        "ticker": "^DJI",
         "count": 19
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 18
+        "count": 19
       },
       {
         "name": "台積電",
@@ -4718,12 +4718,12 @@
       {
         "name": "微軟",
         "ticker": "MSFT",
-        "count": 15
+        "count": 16
       },
       {
         "name": "美光",
         "ticker": "MU",
-        "count": 15
+        "count": 16
       },
       {
         "name": "亞馬遜",
@@ -4739,12 +4739,12 @@
     "Morgan Stanley": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -4781,12 +4781,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -4813,12 +4813,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -4880,7 +4880,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -4907,7 +4907,7 @@
     "沃爾瑪": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
@@ -4922,7 +4922,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -4959,12 +4959,12 @@
     "禮來": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -5011,7 +5011,7 @@
     "科林研發": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -5026,7 +5026,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -5063,7 +5063,7 @@
     "英特爾": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 23
       },
       {
@@ -5073,7 +5073,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 22
       },
       {
@@ -5120,12 +5120,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -5156,23 +5156,33 @@
     ],
     "Uber": [
       {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 6
+      },
+      {
         "name": "台積電",
         "ticker": "TSM",
         "count": 6
       },
       {
-        "name": "Anthropic",
+        "name": "OpenAI",
         "ticker": "",
         "count": 5
       },
       {
-        "name": "OpenAI",
-        "ticker": "",
+        "name": "Meta",
+        "ticker": "META",
         "count": 4
       },
       {
         "name": "Google",
         "ticker": "GOOGL",
+        "count": 4
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
         "count": 4
       },
       {
@@ -5192,18 +5202,8 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
-      },
-      {
-        "name": "Amazon",
-        "ticker": "AMZN",
-        "count": 3
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 3
       }
     ],
     "國巨": [
@@ -5286,12 +5286,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -5380,7 +5380,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 10
       },
       {
@@ -5395,7 +5395,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 9
       },
       {
@@ -5447,7 +5447,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -5469,7 +5469,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -5496,19 +5496,19 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
     "波音": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -5528,7 +5528,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -5621,28 +5621,28 @@
     "AOI": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 6
+        "ticker": "^SOX",
+        "count": 7
       },
       {
         "name": "Coherent",
         "ticker": "COHR",
-        "count": 5
+        "count": 6
       },
       {
         "name": "Lumentum",
         "ticker": "LITE",
-        "count": 5
+        "count": 6
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 5
+        "count": 6
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 5
+        "ticker": "^DJI",
+        "count": 6
       },
       {
         "name": "S&P 500",
@@ -5660,13 +5660,13 @@
         "count": 4
       },
       {
-        "name": "Marvell",
-        "ticker": "MRVL",
+        "name": "Amazon",
+        "ticker": "AMZN",
         "count": 3
       },
       {
-        "name": "AMD",
-        "ticker": "AMD",
+        "name": "Marvell",
+        "ticker": "MRVL",
         "count": 3
       }
     ],
@@ -5679,16 +5679,21 @@
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 21
+        "count": 22
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 16
+        "count": 17
       },
       {
         "name": "Google",
         "ticker": "GOOGL",
+        "count": 15
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
         "count": 15
       },
       {
@@ -5698,11 +5703,11 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 14
       },
       {
-        "name": "OpenAI",
+        "name": "Anthropic",
         "ticker": "",
         "count": 14
       },
@@ -5713,12 +5718,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 13
-      },
-      {
-        "name": "Anthropic",
-        "ticker": "",
+        "ticker": "^SOX",
         "count": 13
       }
     ],
@@ -5762,7 +5762,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -5796,7 +5796,7 @@
     "IGV": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 13
       },
       {
@@ -5806,7 +5806,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 12
       },
       {
@@ -5853,12 +5853,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -5892,10 +5892,114 @@
         "count": 2
       }
     ],
+    "CoreWeave": [
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 14
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 14
+      },
+      {
+        "name": "Nebius",
+        "ticker": "NBIS",
+        "count": 13
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "^DJI",
+        "count": 12
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 12
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 11
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 11
+      },
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 8
+      },
+      {
+        "name": "羅素2000",
+        "ticker": "RUT",
+        "count": 8
+      },
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 8
+      }
+    ],
+    "Alphabet": [
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 26
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 25
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 24
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 24
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "^DJI",
+        "count": 22
+      },
+      {
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 19
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 18
+      },
+      {
+        "name": "蘋果",
+        "ticker": "AAPL",
+        "count": 14
+      },
+      {
+        "name": "Amazon",
+        "ticker": "AMZN",
+        "count": 13
+      },
+      {
+        "name": "SpaceX",
+        "ticker": "SPCX",
+        "count": 13
+      }
+    ],
     "軟銀": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -5905,7 +6009,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 6
       },
       {
@@ -5947,12 +6051,12 @@
     "那斯達克": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 26
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 26
       },
       {
@@ -5996,58 +6100,6 @@
         "count": 14
       }
     ],
-    "Alphabet": [
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 25
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 24
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 24
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 24
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 21
-      },
-      {
-        "name": "微軟",
-        "ticker": "MSFT",
-        "count": 19
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 18
-      },
-      {
-        "name": "蘋果",
-        "ticker": "AAPL",
-        "count": 14
-      },
-      {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 13
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 13
-      }
-    ],
     "戴爾": [
       {
         "name": "S&P 500",
@@ -6056,7 +6108,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 8
       },
       {
@@ -6066,7 +6118,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -6108,7 +6160,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -6148,7 +6200,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -6185,7 +6237,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -6242,7 +6294,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -6252,7 +6304,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       }
     ],
@@ -6543,12 +6595,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
@@ -6611,18 +6663,18 @@
         "count": 12
       },
       {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 12
+      },
+      {
         "name": "S&P 500",
         "ticker": "SPX",
         "count": 12
       },
       {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 11
-      },
-      {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 11
       },
       {
@@ -6641,19 +6693,19 @@
         "count": 9
       },
       {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 8
+      },
+      {
         "name": "騰訊",
         "ticker": "700",
         "count": 8
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 8
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 7
       }
     ],
     "騰訊": [
@@ -6674,7 +6726,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -6704,7 +6756,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       }
     ],
@@ -6751,7 +6803,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -6840,12 +6892,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -6897,7 +6949,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -6909,12 +6961,12 @@
     "SanDisk": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 12
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 11
       },
       {
@@ -6966,7 +7018,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -6976,7 +7028,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
@@ -7033,7 +7085,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -7048,7 +7100,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -7144,12 +7196,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 8
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -7191,7 +7243,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -7201,7 +7253,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
@@ -7243,19 +7295,244 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
+        "count": 2
+      }
+    ],
+    "Coreweave": [
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 2
+      },
+      {
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 2
+      },
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 2
+      }
+    ],
+    "Kimi K3": [
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 3
+      },
+      {
+        "name": "Intel",
+        "ticker": "INTC",
+        "count": 2
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 2
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 2
+      },
+      {
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 2
+      },
+      {
+        "name": "Marvell",
+        "ticker": "MRVL",
+        "count": 2
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 2
+      },
+      {
+        "name": "SK海力士",
+        "ticker": "SKHY",
+        "count": 2
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 2
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 2
+      }
+    ],
+    "貝萊德": [
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 4
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 4
+      },
+      {
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 4
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 4
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 3
+      },
+      {
+        "name": "特斯拉",
+        "ticker": "TSLA",
+        "count": 3
+      },
+      {
+        "name": "高盛",
+        "ticker": "GS",
+        "count": 3
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "^DJI",
+        "count": 3
+      },
+      {
+        "name": "甲骨文",
+        "ticker": "ORCL",
+        "count": 2
+      },
+      {
+        "name": "黑石",
+        "ticker": "BX",
+        "count": 2
+      }
+    ],
+    "阿波羅": [
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 4
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 4
+      },
+      {
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 4
+      },
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 3
+      },
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 3
+      },
+      {
+        "name": "台積電",
+        "ticker": "TSM",
+        "count": 3
+      },
+      {
+        "name": "甲骨文",
+        "ticker": "ORCL",
+        "count": 2
+      },
+      {
+        "name": "黑石",
+        "ticker": "BX",
+        "count": 2
+      },
+      {
+        "name": "SpaceX",
+        "ticker": "SPCX",
+        "count": 2
+      },
+      {
+        "name": "三星電子",
+        "ticker": "005930",
+        "count": 2
+      }
+    ],
+    "黑石": [
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 4
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 4
+      },
+      {
+        "name": "微軟",
+        "ticker": "MSFT",
+        "count": 4
+      },
+      {
+        "name": "S&P 500",
+        "ticker": "SPX",
+        "count": 4
+      },
+      {
+        "name": "道瓊指數",
+        "ticker": "^DJI",
+        "count": 4
+      },
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 3
+      },
+      {
+        "name": "費城半導體指數",
+        "ticker": "^SOX",
+        "count": 3
+      },
+      {
+        "name": "甲骨文",
+        "ticker": "ORCL",
+        "count": 2
+      },
+      {
+        "name": "美光",
+        "ticker": "MU",
+        "count": 2
+      },
+      {
+        "name": "貝萊德",
+        "ticker": "BLK",
         "count": 2
       }
     ],
     "Adobe": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -7265,7 +7542,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 6
       },
       {
@@ -7307,7 +7584,7 @@
     "日經指數": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -7317,7 +7594,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -7379,19 +7656,19 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
     "摩根士丹利": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -7406,7 +7683,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -7443,12 +7720,12 @@
     "高盛": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 10
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 9
       },
       {
@@ -7510,12 +7787,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -7542,12 +7819,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -7658,7 +7935,7 @@
     "XLK": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -7720,12 +7997,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
@@ -7792,12 +8069,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -7829,12 +8106,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -7861,24 +8138,24 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
     "S&P 500指數": [
       {
         "name": "羅素2000指數",
-        "ticker": "RUT",
+        "ticker": "^RUT",
         "count": 4
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -7920,12 +8197,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 10
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 10
       },
       {
@@ -7982,12 +8259,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -8070,7 +8347,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -8095,7 +8372,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -8127,7 +8404,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
@@ -8164,7 +8441,7 @@
     "鴻海": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 13
       },
       {
@@ -8199,7 +8476,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 8
       },
       {
@@ -8241,7 +8518,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
@@ -8278,7 +8555,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -8330,12 +8607,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -8387,12 +8664,12 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 6
       },
       {
@@ -8449,12 +8726,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -8466,12 +8743,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
@@ -8644,7 +8921,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 8
       },
       {
@@ -8686,7 +8963,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 10
       },
       {
@@ -8716,7 +8993,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -8774,58 +9051,6 @@
       {
         "name": "蘋果",
         "ticker": "AAPL",
-        "count": 2
-      }
-    ],
-    "阿波羅": [
-      {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 3
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 3
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 3
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 3
-      },
-      {
-        "name": "微軟",
-        "ticker": "MSFT",
-        "count": 3
-      },
-      {
-        "name": "SpaceX",
-        "ticker": "SPCX",
-        "count": 2
-      },
-      {
-        "name": "三星電子",
-        "ticker": "005930",
-        "count": 2
-      },
-      {
-        "name": "亞馬遜",
-        "ticker": "AMZN",
-        "count": 2
-      },
-      {
-        "name": "博通",
-        "ticker": "AVGO",
-        "count": 2
-      },
-      {
-        "name": "特斯拉",
-        "ticker": "TSLA",
         "count": 2
       }
     ],
@@ -8919,7 +9144,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
@@ -8956,7 +9181,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -9000,7 +9225,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -9057,7 +9282,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -9079,7 +9304,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -9172,12 +9397,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -9189,7 +9414,7 @@
     "廣達": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 9
       },
       {
@@ -9204,7 +9429,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -9283,12 +9508,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -9300,12 +9525,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -9332,7 +9557,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -9369,12 +9594,12 @@
     "ServiceNow": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 5
       },
       {
@@ -9468,14 +9693,14 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
     "美國銀行": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 6
       },
       {
@@ -9490,7 +9715,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -9527,7 +9752,7 @@
     "花旗": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -9542,7 +9767,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 6
       },
       {
@@ -9641,7 +9866,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -9698,7 +9923,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -9745,7 +9970,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -9753,22 +9978,22 @@
       {
         "name": "OpenAI",
         "ticker": "",
-        "count": 6
+        "count": 7
       },
       {
         "name": "Anthropic",
         "ticker": "",
-        "count": 5
+        "count": 6
       },
       {
         "name": "Meta",
         "ticker": "META",
-        "count": 5
+        "count": 6
       },
       {
         "name": "NVIDIA",
         "ticker": "NVDA",
-        "count": 5
+        "count": 6
       },
       {
         "name": "SpaceX",
@@ -9787,12 +10012,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -9852,6 +10077,16 @@
       {
         "name": "Anthropic",
         "ticker": "",
+        "count": 3
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 3
+      },
+      {
+        "name": "DeepSeek",
+        "ticker": "",
         "count": 2
       },
       {
@@ -9860,8 +10095,28 @@
         "count": 2
       },
       {
-        "name": "OpenAI",
-        "ticker": "",
+        "name": "Meta",
+        "ticker": "META",
+        "count": 2
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 2
+      },
+      {
+        "name": "Uber",
+        "ticker": "UBER",
+        "count": 2
+      },
+      {
+        "name": "阿里巴巴",
+        "ticker": "BABA",
+        "count": 2
+      },
+      {
+        "name": "Palantir",
+        "ticker": "PLTR",
         "count": 2
       }
     ],
@@ -9893,7 +10148,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -9920,7 +10175,7 @@
     "Walmart": [
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -9992,12 +10247,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -10014,12 +10269,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -10076,7 +10331,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 5
       },
       {
@@ -10091,7 +10346,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -10113,12 +10368,12 @@
     "META": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -10187,12 +10442,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -10234,7 +10489,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 9
       },
       {
@@ -10249,7 +10504,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 8
       },
       {
@@ -10301,12 +10556,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -10328,7 +10583,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -10358,7 +10613,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -10395,12 +10650,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -10417,7 +10672,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -10452,7 +10707,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -10484,12 +10739,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -10506,7 +10761,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -10536,7 +10791,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -10568,12 +10823,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -10762,12 +11017,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -10781,67 +11036,15 @@
         "count": 3
       }
     ],
-    "CoreWeave": [
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 13
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 13
-      },
-      {
-        "name": "Nebius",
-        "ticker": "NBIS",
-        "count": 13
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 12
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 11
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 11
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 11
-      },
-      {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 8
-      },
-      {
-        "name": "羅素2000",
-        "ticker": "RUT",
-        "count": 8
-      },
-      {
-        "name": "美光",
-        "ticker": "MU",
-        "count": 8
-      }
-    ],
     "美超微": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 7
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 7
       },
       {
@@ -10885,58 +11088,6 @@
         "count": 2
       }
     ],
-    "黑石": [
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 4
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 4
-      },
-      {
-        "name": "Anthropic",
-        "ticker": "",
-        "count": 3
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 3
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 3
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 3
-      },
-      {
-        "name": "微軟",
-        "ticker": "MSFT",
-        "count": 3
-      },
-      {
-        "name": "Google",
-        "ticker": "GOOGL",
-        "count": 2
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 2
-      },
-      {
-        "name": "SpaceX",
-        "ticker": "SPCX",
-        "count": 2
-      }
-    ],
     "HPE": [
       {
         "name": "CoreWeave",
@@ -10960,12 +11111,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11058,7 +11209,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -11139,12 +11290,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -11181,12 +11332,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -11223,12 +11374,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11282,12 +11433,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -11356,12 +11507,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11435,7 +11586,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -11447,12 +11598,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11484,12 +11635,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11516,12 +11667,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11563,7 +11714,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -11594,62 +11745,10 @@
         "count": 2
       }
     ],
-    "貝萊德": [
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 4
-      },
-      {
-        "name": "Meta",
-        "ticker": "META",
-        "count": 3
-      },
-      {
-        "name": "NVIDIA",
-        "ticker": "NVDA",
-        "count": 3
-      },
-      {
-        "name": "S&P 500",
-        "ticker": "SPX",
-        "count": 3
-      },
-      {
-        "name": "微軟",
-        "ticker": "MSFT",
-        "count": 3
-      },
-      {
-        "name": "特斯拉",
-        "ticker": "TSLA",
-        "count": 3
-      },
-      {
-        "name": "高盛",
-        "ticker": "GS",
-        "count": 3
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 3
-      },
-      {
-        "name": "Alphabet",
-        "ticker": "GOOGL",
-        "count": 2
-      },
-      {
-        "name": "Amazon",
-        "ticker": "AMZN",
-        "count": 2
-      }
-    ],
     "摩根大通": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
@@ -11735,24 +11834,24 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
     "沙烏地阿美": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 3
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 3
       },
       {
@@ -11824,54 +11923,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
-        "count": 2
-      },
-      {
-        "name": "那斯達克",
-        "ticker": "NDX",
-        "count": 2
-      }
-    ],
-    "Kimi K3": [
-      {
-        "name": "Marvell",
-        "ticker": "MRVL",
-        "count": 2
-      },
-      {
-        "name": "OpenAI",
-        "ticker": "",
-        "count": 2
-      },
-      {
-        "name": "SK海力士",
-        "ticker": "SKHY",
-        "count": 2
-      },
-      {
-        "name": "台積電",
-        "ticker": "TSM",
-        "count": 2
-      },
-      {
-        "name": "美光",
-        "ticker": "MU",
-        "count": 2
-      },
-      {
-        "name": "費城半導體指數",
-        "ticker": "SOXX",
-        "count": 2
-      },
-      {
-        "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -11893,12 +11950,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11922,12 +11979,12 @@
     "BlackRock": [
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -11939,7 +11996,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -11961,12 +12018,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -12008,7 +12065,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
@@ -12188,12 +12245,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -12230,7 +12287,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       },
       {
@@ -12383,12 +12440,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -12446,12 +12503,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -12551,7 +12608,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -12642,12 +12699,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 4
       },
       {
@@ -12738,6 +12795,45 @@
       {
         "name": "安川電機",
         "ticker": "6506",
+        "count": 2
+      }
+    ],
+    "智譜": [
+      {
+        "name": "Anthropic",
+        "ticker": "",
+        "count": 2
+      },
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 2
+      },
+      {
+        "name": "Microsoft",
+        "ticker": "MSFT",
+        "count": 2
+      },
+      {
+        "name": "NVIDIA",
+        "ticker": "NVDA",
+        "count": 2
+      },
+      {
+        "name": "OpenAI",
+        "ticker": "",
+        "count": 2
+      }
+    ],
+    "Figma": [
+      {
+        "name": "Meta",
+        "ticker": "META",
+        "count": 2
+      },
+      {
+        "name": "Palantir",
+        "ticker": "PLTR",
         "count": 2
       }
     ],
@@ -12885,7 +12981,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -12917,7 +13013,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       }
     ],
@@ -13308,7 +13404,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -13367,12 +13463,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -13419,12 +13515,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -13473,12 +13569,12 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -13546,7 +13642,7 @@
       },
       {
         "name": "道瓊指數",
-        "ticker": "DJIA",
+        "ticker": "^DJI",
         "count": 2
       }
     ],
@@ -13568,7 +13664,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 2
       },
       {
@@ -13600,7 +13696,7 @@
       },
       {
         "name": "費城半導體指數",
-        "ticker": "SOXX",
+        "ticker": "^SOX",
         "count": 4
       },
       {
@@ -13630,5 +13726,5 @@
       }
     ]
   },
-  "generated_at": "2026-08-12T11:39:05"
+  "generated_at": "2026-08-12T13:42:09"
 }
