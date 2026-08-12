@@ -83,6 +83,23 @@ def _episode_sort_key(episode: dict) -> tuple:
     return (date, ep_num)
 
 
+def _sync_card_directory(source: Path, destination: Path) -> None:
+    """Copy cards and keep old URLs valid while browsers refresh the index."""
+    destination.mkdir(parents=True, exist_ok=True)
+    existing_names = {path.name for path in destination.glob("card_*.png")}
+    source_names = {path.name for path in source.glob("card_*.png")}
+    shutil.copytree(source, destination, dirs_exist_ok=True)
+
+    # GitHub Pages/browser caches can retain an older episodes.json briefly.
+    # Keep its old section-card URLs available; refresh legacy CTA URLs with
+    # the current palette instead of leaving the old purple CTA in place.
+    current_cta = next(iter(source.glob("card_*_cta.png")), None)
+    if current_cta:
+        for legacy_name in existing_names - source_names:
+            if legacy_name.endswith("_cta.png"):
+                shutil.copy2(current_cta, destination / legacy_name)
+
+
 def build():
     channels = _load_channels()
 
@@ -128,7 +145,7 @@ def build():
                 card_files = sorted(card_src_dir.glob("card_*.png"))
                 card_urls = [f"cards/{video_id}/{p.name}" for p in card_files]
                 dest_card_dir = SITE_CARDS_DIR / video_id
-                shutil.copytree(card_src_dir, dest_card_dir, dirs_exist_ok=True)
+                _sync_card_directory(card_src_dir, dest_card_dir)
 
             episodes.append({
                 "video_id": video_id,
