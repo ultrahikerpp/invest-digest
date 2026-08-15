@@ -9,6 +9,7 @@ Usage:
   python3 runner.py reprocess              # regenerate ALL summaries with current prompt, then approve+deploy
   python3 runner.py reprocess --channel <id>          # single channel only
   python3 runner.py reprocess --channel <id> --limit <n>  # cap episodes regenerated this run (resumable)
+  python3 runner.py reprocess --min-episode <n> --max-episode <n>  # restrict historical range
   python3 runner.py build                  # regenerate static site
   python3 runner.py cards <video_id>       # generate PNG cards
   python3 runner.py video <video_id>       # generate MP4 from cards
@@ -134,8 +135,14 @@ def _summary_matches_style(summary_text: str, style: str | None) -> bool:
     return False
 
 
-def _select_episodes(conn, status: str | None = None, channel_id: str | None = None):
-    """Fetch episodes, optionally filtered by status and/or channel."""
+def _select_episodes(
+    conn,
+    status: str | None = None,
+    channel_id: str | None = None,
+    min_episode: int | None = None,
+    max_episode: int | None = None,
+):
+    """Fetch episodes, optionally filtered by status, channel, and EP range."""
     query = "SELECT * FROM episodes"
     clauses, params = [], []
     if status:
@@ -146,7 +153,21 @@ def _select_episodes(conn, status: str | None = None, channel_id: str | None = N
         params.append(channel_id)
     if clauses:
         query += " WHERE " + " AND ".join(clauses)
-    return conn.execute(query, params).fetchall()
+    rows = conn.execute(query, params).fetchall()
+    if min_episode is None and max_episode is None:
+        return rows
+
+    def episode_number(row) -> int | None:
+        match = re.search(r"\bEP(\d+)\b", row["title"] or "", re.IGNORECASE)
+        return int(match.group(1)) if match else None
+
+    filtered = [
+        row for row in rows
+        if (number := episode_number(row)) is not None
+        and (min_episode is None or number >= min_episode)
+        and (max_episode is None or number <= max_episode)
+    ]
+    return sorted(filtered, key=episode_number, reverse=True)
 
 
 def _copy_summary_by_wiki_dir(summary_path: Path, channel_id: str, base_dir: Path, label: str):
@@ -304,6 +325,36 @@ def _strip_limit(args: list[str]) -> list[str]:
         return args
     i = args.index("--limit")
     return args[:i] + args[i + 2:]
+
+
+def _extract_episode_bounds(args: list[str]) -> tuple[int | None, int | None]:
+    """Pull an inclusive --min-episode/--max-episode range from argv."""
+    values = []
+    for flag in ("--min-episode", "--max-episode"):
+        if flag not in args:
+            values.append(None)
+            continue
+        i = args.index(flag)
+        if i + 1 >= len(args) or not args[i + 1].isdigit() or int(args[i + 1]) < 1:
+            print(f"ERROR: {flag} requires a positive integer", file=sys.stderr)
+            sys.exit(1)
+        values.append(int(args[i + 1]))
+
+    min_episode, max_episode = values
+    if min_episode is not None and max_episode is not None and min_episode > max_episode:
+        print("ERROR: --min-episode cannot exceed --max-episode", file=sys.stderr)
+        sys.exit(1)
+    return min_episode, max_episode
+
+
+def _strip_episode_bounds(args: list[str]) -> list[str]:
+    """Remove episode range flags and values from an args list."""
+    result = args
+    for flag in ("--min-episode", "--max-episode"):
+        if flag in result:
+            i = result.index(flag)
+            result = result[:i] + result[i + 2:]
+    return result
 
 
 # ── Newsletter fetch ──────────────────────────────────────
@@ -930,7 +981,13 @@ def _find_transcript_path(video_id: str) -> Path | None:
     return flat if flat.exists() else None
 
 
-def cmd_reprocess(provider: str = "claude", channel_id: str | None = None, limit: int | None = None):
+def cmd_reprocess(
+    provider: str = "claude",
+    channel_id: str | None = None,
+    limit: int | None = None,
+    min_episode: int | None = None,
+    max_episode: int | None = None,
+):
     """Re-generate summaries (all episodes, or one channel with --channel) using the current prompt, then approve.
 
     --limit caps how many episodes are actually regenerated in this run (episodes
@@ -942,7 +999,12 @@ def cmd_reprocess(provider: str = "claude", channel_id: str | None = None, limit
     worker = _import_worker()
     conn = _get_db()
 
-    episodes = _select_episodes(conn, channel_id=channel_id)
+    episodes = _select_episodes(
+        conn,
+        channel_id=channel_id,
+        min_episode=min_episode,
+        max_episode=max_episode,
+    )
     if not episodes:
         print("資料庫中沒有集數")
         conn.close()
@@ -951,6 +1013,8 @@ def cmd_reprocess(provider: str = "claude", channel_id: str | None = None, limit
     print(f"找到 {len(episodes)} 集，依序重新產製摘要（使用最新 Prompt）...\n")
     if limit is not None:
         print(f"（--limit {limit}：本次最多重新產製 {limit} 集，其餘下次執行同一指令會繼續處理）\n")
+    if min_episode is not None or max_episode is not None:
+        print(f"（EP 範圍：{min_episode or '最早'}–{max_episode or '最新'}）\n")
 
     regenerated = 0
     consecutive_fails = 0
@@ -1044,18 +1108,36 @@ def cmd_reprocess(provider: str = "claude", channel_id: str | None = None, limit
         return
 
     print("開始執行 approve（產出 hashtags、字卡、影片、部署）...\n")
-    cmd_approve(provider=provider, channel_id=channel_id)
+    cmd_approve(
+        provider=provider,
+        channel_id=channel_id,
+        min_episode=min_episode,
+        max_episode=max_episode,
+        send_notifications=False,
+    )
 
 
 # ── Approve command ────────────────────────────────────────
 
-def cmd_approve(provider: str = "claude", channel_id: str | None = None):
-    """Process all pending_review episodes: generate hashtags + Shorts cards, then email summary and deploy."""
+def cmd_approve(
+    provider: str = "claude",
+    channel_id: str | None = None,
+    min_episode: int | None = None,
+    max_episode: int | None = None,
+    send_notifications: bool = True,
+):
+    """Process pending_review episodes: generate assets, optionally notify, then deploy."""
     _ensure_dirs()
     worker = _import_worker()
     conn = _get_db()
 
-    pending = _select_episodes(conn, status="pending_review", channel_id=channel_id)
+    pending = _select_episodes(
+        conn,
+        status="pending_review",
+        channel_id=channel_id,
+        min_episode=min_episode,
+        max_episode=max_episode,
+    )
 
     if not pending:
         print("沒有待審閱的集數")
@@ -1126,21 +1208,24 @@ def cmd_approve(provider: str = "claude", channel_id: str | None = None):
         print("\n沒有成功處理的集數")
         return
 
-    # Send completion notification email
     n = len(results)
-    subject = f"[完成] 共 {n} 集摘要已審閱"
-    lines = [f"共 {n} 集摘要已完成審閱\n"]
-    for r in results:
-        lines.append(f"{r['channel_name']}｜{r['title']}｜{r['hashtags']}")
-        lines.append("")
-    body = "\n".join(lines)
+    if send_notifications:
+        # Send completion notification email
+        subject = f"[完成] 共 {n} 集摘要已審閱"
+        lines = [f"共 {n} 集摘要已完成審閱\n"]
+        for r in results:
+            lines.append(f"{r['channel_name']}｜{r['title']}｜{r['hashtags']}")
+            lines.append("")
+        body = "\n".join(lines)
 
-    print(f"\n寄送完成通知郵件...")
-    try:
-        worker.send_notification_email(subject, body)
-        print(f"✓ 郵件已寄至 {worker.GMAIL_USER}")
-    except Exception as e:
-        print(f"❌ 郵件發送失敗：{e}")
+        print(f"\n寄送完成通知郵件...")
+        try:
+            worker.send_notification_email(subject, body)
+            print(f"✓ 郵件已寄至 {worker.GMAIL_USER}")
+        except Exception as e:
+            print(f"❌ 郵件發送失敗：{e}")
+    else:
+        print("\n略過完成通知郵件（歷史重製）")
 
     print(f"\n共完成 {n} 集")
 
@@ -1154,11 +1239,14 @@ def cmd_approve(provider: str = "claude", channel_id: str | None = None):
     else:
         print("❌ 找不到 deploy.sh，請手動執行 runner.py deploy")
 
-    # Send subscriber notifications (non-fatal)
-    try:
-        _send_subscriber_notifications(results)
-    except Exception as e:
-        print(f"⚠️ 訂閱通知發送失敗（不影響部署）：{e}")
+    if send_notifications:
+        # Send subscriber notifications (non-fatal)
+        try:
+            _send_subscriber_notifications(results)
+        except Exception as e:
+            print(f"⚠️ 訂閱通知發送失敗（不影響部署）：{e}")
+    else:
+        print("略過訂閱者通知（歷史重製）")
 
 
 # ── Subscriber notifications ──────────────────────────────
@@ -1238,7 +1326,7 @@ def cmd_weekly_digest() -> None:
     """Send the weekly investment digest to all confirmed weekly_digest subscribers.
 
     Idempotent per ISO week: safe to call multiple times (manual `weekly-digest`,
-    the Sunday cron, and cmd_weekly()'s auto-trigger can all fire the same week
+    the Sunday cron, and cmd_deploy()'s trigger can all fire the same week
     without double-sending).
     """
     from backend import subscriber as sub
@@ -1851,8 +1939,7 @@ def cmd_weekly(provider: str = "claude"):
     out_path = WEEKLY_DIR / f"{week_label}.md"
     out_path.write_text(full_md, encoding="utf-8")
     print(f"✓ Weekly digest saved: {out_path}")
-
-    cmd_weekly_digest()
+    print("Review the digest, then run `runner.py deploy` to publish it and email subscribers.")
 
 
 # ── Earnings command ──────────────────────────────────────
@@ -2005,7 +2092,18 @@ def cmd_deploy():
         print(f"ERROR: deploy.sh not found", file=sys.stderr)
         sys.exit(1)
     result = subprocess.run(["bash", str(deploy_script)], cwd=BASE_DIR)
-    sys.exit(result.returncode)
+    if result.returncode != 0:
+        sys.exit(result.returncode)
+
+    # Only send once this week's digest article has actually been generated
+    # (i.e. `weekly` has run and presumably been reviewed) — cmd_weekly_digest()
+    # is itself idempotent per ISO week, so a deploy with no new article is a no-op.
+    iso_year, iso_week, _ = datetime.now().isocalendar()
+    week_label = f"{iso_year}-{iso_week:02d}"
+    if (WEEKLY_DIR / f"{week_label}.md").exists():
+        cmd_weekly_digest()
+
+    sys.exit(0)
 
 
 # ── Entry point ───────────────────────────────────────────
@@ -2025,7 +2123,12 @@ def main():
         cmd_run(channel_id, provider=_extract_provider(args))
 
     elif cmd == "approve":
-        cmd_approve(provider=_extract_provider(args))
+        min_episode, max_episode = _extract_episode_bounds(args)
+        cmd_approve(
+            provider=_extract_provider(args),
+            min_episode=min_episode,
+            max_episode=max_episode,
+        )
 
     elif cmd == "retry":
         provider = _extract_provider(args)
@@ -2038,11 +2141,18 @@ def main():
     elif cmd == "reprocess":
         provider = _extract_provider(args)
         limit = _extract_limit(args)
-        rest = _strip_limit(_strip_provider(args))
+        min_episode, max_episode = _extract_episode_bounds(args)
+        rest = _strip_episode_bounds(_strip_limit(_strip_provider(args)))
         channel_id = None
         if len(rest) >= 3 and rest[1] == "--channel":
             channel_id = rest[2]
-        cmd_reprocess(provider=provider, channel_id=channel_id, limit=limit)
+        cmd_reprocess(
+            provider=provider,
+            channel_id=channel_id,
+            limit=limit,
+            min_episode=min_episode,
+            max_episode=max_episode,
+        )
 
     elif cmd == "build":
         cmd_build()

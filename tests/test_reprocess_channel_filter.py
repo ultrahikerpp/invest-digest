@@ -49,3 +49,30 @@ def test_select_episodes_filters_by_status_and_channel():
     assert _select_episodes(conn, status="pending_review", channel_id="UC_GOOAYE") == []
     eps = _select_episodes(conn, status="pending_review")
     assert [e["video_id"] for e in eps] == ["v3"]
+
+
+def test_select_episodes_filters_by_episode_number_range():
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    conn.execute(
+        "CREATE TABLE episodes (video_id TEXT, channel_id TEXT, title TEXT, status TEXT)"
+    )
+    conn.executemany(
+        "INSERT INTO episodes VALUES (?, ?, ?, ?)",
+        [
+            ("v633", "UC_GOOAYE", "EP633 | old", "done"),
+            ("v634", "UC_GOOAYE", "EP634 | first", "done"),
+            ("v679", "UC_GOOAYE", "EP679 | last", "done"),
+            ("v680", "UC_GOOAYE", "EP680 | newer", "done"),
+            ("v687", "UC_GOOAYE", "EP687 | newer", "pending_review"),
+        ],
+    )
+
+    eps = _select_episodes(
+        conn,
+        channel_id="UC_GOOAYE",
+        min_episode=634,
+        max_episode=679,
+    )
+
+    assert [e["video_id"] for e in eps] == ["v679", "v634"]

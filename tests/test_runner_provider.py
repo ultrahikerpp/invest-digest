@@ -4,7 +4,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest
 
-from runner import _extract_provider, _strip_provider, _extract_limit, _strip_limit
+from runner import (
+    _extract_episode_bounds,
+    _extract_provider,
+    _strip_episode_bounds,
+    _strip_provider,
+    _extract_limit,
+    _strip_limit,
+)
 
 
 def test_extract_provider_defaults_to_claude_when_absent():
@@ -74,3 +81,23 @@ def test_strip_limit_removes_flag_and_value_preserving_order():
 def test_strip_limit_returns_list_unchanged_when_absent():
     args = ["reprocess", "--channel", "abc"]
     assert _strip_limit(args) == args
+
+
+def test_extract_episode_bounds_finds_inclusive_range():
+    assert _extract_episode_bounds(
+        ["reprocess", "--min-episode", "634", "--max-episode", "679"]
+    ) == (634, 679)
+
+
+def test_extract_episode_bounds_rejects_reversed_range():
+    with pytest.raises(SystemExit) as exc_info:
+        _extract_episode_bounds(
+            ["reprocess", "--min-episode", "679", "--max-episode", "634"]
+        )
+    assert exc_info.value.code != 0
+
+
+def test_strip_episode_bounds_removes_flags_and_values():
+    assert _strip_episode_bounds(
+        ["reprocess", "--channel", "abc", "--min-episode", "634", "--max-episode", "679"]
+    ) == ["reprocess", "--channel", "abc"]

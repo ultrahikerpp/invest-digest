@@ -58,3 +58,33 @@ def test_shorts_cards_use_same_amber_palette_as_square_cards():
     # card_generator.py — Shorts cards rendered purple while square cards went amber.
     for attr in ("C_VIBE1", "C_VIBE2", "C_VIBE3", "C_BG", "C_BG2"):
         assert getattr(card_generator_shorts, attr) == getattr(card_generator, attr), attr
+
+
+def test_shorts_generation_removes_stale_cards_from_previous_layout(monkeypatch, tmp_path):
+    md = tmp_path / "summary.md"
+    md.write_text(
+        "---\ntitle: EP1\n---\n\n"
+        "## 本集主題總覽\n\n- 新版重點\n",
+        encoding="utf-8",
+    )
+    output_dir = tmp_path / "cards"
+    output_dir.mkdir()
+    (output_dir / "card_07_cta.png").write_bytes(b"old purple CTA")
+    (output_dir / "card_08.png").write_bytes(b"old section")
+
+    monkeypatch.setattr(
+        "backend.ai_provider.generate_card_points_shorts",
+        lambda sections, provider="claude": ({"本集主題總覽": ["新版重點"]}, "新版 Hook"),
+    )
+
+    cards = card_generator_shorts.generate_cards_shorts(
+        md, "Gooaye 股癌", output_dir, "#投資", provider="chatgpt"
+    )
+
+    assert [p.name for p in cards] == [
+        "card_00_hook.png",
+        "card_01.png",
+        "card_02_cta.png",
+    ]
+    assert not (output_dir / "card_07_cta.png").exists()
+    assert not (output_dir / "card_08.png").exists()

@@ -375,6 +375,11 @@ def generate_cards_shorts(
     else:
         all_points, hook_text = generate_card_points_shorts(sections_dict, provider=provider)
 
+    # A regenerated summary can have a different number of sections. Remove
+    # old generated cards first so stale CTA/section files are not published.
+    for stale_path in output_dir.glob("card_*.png"):
+        stale_path.unlink()
+
     cards: list[Path] = []
 
     # 1. Hook card (card_00)

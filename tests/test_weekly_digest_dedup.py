@@ -1,14 +1,17 @@
-"""Regression coverage for auto-sending the weekly digest email from cmd_weekly.
+"""Regression coverage for when the weekly digest email gets sent.
 
-Context: cmd_weekly() (synthesizes the cross-channel weekly article) and
-cmd_deploy() never called cmd_weekly_digest() (sends the subscriber email) —
-they were fully decoupled, so subscribers only got emailed via a separate
-Sunday 17:30 cron. cmd_weekly() now triggers the send itself, guarded by a
-per-ISO-week marker so re-running `weekly` (or the unrelated Sunday cron)
-within the same week never double-sends.
+Context: cmd_weekly() (synthesizes the cross-channel weekly article) used to
+call cmd_weekly_digest() (sends the subscriber email) immediately, so
+subscribers got emailed before the user had a chance to review the freshly
+generated article. The send is now tied to cmd_deploy() instead — it fires
+only once this ISO week's digest article file exists (i.e. after `weekly`
+has run and the user has deployed), guarded by a per-ISO-week marker so
+re-running `deploy` (or the unrelated Sunday cron) within the same week
+never double-sends.
 """
 import sqlite3
 import sys
+import types
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -45,7 +48,7 @@ def _make_db(tmp_path: Path) -> Path:
     return db_path
 
 
-def test_cmd_weekly_triggers_weekly_digest_send(tmp_path, monkeypatch):
+def test_cmd_weekly_does_not_trigger_weekly_digest_send(tmp_path, monkeypatch):
     summaries_dir = tmp_path / "summaries" / "chan"
     summaries_dir.mkdir(parents=True)
     (summaries_dir / "ep1.md").write_text(
@@ -63,7 +66,77 @@ def test_cmd_weekly_triggers_weekly_digest_send(tmp_path, monkeypatch):
 
     runner.cmd_weekly(provider="claude")
 
-    assert calls == [True], "cmd_weekly must trigger cmd_weekly_digest() so subscribers get emailed"
+    assert calls == [], "cmd_weekly must not send the email itself — that now waits for cmd_deploy()"
+
+
+def test_cmd_deploy_sends_weekly_digest_when_article_exists(tmp_path, monkeypatch):
+    weekly_dir = tmp_path / "weekly"
+    weekly_dir.mkdir()
+    iso_year, iso_week, _ = datetime.now().isocalendar()
+    (weekly_dir / f"{iso_year}-{iso_week:02d}.md").write_text("digest", encoding="utf-8")
+
+    monkeypatch.setattr(runner, "WEEKLY_DIR", weekly_dir)
+    monkeypatch.setattr(runner, "cmd_build", lambda: None)
+    monkeypatch.setattr(
+        runner, "subprocess",
+        types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0)),
+    )
+
+    calls = []
+    monkeypatch.setattr(runner, "cmd_weekly_digest", lambda: calls.append(True))
+
+    try:
+        runner.cmd_deploy()
+    except SystemExit as e:
+        assert e.code == 0
+
+    assert calls == [True], "cmd_deploy must send once this week's reviewed digest article exists"
+
+
+def test_cmd_deploy_skips_weekly_digest_when_no_article_this_week(tmp_path, monkeypatch):
+    weekly_dir = tmp_path / "weekly"
+    weekly_dir.mkdir()
+
+    monkeypatch.setattr(runner, "WEEKLY_DIR", weekly_dir)
+    monkeypatch.setattr(runner, "cmd_build", lambda: None)
+    monkeypatch.setattr(
+        runner, "subprocess",
+        types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0)),
+    )
+
+    calls = []
+    monkeypatch.setattr(runner, "cmd_weekly_digest", lambda: calls.append(True))
+
+    try:
+        runner.cmd_deploy()
+    except SystemExit as e:
+        assert e.code == 0
+
+    assert calls == [], "cmd_deploy must not send when `weekly` hasn't generated this week's article"
+
+
+def test_cmd_deploy_skips_weekly_digest_when_deploy_script_fails(tmp_path, monkeypatch):
+    weekly_dir = tmp_path / "weekly"
+    weekly_dir.mkdir()
+    iso_year, iso_week, _ = datetime.now().isocalendar()
+    (weekly_dir / f"{iso_year}-{iso_week:02d}.md").write_text("digest", encoding="utf-8")
+
+    monkeypatch.setattr(runner, "WEEKLY_DIR", weekly_dir)
+    monkeypatch.setattr(runner, "cmd_build", lambda: None)
+    monkeypatch.setattr(
+        runner, "subprocess",
+        types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=1)),
+    )
+
+    calls = []
+    monkeypatch.setattr(runner, "cmd_weekly_digest", lambda: calls.append(True))
+
+    try:
+        runner.cmd_deploy()
+    except SystemExit as e:
+        assert e.code == 1
+
+    assert calls == [], "cmd_deploy must not email subscribers when the deploy itself failed"
 
 
 def test_cmd_weekly_digest_marks_sent_and_skips_on_rerun(tmp_path, monkeypatch):

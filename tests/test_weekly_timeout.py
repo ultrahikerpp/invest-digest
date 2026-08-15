@@ -29,9 +29,6 @@ def test_cmd_weekly_uses_extended_timeout(tmp_path, monkeypatch):
     weekly_dir = tmp_path / "weekly"
     monkeypatch.setattr(runner, "SUMMARIES_DIR", summaries_dir.parent)
     monkeypatch.setattr(runner, "WEEKLY_DIR", weekly_dir)
-    # cmd_weekly() triggers cmd_weekly_digest() (real DB/Supabase/SMTP) at the
-    # end — stub it out so this test stays scoped to the timeout behavior.
-    monkeypatch.setattr(runner, "cmd_weekly_digest", lambda: None)
 
     captured = {}
 

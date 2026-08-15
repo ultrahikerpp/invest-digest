@@ -25,7 +25,7 @@ python3 runner.py reprocess --channel <channel_id> --limit <n>  # cap episodes r
 # Regenerate the static site (docs/)
 python3 runner.py build
 
-# Build + commit + push to GitHub Pages
+# Build + commit + push to GitHub Pages; also emails subscribers if this ISO week's weekly digest article exists and hasn't been sent yet
 python3 runner.py deploy
 
 # Generate PNG cards for a video
@@ -46,7 +46,7 @@ python3 runner.py refresh-earnings
 python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
 python3 runner.py refresh-earnings --force   # force full refresh for all tickers
 
-# Synthesize cross-channel weekly digest from past 7 days, then auto-email subscribers (once per ISO week, idempotent)
+# Synthesize cross-channel weekly digest from past 7 days and save for review (does NOT email — run `deploy` once it's reviewed)
 python3 runner.py weekly
 python3 runner.py weekly-digest   # send the subscriber email directly, without regenerating the digest article
 
