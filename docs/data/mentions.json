@@ -11,8 +11,8 @@
     {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "count": 162,
-      "bullish": 98,
+      "count": 163,
+      "bullish": 99,
       "bearish": 5,
       "neutral": 59
     },
@@ -59,10 +59,10 @@
     {
       "name": "美光",
       "ticker": "MU",
-      "count": 96,
+      "count": 97,
       "bullish": 47,
       "bearish": 10,
-      "neutral": 39
+      "neutral": 40
     },
     {
       "name": "微軟",
@@ -75,10 +75,10 @@
     {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 90,
+      "count": 91,
       "bullish": 36,
       "bearish": 3,
-      "neutral": 51
+      "neutral": 52
     },
     {
       "name": "OpenAI",
@@ -91,10 +91,18 @@
     {
       "name": "三星",
       "ticker": "005930.KS",
-      "count": 71,
+      "count": 72,
       "bullish": 22,
       "bearish": 4,
-      "neutral": 45
+      "neutral": 46
+    },
+    {
+      "name": "SpaceX",
+      "ticker": "SPCX",
+      "count": 72,
+      "bullish": 31,
+      "bearish": 11,
+      "neutral": 30
     },
     {
       "name": "Anthropic",
@@ -103,14 +111,6 @@
       "bullish": 25,
       "bearish": 5,
       "neutral": 41
-    },
-    {
-      "name": "SpaceX",
-      "ticker": "SPCX",
-      "count": 70,
-      "bullish": 30,
-      "bearish": 11,
-      "neutral": 29
     },
     {
       "name": "特斯拉",
@@ -131,18 +131,18 @@
     {
       "name": "SK海力士",
       "ticker": "SKHY",
-      "count": 62,
+      "count": 63,
       "bullish": 27,
       "bearish": 5,
-      "neutral": 30
+      "neutral": 31
     },
     {
       "name": "蘋果",
       "ticker": "AAPL",
-      "count": 61,
+      "count": 62,
       "bullish": 15,
       "bearish": 9,
-      "neutral": 37
+      "neutral": 38
     },
     {
       "name": "Amazon",
@@ -171,10 +171,10 @@
     {
       "name": "亞馬遜",
       "ticker": "AMZN",
-      "count": 53,
+      "count": 54,
       "bullish": 21,
       "bearish": 0,
-      "neutral": 32
+      "neutral": 33
     },
     {
       "name": "台股加權指數",
@@ -235,10 +235,10 @@
     {
       "name": "Alphabet",
       "ticker": "GOOGL",
-      "count": 34,
+      "count": 35,
       "bullish": 16,
       "bearish": 2,
-      "neutral": 16
+      "neutral": 17
     },
     {
       "name": "比特幣",
@@ -321,6 +321,14 @@
       "neutral": 21
     },
     {
+      "name": "CoreWeave",
+      "ticker": "CRWV",
+      "count": 24,
+      "bullish": 12,
+      "bearish": 4,
+      "neutral": 8
+    },
+    {
       "name": "Sandisk",
       "ticker": "SNDK",
       "count": 23,
@@ -329,18 +337,10 @@
       "neutral": 8
     },
     {
-      "name": "CoreWeave",
-      "ticker": "CRWV",
-      "count": 23,
-      "bullish": 11,
-      "bearish": 4,
-      "neutral": 8
-    },
-    {
       "name": "Nvidia",
       "ticker": "NVDA",
-      "count": 22,
-      "bullish": 11,
+      "count": 23,
+      "bullish": 12,
       "bearish": 1,
       "neutral": 10
     },
@@ -441,6 +441,22 @@
       "neutral": 6
     },
     {
+      "name": "SanDisk",
+      "ticker": "SNDK",
+      "count": 16,
+      "bullish": 6,
+      "bearish": 3,
+      "neutral": 7
+    },
+    {
+      "name": "Nebius",
+      "ticker": "NBIS",
+      "count": 16,
+      "bullish": 9,
+      "bearish": 2,
+      "neutral": 5
+    },
+    {
       "name": "IGV",
       "ticker": "IGV",
       "count": 16,
@@ -465,27 +481,11 @@
       "neutral": 8
     },
     {
-      "name": "SanDisk",
-      "ticker": "SNDK",
-      "count": 15,
-      "bullish": 5,
-      "bearish": 3,
-      "neutral": 7
-    },
-    {
       "name": "Salesforce",
       "ticker": "CRM",
       "count": 15,
       "bullish": 3,
       "bearish": 7,
-      "neutral": 5
-    },
-    {
-      "name": "Nebius",
-      "ticker": "NBIS",
-      "count": 15,
-      "bullish": 8,
-      "bearish": 2,
       "neutral": 5
     },
     {
@@ -1377,6 +1377,14 @@
       "neutral": 1
     },
     {
+      "name": "Cerebras",
+      "ticker": "CBRS",
+      "count": 4,
+      "bullish": 2,
+      "bearish": 1,
+      "neutral": 1
+    },
+    {
       "name": "Accenture",
       "ticker": "ACN",
       "count": 4,
@@ -1785,6 +1793,14 @@
       "neutral": 0
     },
     {
+      "name": "Goldman Sachs",
+      "ticker": "GS",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
       "name": "Figure AI",
       "ticker": null,
       "count": 3,
@@ -1807,14 +1823,6 @@
       "bullish": 3,
       "bearish": 0,
       "neutral": 0
-    },
-    {
-      "name": "Cerebras",
-      "ticker": "CBRS",
-      "count": 3,
-      "bullish": 1,
-      "bearish": 1,
-      "neutral": 1
     },
     {
       "name": "Berkshire Hathaway",
@@ -1919,6 +1927,14 @@
       "bullish": 1,
       "bearish": 1,
       "neutral": 0
+    },
+    {
+      "name": "鎧俠",
+      "ticker": null,
+      "count": 2,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 2
     },
     {
       "name": "道瓊工業",
@@ -2657,14 +2673,6 @@
       "neutral": 1
     },
     {
-      "name": "Goldman Sachs",
-      "ticker": "GS",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
       "name": "Flex",
       "ticker": "FLEX",
       "count": 2,
@@ -3047,14 +3055,6 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 0
-    },
-    {
-      "name": "鎧俠",
-      "ticker": null,
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
     },
     {
       "name": "銅",
@@ -7708,15 +7708,15 @@
   "industries": [
     {
       "name": "AI",
-      "count": 248
+      "count": 250
     },
     {
       "name": "半導體",
-      "count": 231
+      "count": 233
     },
     {
       "name": "美股",
-      "count": 159
+      "count": 160
     },
     {
       "name": "台股",
@@ -7724,7 +7724,7 @@
     },
     {
       "name": "科技",
-      "count": 70
+      "count": 71
     },
     {
       "name": "總體經濟",
@@ -10520,6 +10520,19 @@
         "納斯達克100",
         "費城半導體指數",
         "羅素2000"
+      ]
+    },
+    "PD_IMPvMBc0": {
+      "industries": [
+        "AI",
+        "半導體",
+        "科技"
+      ],
+      "mentions": [
+        "SpaceX",
+        "Cerebras",
+        "AMD",
+        "NVIDIA"
       ]
     },
     "PWsS8sN2syo": {
@@ -13376,6 +13389,28 @@
         "Discovery Loop"
       ]
     },
+    "kp-newsletter-55": {
+      "industries": [
+        "AI",
+        "半導體",
+        "美股"
+      ],
+      "mentions": [
+        "Nvidia",
+        "SpaceX",
+        "CoreWeave",
+        "Nebius",
+        "SanDisk",
+        "Alphabet",
+        "美光",
+        "SK海力士",
+        "三星",
+        "鎧俠",
+        "Goldman Sachs",
+        "蘋果",
+        "亞馬遜"
+      ]
+    },
     "kr6LjFp-IQU": {
       "industries": [
         "ETF",
@@ -15366,5 +15401,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-08-15T01:03:47"
+  "generated_at": "2026-08-15T14:19:49"
 }
