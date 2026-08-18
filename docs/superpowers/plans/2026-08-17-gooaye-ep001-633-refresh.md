@@ -27,7 +27,7 @@
 - The existing video discovery path uses the YouTube RSS/page-scrape “latest videos” flow, so it is not a historical archive enumerator.
 - The derived uploads playlist reports 687 items but the current extractor returns only its first 100 (EP589–EP688). It cannot be used alone for EP001–EP588.
 - A channel search for exact `EP001`, `EP500`, and `EP588` each returned one matching video; the manifest now has 48 unique episodes and 585 gaps after this bounded pilot.
-- The resumable scan completed: 528 unique video IDs, 105 searched gaps, and 0 duplicate episode numbers. EP001–EP003 and EP100–EP633 are mostly available; the report records the exact gaps.
+- The resumable scan completed: 528 unique YouTube video IDs, 105 searched gaps, and 0 duplicate episode numbers. The user confirmed those gaps belong to the early podcast-only era and are intentionally out of scope.
 - The project virtual environment already provides the `yt_dlp` Python module and `pytubefix`; no package installation is needed for the manifest pilot. The Homebrew `yt-dlp` formula is available but not installed.
 - Therefore the first deliverable is an episode manifest and transcript-coverage report. The production estimate becomes firm only after this gate identifies which of EP001–EP633 still exist and have usable audio or captions.
 
@@ -38,7 +38,7 @@ The nominal range is 633 episode numbers. The actual work count may be lower if 
 - Archive enumeration and manifest validation: approximately 1–4 hours, depending on the approved archive source.
 - Transcript acquisition: approximately 1–3 hours when captions are available; Whisper fallback can add roughly 3–8 minutes per episode and is the largest uncertainty.
 - ChatGPT summary plus Shorts-card generation: approximately 4–8 minutes per episode at the current observed browser pace, excluding deployment.
-- For 633 reachable episodes, AI/card runtime is approximately 42–84 hours. Including transcript fallback, validation, cooldowns, and grouped deployments, plan for roughly 50–120 hours of total machine time.
+- For the 528 reachable YouTube episodes, AI/card runtime is approximately 35–70 hours. Including transcript fallback, validation, cooldowns, and grouped deployments, plan for roughly 45–100 hours of total machine time.
 - Safe wall-clock schedule: 12–24 episodes per day, or roughly 4–8 weeks. A more aggressive 24–36 episodes per day may finish in roughly 3–4 weeks but increases ChatGPT rate-limit risk.
 
 The estimate should be recalculated after a four-episode archive pilot measures caption coverage, average transcript length, and ChatGPT response time.
@@ -97,9 +97,9 @@ Its command will be:
 - [ ] Normalize episode numbers to integers and reject duplicate episode numbers or duplicate video IDs.
 - [ ] Match titles with `EP001`, `EP1`, and equivalent zero-padded forms while excluding videos without an episode number.
 - [x] Produce a report listing all currently missing episodes; exact search results that return no video remain explicit gaps.
-- [x] Complete the resumable search scan and produce the explicit unavailable-episode list; no `reprocess` was invoked against the incomplete range.
+- [x] Complete the resumable search scan and produce the explicit podcast-only exclusion list; no `reprocess` was invoked for excluded episodes.
 
-**Gate:** The manifest must identify every reachable EP001–EP633 video ID and explicitly list every unavailable episode.
+**Gate:** The manifest must identify every in-scope YouTube video ID and explicitly list the early podcast-only episodes excluded from processing.
 
 ### Task 2: Import transcript-ready episode rows
 
@@ -165,7 +165,7 @@ The current selector processes the bounded range in descending episode order, so
 
 ## Current execution state (2026-08-17)
 
-- Manifest discovery is complete: 528 available mappings, 105 explicit unavailable gaps, and no duplicate episode numbers.
+- Manifest discovery is complete: 528 in-scope YouTube mappings, 105 intentionally excluded podcast-only gaps, and no duplicate episode numbers.
 - `runner.py --no-deploy` and the manifest/importer regression tests are in place; full test suite: 110 passed.
 - No EP001–EP633 summary, Shorts card, email, or deployment work has started.
 - The next gate is resolving YouTube bot protection / transcript acquisition for the pilot. Do not resume historical generation until the pilot has usable transcript inputs and the user confirms the external access issue is resolved.
