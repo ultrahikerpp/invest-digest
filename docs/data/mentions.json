@@ -27,10 +27,10 @@
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 149,
+      "count": 150,
       "bullish": 108,
       "bearish": 1,
-      "neutral": 40
+      "neutral": 41
     },
     {
       "name": "S&P 500",
@@ -43,32 +43,32 @@
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 128,
+      "count": 129,
       "bullish": 33,
       "bearish": 15,
-      "neutral": 80
+      "neutral": 81
     },
     {
       "name": "Google",
       "ticker": "GOOGL",
-      "count": 102,
-      "bullish": 33,
+      "count": 103,
+      "bullish": 34,
       "bearish": 4,
       "neutral": 65
     },
     {
       "name": "美光",
       "ticker": "MU",
-      "count": 101,
+      "count": 102,
       "bullish": 50,
-      "bearish": 11,
+      "bearish": 12,
       "neutral": 40
     },
     {
       "name": "AMD",
       "ticker": "AMD",
-      "count": 95,
-      "bullish": 37,
+      "count": 96,
+      "bullish": 38,
       "bearish": 3,
       "neutral": 55
     },
@@ -147,10 +147,18 @@
     {
       "name": "Amazon",
       "ticker": "AMZN",
-      "count": 61,
+      "count": 62,
       "bullish": 19,
       "bearish": 2,
-      "neutral": 40
+      "neutral": 41
+    },
+    {
+      "name": "博通",
+      "ticker": "AVGO",
+      "count": 57,
+      "bullish": 33,
+      "bearish": 3,
+      "neutral": 21
     },
     {
       "name": "羅素2000",
@@ -159,14 +167,6 @@
       "bullish": 12,
       "bearish": 14,
       "neutral": 30
-    },
-    {
-      "name": "博通",
-      "ticker": "AVGO",
-      "count": 56,
-      "bullish": 33,
-      "bearish": 2,
-      "neutral": 21
     },
     {
       "name": "亞馬遜",
@@ -187,8 +187,8 @@
     {
       "name": "聯發科",
       "ticker": "2454",
-      "count": 43,
-      "bullish": 18,
+      "count": 44,
+      "bullish": 19,
       "bearish": 0,
       "neutral": 25
     },
@@ -203,10 +203,10 @@
     {
       "name": "Alphabet",
       "ticker": "GOOGL",
-      "count": 39,
+      "count": 40,
       "bullish": 16,
       "bearish": 3,
-      "neutral": 20
+      "neutral": 21
     },
     {
       "name": "Apple",
@@ -393,6 +393,14 @@
       "neutral": 11
     },
     {
+      "name": "黃金",
+      "ticker": "GLD",
+      "count": 18,
+      "bullish": 10,
+      "bearish": 2,
+      "neutral": 6
+    },
+    {
       "name": "阿里巴巴",
       "ticker": "BABA",
       "count": 18,
@@ -425,14 +433,6 @@
       "neutral": 7
     },
     {
-      "name": "黃金",
-      "ticker": "GLD",
-      "count": 17,
-      "bullish": 9,
-      "bearish": 2,
-      "neutral": 6
-    },
-    {
       "name": "那斯達克100",
       "ticker": "NDX",
       "count": 17,
@@ -447,6 +447,14 @@
       "bullish": 10,
       "bearish": 1,
       "neutral": 6
+    },
+    {
+      "name": "Oracle",
+      "ticker": "ORCL",
+      "count": 17,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 14
     },
     {
       "name": "那斯達克100指數",
@@ -471,14 +479,6 @@
       "bullish": 7,
       "bearish": 3,
       "neutral": 6
-    },
-    {
-      "name": "Oracle",
-      "ticker": "ORCL",
-      "count": 16,
-      "bullish": 1,
-      "bearish": 2,
-      "neutral": 13
     },
     {
       "name": "Nebius",
@@ -769,6 +769,14 @@
       "neutral": 4
     },
     {
+      "name": "台股大盤",
+      "ticker": "TWII",
+      "count": 8,
+      "bullish": 6,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "SOXX",
       "ticker": "SOXX",
       "count": 8,
@@ -863,14 +871,6 @@
       "bullish": 0,
       "bearish": 1,
       "neutral": 6
-    },
-    {
-      "name": "台股大盤",
-      "ticker": "TWII",
-      "count": 7,
-      "bullish": 5,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "台灣加權指數",
@@ -2097,6 +2097,14 @@
       "neutral": 0
     },
     {
+      "name": "莫德納",
+      "ticker": "MRNA",
+      "count": 2,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 2
+    },
+    {
       "name": "艾司摩爾",
       "ticker": "ASML",
       "count": 2,
@@ -2401,6 +2409,14 @@
       "neutral": 1
     },
     {
+      "name": "加密貨幣",
+      "ticker": null,
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "創意",
       "ticker": "3443",
       "count": 2,
@@ -2555,6 +2571,14 @@
     {
       "name": "The Trade Desk",
       "ticker": "TTD",
+      "count": 2,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "Tether",
+      "ticker": null,
       "count": 2,
       "bullish": 1,
       "bearish": 0,
@@ -3537,14 +3561,6 @@
       "neutral": 1
     },
     {
-      "name": "莫德納",
-      "ticker": "MRNA",
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "英業達",
       "ticker": "2356",
       "count": 1,
@@ -3665,6 +3681,14 @@
       "neutral": 0
     },
     {
+      "name": "美國股市",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "美國政府公債",
       "ticker": null,
       "count": 1,
@@ -3679,6 +3703,14 @@
       "bullish": 0,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "美國公債",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 1,
+      "neutral": 0
     },
     {
       "name": "美國REITs",
@@ -4209,6 +4241,14 @@
       "neutral": 1
     },
     {
+      "name": "桃園捷運綠線",
+      "ticker": null,
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
       "name": "核心PCE",
       "ticker": null,
       "count": 1,
@@ -4514,6 +4554,14 @@
     },
     {
       "name": "投資等級公司債",
+      "ticker": null,
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "房地產",
       "ticker": null,
       "count": 1,
       "bullish": 1,
@@ -5265,14 +5313,6 @@
       "neutral": 0
     },
     {
-      "name": "加密貨幣",
-      "ticker": null,
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "功率元件/Mosfet",
       "ticker": null,
       "count": 1,
@@ -5506,6 +5546,14 @@
     },
     {
       "name": "亞航",
+      "ticker": null,
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
+    },
+    {
+      "name": "亞昕森丰",
       "ticker": null,
       "count": 1,
       "bullish": 1,
@@ -5887,14 +5935,6 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 0
-    },
-    {
-      "name": "Tether",
-      "ticker": null,
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
     },
     {
       "name": "Tencent",
@@ -6567,6 +6607,14 @@
       "bullish": 0,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "Marvel",
+      "ticker": "MRVL",
+      "count": 1,
+      "bullish": 1,
+      "bearish": 0,
+      "neutral": 0
     },
     {
       "name": "MSCI新興市場ETF",
@@ -7836,19 +7884,19 @@
   "industries": [
     {
       "name": "AI",
-      "count": 259
+      "count": 260
     },
     {
       "name": "半導體",
-      "count": 242
+      "count": 243
     },
     {
       "name": "美股",
-      "count": 165
+      "count": 166
     },
     {
       "name": "台股",
-      "count": 88
+      "count": 90
     },
     {
       "name": "科技",
@@ -7856,7 +7904,7 @@
     },
     {
       "name": "總體經濟",
-      "count": 62
+      "count": 64
     },
     {
       "name": "能源",
@@ -7864,15 +7912,15 @@
     },
     {
       "name": "房地產",
-      "count": 8
+      "count": 9
+    },
+    {
+      "name": "加密貨幣",
+      "count": 7
     },
     {
       "name": "ETF",
       "count": 7
-    },
-    {
-      "name": "加密貨幣",
-      "count": 6
     },
     {
       "name": "金融",
@@ -8268,6 +8316,23 @@
         "羅素2000"
       ]
     },
+    "4DuhZyepr08": {
+      "industries": [
+        "半導體",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "Google",
+        "Marvel",
+        "博通",
+        "聯發科",
+        "AMD",
+        "台積電",
+        "美光",
+        "莫德納"
+      ]
+    },
     "4yjk1WBEA0Q": {
       "industries": [
         "美股",
@@ -8288,6 +8353,19 @@
         "費城半導體指數",
         "道瓊指數",
         "羅素2000指數"
+      ]
+    },
+    "57W7dKEMFeg": {
+      "industries": [
+        "台股",
+        "房地產",
+        "總體經濟"
+      ],
+      "mentions": [
+        "台股大盤",
+        "房地產",
+        "桃園捷運綠線",
+        "亞昕森丰"
       ]
     },
     "5DV8yGkzCH8": {
@@ -13778,6 +13856,24 @@
         "亞馬遜"
       ]
     },
+    "kp-newsletter-56": {
+      "industries": [
+        "美股",
+        "總體經濟",
+        "加密貨幣"
+      ],
+      "mentions": [
+        "美國公債",
+        "黃金",
+        "加密貨幣",
+        "Tether",
+        "Amazon",
+        "Alphabet",
+        "Meta",
+        "Oracle",
+        "美國股市"
+      ]
+    },
     "kr6LjFp-IQU": {
       "industries": [
         "ETF",
@@ -15821,5 +15917,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-08-21T15:09:28"
+  "generated_at": "2026-08-22T12:05:13"
 }
