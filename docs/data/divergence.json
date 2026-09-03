@@ -107,9 +107,9 @@
       "ticker": "^SOX",
       "total_mentions": 97,
       "channel_count": 3,
-      "total_bullish": 37,
+      "total_bullish": 35,
       "total_bearish": 39,
-      "total_neutral": 21,
+      "total_neutral": 23,
       "bull_channels": 1,
       "bear_channels": 1,
       "neutral_channels": 1,
@@ -120,18 +120,18 @@
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
           "mentions": 52,
-          "bullish": 18,
+          "bullish": 17,
           "bearish": 24,
-          "neutral": 10,
+          "neutral": 11,
           "stance": "看空"
         },
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
           "mentions": 43,
-          "bullish": 19,
+          "bullish": 18,
           "bearish": 14,
-          "neutral": 10,
+          "neutral": 11,
           "stance": "看多"
         },
         {
@@ -148,9 +148,9 @@
     {
       "name": "那斯達克",
       "ticker": "^IXIC",
-      "total_mentions": 32,
+      "total_mentions": 33,
       "channel_count": 3,
-      "total_bullish": 11,
+      "total_bullish": 12,
       "total_bearish": 11,
       "total_neutral": 10,
       "bull_channels": 1,
@@ -162,8 +162,8 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 25,
-          "bullish": 7,
+          "mentions": 26,
+          "bullish": 8,
           "bearish": 11,
           "neutral": 7,
           "stance": "看空"
@@ -232,6 +232,49 @@
       ]
     },
     {
+      "name": "納斯達克",
+      "ticker": "IXIC",
+      "total_mentions": 16,
+      "channel_count": 3,
+      "total_bullish": 7,
+      "total_bearish": 2,
+      "total_neutral": 7,
+      "bull_channels": 1,
+      "bear_channels": 1,
+      "neutral_channels": 1,
+      "consensus": "多空分歧",
+      "divergence_score": 0.667,
+      "channels": [
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 14,
+          "bullish": 7,
+          "bearish": 1,
+          "neutral": 6,
+          "stance": "看多"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 1,
+          "neutral": 0,
+          "stance": "看空"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "KOSPI",
       "ticker": "KOSPI",
       "total_mentions": 7,
@@ -275,13 +318,65 @@
       ]
     },
     {
+      "name": "台達電",
+      "ticker": "2308",
+      "total_mentions": 6,
+      "channel_count": 4,
+      "total_bullish": 2,
+      "total_bearish": 1,
+      "total_neutral": 3,
+      "bull_channels": 2,
+      "bear_channels": 1,
+      "neutral_channels": 1,
+      "consensus": "多空分歧",
+      "divergence_score": 0.5,
+      "channels": [
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 3,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 3,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 1,
+          "neutral": 0,
+          "stance": "看空"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        }
+      ]
+    },
+    {
       "name": "NVIDIA",
       "ticker": "NVDA",
       "total_mentions": 103,
       "channel_count": 4,
-      "total_bullish": 51,
+      "total_bullish": 50,
       "total_bearish": 5,
-      "total_neutral": 47,
+      "total_neutral": 48,
       "bull_channels": 3,
       "bear_channels": 0,
       "neutral_channels": 1,
@@ -292,9 +387,9 @@
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
           "mentions": 48,
-          "bullish": 23,
+          "bullish": 22,
           "bearish": 2,
-          "neutral": 23,
+          "neutral": 24,
           "stance": "中立"
         },
         {
@@ -331,9 +426,9 @@
       "ticker": "^DJI",
       "total_mentions": 89,
       "channel_count": 2,
-      "total_bullish": 34,
-      "total_bearish": 15,
-      "total_neutral": 40,
+      "total_bullish": 36,
+      "total_bearish": 14,
+      "total_neutral": 39,
       "bull_channels": 1,
       "bear_channels": 0,
       "neutral_channels": 1,
@@ -344,8 +439,8 @@
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
           "mentions": 51,
-          "bullish": 16,
-          "bearish": 11,
+          "bullish": 17,
+          "bearish": 10,
           "neutral": 24,
           "stance": "中立"
         },
@@ -353,9 +448,9 @@
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
           "mentions": 38,
-          "bullish": 18,
+          "bullish": 19,
           "bearish": 4,
-          "neutral": 16,
+          "neutral": 15,
           "stance": "看多"
         }
       ]
@@ -415,11 +510,11 @@
     {
       "name": "Meta",
       "ticker": "META",
-      "total_mentions": 76,
+      "total_mentions": 75,
       "channel_count": 4,
       "total_bullish": 17,
       "total_bearish": 11,
-      "total_neutral": 48,
+      "total_neutral": 47,
       "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 4,
@@ -429,10 +524,10 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 31,
+          "mentions": 30,
           "bullish": 8,
           "bearish": 5,
-          "neutral": 18,
+          "neutral": 17,
           "stance": "中立"
         },
         {
@@ -467,11 +562,11 @@
     {
       "name": "美光",
       "ticker": "MU",
-      "total_mentions": 73,
+      "total_mentions": 74,
       "channel_count": 4,
       "total_bullish": 33,
       "total_bearish": 10,
-      "total_neutral": 30,
+      "total_neutral": 31,
       "bull_channels": 1,
       "bear_channels": 0,
       "neutral_channels": 3,
@@ -481,10 +576,10 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 31,
+          "mentions": 32,
           "bullish": 15,
           "bearish": 5,
-          "neutral": 11,
+          "neutral": 12,
           "stance": "看多"
         },
         {
@@ -519,32 +614,32 @@
     {
       "name": "S&P 500",
       "ticker": "^GSPC",
-      "total_mentions": 66,
+      "total_mentions": 65,
       "channel_count": 3,
-      "total_bullish": 22,
-      "total_bearish": 11,
-      "total_neutral": 33,
-      "bull_channels": 0,
+      "total_bullish": 23,
+      "total_bearish": 10,
+      "total_neutral": 32,
+      "bull_channels": 1,
       "bear_channels": 0,
-      "neutral_channels": 3,
-      "consensus": "中立共識",
+      "neutral_channels": 2,
+      "consensus": "偏多",
       "divergence_score": 0.0,
       "channels": [
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
           "mentions": 40,
-          "bullish": 17,
+          "bullish": 18,
           "bearish": 5,
-          "neutral": 18,
-          "stance": "中立"
+          "neutral": 17,
+          "stance": "看多"
         },
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 25,
+          "mentions": 24,
           "bullish": 5,
-          "bearish": 6,
+          "bearish": 5,
           "neutral": 14,
           "stance": "中立"
         },
@@ -562,11 +657,11 @@
     {
       "name": "Google",
       "ticker": "GOOGL",
-      "total_mentions": 56,
+      "total_mentions": 57,
       "channel_count": 4,
       "total_bullish": 15,
       "total_bearish": 3,
-      "total_neutral": 38,
+      "total_neutral": 39,
       "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 4,
@@ -585,10 +680,10 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 19,
+          "mentions": 20,
           "bullish": 5,
           "bearish": 3,
-          "neutral": 11,
+          "neutral": 12,
           "stance": "中立"
         },
         {
@@ -614,11 +709,11 @@
     {
       "name": "SpaceX",
       "ticker": "SPCX",
-      "total_mentions": 55,
+      "total_mentions": 54,
       "channel_count": 4,
       "total_bullish": 17,
       "total_bearish": 11,
-      "total_neutral": 27,
+      "total_neutral": 26,
       "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 4,
@@ -628,10 +723,10 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 27,
+          "mentions": 26,
           "bullish": 6,
           "bearish": 6,
-          "neutral": 15,
+          "neutral": 14,
           "stance": "中立"
         },
         {
@@ -680,19 +775,19 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 32,
+          "mentions": 31,
           "bullish": 13,
           "bearish": 4,
-          "neutral": 15,
+          "neutral": 14,
           "stance": "中立"
         },
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 17,
+          "mentions": 18,
           "bullish": 7,
           "bearish": 0,
-          "neutral": 10,
+          "neutral": 11,
           "stance": "中立"
         },
         {
@@ -718,11 +813,11 @@
     {
       "name": "AMD",
       "ticker": "AMD",
-      "total_mentions": 51,
+      "total_mentions": 52,
       "channel_count": 4,
       "total_bullish": 20,
       "total_bearish": 1,
-      "total_neutral": 30,
+      "total_neutral": 31,
       "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 4,
@@ -732,10 +827,10 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 30,
+          "mentions": 31,
           "bullish": 12,
           "bearish": 1,
-          "neutral": 17,
+          "neutral": 18,
           "stance": "中立"
         },
         {
@@ -770,9 +865,9 @@
     {
       "name": "OpenAI",
       "ticker": null,
-      "total_mentions": 51,
+      "total_mentions": 50,
       "channel_count": 4,
-      "total_bullish": 1,
+      "total_bullish": 0,
       "total_bearish": 4,
       "total_neutral": 46,
       "bull_channels": 0,
@@ -785,18 +880,18 @@
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
           "mentions": 22,
-          "bullish": 1,
+          "bullish": 0,
           "bearish": 2,
-          "neutral": 19,
+          "neutral": 20,
           "stance": "中立"
         },
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 19,
+          "mentions": 18,
           "bullish": 0,
           "bearish": 2,
-          "neutral": 17,
+          "neutral": 16,
           "stance": "中立"
         },
         {
@@ -874,9 +969,9 @@
     {
       "name": "三星",
       "ticker": "005930",
-      "total_mentions": 47,
+      "total_mentions": 46,
       "channel_count": 4,
-      "total_bullish": 19,
+      "total_bullish": 18,
       "total_bearish": 0,
       "total_neutral": 28,
       "bull_channels": 0,
@@ -888,8 +983,8 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 21,
-          "bullish": 9,
+          "mentions": 20,
+          "bullish": 8,
           "bearish": 0,
           "neutral": 12,
           "stance": "中立"
@@ -926,9 +1021,9 @@
     {
       "name": "Anthropic",
       "ticker": null,
-      "total_mentions": 46,
+      "total_mentions": 45,
       "channel_count": 4,
-      "total_bullish": 8,
+      "total_bullish": 7,
       "total_bearish": 4,
       "total_neutral": 34,
       "bull_channels": 0,
@@ -941,18 +1036,18 @@
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
           "mentions": 19,
-          "bullish": 5,
+          "bullish": 4,
           "bearish": 3,
-          "neutral": 11,
+          "neutral": 12,
           "stance": "中立"
         },
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 18,
+          "mentions": 17,
           "bullish": 2,
           "bearish": 0,
-          "neutral": 16,
+          "neutral": 15,
           "stance": "中立"
         },
         {
@@ -978,11 +1073,11 @@
     {
       "name": "蘋果",
       "ticker": "AAPL",
-      "total_mentions": 39,
+      "total_mentions": 38,
       "channel_count": 4,
       "total_bullish": 7,
       "total_bearish": 9,
-      "total_neutral": 23,
+      "total_neutral": 22,
       "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 4,
@@ -992,10 +1087,10 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 23,
+          "mentions": 22,
           "bullish": 3,
           "bearish": 5,
-          "neutral": 15,
+          "neutral": 14,
           "stance": "中立"
         },
         {
@@ -1028,63 +1123,11 @@
       ]
     },
     {
-      "name": "特斯拉",
-      "ticker": "TSLA",
-      "total_mentions": 38,
-      "channel_count": 4,
-      "total_bullish": 3,
-      "total_bearish": 10,
-      "total_neutral": 25,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 4,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 22,
-          "bullish": 0,
-          "bearish": 7,
-          "neutral": 15,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 13,
-          "bullish": 2,
-          "bearish": 3,
-          "neutral": 8,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 2,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
       "name": "博通",
       "ticker": "AVGO",
-      "total_mentions": 35,
+      "total_mentions": 36,
       "channel_count": 4,
-      "total_bullish": 16,
+      "total_bullish": 17,
       "total_bearish": 3,
       "total_neutral": 16,
       "bull_channels": 2,
@@ -1105,8 +1148,8 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 11,
-          "bullish": 5,
+          "mentions": 12,
+          "bullish": 6,
           "bearish": 0,
           "neutral": 6,
           "stance": "中立"
@@ -1132,13 +1175,65 @@
       ]
     },
     {
+      "name": "特斯拉",
+      "ticker": "TSLA",
+      "total_mentions": 36,
+      "channel_count": 4,
+      "total_bullish": 3,
+      "total_bearish": 9,
+      "total_neutral": 24,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 4,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 21,
+          "bullish": 0,
+          "bearish": 7,
+          "neutral": 14,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 12,
+          "bullish": 2,
+          "bearish": 2,
+          "neutral": 8,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 2,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "亞馬遜",
       "ticker": "AMZN",
-      "total_mentions": 34,
+      "total_mentions": 33,
       "channel_count": 3,
       "total_bullish": 10,
       "total_bearish": 1,
-      "total_neutral": 23,
+      "total_neutral": 22,
       "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 3,
@@ -1148,10 +1243,10 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 20,
+          "mentions": 19,
           "bullish": 7,
           "bearish": 1,
-          "neutral": 12,
+          "neutral": 11,
           "stance": "中立"
         },
         {
@@ -1218,6 +1313,40 @@
       ]
     },
     {
+      "name": "台股加權指數",
+      "ticker": "TWII",
+      "total_mentions": 29,
+      "channel_count": 2,
+      "total_bullish": 13,
+      "total_bearish": 3,
+      "total_neutral": 13,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 27,
+          "bullish": 12,
+          "bearish": 3,
+          "neutral": 12,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 2,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "Intel",
       "ticker": "INTC",
       "total_mentions": 28,
@@ -1270,45 +1399,11 @@
       ]
     },
     {
-      "name": "台股加權指數",
-      "ticker": "TWII",
-      "total_mentions": 28,
-      "channel_count": 2,
-      "total_bullish": 12,
-      "total_bearish": 3,
-      "total_neutral": 13,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 26,
-          "bullish": 11,
-          "bearish": 3,
-          "neutral": 12,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 2,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
       "name": "羅素2000指數",
       "ticker": "^RUT",
-      "total_mentions": 27,
+      "total_mentions": 28,
       "channel_count": 2,
-      "total_bullish": 7,
+      "total_bullish": 8,
       "total_bearish": 11,
       "total_neutral": 9,
       "bull_channels": 0,
@@ -1320,8 +1415,8 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 26,
-          "bullish": 7,
+          "mentions": 27,
+          "bullish": 8,
           "bearish": 10,
           "neutral": 9,
           "stance": "看空"
@@ -1342,9 +1437,9 @@
       "ticker": "MRVL",
       "total_mentions": 25,
       "channel_count": 4,
-      "total_bullish": 11,
+      "total_bullish": 10,
       "total_bearish": 2,
-      "total_neutral": 12,
+      "total_neutral": 13,
       "bull_channels": 1,
       "bear_channels": 0,
       "neutral_channels": 3,
@@ -1355,9 +1450,9 @@
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
           "mentions": 15,
-          "bullish": 7,
+          "bullish": 6,
           "bearish": 1,
-          "neutral": 7,
+          "neutral": 8,
           "stance": "中立"
         },
         {
@@ -1591,11 +1686,11 @@
     {
       "name": "那斯達克100指數",
       "ticker": "^NDX",
-      "total_mentions": 21,
+      "total_mentions": 22,
       "channel_count": 2,
       "total_bullish": 5,
       "total_bearish": 9,
-      "total_neutral": 7,
+      "total_neutral": 8,
       "bull_channels": 0,
       "bear_channels": 1,
       "neutral_channels": 1,
@@ -1605,10 +1700,10 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 19,
+          "mentions": 20,
           "bullish": 4,
           "bearish": 9,
-          "neutral": 6,
+          "neutral": 7,
           "stance": "看空"
         },
         {
@@ -1619,40 +1714,6 @@
           "bearish": 0,
           "neutral": 1,
           "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "羅素2000",
-      "ticker": "^RUT",
-      "total_mentions": 20,
-      "channel_count": 2,
-      "total_bullish": 4,
-      "total_bearish": 6,
-      "total_neutral": 10,
-      "bull_channels": 1,
-      "bear_channels": 0,
-      "neutral_channels": 1,
-      "consensus": "偏多",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 18,
-          "bullish": 2,
-          "bearish": 6,
-          "neutral": 10,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 2,
-          "bullish": 2,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
         }
       ]
     },
@@ -1734,6 +1795,40 @@
       ]
     },
     {
+      "name": "羅素2000",
+      "ticker": "^RUT",
+      "total_mentions": 19,
+      "channel_count": 2,
+      "total_bullish": 4,
+      "total_bearish": 5,
+      "total_neutral": 10,
+      "bull_channels": 1,
+      "bear_channels": 0,
+      "neutral_channels": 1,
+      "consensus": "偏多",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 17,
+          "bullish": 2,
+          "bearish": 5,
+          "neutral": 10,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 2,
+          "bullish": 2,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        }
+      ]
+    },
+    {
       "name": "SanDisk",
       "ticker": "SNDK",
       "total_mentions": 17,
@@ -1773,49 +1868,6 @@
           "bearish": 0,
           "neutral": 0,
           "stance": "看多"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "納斯達克",
-      "ticker": "IXIC",
-      "total_mentions": 17,
-      "channel_count": 3,
-      "total_bullish": 7,
-      "total_bearish": 2,
-      "total_neutral": 8,
-      "bull_channels": 0,
-      "bear_channels": 1,
-      "neutral_channels": 2,
-      "consensus": "偏空",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 15,
-          "bullish": 7,
-          "bearish": 1,
-          "neutral": 7,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 1,
-          "neutral": 0,
-          "stance": "看空"
         },
         {
           "channel_id": "UC23rnlQU_qE3cec9x709peA",
@@ -2465,6 +2517,49 @@
       ]
     },
     {
+      "name": "Oracle",
+      "ticker": "ORCL",
+      "total_mentions": 10,
+      "channel_count": 3,
+      "total_bullish": 0,
+      "total_bearish": 1,
+      "total_neutral": 9,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 3,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 6,
+          "bullish": 0,
+          "bearish": 1,
+          "neutral": 5,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 3,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 3,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "Tesla",
       "ticker": "TSLA",
       "total_mentions": 10,
@@ -2542,49 +2637,6 @@
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "Oracle",
-      "ticker": "ORCL",
-      "total_mentions": 9,
-      "channel_count": 3,
-      "total_bullish": 0,
-      "total_bearish": 1,
-      "total_neutral": 8,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 3,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 5,
-          "bullish": 0,
-          "bearish": 1,
-          "neutral": 4,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 3,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 3,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
           "mentions": 1,
           "bullish": 0,
           "bearish": 0,
@@ -2696,40 +2748,6 @@
       ]
     },
     {
-      "name": "納斯達克100",
-      "ticker": "^NDX",
-      "total_mentions": 9,
-      "channel_count": 2,
-      "total_bullish": 2,
-      "total_bearish": 3,
-      "total_neutral": 4,
-      "bull_channels": 0,
-      "bear_channels": 1,
-      "neutral_channels": 1,
-      "consensus": "偏空",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 7,
-          "bullish": 2,
-          "bearish": 3,
-          "neutral": 2,
-          "stance": "看空"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 2,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 2,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
       "name": "DeepSeek",
       "ticker": null,
       "total_mentions": 8,
@@ -2837,6 +2855,40 @@
           "bearish": 2,
           "neutral": 0,
           "stance": "看多"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 2,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 2,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
+      "name": "納斯達克100",
+      "ticker": "^NDX",
+      "total_mentions": 8,
+      "channel_count": 2,
+      "total_bullish": 2,
+      "total_bearish": 2,
+      "total_neutral": 4,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 6,
+          "bullish": 2,
+          "bearish": 2,
+          "neutral": 2,
+          "stance": "中立"
         },
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
@@ -3065,24 +3117,24 @@
       ]
     },
     {
-      "name": "台達電",
-      "ticker": "2308",
+      "name": "戴爾",
+      "ticker": "DELL",
       "total_mentions": 7,
-      "channel_count": 4,
+      "channel_count": 2,
       "total_bullish": 3,
-      "total_bearish": 1,
-      "total_neutral": 3,
-      "bull_channels": 2,
+      "total_bearish": 0,
+      "total_neutral": 4,
+      "bull_channels": 0,
       "bear_channels": 0,
       "neutral_channels": 2,
-      "consensus": "偏多",
+      "consensus": "中立共識",
       "divergence_score": 0.0,
       "channels": [
         {
           "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
           "channel_name": "游庭皓的財經皓角",
-          "mentions": 3,
-          "bullish": 0,
+          "mentions": 6,
+          "bullish": 3,
           "bearish": 0,
           "neutral": 3,
           "stance": "中立"
@@ -3090,29 +3142,11 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
-          "mentions": 2,
-          "bullish": 1,
-          "bearish": 1,
-          "neutral": 0,
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
           "stance": "中立"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
         }
       ]
     },
@@ -3142,6 +3176,40 @@
         {
           "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
           "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
+      "name": "Dell",
+      "ticker": "DELL",
+      "total_mentions": 6,
+      "channel_count": 2,
+      "total_bullish": 2,
+      "total_bearish": 0,
+      "total_neutral": 4,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 5,
+          "bullish": 2,
+          "bearish": 0,
+          "neutral": 3,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
           "mentions": 1,
           "bullish": 0,
           "bearish": 0,
@@ -3237,6 +3305,49 @@
       ]
     },
     {
+      "name": "台股大盤",
+      "ticker": "TAIEX",
+      "total_mentions": 6,
+      "channel_count": 3,
+      "total_bullish": 4,
+      "total_bearish": 0,
+      "total_neutral": 2,
+      "bull_channels": 1,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "偏多",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 2,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 2,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 2,
+          "bullish": 2,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        }
+      ]
+    },
+    {
       "name": "安森美",
       "ticker": "ON",
       "total_mentions": 6,
@@ -3308,40 +3419,6 @@
           "mentions": 2,
           "bullish": 0,
           "bearish": 1,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "戴爾",
-      "ticker": "DELL",
-      "total_mentions": 6,
-      "channel_count": 2,
-      "total_bullish": 2,
-      "total_bearish": 0,
-      "total_neutral": 4,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 5,
-          "bullish": 2,
-          "bearish": 0,
-          "neutral": 3,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
           "neutral": 1,
           "stance": "中立"
         }
@@ -3425,6 +3502,49 @@
       ]
     },
     {
+      "name": "高通",
+      "ticker": "QCOM",
+      "total_mentions": 6,
+      "channel_count": 3,
+      "total_bullish": 2,
+      "total_bearish": 0,
+      "total_neutral": 4,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 3,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 4,
+          "bullish": 2,
+          "bearish": 0,
+          "neutral": 2,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "Broadcom",
       "ticker": "AVGO",
       "total_mentions": 5,
@@ -3454,40 +3574,6 @@
           "bullish": 0,
           "bearish": 0,
           "neutral": 2,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "Dell",
-      "ticker": "DELL",
-      "total_mentions": 5,
-      "channel_count": 2,
-      "total_bullish": 1,
-      "total_bearish": 0,
-      "total_neutral": 4,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 4,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 3,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
           "stance": "中立"
         }
       ]
@@ -3647,40 +3733,6 @@
       ]
     },
     {
-      "name": "Vertiv",
-      "ticker": "VRT",
-      "total_mentions": 5,
-      "channel_count": 2,
-      "total_bullish": 5,
-      "total_bearish": 0,
-      "total_neutral": 0,
-      "bull_channels": 2,
-      "bear_channels": 0,
-      "neutral_channels": 0,
-      "consensus": "看多共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 4,
-          "bullish": 4,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        }
-      ]
-    },
-    {
       "name": "元大台灣50",
       "ticker": "0050",
       "total_mentions": 5,
@@ -3754,49 +3806,6 @@
           "bearish": 0,
           "neutral": 1,
           "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "台股大盤",
-      "ticker": "TAIEX",
-      "total_mentions": 5,
-      "channel_count": 3,
-      "total_bullish": 4,
-      "total_bearish": 0,
-      "total_neutral": 1,
-      "bull_channels": 2,
-      "bear_channels": 0,
-      "neutral_channels": 1,
-      "consensus": "偏多",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 2,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 2,
-          "bullish": 2,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
         }
       ]
     },
@@ -4005,40 +4014,6 @@
       ]
     },
     {
-      "name": "高通",
-      "ticker": "QCOM",
-      "total_mentions": 5,
-      "channel_count": 2,
-      "total_bullish": 2,
-      "total_bearish": 0,
-      "total_neutral": 3,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 4,
-          "bullish": 2,
-          "bearish": 0,
-          "neutral": 2,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
       "name": "Bloom Energy",
       "ticker": "BE",
       "total_mentions": 4,
@@ -4184,6 +4159,40 @@
       ]
     },
     {
+      "name": "Vertiv",
+      "ticker": "VRT",
+      "total_mentions": 4,
+      "channel_count": 2,
+      "total_bullish": 4,
+      "total_bearish": 0,
+      "total_neutral": 0,
+      "bull_channels": 2,
+      "bear_channels": 0,
+      "neutral_channels": 0,
+      "consensus": "看多共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 3,
+          "bullish": 3,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        },
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        }
+      ]
+    },
+    {
       "name": "花旗",
       "ticker": "C",
       "total_mentions": 4,
@@ -4211,49 +4220,6 @@
           "channel_name": "游庭皓的財經皓角",
           "mentions": 2,
           "bullish": 1,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
-      "name": "英飛凌",
-      "ticker": "IFX",
-      "total_mentions": 4,
-      "channel_count": 3,
-      "total_bullish": 2,
-      "total_bearish": 0,
-      "total_neutral": 2,
-      "bull_channels": 1,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "偏多",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 2,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "fomo-newsletter",
-          "channel_name": "fomo-newsletter",
-          "mentions": 1,
-          "bullish": 1,
-          "bearish": 0,
-          "neutral": 0,
-          "stance": "看多"
-        },
-        {
-          "channel_id": "UC23rnlQU_qE3cec9x709peA",
-          "channel_name": "Gooaye 股癌",
-          "mentions": 1,
-          "bullish": 0,
           "bearish": 0,
           "neutral": 1,
           "stance": "中立"
@@ -4678,40 +4644,6 @@
       ]
     },
     {
-      "name": "VT",
-      "ticker": "VT",
-      "total_mentions": 3,
-      "channel_count": 2,
-      "total_bullish": 0,
-      "total_bearish": 0,
-      "total_neutral": 3,
-      "bull_channels": 0,
-      "bear_channels": 0,
-      "neutral_channels": 2,
-      "consensus": "中立共識",
-      "divergence_score": 0.0,
-      "channels": [
-        {
-          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
-          "channel_name": "游庭皓的財經皓角",
-          "mentions": 2,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 2,
-          "stance": "中立"
-        },
-        {
-          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
-          "channel_name": "JC 趨勢財經觀點",
-          "mentions": 1,
-          "bullish": 0,
-          "bearish": 0,
-          "neutral": 1,
-          "stance": "中立"
-        }
-      ]
-    },
-    {
       "name": "可口可樂",
       "ticker": "KO",
       "total_mentions": 3,
@@ -5014,6 +4946,49 @@
           "bearish": 0,
           "neutral": 0,
           "stance": "看多"
+        }
+      ]
+    },
+    {
+      "name": "英飛凌",
+      "ticker": "IFX",
+      "total_mentions": 3,
+      "channel_count": 3,
+      "total_bullish": 1,
+      "total_bearish": 0,
+      "total_neutral": 2,
+      "bull_channels": 1,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "偏多",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 1,
+          "bearish": 0,
+          "neutral": 0,
+          "stance": "看多"
+        },
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC23rnlQU_qE3cec9x709peA",
+          "channel_name": "Gooaye 股癌",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
         }
       ]
     },
@@ -5388,6 +5363,40 @@
           "bearish": 0,
           "neutral": 0,
           "stance": "看多"
+        }
+      ]
+    },
+    {
+      "name": "VT",
+      "ticker": "VT",
+      "total_mentions": 2,
+      "channel_count": 2,
+      "total_bullish": 0,
+      "total_bearish": 0,
+      "total_neutral": 2,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "UCdwPn2TO60Ec8QDIFRx50lQ",
+          "channel_name": "JC 趨勢財經觀點",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
         }
       ]
     },
@@ -6004,6 +6013,40 @@
       ]
     },
     {
+      "name": "福特",
+      "ticker": "F",
+      "total_mentions": 2,
+      "channel_count": 2,
+      "total_bullish": 0,
+      "total_bearish": 0,
+      "total_neutral": 2,
+      "bull_channels": 0,
+      "bear_channels": 0,
+      "neutral_channels": 2,
+      "consensus": "中立共識",
+      "divergence_score": 0.0,
+      "channels": [
+        {
+          "channel_id": "fomo-newsletter",
+          "channel_name": "fomo-newsletter",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        },
+        {
+          "channel_id": "UC0lbAQVpenvfA2QqzsRtL_g",
+          "channel_name": "游庭皓的財經皓角",
+          "mentions": 1,
+          "bullish": 0,
+          "bearish": 0,
+          "neutral": 1,
+          "stance": "中立"
+        }
+      ]
+    },
+    {
       "name": "美股",
       "ticker": null,
       "total_mentions": 2,
@@ -6242,5 +6285,5 @@
       ]
     }
   ],
-  "generated_at": "2026-09-02T15:23:50"
+  "generated_at": "2026-09-03T16:03:12"
 }
