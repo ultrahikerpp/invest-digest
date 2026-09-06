@@ -294,6 +294,8 @@ _SYMBOL_OVERRIDES = {
     "1347": "1347.HK",  # Hua Hong Semiconductor (Hong Kong)
     "2222": "2222.SR",  # Saudi Aramco (Tadawul)
     "P911": "P911.DE",  # Porsche AG (Frankfurt)
+    "BMW": "BMW.DE",    # BMW (Frankfurt)
+    "IFX": "IFX.DE",    # Infineon (Frankfurt)
 }
 
 # Traded as futures/spot, not equity — no PE/market cap, so skip rather than 404
