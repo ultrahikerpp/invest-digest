@@ -2095,7 +2095,10 @@ def cmd_deploy():
     if not deploy_script.exists():
         print(f"ERROR: deploy.sh not found", file=sys.stderr)
         sys.exit(1)
-    result = subprocess.run(["bash", str(deploy_script)], cwd=BASE_DIR)
+    result = subprocess.run(
+        ["bash", str(deploy_script)], cwd=BASE_DIR,
+        env={**os.environ, "SKIP_BUILD": "1"},
+    )
     if result.returncode != 0:
         sys.exit(result.returncode)
 

@@ -4,9 +4,15 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Step 1: Build static site
-echo "=== Building static site ==="
-python3 build_site.py
+# Step 1: Build static site (skipped when the caller already built it, e.g.
+# cmd_deploy() builds in-process first with the venv's Python before calling
+# this script)
+if [ "${SKIP_BUILD:-0}" != "1" ]; then
+  echo "=== Building static site ==="
+  PYTHON_BIN="$SCRIPT_DIR/venv/bin/python3"
+  [ -x "$PYTHON_BIN" ] || PYTHON_BIN="python3"
+  "$PYTHON_BIN" build_site.py
+fi
 
 # Step 2: Verify site was built
 if [ ! -f "docs/data/episodes.json" ]; then
