@@ -281,6 +281,37 @@ def _build_mentions_json(site_data_dir: Path, generated_at: str) -> None:
         print(f"  ⚠️ mentions.json 產生失敗：{e}")
 
 
+# Bare numeric/alphanumeric tickers that are actually non-Taiwan companies —
+# without this, e.g. 6762 resolves to an unrelated TPEx stock (6762.TWO)
+_SYMBOL_OVERRIDES = {
+    "6981": "6981.T",   # Murata (Japan, Tokyo)
+    "6762": "6762.T",   # TDK (Japan, Tokyo)
+    "9984": "9984.T",   # SoftBank Group (Japan, Tokyo)
+    "7012": "7012.T",   # Kawasaki Heavy Industries (Japan, Tokyo)
+    "6506": "6506.T",   # Yaskawa Electric (Japan, Tokyo)
+    "0700": "0700.HK",  # Tencent (Hong Kong) — 4-digit HK codes aren't caught by the \d{1,3} HK branch below
+    "0981": "0981.HK",  # SMIC (Hong Kong)
+    "2222": "2222.SR",  # Saudi Aramco (Tadawul)
+    "P911": "P911.DE",  # Porsche AG (Frankfurt)
+}
+
+# Traded as futures/spot, not equity — no PE/market cap, so skip rather than 404
+_COMMODITY_TICKERS = {"BRENT"}
+
+
+def _yf_symbols(ticker: str) -> list[str]:
+    """Map a raw ticker to candidate Yahoo Finance symbols to try, in order."""
+    if ticker in _SYMBOL_OVERRIDES:
+        return [_SYMBOL_OVERRIDES[ticker]]
+    if re.fullmatch(r"\d{4,5}", ticker):   # Taiwan (TWSE/TPEx)
+        return [f"{ticker}.TW", f"{ticker}.TWO"]
+    if re.fullmatch(r"\d{6}", ticker):     # Korea (KOSPI/KOSDAQ)
+        return [f"{ticker}.KS", f"{ticker}.KQ"]
+    if re.fullmatch(r"\d{1,3}", ticker):   # Hong Kong
+        return [f"{int(ticker):04d}.HK"]
+    return [ticker]
+
+
 def _enrich_us_fundamentals(entities: list[dict]) -> None:
     """Fetch Yahoo Finance fundamentals for US, Taiwan, Korea, and HK stock tickers (in-place)."""
     import time
@@ -293,29 +324,13 @@ def _enrich_us_fundamentals(entities: list[dict]) -> None:
         print("  (skipping fundamentals — yfinance not installed)")
         return
 
-    # Indices (e.g. TWII) have no PE/market cap — skip rather than 404
-    eligible = [e for e in entities if e.get("ticker") and not is_index(e["ticker"])]
+    # Indices (e.g. TWII, TPEX) and commodities (e.g. BRENT) have no PE/market cap — skip rather than 404
+    eligible = [
+        e for e in entities
+        if e.get("ticker") and not is_index(e["ticker"]) and e["ticker"].upper() not in _COMMODITY_TICKERS
+    ]
     if not eligible:
         return
-
-    # Bare 4-digit tickers that are actually Japanese (Tokyo), not Taiwan —
-    # without this, 6762 resolves to an unrelated TPEx stock (6762.TWO)
-    _SYMBOL_OVERRIDES = {
-        "6981": "6981.T",   # Murata (Japan, Tokyo)
-        "6762": "6762.T",   # TDK (Japan, Tokyo)
-    }
-
-    def _yf_symbols(ticker: str) -> list[str]:
-        """Map a raw ticker to candidate Yahoo Finance symbols to try, in order."""
-        if ticker in _SYMBOL_OVERRIDES:
-            return [_SYMBOL_OVERRIDES[ticker]]
-        if re.fullmatch(r"\d{4,5}", ticker):   # Taiwan (TWSE/TPEx)
-            return [f"{ticker}.TW", f"{ticker}.TWO"]
-        if re.fullmatch(r"\d{6}", ticker):     # Korea (KOSPI/KOSDAQ)
-            return [f"{ticker}.KS", f"{ticker}.KQ"]
-        if re.fullmatch(r"\d{1,3}", ticker):   # Hong Kong
-            return [f"{int(ticker):04d}.HK"]
-        return [ticker]
 
     # Deduplicate by ticker
     seen: dict[str, dict] = {}

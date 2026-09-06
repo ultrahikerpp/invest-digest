@@ -7,7 +7,7 @@ from datetime import datetime
 
 _INDEX_TICKERS = {
     'SPX', 'SOX', 'DJI', 'DJIA', 'RUT', 'IXIC', 'NDX', 'VIX',
-    'TWII', 'KOSPI', 'NASDAQ', 'NYSE',
+    'TWII', 'TPEX', 'KOSPI', 'NASDAQ', 'NYSE',
 }
 
 
