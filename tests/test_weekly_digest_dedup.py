@@ -189,3 +189,57 @@ def test_cmd_weekly_digest_sends_again_in_a_new_week(tmp_path, monkeypatch):
 
     runner.cmd_weekly_digest()
     assert len(sent_calls) == 2, "a new week must send even though a prior week's marker existed"
+
+
+def test_cmd_weekly_digest_skips_episode_with_deleted_summary_file(tmp_path, monkeypatch):
+    """A 'done' episode whose summary_path was deleted from disk (e.g. an
+    approved episode later removed by hand, per the ad-content cleanup
+    pattern) must not crash the digest — it should be skipped, not raise
+    FileNotFoundError out of _parse_summary_meta()."""
+    from backend import subscriber as sub
+
+    db_path = tmp_path / "subscriptions.db"
+    conn = sqlite3.connect(db_path)
+    conn.execute(
+        """
+        CREATE TABLE episodes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            channel_id TEXT NOT NULL,
+            video_id TEXT NOT NULL UNIQUE,
+            title TEXT,
+            published_at TEXT,
+            transcript_path TEXT,
+            summary_path TEXT,
+            processed INTEGER DEFAULT 0,
+            status TEXT DEFAULT 'pending_review'
+        )
+        """
+    )
+    conn.execute(
+        "INSERT INTO episodes (channel_id, video_id, title, published_at, summary_path, status) "
+        "VALUES ('chan1', 'vid1', 'Deleted Episode', ?, ?, 'done')",
+        (
+            datetime.now().strftime("%Y-%m-%d"),
+            str(tmp_path / "summaries" / "chan1" / "vid1.md"),  # never written to disk
+        ),
+    )
+    conn.commit()
+    conn.close()
+
+    monkeypatch.setattr(runner, "DB_PATH", db_path)
+    monkeypatch.setattr(runner, "WEEKLY_DIR", tmp_path / "weekly")
+
+    sent_calls = []
+    monkeypatch.setattr(
+        sub, "get_weekly_digest_subscribers",
+        lambda: [{"email": "a@example.com", "unsubscribe_token": "tok"}],
+    )
+    monkeypatch.setattr(
+        sub, "send_weekly_digest",
+        lambda email, token, episodes, week_label: sent_calls.append(episodes),
+    )
+
+    runner.cmd_weekly_digest()  # must not raise FileNotFoundError
+
+    assert sent_calls, "digest must still be sent even when one episode's summary file is missing"
+    assert sent_calls[0] == [], "the episode with a missing summary file must be skipped, not included"

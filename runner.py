@@ -1355,7 +1355,11 @@ def cmd_weekly_digest() -> None:
 
     episodes = []
     for r in rows:
-        meta = _parse_summary_meta(Path(r["summary_path"])) if r["summary_path"] else {}
+        summary_path = Path(r["summary_path"]) if r["summary_path"] else None
+        if summary_path and not summary_path.exists():
+            print(f"  ⚠️ 略過摘要檔案已不存在的集數：{r['video_id']}（{summary_path}）")
+            continue
+        meta = _parse_summary_meta(summary_path) if summary_path else {}
         episodes.append({
             "video_id": r["video_id"],
             "channel_id": r["channel_id"],
