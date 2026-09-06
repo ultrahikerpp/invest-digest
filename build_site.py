@@ -291,6 +291,7 @@ _SYMBOL_OVERRIDES = {
     "6506": "6506.T",   # Yaskawa Electric (Japan, Tokyo)
     "0700": "0700.HK",  # Tencent (Hong Kong) — 4-digit HK codes aren't caught by the \d{1,3} HK branch below
     "0981": "0981.HK",  # SMIC (Hong Kong)
+    "1347": "1347.HK",  # Hua Hong Semiconductor (Hong Kong)
     "2222": "2222.SR",  # Saudi Aramco (Tadawul)
     "P911": "P911.DE",  # Porsche AG (Frankfurt)
 }

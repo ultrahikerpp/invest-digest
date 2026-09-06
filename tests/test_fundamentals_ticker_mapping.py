@@ -27,6 +27,7 @@ def test_yf_symbols_resolves_known_non_taiwan_numeric_tickers():
     assert build_site._yf_symbols("0981") == ["0981.HK"]    # SMIC (Hong Kong)
     assert build_site._yf_symbols("2222") == ["2222.SR"]    # Saudi Aramco (Tadawul)
     assert build_site._yf_symbols("P911") == ["P911.DE"]    # Porsche AG (Frankfurt)
+    assert build_site._yf_symbols("1347") == ["1347.HK"]    # Hua Hong Semiconductor (Hong Kong)
 
 
 def test_yf_symbols_still_defaults_unmapped_4_digit_tickers_to_taiwan():
