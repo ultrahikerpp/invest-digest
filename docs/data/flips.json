@@ -1,6 +1,14 @@
 {
   "flips": [
     {
+      "name": "S&P 500",
+      "ticker": "^GSPC",
+      "before": "看多",
+      "after": "看空",
+      "before_count": 21,
+      "after_count": 20
+    },
+    {
       "name": "科磊",
       "ticker": "KLAC",
       "before": "看空",
@@ -9,21 +17,13 @@
       "after_count": 2
     },
     {
-      "name": "羅素2000指數",
-      "ticker": "^RUT",
-      "before": "看多",
-      "after": "看空",
-      "before_count": 10,
-      "after_count": 16
-    },
-    {
       "name": "費城半導體指數",
       "ticker": "^SOX",
       "before": "看空",
       "after": "看多",
-      "before_count": 36,
+      "before_count": 38,
       "after_count": 34
     }
   ],
-  "generated_at": "2026-09-10T15:58:09"
+  "generated_at": "2026-09-11T15:56:36"
 }
