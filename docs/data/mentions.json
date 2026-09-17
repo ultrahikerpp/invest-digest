@@ -3,10 +3,10 @@
     {
       "name": "費城半導體指數",
       "ticker": "^SOX",
-      "count": 204,
-      "bullish": 91,
+      "count": 206,
+      "bullish": 92,
       "bearish": 59,
-      "neutral": 54
+      "neutral": 55
     },
     {
       "name": "NVIDIA",
@@ -19,10 +19,10 @@
     {
       "name": "道瓊指數",
       "ticker": "^DJI",
-      "count": 180,
+      "count": 182,
       "bullish": 57,
-      "bearish": 41,
-      "neutral": 82
+      "bearish": 42,
+      "neutral": 83
     },
     {
       "name": "台積電",
@@ -35,18 +35,18 @@
     {
       "name": "S&P 500",
       "ticker": "^GSPC",
-      "count": 159,
+      "count": 160,
       "bullish": 59,
-      "bearish": 25,
+      "bearish": 26,
       "neutral": 75
     },
     {
       "name": "Meta",
       "ticker": "META",
-      "count": 140,
+      "count": 141,
       "bullish": 38,
       "bearish": 15,
-      "neutral": 87
+      "neutral": 88
     },
     {
       "name": "Google",
@@ -179,9 +179,9 @@
     {
       "name": "羅素2000",
       "ticker": "^RUT",
-      "count": 59,
+      "count": 60,
       "bullish": 12,
-      "bearish": 15,
+      "bearish": 16,
       "neutral": 32
     },
     {
@@ -249,6 +249,14 @@
       "neutral": 23
     },
     {
+      "name": "Coherent",
+      "ticker": "COHR",
+      "count": 38,
+      "bullish": 24,
+      "bearish": 1,
+      "neutral": 13
+    },
+    {
       "name": "納斯達克100",
       "ticker": "^NDX",
       "count": 37,
@@ -265,18 +273,10 @@
       "neutral": 15
     },
     {
-      "name": "Coherent",
-      "ticker": "COHR",
-      "count": 37,
-      "bullish": 23,
-      "bearish": 1,
-      "neutral": 13
-    },
-    {
       "name": "Lumentum",
       "ticker": "LITE",
-      "count": 36,
-      "bullish": 24,
+      "count": 37,
+      "bullish": 25,
       "bearish": 1,
       "neutral": 11
     },
@@ -297,20 +297,20 @@
       "neutral": 16
     },
     {
+      "name": "標普500指數",
+      "ticker": "SPX",
+      "count": 35,
+      "bullish": 10,
+      "bearish": 4,
+      "neutral": 21
+    },
+    {
       "name": "Tesla",
       "ticker": "TSLA",
       "count": 35,
       "bullish": 3,
       "bearish": 4,
       "neutral": 28
-    },
-    {
-      "name": "標普500指數",
-      "ticker": "SPX",
-      "count": 34,
-      "bullish": 10,
-      "bearish": 4,
-      "neutral": 20
     },
     {
       "name": "英特爾",
@@ -411,10 +411,10 @@
     {
       "name": "那斯達克100",
       "ticker": "NDX",
-      "count": 21,
+      "count": 22,
       "bullish": 6,
       "bearish": 3,
-      "neutral": 12
+      "neutral": 13
     },
     {
       "name": "道瓊",
@@ -921,6 +921,14 @@
       "neutral": 5
     },
     {
+      "name": "美國10年期公債",
+      "ticker": "TNX",
+      "count": 7,
+      "bullish": 1,
+      "bearish": 5,
+      "neutral": 1
+    },
+    {
       "name": "沃爾瑪",
       "ticker": "WMT",
       "count": 7,
@@ -982,14 +990,6 @@
       "count": 6,
       "bullish": 4,
       "bearish": 1,
-      "neutral": 1
-    },
-    {
-      "name": "美國10年期公債",
-      "ticker": "TNX",
-      "count": 6,
-      "bullish": 1,
-      "bearish": 4,
       "neutral": 1
     },
     {
@@ -2695,6 +2695,14 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "加權指數",
+      "ticker": null,
+      "count": 2,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 2
     },
     {
       "name": "加密貨幣",
@@ -5745,14 +5753,6 @@
       "neutral": 1
     },
     {
-      "name": "加權指數",
-      "ticker": null,
-      "count": 1,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 1
-    },
-    {
       "name": "加拿大關稅商品",
       "ticker": null,
       "count": 1,
@@ -8492,19 +8492,19 @@
   "industries": [
     {
       "name": "AI",
-      "count": 304
+      "count": 305
     },
     {
       "name": "半導體",
-      "count": 287
+      "count": 288
     },
     {
       "name": "美股",
-      "count": 195
+      "count": 196
     },
     {
       "name": "台股",
-      "count": 100
+      "count": 101
     },
     {
       "name": "科技",
@@ -8512,7 +8512,7 @@
     },
     {
       "name": "總體經濟",
-      "count": 74
+      "count": 76
     },
     {
       "name": "能源",
@@ -10393,6 +10393,22 @@
         "光通訊族群",
         "玻璃基板族群",
         "記憶體族群"
+      ]
+    },
+    "FRh6kX6Et38": {
+      "industries": [
+        "半導體",
+        "AI",
+        "總體經濟"
+      ],
+      "mentions": [
+        "費城半導體指數",
+        "S&P 500",
+        "那斯達克100",
+        "道瓊指數",
+        "羅素2000",
+        "Lumentum",
+        "Coherent"
       ]
     },
     "FX3Nlm_2Cno": {
@@ -12354,6 +12370,21 @@
         "元大高股息",
         "EWY",
         "比特幣"
+      ]
+    },
+    "TQ_oEc9vnB8": {
+      "industries": [
+        "總體經濟",
+        "台股",
+        "美股"
+      ],
+      "mentions": [
+        "道瓊指數",
+        "標普500指數",
+        "費城半導體指數",
+        "Meta",
+        "加權指數",
+        "美國10年期公債"
       ]
     },
     "Tf8EG2GgNsY": {
@@ -17753,5 +17784,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-09-16T15:33:27"
+  "generated_at": "2026-09-17T15:58:44"
 }
