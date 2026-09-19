@@ -11,26 +11,26 @@
     {
       "name": "NVIDIA",
       "ticker": "NVDA",
-      "count": 200,
+      "count": 201,
       "bullish": 121,
       "bearish": 6,
-      "neutral": 73
+      "neutral": 74
     },
     {
       "name": "道瓊指數",
       "ticker": "^DJI",
-      "count": 184,
+      "count": 185,
       "bullish": 59,
       "bearish": 42,
-      "neutral": 83
+      "neutral": 84
     },
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 173,
+      "count": 174,
       "bullish": 120,
       "bearish": 1,
-      "neutral": 52
+      "neutral": 53
     },
     {
       "name": "S&P 500",
@@ -65,20 +65,20 @@
       "neutral": 47
     },
     {
+      "name": "AMD",
+      "ticker": "AMD",
+      "count": 112,
+      "bullish": 43,
+      "bearish": 5,
+      "neutral": 64
+    },
+    {
       "name": "OpenAI",
       "ticker": null,
       "count": 111,
       "bullish": 17,
       "bearish": 8,
       "neutral": 86
-    },
-    {
-      "name": "AMD",
-      "ticker": "AMD",
-      "count": 111,
-      "bullish": 43,
-      "bearish": 5,
-      "neutral": 63
     },
     {
       "name": "微軟",
@@ -187,10 +187,10 @@
     {
       "name": "那斯達克",
       "ticker": "^IXIC",
-      "count": 56,
+      "count": 57,
       "bullish": 18,
       "bearish": 16,
-      "neutral": 22
+      "neutral": 23
     },
     {
       "name": "聯發科",
@@ -1681,6 +1681,14 @@
       "neutral": 2
     },
     {
+      "name": "標普 500",
+      "ticker": "SPX",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 3
+    },
+    {
       "name": "村田製作所",
       "ticker": "6981",
       "count": 3,
@@ -2535,14 +2543,6 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 0
-    },
-    {
-      "name": "標普 500",
-      "ticker": "SPX",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 2
     },
     {
       "name": "日經225",
@@ -4537,6 +4537,14 @@
       "neutral": 0
     },
     {
+      "name": "波蘭遊戲股",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
       "name": "波士頓科學",
       "ticker": "BSX",
       "count": 1,
@@ -5383,6 +5391,14 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 0
+    },
+    {
+      "name": "大盤",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
     },
     {
       "name": "士蘭微",
@@ -6439,6 +6455,14 @@
       "bullish": 1,
       "bearish": 0,
       "neutral": 0
+    },
+    {
+      "name": "Take-Two Interactive",
+      "ticker": "TTWO",
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
     },
     {
       "name": "TQQQ",
@@ -8540,19 +8564,19 @@
   "industries": [
     {
       "name": "AI",
-      "count": 306
+      "count": 308
     },
     {
       "name": "半導體",
-      "count": 290
+      "count": 291
     },
     {
       "name": "美股",
-      "count": 197
+      "count": 198
     },
     {
       "name": "台股",
-      "count": 103
+      "count": 104
     },
     {
       "name": "科技",
@@ -8560,7 +8584,7 @@
     },
     {
       "name": "總體經濟",
-      "count": 76
+      "count": 77
     },
     {
       "name": "能源",
@@ -8568,7 +8592,7 @@
     },
     {
       "name": "房地產",
-      "count": 13
+      "count": 14
     },
     {
       "name": "加密貨幣",
@@ -8782,6 +8806,21 @@
         "Google（Alphabet）",
         "Intel",
         "台積電"
+      ]
+    },
+    "0bYgYas0lc4": {
+      "industries": [
+        "半導體",
+        "AI",
+        "台股"
+      ],
+      "mentions": [
+        "台積電",
+        "AMD",
+        "NVIDIA",
+        "Take-Two Interactive",
+        "波蘭遊戲股",
+        "大盤"
       ]
     },
     "25viM0CYHVc": {
@@ -15556,6 +15595,18 @@
         "Snowflake"
       ]
     },
+    "kp-newsletter-60": {
+      "industries": [
+        "總體經濟",
+        "美股",
+        "AI"
+      ],
+      "mentions": [
+        "標普 500",
+        "道瓊指數",
+        "那斯達克"
+      ]
+    },
     "kr6LjFp-IQU": {
       "industries": [
         "ETF",
@@ -17869,6 +17920,12 @@
         "羅素2000"
       ]
     },
+    "Dz5m4cbTxls": {
+      "industries": [
+        "房地產"
+      ],
+      "mentions": []
+    },
     "T-H1bHYC2pw": {
       "industries": [
         "房地產"
@@ -17889,5 +17946,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-09-19T01:01:05"
+  "generated_at": "2026-09-19T15:44:07"
 }
