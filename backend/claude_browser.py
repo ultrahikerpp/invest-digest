@@ -160,6 +160,22 @@ def _generation_running(page) -> bool:
     )
 
 
+def _settle_after_reload(page) -> None:
+    """The page hard-reloaded under a poll (Playwright: "Execution context was
+    destroyed"). A reload after the submit landed is harmless — the
+    conversation lives at /chat/<id>. Anywhere else the prompt never landed
+    (e.g. /new, a login or Cloudflare page), so polling can never succeed:
+    fail now instead of burning the whole timeout.
+    """
+    page.wait_for_load_state("domcontentloaded")
+    if "/chat/" not in page.url:
+        raise RuntimeError(
+            f"送出提示詞後頁面被重新載入並停在 {page.url}，提示詞未送達。"
+            "請確認 claude.ai 登入狀態與 Cloudflare 驗證後重新執行"
+        )
+    print("\n  [claude] 頁面重新載入，繼續等待回應...", end="", flush=True)
+
+
 def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
     """Wait until generation finishes, then until the response text stops
     changing for 3 consecutive seconds.
@@ -173,12 +189,20 @@ def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
     stable_count = 0
     deadline = time.time() + timeout_secs
     while time.time() < deadline:
-        if _generation_running(page):
+        try:
+            if _generation_running(page):
+                prev = ""
+                stable_count = 0
+                time.sleep(2)
+                continue
+            current = _extract_last_response(page)
+        except Exception as e:
+            if "Execution context was destroyed" not in str(e):
+                raise
+            _settle_after_reload(page)
             prev = ""
             stable_count = 0
-            time.sleep(2)
             continue
-        current = _extract_last_response(page)
         if current and current == prev:
             stable_count += 1
             if stable_count >= 3:
