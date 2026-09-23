@@ -1,12 +1,12 @@
 {
   "flips": [
     {
-      "name": "S&P500指數",
-      "ticker": "SPX",
+      "name": "Sandisk",
+      "ticker": "SNDK",
       "before": "看空",
       "after": "看多",
       "before_count": 10,
-      "after_count": 13
+      "after_count": 3
     },
     {
       "name": "應用材料",
@@ -17,13 +17,21 @@
       "after_count": 4
     },
     {
+      "name": "羅素2000指數",
+      "ticker": "^RUT",
+      "before": "看多",
+      "after": "看空",
+      "before_count": 12,
+      "after_count": 14
+    },
+    {
       "name": "費城半導體指數",
       "ticker": "^SOX",
       "before": "看空",
       "after": "看多",
-      "before_count": 35,
-      "after_count": 36
+      "before_count": 33,
+      "after_count": 38
     }
   ],
-  "generated_at": "2026-09-22T14:43:57"
+  "generated_at": "2026-09-23T14:22:25"
 }
