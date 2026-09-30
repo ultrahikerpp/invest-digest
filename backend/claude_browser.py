@@ -128,8 +128,17 @@ def _extract_last_response(page) -> str:
             return children();
         }
 
-        // Primary: claude.ai uses div[class*="font-claude-response"] for response body
-        let els = document.querySelectorAll('div[class*="font-claude-response"]');
+        // Primary: each response is a [data-testid="assistant-message"] row.
+        // Its answer text lives in .standard-markdown; everything else in the
+        // row is UI chrome (sr-only heading, action toolbar, timestamp).
+        let els = document.querySelectorAll('[data-testid="assistant-message"]');
+        if (els.length) {
+            const md = els[els.length - 1].querySelectorAll('.standard-markdown');
+            return Array.from(md).map(nodeToMd).join('\\n\\n').trim();
+        }
+
+        // Legacy (pre 2026-09): div[class*="font-claude-response"] response body
+        els = document.querySelectorAll('div[class*="font-claude-response"]');
         if (els.length) {
             const last = els[els.length - 1];
             // Actual answer text lives in .standard-markdown containers;

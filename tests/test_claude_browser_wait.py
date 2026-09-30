@@ -112,3 +112,43 @@ def test_stable_response_does_not_swallow_other_playwright_errors(monkeypatch):
 
     with pytest.raises(PWError, match="has been closed"):
         claude_browser._wait_for_stable_response(Closed(running_polls=0), timeout_secs=60)
+
+
+# claude.ai DOM as of 2026-09-30: the response container lost its
+# font-claude-response class and is now [data-testid="assistant-message"];
+# the answer still lives in .standard-markdown.
+ASSISTANT_MESSAGE_HTML = """
+<div data-testid="user-message"><p>prompt</p></div>
+<div data-testid="assistant-message" data-is-streaming="false">
+  <h2 class="sr-only">Claude responded: 標題</h2>
+  <div><div class="prose"><div class="standard-markdown">
+    <h2>本集主題總覽</h2>
+    <p><strong>結論</strong>：完整筆記內容</p>
+    <ul><li>重點一</li></ul>
+  </div></div></div>
+  <div role="toolbar" data-testid="message-actions">
+    <button aria-label="Copy"></button><time>1 minute ago</time>
+  </div>
+</div>
+"""
+
+
+def test_extract_last_response_reads_assistant_message_container():
+    """Regression: extraction returned "" once claude.ai dropped the
+    font-claude-response class, so every summary failed after generating."""
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(channel="chrome", headless=True)
+        try:
+            page = browser.new_page()
+            page.set_content(ASSISTANT_MESSAGE_HTML)
+            result = claude_browser._extract_last_response(page)
+        finally:
+            browser.close()
+
+    assert result.startswith("## 本集主題總覽")
+    assert "**結論**：完整筆記內容" in result
+    assert "- 重點一" in result
+    assert "Claude responded" not in result
+    assert "minute ago" not in result
