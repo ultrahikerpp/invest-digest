@@ -5,6 +5,7 @@ channel_id: UCdwPn2TO60Ec8QDIFRx50lQ
 channel_name: JC 趨勢財經觀點
 published: 2026-09-29T01:07:51+00:00
 processed: 2026-09-30
+hashtags: #輝達 #AMD #AI硬體 #股票回購 #美債殖利率 #JC趨勢財經觀點
 ---
 
 # 2026/09/29(二) Nvidia 撒1500億美元回購、AMD買AI公司，競爭越來越大了？
