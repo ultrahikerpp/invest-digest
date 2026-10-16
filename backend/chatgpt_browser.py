@@ -59,15 +59,18 @@ def _get_chatgpt_cookies() -> list[dict]:
 
 # ── Browser helpers ───────────────────────────────────────
 #
-# NOTE: the selectors below (#prompt-textarea, [data-message-author-role],
-# [data-testid="stop-button"]) are best-guess pending live verification in
-# this task's Step 2. If the smoke test fails, open chatgpt.com in Chrome
-# DevTools, inspect the prompt input and the assistant message container,
-# and update these selectors accordingly.
+# Selectors verified against live chatgpt.com on 2026-10-16. The send/stop
+# aria-labels follow the UI language (English here); the turn-state attribute
+# does not, so it is the primary streaming signal.
+COMPOSER_SELECTOR = '[contenteditable="true"][data-composer-markdown]'
+SEND_BUTTON_SELECTOR = 'button[aria-label="Send"]'
+STOP_BUTTON_SELECTOR = 'button[aria-label="Stop"]'
+TURN_IN_PROGRESS_SELECTOR = '[data-talvt-turn-state="in_progress"]'
+ASSISTANT_MESSAGE_SELECTOR = '[data-markdown-text-style="assistant-message"]'
 
 def _extract_last_response(page) -> str:
     """Extract the last assistant message text from the ChatGPT page as markdown."""
-    return page.evaluate("""() => {
+    return page.evaluate("""(selector) => {
         function nodeToMd(node) {
             if (node.nodeType === 3) return node.textContent;
             const tag = (node.tagName || '').toLowerCase();
@@ -102,10 +105,10 @@ def _extract_last_response(page) -> str:
             return children();
         }
 
-        const els = document.querySelectorAll('[data-message-author-role="assistant"]');
+        const els = document.querySelectorAll(selector);
         if (els.length) return nodeToMd(els[els.length - 1]).trim();
         return '';
-    }""") or ""
+    }""", ASSISTANT_MESSAGE_SELECTOR) or ""
 
 
 def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
@@ -134,10 +137,42 @@ def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
 def _generation_running(page) -> bool:
     """True while ChatGPT still exposes a response-streaming indicator."""
     return bool(page.evaluate(
-        """() => !!document.querySelector('[data-testid="stop-button"]')
-            || !!document.querySelector('[data-is-streaming="true"]')
-            || !!document.querySelector('button[aria-label*="Stop"]')"""
+        f"""() => !!document.querySelector('{TURN_IN_PROGRESS_SELECTOR}')
+            || !!document.querySelector('{STOP_BUTTON_SELECTOR}')"""
     ))
+
+
+def _submit_prompt(page) -> None:
+    """Click Send; Enter only adds a newline when the prompt ends in a markdown list/table."""
+    if page.query_selector(SEND_BUTTON_SELECTOR) is not None:
+        page.click(SEND_BUTTON_SELECTOR)
+    else:
+        page.keyboard.press("Enter")
+
+
+def _session_user_email(page) -> str | None:
+    """Email of the logged-in user per chatgpt.com's own session endpoint, else None."""
+    return page.evaluate("""async () => {
+        try {
+            const r = await fetch('/api/auth/session', {credentials: 'include'});
+            const j = await r.json();
+            return (j && j.user && j.user.email) || null;
+        } catch (e) { return null; }
+    }""")
+
+
+def _composer_missing_error(page) -> RuntimeError:
+    """Report login expiry only when the session endpoint confirms there is no user."""
+    email = _session_user_email(page)
+    if not email:
+        return RuntimeError(
+            "ChatGPT 登入狀態已過期（/api/auth/session 沒有使用者）。"
+            "請在 Chrome 中重新登入 chatgpt.com，然後重新執行 runner.py"
+        )
+    return RuntimeError(
+        f"ChatGPT 已登入（{email}），但找不到輸入框 {COMPOSER_SELECTOR}；"
+        "chatgpt.com 介面可能已改版，請更新 backend/chatgpt_browser.py 的 selector"
+    )
 
 
 def chat(prompt: str, timeout_secs: int = 180) -> str:
@@ -195,7 +230,7 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
                     flush=True,
                 )
                 try:
-                    page.wait_for_selector('#prompt-textarea', timeout=120000)
+                    page.wait_for_selector(COMPOSER_SELECTOR, timeout=120000)
                     print("  [chatgpt] Cloudflare 驗證完成，繼續執行")
                 except PWTimeout:
                     raise RuntimeError(
@@ -205,15 +240,12 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             else:
                 print("  [chatgpt] 等待介面載入...", end="", flush=True)
                 try:
-                    page.wait_for_selector('#prompt-textarea', timeout=30000)
+                    page.wait_for_selector(COMPOSER_SELECTOR, timeout=30000)
                     print(" 完成")
                 except PWTimeout:
-                    raise RuntimeError(
-                        "ChatGPT 登入狀態已過期。請在 Chrome 中重新登入 chatgpt.com，"
-                        "然後重新執行 runner.py"
-                    )
+                    raise _composer_missing_error(page)
 
-            input_el = page.locator('#prompt-textarea').first
+            input_el = page.locator(COMPOSER_SELECTOR).first
             input_el.click()
 
             page.evaluate(
@@ -222,24 +254,17 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
             )
             time.sleep(0.4)
 
-            page.keyboard.press("Enter")
+            _submit_prompt(page)
             print("  [chatgpt] 傳送完成，等待回應...", end="", flush=True)
 
-            stop_appeared = False
+            # Wait for generation to start; _wait_for_stable_response waits for it to end.
             try:
                 page.wait_for_selector(
-                    '[data-testid="stop-button"]',
+                    f"{TURN_IN_PROGRESS_SELECTOR}, {STOP_BUTTON_SELECTOR}",
                     timeout=12000,
                 )
-                stop_appeared = True
-                page.wait_for_selector(
-                    '[data-testid="stop-button"]',
-                    state="hidden",
-                    timeout=timeout_secs * 1000,
-                )
             except PWTimeout:
-                if not stop_appeared:
-                    pass
+                pass
 
             time.sleep(1)
             response = _wait_for_stable_response(page, timeout_secs=timeout_secs)

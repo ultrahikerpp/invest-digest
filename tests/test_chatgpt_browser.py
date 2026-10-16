@@ -16,8 +16,9 @@ def test_generation_running_checks_chatgpt_streaming_markers():
     page = Page()
 
     assert chatgpt_browser._generation_running(page) is True
-    assert "stop-button" in page.script
-    assert "data-is-streaming" in page.script
+    # Verified on live chatgpt.com 2026-10-16: no data-testid stop button anymore.
+    assert 'data-talvt-turn-state="in_progress"' in page.script
+    assert 'button[aria-label="Stop"]' in page.script
 
 
 def test_wait_for_stable_response_ignores_text_while_generation_is_running(monkeypatch):
@@ -100,3 +101,73 @@ def test_generate_summary_accepts_complete_gooaye_response(monkeypatch):
 
     assert result.startswith(complete)
     assert "負責任 AI 聲明" in result
+
+
+class _FakePage:
+    """Minimal Playwright page stand-in for chatgpt_browser DOM helpers."""
+
+    def __init__(self, present=(), session=None):
+        self.present = set(present)
+        self.session = session
+        self.clicked = []
+        self.pressed = []
+        self.scripts = []
+        self.keyboard = self
+
+    def query_selector(self, selector):
+        return object() if selector in self.present else None
+
+    def click(self, selector):
+        self.clicked.append(selector)
+
+    def press(self, key):
+        self.pressed.append(key)
+
+    def evaluate(self, script, arg=None):
+        self.scripts.append((script, arg))
+        return self.session
+
+
+def test_extract_last_response_reads_new_assistant_container():
+    page = _FakePage(session="reply")
+
+    assert chatgpt_browser._extract_last_response(page) == "reply"
+    script, arg = page.scripts[-1]
+    assert arg == '[data-markdown-text-style="assistant-message"]'
+    assert "data-message-author-role" not in script
+
+
+def test_submit_prompt_clicks_send_button_instead_of_enter():
+    # Enter only inserts a newline when the prompt ends in a markdown list/table.
+    page = _FakePage(present={'button[aria-label="Send"]'})
+
+    chatgpt_browser._submit_prompt(page)
+
+    assert page.clicked == ['button[aria-label="Send"]']
+    assert page.pressed == []
+
+
+def test_submit_prompt_falls_back_to_enter_without_send_button():
+    page = _FakePage()
+
+    chatgpt_browser._submit_prompt(page)
+
+    assert page.pressed == ["Enter"]
+
+
+def test_composer_missing_error_says_expired_only_without_session_user():
+    page = _FakePage(session=None)
+
+    message = str(chatgpt_browser._composer_missing_error(page))
+
+    assert "登入狀態已過期" in message
+
+
+def test_composer_missing_error_with_valid_session_blames_ui_not_login():
+    page = _FakePage(session="yocoppp@gmail.com")
+
+    message = str(chatgpt_browser._composer_missing_error(page))
+
+    assert "過期" not in message
+    assert "yocoppp@gmail.com" in message
+    assert "輸入框" in message
