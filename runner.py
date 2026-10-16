@@ -10,6 +10,7 @@ Usage:
   python3 runner.py reprocess --channel <id>          # single channel only
   python3 runner.py reprocess --channel <id> --limit <n>  # cap episodes regenerated this run (resumable)
   python3 runner.py reprocess --min-episode <n> --max-episode <n>  # restrict historical range
+  python3 runner.py reprocess ... --no-deploy  # generate locally; deploy separately after a group
   python3 runner.py build                  # regenerate static site
   python3 runner.py cards <video_id>       # generate PNG cards
   python3 runner.py video <video_id>       # generate MP4 from cards
@@ -325,6 +326,16 @@ def _strip_limit(args: list[str]) -> list[str]:
         return args
     i = args.index("--limit")
     return args[:i] + args[i + 2:]
+
+
+def _extract_no_deploy(args: list[str]) -> bool:
+    """Return whether the command should skip its automatic deployment."""
+    return "--no-deploy" in args
+
+
+def _strip_no_deploy(args: list[str]) -> list[str]:
+    """Remove the --no-deploy flag from an argv-style list."""
+    return [arg for arg in args if arg != "--no-deploy"]
 
 
 def _extract_episode_bounds(args: list[str]) -> tuple[int | None, int | None]:
@@ -987,6 +998,7 @@ def cmd_reprocess(
     limit: int | None = None,
     min_episode: int | None = None,
     max_episode: int | None = None,
+    no_deploy: bool = False,
 ):
     """Re-generate summaries (all episodes, or one channel with --channel) using the current prompt, then approve.
 
@@ -1108,13 +1120,16 @@ def cmd_reprocess(
         return
 
     print("開始執行 approve（產出 hashtags、字卡、影片、部署）...\n")
-    cmd_approve(
+    approve_args = dict(
         provider=provider,
         channel_id=channel_id,
         min_episode=min_episode,
         max_episode=max_episode,
         send_notifications=False,
     )
+    if no_deploy:
+        approve_args["no_deploy"] = True
+    cmd_approve(**approve_args)
 
 
 # ── Approve command ────────────────────────────────────────
@@ -1125,6 +1140,7 @@ def cmd_approve(
     min_episode: int | None = None,
     max_episode: int | None = None,
     send_notifications: bool = True,
+    no_deploy: bool = False,
 ):
     """Process pending_review episodes: generate assets, optionally notify, then deploy."""
     _ensure_dirs()
@@ -1230,14 +1246,17 @@ def cmd_approve(
     print(f"\n共完成 {n} 集")
 
     # Auto-deploy: build static site + git commit + push
-    deploy_script = BASE_DIR / "deploy.sh"
-    if deploy_script.exists():
-        print("\n自動部署網站...")
-        result = subprocess.run(["bash", str(deploy_script)], cwd=BASE_DIR)
-        if result.returncode != 0:
-            print("❌ 部署失敗，請手動執行 runner.py deploy")
+    if no_deploy:
+        print("略過自動部署（--no-deploy；累積指定集數後請執行 runner.py deploy）")
     else:
-        print("❌ 找不到 deploy.sh，請手動執行 runner.py deploy")
+        deploy_script = BASE_DIR / "deploy.sh"
+        if deploy_script.exists():
+            print("\n自動部署網站...")
+            result = subprocess.run(["bash", str(deploy_script)], cwd=BASE_DIR)
+            if result.returncode != 0:
+                print("❌ 部署失敗，請手動執行 runner.py deploy")
+        else:
+            print("❌ 找不到 deploy.sh，請手動執行 runner.py deploy")
 
     if send_notifications:
         # Send subscriber notifications (non-fatal)
@@ -2135,6 +2154,8 @@ def main():
             provider=_extract_provider(args),
             min_episode=min_episode,
             max_episode=max_episode,
+            send_notifications=not _extract_no_deploy(args),
+            no_deploy=_extract_no_deploy(args),
         )
 
     elif cmd == "retry":
@@ -2148,8 +2169,9 @@ def main():
     elif cmd == "reprocess":
         provider = _extract_provider(args)
         limit = _extract_limit(args)
+        no_deploy = _extract_no_deploy(args)
         min_episode, max_episode = _extract_episode_bounds(args)
-        rest = _strip_episode_bounds(_strip_limit(_strip_provider(args)))
+        rest = _strip_no_deploy(_strip_episode_bounds(_strip_limit(_strip_provider(args))))
         channel_id = None
         if len(rest) >= 3 and rest[1] == "--channel":
             channel_id = rest[2]
@@ -2159,6 +2181,7 @@ def main():
             limit=limit,
             min_episode=min_episode,
             max_episode=max_episode,
+            no_deploy=no_deploy,
         )
 
     elif cmd == "build":
