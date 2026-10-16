@@ -111,18 +111,49 @@ def _get_whisper_model():
     return _whisper_model
 
 
+def _download_audio(video_id: str, output_dir: Path) -> Path:
+    """Download one YouTube audio stream for local Whisper transcription."""
+    from yt_dlp import YoutubeDL
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    options = {
+        "format": "bestaudio/best",
+        "outtmpl": str(output_dir / "%(id)s.%(ext)s"),
+        "noplaylist": True,
+        "quiet": True,
+        "no_warnings": True,
+        "socket_timeout": 30,
+        "retries": 1,
+        # yt-dlp's default client cascade (tv_downgraded, web, ...) currently
+        # either fails signature decryption ("The page needs to be reloaded.")
+        # or 403s on the actual download for this project's videos.
+        # android is the client verified to extract *and* download cleanly.
+        # https://github.com/yt-dlp/yt-dlp/issues/17389
+        "extractor_args": {
+            "youtube": {"player_client": ["android"]},
+        },
+    }
+    with YoutubeDL(options) as ydl:
+        info = ydl.extract_info(
+            f"https://www.youtube.com/watch?v={video_id}",
+            download=True,
+        )
+        audio_path = Path(ydl.prepare_filename(info))
+    if audio_path.exists():
+        return audio_path
+
+    matches = sorted(output_dir.glob(f"{video_id}.*"))
+    if matches:
+        return matches[0]
+    raise FileNotFoundError(f"yt-dlp did not create an audio file for {video_id}")
+
+
 def _whisper_transcript(video_id: str) -> str | None:
     """Fallback：下載音訊並用 faster-whisper 轉成文字。"""
     import tempfile
     with tempfile.TemporaryDirectory() as tmpdir:
         try:
-            from pytubefix import YouTube
-            yt = YouTube(f"https://www.youtube.com/watch?v={video_id}")
-            stream = yt.streams.filter(only_audio=True).order_by("abr").last()
-            if not stream:
-                print(f"  找不到音訊串流 {video_id}")
-                return None
-            audio_path = stream.download(output_path=tmpdir, filename=video_id)
+            audio_path = _download_audio(video_id, Path(tmpdir))
         except Exception as e:
             print(f"  音訊下載失敗 {video_id}: {e}")
             return None
