@@ -30,21 +30,10 @@ def _get_chatgpt_cookies() -> list[dict]:
            On first run, macOS will ask 'python3 wants to access your keychain' — click Allow.
     """
     try:
-        import browser_cookie3
+        from backend.chrome_cookies import load_chrome_cookies
 
-        def _convert(c) -> dict:
-            return {
-                "name": c.name,
-                "value": c.value,
-                "domain": c.domain,
-                "path": c.path or "/",
-                "secure": bool(c.secure),
-                "httpOnly": False,
-                "sameSite": "Lax",
-            }
-
-        chatgpt_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="chatgpt.com")]
-        openai_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="openai.com")]
+        chatgpt_cookies = load_chrome_cookies("chatgpt.com")
+        openai_cookies = load_chrome_cookies("openai.com")
 
         if not chatgpt_cookies:
             raise RuntimeError(

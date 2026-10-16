@@ -50,21 +50,10 @@ def _get_claude_cookies() -> list[dict]:
            On first run, macOS will ask 'python3 wants to access your keychain' — click Allow.
     """
     try:
-        import browser_cookie3
+        from backend.chrome_cookies import load_chrome_cookies
 
-        def _convert(c) -> dict:
-            return {
-                "name": c.name,
-                "value": c.value,
-                "domain": c.domain,
-                "path": c.path or "/",
-                "secure": bool(c.secure),
-                "httpOnly": False,
-                "sameSite": "Lax",
-            }
-
-        claude_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="claude.ai")]
-        google_cookies = [_convert(c) for c in browser_cookie3.chrome(domain_name="google.com")]
+        claude_cookies = load_chrome_cookies("claude.ai")
+        google_cookies = load_chrome_cookies("google.com")
 
         if not claude_cookies:
             raise RuntimeError(
