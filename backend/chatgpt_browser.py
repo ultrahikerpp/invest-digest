@@ -109,11 +109,16 @@ def _extract_last_response(page) -> str:
 
 
 def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
-    """Poll until the response text stops changing for 3 consecutive seconds."""
+    """Return only a response captured after ChatGPT finishes streaming."""
     prev = ""
     stable_count = 0
     deadline = time.time() + timeout_secs
     while time.time() < deadline:
+        if _generation_running(page):
+            prev = ""
+            stable_count = 0
+            time.sleep(2)
+            continue
         current = _extract_last_response(page)
         if current and current == prev:
             stable_count += 1
@@ -123,7 +128,16 @@ def _wait_for_stable_response(page, timeout_secs: int = 180) -> str:
             stable_count = 0
             prev = current
         time.sleep(1)
-    return prev
+    return ""
+
+
+def _generation_running(page) -> bool:
+    """True while ChatGPT still exposes a response-streaming indicator."""
+    return bool(page.evaluate(
+        """() => !!document.querySelector('[data-testid="stop-button"]')
+            || !!document.querySelector('[data-is-streaming="true"]')
+            || !!document.querySelector('button[aria-label*="Stop"]')"""
+    ))
 
 
 def chat(prompt: str, timeout_secs: int = 180) -> str:
@@ -228,7 +242,7 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
                     pass
 
             time.sleep(1)
-            response = _wait_for_stable_response(page, timeout_secs=30)
+            response = _wait_for_stable_response(page, timeout_secs=timeout_secs)
             print(" 完成")
 
             if not response:
@@ -239,6 +253,27 @@ def chat(prompt: str, timeout_secs: int = 180) -> str:
         finally:
             ctx.close()
             browser.close()
+
+
+_REQUIRED_SUMMARY_SECTIONS = {
+    "gooaye_notes": ("本集主題總覽", "聽眾 QA", "投資心法", "提及標的"),
+}
+
+
+def _validate_summary_response(summary: str, summary_style: str | None) -> None:
+    """Reject non-empty but structurally incomplete channel summaries."""
+    required = _REQUIRED_SUMMARY_SECTIONS.get(summary_style)
+    if not required:
+        return
+
+    missing = [
+        heading for heading in required
+        if not re.search(rf"^#{{2,4}}\s+{re.escape(heading)}\s*$", summary, re.MULTILINE)
+    ]
+    if missing:
+        raise ValueError(
+            f"ChatGPT 回應缺少必要章節（{summary_style}）：{', '.join(missing)}"
+        )
 
 
 # ── Public API ────────────────────────────────────────────
@@ -275,6 +310,7 @@ def generate_summary(transcript: str, title: str, summary_style: str | None = No
 
     try:
         summary = chat(prompt, timeout_secs=timeout_secs)
+        _validate_summary_response(summary, summary_style)
 
         disclaimer = (
             "\n\n---\n"
