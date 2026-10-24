@@ -1,0 +1,101 @@
+{
+  "ticker": "BE",
+  "company_name": "Bloom Energy Corporation",
+  "currency": "USD",
+  "updated_at": "2026-10-24",
+  "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
+  "charts": {
+    "revenue": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2"
+      ],
+      "values_m": [
+        1065.4,
+        751.1,
+        777.7,
+        519.0,
+        401.2
+      ],
+      "yoy_pct": [
+        165.5,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "eps": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2"
+      ],
+      "values": [
+        0.62,
+        0.23,
+        0.0,
+        -0.1,
+        -0.18
+      ],
+      "yoy_pct": [
+        444.4,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "margins": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2"
+      ],
+      "gross": [
+        33.4,
+        30.0,
+        30.8,
+        29.2,
+        26.7
+      ],
+      "operating": [
+        17.1,
+        9.6,
+        11.3,
+        1.5,
+        -0.9
+      ],
+      "net": [
+        18.4,
+        9.4,
+        0.1,
+        -4.4,
+        -10.6
+      ]
+    },
+    "fcf": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2"
+      ],
+      "values_m": [
+        174.8,
+        47.4,
+        395.1,
+        7.4,
+        -220.4
+      ]
+    }
+  }
+}

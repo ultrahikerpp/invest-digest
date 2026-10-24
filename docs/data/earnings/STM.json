@@ -1,0 +1,113 @@
+{
+  "ticker": "STM",
+  "company_name": "STMicroelectronics N.V.",
+  "currency": "USD",
+  "updated_at": "2026-10-24",
+  "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
+  "charts": {
+    "revenue": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2",
+        "25Q1"
+      ],
+      "values_m": [
+        3487.0,
+        3095.0,
+        3330.0,
+        3187.0,
+        2766.0,
+        null
+      ],
+      "yoy_pct": [
+        26.1,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "eps": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2",
+        "25Q1"
+      ],
+      "values": [
+        0.24,
+        0.04,
+        -0.03,
+        0.26,
+        -0.11,
+        null
+      ],
+      "yoy_pct": [
+        318.2,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "margins": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2",
+        "25Q1"
+      ],
+      "gross": [
+        28.9,
+        33.8,
+        35.2,
+        33.2,
+        23.6,
+        null
+      ],
+      "operating": [
+        5.6,
+        3.1,
+        6.2,
+        5.1,
+        2.1,
+        null
+      ],
+      "net": [
+        -6.0,
+        1.2,
+        -0.9,
+        7.4,
+        -0.4,
+        null
+      ]
+    },
+    "fcf": {
+      "labels": [
+        "26Q2",
+        "26Q1",
+        "25Q4",
+        "25Q3",
+        "25Q2",
+        "25Q1"
+      ],
+      "values_m": [
+        41.0,
+        -32.0,
+        136.0,
+        71.0,
+        -232.0,
+        null
+      ]
+    }
+  }
+}
