@@ -2,11 +2,12 @@
   "ticker": "GLW",
   "company_name": "Corning Incorporated",
   "currency": "USD",
-  "updated_at": "2026-10-24",
+  "updated_at": "2026-10-31",
   "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
   "charts": {
     "revenue": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -14,6 +15,7 @@
         "25Q2"
       ],
       "values_m": [
+        null,
         4505.0,
         4144.0,
         4215.0,
@@ -21,6 +23,7 @@
         3862.0
       ],
       "yoy_pct": [
+        null,
         16.6,
         null,
         null,
@@ -30,6 +33,7 @@
     },
     "eps": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -37,14 +41,16 @@
         "25Q2"
       ],
       "values": [
+        0.78,
         0.64,
         0.43,
         0.62,
         0.5,
-        0.54
+        null
       ],
       "yoy_pct": [
-        18.5,
+        56.0,
+        null,
         null,
         null,
         null,
@@ -53,6 +59,7 @@
     },
     "margins": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -60,6 +67,7 @@
         "25Q2"
       ],
       "gross": [
+        null,
         36.1,
         36.9,
         35.5,
@@ -67,6 +75,7 @@
         36.0
       ],
       "operating": [
+        null,
         15.5,
         15.4,
         15.9,
@@ -74,6 +83,7 @@
         14.8
       ],
       "net": [
+        null,
         12.4,
         9.0,
         12.8,
@@ -83,6 +93,7 @@
     },
     "fcf": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -90,6 +101,7 @@
         "25Q2"
       ],
       "values_m": [
+        null,
         1295.0,
         30.0,
         620.0,

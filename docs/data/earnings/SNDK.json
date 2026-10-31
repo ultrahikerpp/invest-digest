@@ -2,11 +2,12 @@
   "ticker": "SNDK",
   "company_name": "Sandisk Corporation",
   "currency": "USD",
-  "updated_at": "2026-10-24",
+  "updated_at": "2026-10-31",
   "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
   "charts": {
     "revenue": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -15,6 +16,7 @@
         "25Q1"
       ],
       "values_m": [
+        null,
         8965.0,
         5950.0,
         3025.0,
@@ -23,6 +25,7 @@
         null
       ],
       "yoy_pct": [
+        null,
         371.6,
         null,
         null,
@@ -33,6 +36,7 @@
     },
     "eps": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -41,15 +45,17 @@
         "25Q1"
       ],
       "values": [
+        52.6,
         43.97,
         23.03,
         5.15,
         0.75,
-        -0.16,
+        null,
         null
       ],
       "yoy_pct": [
-        27581.2,
+        6913.3,
+        null,
         null,
         null,
         null,
@@ -59,6 +65,7 @@
     },
     "margins": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -67,6 +74,7 @@
         "25Q1"
       ],
       "gross": [
+        null,
         84.6,
         78.4,
         50.9,
@@ -75,6 +83,7 @@
         null
       ],
       "operating": [
+        null,
         78.5,
         70.0,
         35.5,
@@ -83,6 +92,7 @@
         null
       ],
       "net": [
+        null,
         77.0,
         60.8,
         26.5,
@@ -93,6 +103,7 @@
     },
     "fcf": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -101,6 +112,7 @@
         "25Q1"
       ],
       "values_m": [
+        null,
         7083.0,
         2993.0,
         980.0,
