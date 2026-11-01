@@ -5,7 +5,6 @@ channel_id: UC23rnlQU_qE3cec9x709peA
 channel_name: Gooaye 股癌
 published: 2026-10-31
 processed: 2026-10-31
-hashtags: #市場風控 #財報大跌 #融資斷頭 #Intel #投資101 #Gooaye股癌
 ---
 
 # EP710 | 🍒
@@ -90,7 +89,7 @@ hashtags: #市場風控 #財報大跌 #融資斷頭 #Intel #投資101 #Gooaye股
 
 - 當盤面進入有太多看不懂的東西，像 2022 年那樣，就會開始修身養性、開發新路線，代表盤面比較不好搞。
 
-**Q：收購 Lumentum 的消息，鐵 M 怎麼看？**
+**Q：收購 Lumentum 的消息怎麼看？**
 
 - 他自己也持有 Marvell，認為這個嘗試是對的，整體算好消息。
 
@@ -100,7 +99,7 @@ hashtags: #市場風控 #財報大跌 #融資斷頭 #Intel #投資101 #Gooaye股
 
 - 他判斷不一定買得下來，可能有人攔胡，並提到老黃（NVIDIA）在光通元件也在卡位，類似先前卡記憶體。
 
-**Q：FAU 兩家（3363、3081）怎麼看？**
+**Q：FAU 兩家（3363上詮、3081聯亞）怎麼看？**
 
 - 3363 一直有爭議，他說早期就丟暗號，但始終沒看到有單，近期才有人說有出貨，他一直沒看懂。
 
@@ -132,17 +131,17 @@ hashtags: #市場風控 #財報大跌 #融資斷頭 #Intel #投資101 #Gooaye股
 
 - 台股、美股、融資指標與正二 ETF（群益、元大）
 
-- 光通類股、Lumentum、Marvell、Broadcom、NVIDIA（逐字稿原文為 invidia）
+- 光通類股、Lumentum、Marvell、Broadcom、NVIDIA
 
 - Apple、Microsoft、Google（Cloud）、Meta、Amazon（AWS）
 
-- Intel、AMD、SNDK（逐字稿原文）、ARM、x86、TPU
+- Intel、AMD、SNDK、ARM、x86、TPU
 
-- Neocloud（逐字稿原文為 NilCloud / Neoclaw）
+- Neocloud
 
 - on semi、MTK
 
-- FAU 兩家：3363、3081（逐字稿原文為 308）
+- FAU 兩家：3363、3081
 
 - 半導體、記憶體、CPU 與先進封裝基板產業
 
