@@ -2,11 +2,12 @@
   "ticker": "LITE",
   "company_name": "Lumentum Holdings Inc.",
   "currency": "USD",
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-07",
   "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
   "charts": {
     "revenue": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -15,15 +16,17 @@
         "25Q1"
       ],
       "values_m": [
+        1262.6,
         1006.3,
         808.4,
         665.5,
         533.8,
-        480.7,
+        null,
         null
       ],
       "yoy_pct": [
-        109.3,
+        136.5,
+        null,
         null,
         null,
         null,
@@ -33,6 +36,7 @@
     },
     "eps": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -41,15 +45,17 @@
         "25Q1"
       ],
       "values": [
+        3.54,
         -84.65,
         1.5,
         0.89,
         0.05,
-        2.96,
+        null,
         null
       ],
       "yoy_pct": [
-        -2959.8,
+        6980.0,
+        null,
         null,
         null,
         null,
@@ -59,6 +65,7 @@
     },
     "margins": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -67,32 +74,36 @@
         "25Q1"
       ],
       "gross": [
+        51.0,
         47.4,
         44.2,
         36.1,
         34.0,
-        33.3,
+        null,
         null
       ],
       "operating": [
         28.0,
+        28.0,
         21.7,
         9.6,
         2.8,
-        -0.7,
+        null,
         null
       ],
       "net": [
+        28.5,
         -711.7,
         17.8,
         11.8,
         0.8,
-        44.4,
+        null,
         null
       ]
     },
     "fcf": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
@@ -101,11 +112,12 @@
         "25Q1"
       ],
       "values_m": [
+        37.9,
         196.2,
         79.1,
         43.1,
         -18.3,
-        10.1,
+        null,
         null
       ]
     }

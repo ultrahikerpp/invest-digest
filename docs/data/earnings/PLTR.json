@@ -2,26 +2,26 @@
   "ticker": "PLTR",
   "company_name": "Palantir Technologies Inc.",
   "currency": "USD",
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-07",
   "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
   "charts": {
     "revenue": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "values_m": [
+        2313.4,
         1935.5,
         1632.6,
         1406.8,
-        1181.1,
-        1003.7
+        1181.1
       ],
       "yoy_pct": [
-        92.8,
+        95.9,
         null,
         null,
         null,
@@ -30,21 +30,21 @@
     },
     "eps": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "values": [
+        0.44,
         0.41,
         0.34,
         0.24,
-        0.18,
-        0.13
+        0.18
       ],
       "yoy_pct": [
-        214.9,
+        144.4,
         null,
         null,
         null,
@@ -53,48 +53,48 @@
     },
     "margins": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "gross": [
+        83.4,
         84.7,
         86.8,
         84.6,
-        82.4,
-        80.8
+        82.4
       ],
       "operating": [
+        46.9,
         47.1,
         46.2,
         40.9,
-        33.3,
-        26.8
+        33.3
       ],
       "net": [
+        48.8,
         54.9,
         53.3,
         43.3,
-        40.3,
-        32.6
+        40.3
       ]
     },
     "fcf": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "values_m": [
+        1196.6,
         1201.6,
         891.8,
         764.0,
-        500.9,
-        531.6
+        500.9
       ]
     }
   }

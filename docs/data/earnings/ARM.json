@@ -2,29 +2,26 @@
   "ticker": "ARM",
   "company_name": "Arm Holdings plc",
   "currency": "USD",
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-07",
   "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
   "charts": {
     "revenue": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2",
-        "25Q1"
+        "25Q3"
       ],
       "values_m": [
+        1443.0,
         1289.0,
         1490.0,
         1242.0,
-        1135.0,
-        1053.0,
-        null
+        1135.0
       ],
       "yoy_pct": [
-        22.4,
-        null,
+        27.1,
         null,
         null,
         null,
@@ -33,24 +30,21 @@
     },
     "eps": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2",
-        "25Q1"
+        "25Q3"
       ],
       "values": [
+        0.12,
         0.25,
         0.29,
         0.21,
-        0.22,
-        0.12,
-        null
+        0.22
       ],
       "yoy_pct": [
-        108.3,
-        null,
+        -45.5,
         null,
         null,
         null,
@@ -59,54 +53,48 @@
     },
     "margins": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2",
-        "25Q1"
+        "25Q3"
       ],
       "gross": [
+        97.1,
         97.2,
         97.9,
         97.6,
-        97.4,
-        97.2,
-        null
+        97.4
       ],
       "operating": [
+        13.9,
         7.6,
         29.5,
         15.4,
-        14.4,
-        10.8,
-        null
+        14.4
       ],
       "net": [
+        9.0,
         20.9,
         21.0,
         18.0,
-        21.0,
-        12.3,
-        null
+        21.0
       ]
     },
     "fcf": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2",
-        "25Q1"
+        "25Q3"
       ],
       "values_m": [
+        130.0,
         694.0,
         170.0,
         181.0,
-        427.0,
-        171.0,
-        null
+        427.0
       ]
     }
   }

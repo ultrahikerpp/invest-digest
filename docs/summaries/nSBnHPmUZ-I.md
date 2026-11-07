@@ -114,11 +114,11 @@ hashtags: #AI資料中心 #費半 #德州 #伊頓 #Arista #JC趨勢財經觀點
 
 - **電力與設備**：Vistra、NRG、Constellation、GE Vernova、伊頓（Eaton）
 
-- **新型雲端**：CoreWeave、Nebius（逐字稿原文為 Coal Reef、Nebulas）
+- **新型雲端**：CoreWeave、Nebius
 
 - **REITs**：Equinix、Digital Realty
 
-- **網路設備**：Arista（逐字稿原文為 Aresa、Aresta）
+- **網路設備**：Arista
 
 - **產業**：AI 資料中心、電力、REITs、半導體
 
