@@ -42,6 +42,24 @@ def test_one_email_per_subscriber_with_only_subscribed_channels(monkeypatch):
     assert sorted(query_calls) == ["UC_A", "UC_B", "UC_C"], "query each channel once"
 
 
+def test_subject_episode_count_matches_episodes_not_channels(monkeypatch):
+    captured = []
+    monkeypatch.setattr("backend.worker.send_html_email",
+                        lambda subject, html, to: captured.append((subject, html)))
+    eps = [
+        {"channel_name": "JC", "title": "J1", "video_id": "j1", "summary_excerpt": ""},
+        {"channel_name": "JC", "title": "J2", "video_id": "j2", "summary_excerpt": ""},
+        {"channel_name": "Gooaye", "title": "G1", "video_id": "g1", "summary_excerpt": ""},
+        {"channel_name": "FOMO", "title": "F1", "video_id": "f1", "summary_excerpt": "",
+         "source_type": "newsletter"},
+    ]
+    sub.send_episodes_notification("u@x.com", "tok", eps)
+
+    subject, html = captured[0]
+    assert "共 4 集" in subject  # 4 episodes, though only 3 channels
+    assert html.count("#/episode/") == len(eps)
+
+
 def test_episodes_notification_groups_by_channel_in_single_email(monkeypatch):
     captured = []
     monkeypatch.setattr("backend.worker.send_html_email",
