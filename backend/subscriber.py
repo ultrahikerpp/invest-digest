@@ -225,6 +225,79 @@ def send_episode_notification(email: str, unsubscribe_token: str, episode: dict)
     send_html_email(subject, html, email)
 
 
+def send_episodes_notification(email: str, unsubscribe_token: str, episodes: list[dict]) -> None:
+    """One email listing all of a subscriber's new episodes from this batch, grouped by channel."""
+    if len(episodes) == 1:
+        send_episode_notification(email, unsubscribe_token, episodes[0])
+        return
+
+    from backend.worker import send_html_email
+    from collections import defaultdict
+    site = _site_base()
+    unsub_url = f"{site}/#/unsubscribe?token={unsubscribe_token}"
+
+    by_channel: dict[str, list] = defaultdict(list)
+    for ep in episodes:
+        by_channel[ep.get("channel_name", "")].append(ep)
+
+    episodes_html = ""
+    for channel_name, eps in by_channel.items():
+        episodes_html += (
+            f'<div style="margin-bottom:28px;">'
+            f'<div style="font-size:12px;font-weight:600;color:#5C9EFF;margin-bottom:10px;'
+            f'text-transform:uppercase;letter-spacing:0.06em;">{escape(channel_name)}</div>'
+        )
+        for ep in eps:
+            video_id = ep.get("video_id", "")
+            watch_link = "" if ep.get("source_type", "youtube") == "newsletter" else (
+                f' · <a href="https://youtube.com/watch?v={video_id}" '
+                f'style="color:#5C9EFF;text-decoration:none;">觀看影片</a>'
+            )
+            episodes_html += (
+                f'<div style="margin-bottom:14px;padding:16px;background:#131722;'
+                f'border-radius:8px;border-left:3px solid #2962FF;">'
+                f'<div style="font-size:15px;font-weight:600;color:#D1D4DC;margin-bottom:8px;">'
+                f'{escape(ep.get("title", ""))}</div>'
+                f'<div style="font-size:13px;color:#9598A1;line-height:1.7;margin-bottom:10px;">'
+                f'{escape(ep.get("summary_excerpt", ""))}</div>'
+                f'<div style="font-size:13px;">'
+                f'<a href="{site}/#/episode/{video_id}" style="color:#5C9EFF;text-decoration:none;">'
+                f'閱讀完整摘要</a>{watch_link}</div>'
+                f'</div>'
+            )
+        episodes_html += "</div>"
+
+    channel_names = "、".join(by_channel.keys())
+    subject = f"[新節目] 共 {len(episodes)} 集｜{channel_names}"
+    html = f"""<!DOCTYPE html>
+<html lang="zh-TW"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#131722;font-family:'Helvetica Neue',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#131722;padding:40px 20px;">
+<tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0"
+  style="background:#1E222D;border-radius:12px;overflow:hidden;max-width:560px;width:100%;">
+  <tr><td style="background:linear-gradient(135deg,#1565C0,#2962FF);padding:28px 40px;">
+    <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:6px;
+                text-transform:uppercase;letter-spacing:0.06em;">新節目通知</div>
+    <div style="font-size:20px;font-weight:700;color:#fff;line-height:1.4;">
+      您訂閱的頻道有 {len(episodes)} 集新節目</div>
+  </td></tr>
+  <tr><td style="padding:28px 40px;">
+    {episodes_html}
+  </td></tr>
+  <tr><td style="background:#181D2E;padding:16px 40px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0;font-size:12px;color:#6B7280;">
+      Ultra Investment Digest ·
+      <a href="{unsub_url}" style="color:#6B7280;text-decoration:underline;">退訂</a>
+    </p>
+  </td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
+    send_html_email(subject, html, email)
+
+
 def send_weekly_digest(email: str, unsubscribe_token: str, episodes: list[dict], week_label: str) -> None:
     from backend.worker import send_html_email
     from collections import defaultdict

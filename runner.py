@@ -1271,40 +1271,44 @@ def cmd_approve(
 # ── Subscriber notifications ──────────────────────────────
 
 def _send_subscriber_notifications(results: list[dict]) -> None:
-    """Send episode notification emails to confirmed subscribers after approve."""
+    """Send ONE email per confirmed subscriber covering every approved episode
+    from the channels they subscribed to (instead of one email per episode)."""
     from backend import subscriber as sub
     from backend.subscriber import _excerpt
 
-    seen_emails: set[str] = set()
-    sent = 0
-
-    for ep in results:
-        channel_id = ep.get("channel_id", "")
+    subscribers_by_channel: dict[str, list[dict]] = {}
+    for channel_id in dict.fromkeys(ep.get("channel_id", "") for ep in results):
         try:
-            subscribers = sub.get_confirmed_subscribers(channel_id)
+            subscribers_by_channel[channel_id] = sub.get_confirmed_subscribers(channel_id)
         except Exception as e:
             print(f"  ⚠️ 無法查詢訂閱者（{channel_id}）：{e}")
-            continue
 
-        episode_data = {
-            "channel_name": ep.get("channel_name", ""),
-            "title": ep.get("title", ""),
-            "video_id": ep.get("video_id", ""),
-            "source_type": ep.get("source_type", "youtube"),
-            "summary_excerpt": _excerpt(ep.get("summary_path")),
-        }
-
-        for s in subscribers:
-            key = f"{s['email']}:{ep['video_id']}"
-            if key in seen_emails:
+    # email -> {"token": ..., "episodes": [...], "seen": {video_id}}; preserves approve order
+    inbox: dict[str, dict] = {}
+    for ep in results:
+        for s in subscribers_by_channel.get(ep.get("channel_id", ""), []):
+            entry = inbox.setdefault(
+                s["email"], {"token": s["unsubscribe_token"], "episodes": [], "seen": set()}
+            )
+            if ep["video_id"] in entry["seen"]:
                 continue
-            seen_emails.add(key)
-            try:
-                sub.send_episode_notification(s["email"], s["unsubscribe_token"], episode_data)
-                sent += 1
-                print(f"  ✉ 通知已寄出 → {s['email']}")
-            except Exception as e:
-                print(f"  ❌ 通知寄送失敗 {s['email']}：{e}")
+            entry["seen"].add(ep["video_id"])
+            entry["episodes"].append({
+                "channel_name": ep.get("channel_name", ""),
+                "title": ep.get("title", ""),
+                "video_id": ep.get("video_id", ""),
+                "source_type": ep.get("source_type", "youtube"),
+                "summary_excerpt": _excerpt(ep.get("summary_path")),
+            })
+
+    sent = 0
+    for email, entry in inbox.items():
+        try:
+            sub.send_episodes_notification(email, entry["token"], entry["episodes"])
+            sent += 1
+            print(f"  ✉ 通知已寄出 → {email}（{len(entry['episodes'])} 集）")
+        except Exception as e:
+            print(f"  ❌ 通知寄送失敗 {email}：{e}")
 
     if sent:
         print(f"\n✓ 共寄出 {sent} 封節目通知")
