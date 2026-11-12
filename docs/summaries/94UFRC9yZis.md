@@ -120,7 +120,7 @@ hashtags: #CoreWeave #CPI #Fed升息 #輝達 #AI負債 #JC趨勢財經觀點
 
 - **美股指數**：道瓊、S&P500、那斯達克100、費城半導體、羅素2000
 
-- **個股**：輝達（逐字稿作 Amphibia／虧打）、微軟、Apple、博通、AMD、CoreWeave（CRWV）、Meta、Google、OpenAI、Perplexity、Jane Street、IREN）
+- **個股**：輝達、微軟、Apple、博通、AMD、CoreWeave（CRWV）、Meta、Google、OpenAI、Perplexity、Jane Street、IREN
 
 - **產業與類股**：AI 基礎設施、Neocloud（新型雲端服務商）、健康照護、必需消費、金融、軟體
 
