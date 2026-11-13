@@ -33,7 +33,7 @@ Usage:
   python3 runner.py send-confirmations     # send confirmation emails to new subscribers
   python3 runner.py weekly-digest          # send weekly investment digest to subscribers directly (skips if already sent this ISO week)
 
-  --provider claude|chatgpt applies to any command above that calls an AI
+  --provider claude|chatgpt|claude-cli applies to any command above that calls an AI
   provider (run, approve, retry, reprocess, cards, shorts-cards, notify,
   backfill-analysis, score, weekly, earnings, refresh-earnings, setup-browser).
   Default is claude. Example: python3 runner.py run --provider chatgpt
@@ -54,6 +54,8 @@ import sqlite3
 import subprocess
 from pathlib import Path
 from datetime import datetime
+
+from backend.ai_tasks import AIGenerationError
 
 BASE_DIR = Path(__file__).parent
 CHANNELS_FILE = BASE_DIR / "channels.json"
@@ -291,11 +293,11 @@ def _extract_provider(args: list[str]) -> str:
     if "--provider" in args:
         i = args.index("--provider")
         if i + 1 >= len(args):
-            print("ERROR: --provider requires a value (choices: claude, chatgpt)", file=sys.stderr)
+            print("ERROR: --provider requires a value (choices: claude, chatgpt, claude-cli)", file=sys.stderr)
             sys.exit(1)
         provider = args[i + 1]
-        if provider not in ("claude", "chatgpt"):
-            print(f"ERROR: unknown --provider {provider!r} (choices: claude, chatgpt)", file=sys.stderr)
+        if provider not in ("claude", "chatgpt", "claude-cli"):
+            print(f"ERROR: unknown --provider {provider!r} (choices: claude, chatgpt, claude-cli)", file=sys.stderr)
             sys.exit(1)
         return provider
     return "claude"
@@ -396,7 +398,11 @@ def _run_newsletter_channel(conn, nl: dict, worker, provider: str = "claude") ->
 
         # Generate summary (body is already plain text — no transcription needed)
         print(f"  Generating summary...")
-        summary_body = generate_newsletter_summary(item["body"], item["title"], provider=provider)
+        try:
+            summary_body = generate_newsletter_summary(item["body"], item["title"], provider=provider)
+        except AIGenerationError as e:
+            print(f"  ❌ 摘要生成失敗，略過此篇（下次 run 會重試）：{e}")
+            continue
 
         # Build source link (Substack URL if available)
         source_link = item.get("substack_url", "")
@@ -477,8 +483,12 @@ def cmd_run(channel_id: str | None = None, provider: str = "claude"):
 
     conn = _get_db()
     total_new = 0
+    consecutive_fails = 0
+    aborted = False
 
     for ch in targets:
+        if aborted:
+            break
         cid = ch["channel_id"]
         cname = ch["name"]
         print(f"\n=== {cname} ({cid}) ===")
@@ -511,11 +521,21 @@ def cmd_run(channel_id: str | None = None, provider: str = "claude"):
 
             # Generate summary
             print(f"  Generating summary...")
-            summary_body = worker.generate_summary(
-                transcript, v["title"], provider=provider,
-                summary_style=ch.get("summary_style"),
-                host_name=ch.get("host_name"),
-            )
+            try:
+                summary_body = worker.generate_summary(
+                    transcript, v["title"], provider=provider,
+                    summary_style=ch.get("summary_style"),
+                    host_name=ch.get("host_name"),
+                )
+            except AIGenerationError as e:
+                print(f"  ❌ 摘要生成失敗，略過此集（下次 run 會重試）：{e}")
+                consecutive_fails += 1
+                if consecutive_fails >= 3:
+                    print("連續 3 集生成失敗（可能是用量上限或登入過期），中止本次 run，避免白做轉錄。")
+                    aborted = True
+                    break
+                continue
+            consecutive_fails = 0
 
             # Build frontmatter without hashtags (added later in approve step)
             now = datetime.now().strftime("%Y-%m-%d")
@@ -947,12 +967,17 @@ def cmd_retry(video_id: str, provider: str = "claude"):
         print(f"  ✓ 逐字稿已儲存")
 
     # Generate summary
-    print(f"  產生摘要（透過 Claude 瀏覽器）...")
-    summary_body = worker.generate_summary(
-        transcript, title, provider=provider,
-        summary_style=_get_channel_style(channel_id, channels),
-        host_name=_get_channel_host(channel_id, channels),
-    )
+    print(f"  產生摘要（透過 {provider}）...")
+    try:
+        summary_body = worker.generate_summary(
+            transcript, title, provider=provider,
+            summary_style=_get_channel_style(channel_id, channels),
+            host_name=_get_channel_host(channel_id, channels),
+        )
+    except AIGenerationError as e:
+        print(f"❌ 摘要生成失敗：{e}")
+        conn.close()
+        return
 
     now = datetime.now().strftime("%Y-%m-%d")
     frontmatter = (
@@ -1069,16 +1094,23 @@ def cmd_reprocess(
 
         # Re-generate summary with new prompt
         print(f"  重新產製摘要...")
-        summary_body = worker.generate_summary(
-            transcript, title, provider=provider, summary_style=style,
-            host_name=_get_channel_host(ep_channel_id, channels),
-        )
-
-        # Generation failure returns a placeholder body; keep the old summary
-        # instead of overwriting it (bulk runs may hit usage limits mid-way).
-        if "瀏覽器摘要失敗" in summary_body:
-            reason = summary_body.split("瀏覽器摘要失敗：", 1)[-1].split("\n", 1)[0]
-            print(f"  ❌ 摘要生成失敗，保留舊摘要並略過此集：{reason}")
+        # Generation failure (browser providers: placeholder body; CLI
+        # providers: AIGenerationError) must keep the old summary instead of
+        # overwriting it (bulk runs may hit usage limits mid-way).
+        failure_reason = None
+        summary_body = ""
+        try:
+            summary_body = worker.generate_summary(
+                transcript, title, provider=provider, summary_style=style,
+                host_name=_get_channel_host(ep_channel_id, channels),
+            )
+        except AIGenerationError as e:
+            failure_reason = str(e)
+        else:
+            if "瀏覽器摘要失敗" in summary_body:
+                failure_reason = summary_body.split("瀏覽器摘要失敗：", 1)[-1].split("\n", 1)[0]
+        if failure_reason is not None:
+            print(f"  ❌ 摘要生成失敗，保留舊摘要並略過此集：{failure_reason}")
             consecutive_fails += 1
             if consecutive_fails >= 3:
                 print("連續 3 集生成失敗（可能是網路中斷或用量上限），中止批次。"
@@ -1946,7 +1978,11 @@ def cmd_weekly(provider: str = "claude"):
     # Weekly synthesis bundles up to a week's worth of episode summaries into
     # one prompt (routinely 30-40K+ chars); extended thinking alone can run
     # 4+ minutes at that size, so this needs the same headroom as gooaye_notes.
-    result = clean_ui_artifacts(ai_chat(prompt, provider=provider, timeout_secs=600))
+    try:
+        result = clean_ui_artifacts(ai_chat(prompt, provider=provider, timeout_secs=600))
+    except AIGenerationError as e:
+        print(f"❌ 週報生成失敗：{e}", file=sys.stderr)
+        sys.exit(1)
 
     # Determine week label (ISO year-week)
     now = datetime.now()
@@ -1995,9 +2031,13 @@ def cmd_earnings(ticker: str, provider: str = "claude"):
     print(f"  取得 {n_quarters} 季數據")
 
     print(f"生成 {provider} 分析...")
-    data['analysis'] = generate_earnings_analysis(
-        ticker, data['company_name'], data, data['currency'], provider=provider
-    )
+    try:
+        data['analysis'] = generate_earnings_analysis(
+            ticker, data['company_name'], data, data['currency'], provider=provider
+        )
+    except AIGenerationError as e:
+        print(f"ERROR: 財報分析生成失敗：{e}", file=sys.stderr)
+        sys.exit(1)
 
     out_dir = BASE_DIR / "docs" / "data" / "earnings"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -2084,9 +2124,14 @@ def cmd_refresh_earnings(deploy: bool = False, force: bool = False, provider: st
 
         if action == "FULL":
             print(f"  FULL 刷新（yfinance + {provider} 分析）")
-            new_data["analysis"] = generate_earnings_analysis(
-                ticker, new_data["company_name"], new_data, new_data["currency"], provider=provider
-            )
+            try:
+                new_data["analysis"] = generate_earnings_analysis(
+                    ticker, new_data["company_name"], new_data, new_data["currency"], provider=provider
+                )
+            except AIGenerationError as e:
+                print(f"  ❌ 分析生成失敗，保留既有資料並略過：{e}")
+                results["error"].append(ticker)
+                continue
             results["full"].append(ticker)
         else:
             print(f"  UPDATE（更新數字，保留既有分析）")

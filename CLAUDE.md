@@ -41,6 +41,11 @@ python3 runner.py setup-browser
 python3 runner.py run --provider chatgpt
 python3 runner.py setup-browser --provider chatgpt   # one-time chatgpt.com login check
 
+# Use the local Claude Code CLI (`claude -p`) instead of browser automation — no Chrome cookies / DOM selectors.
+# Uses Claude Code's login + quota; every failure raises (nothing is saved as a summary). Card points use JSON Schema + 1 retry.
+python3 runner.py run --provider claude-cli
+python3 runner.py setup-browser --provider claude-cli   # checks `claude auth status`
+
 # Smart refresh all earnings in earnings_watchlist.json (skip if fresh, update numbers if same quarter, full refresh if new quarter)
 python3 runner.py refresh-earnings
 python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
@@ -87,6 +92,8 @@ Local-only Python scripts + GitHub Pages static site. No web server required.
   - `generate_summary()` — investment summary from transcript
   - `generate_hashtags()` — 5 keyword hashtags
   - `generate_card_points()` — bullet points for each card section
+
+- **`ai_provider.py`** — dispatches `--provider` (`claude` / `chatgpt` browser modules, `claude-cli`). **`ai_tasks.py`** holds provider-agnostic prompt assembly + parsing on top of a bare `chat()`; **`claude_cli.py`** supplies `chat()` / `chat_json()` via `claude -p` (empty temp cwd, tools + MCP + user settings disabled so transcript text can't reach other tools). Summaries/earnings raise `AIGenerationError` on failure; `runner.py` skips the episode instead of saving a placeholder. The browser modules still carry their own copies of the task functions.
 
 - **`card_generator.py`** — Generates PNG summary cards (Pillow)
 - **`video_maker.py`** — Assembles PNG cards into MP4

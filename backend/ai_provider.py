@@ -12,6 +12,7 @@ import importlib
 _PROVIDERS = {
     "claude": "backend.claude_browser",
     "chatgpt": "backend.chatgpt_browser",
+    "claude-cli": "backend.claude_cli",
 }
 
 
