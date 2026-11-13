@@ -157,3 +157,12 @@ def test_chat_error_message_includes_stderr_and_stdout(monkeypatch):
     with pytest.raises(AIGenerationError) as ei:
         claude_cli.chat("x")
     assert "rate limited" in str(ei.value) and "partial" in str(ei.value)
+
+
+def test_chat_raises_on_oserror_from_subprocess(monkeypatch):
+    def fake_run(cmd, **kwargs):
+        raise PermissionError("not executable")
+
+    monkeypatch.setattr(claude_cli.subprocess, "run", fake_run)
+    with pytest.raises(AIGenerationError, match="not executable"):
+        claude_cli.chat("x")

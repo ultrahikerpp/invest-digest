@@ -105,3 +105,7 @@ def test_strip_episode_bounds_removes_flags_and_values():
 
 def test_extract_provider_accepts_claude_cli():
     assert _extract_provider(["run", "--provider", "claude-cli"]) == "claude-cli"
+
+
+def test_extract_provider_accepts_codex_cli():
+    assert _extract_provider(["run", "--provider", "codex-cli"]) == "codex-cli"

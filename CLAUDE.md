@@ -46,6 +46,10 @@ python3 runner.py setup-browser --provider chatgpt   # one-time chatgpt.com logi
 python3 runner.py run --provider claude-cli
 python3 runner.py setup-browser --provider claude-cli   # checks `claude auth status`
 
+# Same idea with the Codex CLI (`codex exec`); needs `codex login` once. Runs in a throwaway HOME/CODEX_HOME (only a copy of auth.json; a refreshed token is synced back).
+python3 runner.py run --provider codex-cli
+python3 runner.py setup-browser --provider codex-cli    # checks `codex login status`
+
 # Smart refresh all earnings in earnings_watchlist.json (skip if fresh, update numbers if same quarter, full refresh if new quarter)
 python3 runner.py refresh-earnings
 python3 runner.py refresh-earnings --deploy  # refresh + build + deploy
@@ -93,7 +97,7 @@ Local-only Python scripts + GitHub Pages static site. No web server required.
   - `generate_hashtags()` — 5 keyword hashtags
   - `generate_card_points()` — bullet points for each card section
 
-- **`ai_provider.py`** — dispatches `--provider` (`claude` / `chatgpt` browser modules, `claude-cli`). **`ai_tasks.py`** holds provider-agnostic prompt assembly + parsing on top of a bare `chat()`; **`claude_cli.py`** supplies `chat()` / `chat_json()` via `claude -p` (empty temp cwd, tools + MCP + user settings disabled so transcript text can't reach other tools). Summaries/earnings raise `AIGenerationError` on failure; `runner.py` skips the episode instead of saving a placeholder. The browser modules still carry their own copies of the task functions.
+- **`ai_provider.py`** — dispatches `--provider` (`claude` / `chatgpt` browser modules, `claude-cli`, `codex-cli`). **`ai_tasks.py`** holds provider-agnostic prompt assembly + parsing on top of a bare `chat()`; **`claude_cli.py`** supplies `chat()` / `chat_json()` via `claude -p` (empty temp cwd, tools + MCP + user settings disabled so transcript text can't reach other tools). **`codex_cli.py`** does the same via `codex exec` (isolated temp HOME/CODEX_HOME, shell/apps/plugins/web disabled, schema made OpenAI-strict, bypasses terminal-wrapper shims that inject MCP). Summaries/earnings raise `AIGenerationError` on failure; `runner.py` skips the episode instead of saving a placeholder. The browser modules still carry their own copies of the task functions.
 
 - **`card_generator.py`** — Generates PNG summary cards (Pillow)
 - **`video_maker.py`** — Assembles PNG cards into MP4

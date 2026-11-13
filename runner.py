@@ -33,7 +33,7 @@ Usage:
   python3 runner.py send-confirmations     # send confirmation emails to new subscribers
   python3 runner.py weekly-digest          # send weekly investment digest to subscribers directly (skips if already sent this ISO week)
 
-  --provider claude|chatgpt|claude-cli applies to any command above that calls an AI
+  --provider claude|chatgpt|claude-cli|codex-cli applies to any command above that calls an AI
   provider (run, approve, retry, reprocess, cards, shorts-cards, notify,
   backfill-analysis, score, weekly, earnings, refresh-earnings, setup-browser).
   Default is claude. Example: python3 runner.py run --provider chatgpt
@@ -293,11 +293,11 @@ def _extract_provider(args: list[str]) -> str:
     if "--provider" in args:
         i = args.index("--provider")
         if i + 1 >= len(args):
-            print("ERROR: --provider requires a value (choices: claude, chatgpt, claude-cli)", file=sys.stderr)
+            print("ERROR: --provider requires a value (choices: claude, chatgpt, claude-cli, codex-cli)", file=sys.stderr)
             sys.exit(1)
         provider = args[i + 1]
-        if provider not in ("claude", "chatgpt", "claude-cli"):
-            print(f"ERROR: unknown --provider {provider!r} (choices: claude, chatgpt, claude-cli)", file=sys.stderr)
+        if provider not in ("claude", "chatgpt", "claude-cli", "codex-cli"):
+            print(f"ERROR: unknown --provider {provider!r} (choices: claude, chatgpt, claude-cli, codex-cli)", file=sys.stderr)
             sys.exit(1)
         return provider
     return "claude"

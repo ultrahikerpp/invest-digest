@@ -45,6 +45,8 @@ def _run(extra_flags: list[str], prompt: str, timeout_secs: int) -> subprocess.C
             raise AIGenerationError(f"claude CLI 逾時（{timeout_secs} 秒）") from e
         except FileNotFoundError as e:
             raise AIGenerationError("找不到 claude CLI，請確認已安裝並在 PATH 中") from e
+        except OSError as e:
+            raise AIGenerationError(f"無法執行 claude CLI：{e}") from e
 
 
 def _fail(proc: subprocess.CompletedProcess) -> AIGenerationError:

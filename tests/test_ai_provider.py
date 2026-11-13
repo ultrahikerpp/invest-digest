@@ -62,3 +62,11 @@ def test_claude_cli_provider_resolves_to_claude_cli_module():
     for name in ("chat", "generate_summary", "generate_card_points", "extract_analysis",
                  "score_m1", "generate_earnings_analysis", "setup_login"):
         assert callable(getattr(mod, name)), name
+
+
+def test_codex_cli_provider_resolves_to_codex_cli_module():
+    mod = ai_provider._mod("codex-cli")
+    assert mod.__name__ == "backend.codex_cli"
+    for name in ("chat", "chat_json", "generate_summary", "generate_card_points", "extract_analysis",
+                 "score_m1", "generate_earnings_analysis", "setup_login"):
+        assert callable(getattr(mod, name)), name
