@@ -88,3 +88,75 @@ def test_shorts_generation_removes_stale_cards_from_previous_layout(monkeypatch,
     ]
     assert not (output_dir / "card_07_cta.png").exists()
     assert not (output_dir / "card_08.png").exists()
+
+
+# ── Markdown tables (codex-cli renders 提及標的 as a table) ──
+
+TABLE = """| 類別 | 逐字稿明確提及 |
+|---|---|
+| 股票／公司 | Netflix、SoftBank、Palantir |
+| ETF／投資方式 | 0050、指數投資 |
+| 金融商品／指標 | 權證、VIX |"""
+
+
+def test_fallback_points_turns_table_rows_into_cell_pairs():
+    # Regression: a failed AI call fell back to raw "|---|---|" and "| a | b |" rows on the card.
+    assert _fallback_points(TABLE) == [
+        "股票／公司：Netflix、SoftBank、Palantir",
+        "ETF／投資方式：0050、指數投資",
+        "金融商品／指標：權證、VIX",
+    ]
+
+
+def test_fallback_points_handles_alignment_markers_and_missing_outer_pipes():
+    content = "類別 | 內容\n:--- | ---:\n產業 | 記憶體、衛星\n| 市場 | 台股 |"
+    assert _fallback_points(content) == ["產業：記憶體、衛星", "市場：台股"]
+
+
+def test_fallback_points_table_without_header_separator_keeps_all_rows():
+    # No separator row => it's not a header, every row is data.
+    assert _fallback_points("| 產業 | 記憶體 |\n| 市場 | 台股 |") == ["產業：記憶體", "市場：台股"]
+
+
+def test_fallback_points_table_rows_still_truncate_at_boundary():
+    row = "| 產業 | " + "、".join(["半導體設備"] * 12) + " |"
+    (point,) = _fallback_points(row)
+    # cut lands right after a "、" list boundary, never mid-token
+    assert point.startswith("產業：半導體設備、") and point.endswith("、…")
+    assert len(point) <= card_generator._FALLBACK_MAX_CHARS + 1
+
+
+def test_fallback_points_non_table_lines_with_a_pipe_are_unchanged():
+    assert _fallback_points("- 看多 | 看空 並存的盤") == ["看多 | 看空 並存的盤"]
+
+
+# ── boundaries found in review ────────────────────────────
+
+def test_fallback_points_bullet_with_pipe_right_after_table_is_not_a_row():
+    content = "| a | b |\n|---|---|\n| x | y |\n- 看多 | 看空"
+    assert _fallback_points(content) == ["x：y", "看多 | 看空"]
+
+
+def test_fallback_points_table_cells_drop_markers_and_unescape_pipes():
+    content = "| k | v |\n|---|---|\n| - x | # y |\n| 1 \\| 2 | **z** |"
+    assert _fallback_points(content) == ["x：y", "1 | 2：z"]
+
+
+def test_fallback_points_three_plus_columns_use_first_cell_as_key():
+    content = "| 標的 | 看法 | 題材 |\n|---|---|---|\n| 台積電 | 看多 | 先進製程 |"
+    assert _fallback_points(content) == ["台積電：看多、先進製程"]
+
+
+def test_fallback_points_single_column_table_keeps_data_rows():
+    assert _fallback_points("| 重點 |\n|---|\n| 降息 |\n| 縮表 |") == ["降息", "縮表"]
+
+
+def test_fallback_points_loose_dash_line_is_not_a_table_delimiter():
+    # "- | -" has no 3-dash cells, so the line above it is plain text, not a dropped header.
+    points = _fallback_points("A | B\n- | -")
+    assert points[0] == "A | B" and len(points) == 2
+
+
+def test_fallback_points_keeps_prose_around_a_table():
+    content = "前言段落\n\n| k | v |\n|---|---|\n| 產業 | 記憶體 |\n\n- 結語重點"
+    assert _fallback_points(content) == ["前言段落", "產業：記憶體", "結語重點"]

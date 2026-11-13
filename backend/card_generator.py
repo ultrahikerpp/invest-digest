@@ -26,16 +26,70 @@ def _truncate_at_boundary(text: str, max_chars: int) -> str:
     return text[:cut] + "…"
 
 
+def _table_cells(line: str) -> list[str]:
+    """Split a table row on unescaped pipes; '\\|' stays a literal pipe."""
+    cells = re.split(r"(?<!\\)\|", line.strip().strip("|"))
+    return [c.strip().replace("\\|", "|") for c in cells]
+
+
+def _is_table_separator(line: str) -> bool:
+    """Markdown table delimiter row such as |---|---| or :--- | ---:.
+
+    Every cell needs a run of 3+ dashes, so stray text like "- | -" isn't one.
+    """
+    if "|" not in line:
+        return False
+    cells = [c for c in _table_cells(line) if c]
+    return bool(cells) and all(re.fullmatch(r":?-{3,}:?", c) for c in cells)
+
+
+def _table_row_text(line: str) -> str:
+    """'| a | b |' -> 'a：b'; 3+ columns -> 'a：b、c' (first cell is the key)."""
+    cells = []
+    for c in _table_cells(line):
+        c = re.sub(r"\*+", "", c)
+        c = re.sub(r"^#{1,6}\s*", "", c).strip()
+        c = re.sub(r"^[-•·]\s*", "", c).strip()
+        if c:
+            cells.append(c)
+    if len(cells) <= 1:
+        return "".join(cells)
+    return cells[0] + "：" + "、".join(cells[1:])
+
+
+_LIST_MARKER = re.compile(r"^(?:[-•·*]\s|#{1,6}\s)")
+
+
 def _fallback_points(content: str) -> list[str]:
-    """Simple fallback: extract bullet points from content."""
+    """Simple fallback: extract bullet points from content.
+
+    Markdown tables (some providers render 提及標的 as one) are flattened: the
+    header and |---| delimiter rows are dropped and each data row becomes
+    "儲存格：儲存格" instead of leaking raw pipes onto the card.
+    """
     points = []
-    for raw in content.split("\n"):
-        stripped = raw.strip()
+    lines = [raw.strip() for raw in content.split("\n")]
+    in_table = False
+    for i, stripped in enumerate(lines):
+        if not stripped:
+            in_table = False
+            continue
         if re.match(r"^[-=_*]{3,}$", stripped):  # skip "---" style horizontal rules
             continue
-        cleaned = re.sub(r"\*+", "", stripped).strip()
-        cleaned = re.sub(r"^#{1,6}\s*", "", cleaned).strip()   # strip markdown headers
-        cleaned = re.sub(r"^[-•·]\s*", "", cleaned).strip()
+        if _is_table_separator(stripped):
+            in_table = True
+            continue
+        if "|" in stripped and i + 1 < len(lines) and _is_table_separator(lines[i + 1]):
+            continue  # header row of a table
+        # a bullet/heading line ends the table even if it contains a pipe
+        if "|" in stripped and not _LIST_MARKER.match(stripped) and (in_table or stripped.startswith("|")):
+            in_table = True
+            cleaned = _table_row_text(stripped)
+        else:
+            in_table = False
+            cleaned = re.sub(r"\*+", "", stripped).strip()
+            cleaned = re.sub(r"^#{1,6}\s*", "", cleaned).strip()   # strip markdown headers
+            cleaned = re.sub(r"^[-•·]\s*", "", cleaned).strip()
         if not cleaned:
             continue
         points.append(_truncate_at_boundary(cleaned, _FALLBACK_MAX_CHARS))
