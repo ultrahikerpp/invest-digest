@@ -17,7 +17,7 @@ def test_generate_summary_uses_gooaye_prompt_when_style_set(mod, monkeypatch):
 
     def fake_chat(prompt, timeout_secs=180):
         captured["prompt"] = prompt
-        return "摘要結果"
+        return "\n".join(f"## {h}\n內容" for h in ("本集主題總覽", "聽眾 QA", "投資心法", "提及標的"))
 
     monkeypatch.setattr(mod, "chat", fake_chat)
     mod.generate_summary("逐字稿", "EP999", summary_style="gooaye_notes")
@@ -75,7 +75,7 @@ def test_gooaye_style_uses_longer_chat_timeout(mod, monkeypatch):
 
     def fake_chat(prompt, timeout_secs=180):
         captured["timeout_secs"] = timeout_secs
-        return "摘要結果"
+        return "\n".join(f"## {h}\n內容" for h in ("本集主題總覽", "聽眾 QA", "投資心法", "提及標的"))
 
     monkeypatch.setattr(mod, "chat", fake_chat)
     mod.generate_summary("逐字稿", "EP999", summary_style="gooaye_notes")

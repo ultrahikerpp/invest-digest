@@ -17,6 +17,8 @@ from __future__ import annotations
 import re
 import time
 
+from backend.ai_tasks import AIGenerationError
+
 CHATGPT_NEW_CHAT_URL = "https://chatgpt.com/"
 
 
@@ -335,6 +337,7 @@ def generate_summary(transcript: str, title: str, summary_style: str | None = No
 
     try:
         summary = chat(prompt, timeout_secs=timeout_secs)
+        summary = re.sub(r"^(#{2,4}\s+)\*\*(.+?)\*\*\s*$", r"\1\2", summary, flags=re.MULTILINE)
         _validate_summary_response(summary, summary_style)
 
         disclaimer = (
@@ -346,11 +349,7 @@ def generate_summary(transcript: str, title: str, summary_style: str | None = No
         )
         return summary + disclaimer
     except Exception as e:
-        return (
-            f"# {title}\n\n"
-            f"⚠️ ChatGPT 瀏覽器摘要失敗：{e}\n\n"
-            f"## 內容前段\n\n{transcript[:1000]}"
-        )
+        raise AIGenerationError(f"ChatGPT 瀏覽器摘要失敗：{e}") from e
 
 
 def generate_newsletter_summary(body: str, title: str) -> str:

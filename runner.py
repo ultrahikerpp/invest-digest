@@ -932,16 +932,7 @@ def cmd_retry(video_id: str, provider: str = "claude"):
         published_at = ep["published_at"] or ""
         print(f"找到記錄：{title[:60]}")
 
-        # Remove old summary file if exists
         summary_path = (Path(ep["summary_path"]) if ep["summary_path"] else None) or _find_summary_path(video_id)
-        if summary_path and summary_path.exists():
-            summary_path.unlink()
-            print(f"  已刪除舊摘要：{summary_path.name}")
-
-        # Remove DB entry so we can re-insert cleanly
-        conn.execute("DELETE FROM episodes WHERE video_id=?", (video_id,))
-        conn.commit()
-        print(f"  已清除資料庫記錄")
     else:
         print(f"資料庫中找不到 {video_id}，將嘗試直接下載並產製摘要")
         channel_id = None
@@ -998,6 +989,10 @@ def cmd_retry(video_id: str, provider: str = "claude"):
     s_path.write_text(full_md, encoding="utf-8")
 
     # Re-insert as pending_review
+    if ep:
+        if summary_path and summary_path != s_path and summary_path.exists():
+            summary_path.unlink()
+        conn.execute("DELETE FROM episodes WHERE video_id=?", (video_id,))
     video_dict = {"video_id": video_id, "title": title, "published_at": published_at}
     _mark_pending_review(conn, channel_id or "", video_dict, str(t_path), str(s_path))
 

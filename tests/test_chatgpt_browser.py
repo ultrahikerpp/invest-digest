@@ -1,10 +1,12 @@
 """Regression tests for ChatGPT browser response completion checks."""
 import sys
 from pathlib import Path
+import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from backend import chatgpt_browser
+from backend.ai_tasks import AIGenerationError
 
 
 def test_generation_running_checks_chatgpt_streaming_markers():
@@ -71,12 +73,10 @@ def test_generate_summary_rejects_incomplete_gooaye_response(monkeypatch):
         ),
     )
 
-    result = chatgpt_browser.generate_summary(
-        "逐字稿", "EP666", summary_style="gooaye_notes"
-    )
-
-    assert "ChatGPT 瀏覽器摘要失敗" in result
-    assert "投資心法" in result
+    with pytest.raises(AIGenerationError, match="投資心法"):
+        chatgpt_browser.generate_summary(
+            "逐字稿", "EP666", summary_style="gooaye_notes"
+        )
 
 
 def test_generate_summary_accepts_complete_gooaye_response(monkeypatch):
@@ -101,6 +101,19 @@ def test_generate_summary_accepts_complete_gooaye_response(monkeypatch):
 
     assert result.startswith(complete)
     assert "負責任 AI 聲明" in result
+
+
+def test_generate_summary_normalizes_bold_headings(monkeypatch):
+    complete = "\n".join(
+        f"## **{heading}**\n內容"
+        for heading in ("本集主題總覽", "聽眾 QA", "投資心法", "提及標的")
+    )
+    monkeypatch.setattr(chatgpt_browser, "chat", lambda *args, **kwargs: complete)
+
+    result = chatgpt_browser.generate_summary("逐字稿", "EP714", "gooaye_notes")
+
+    assert "## 本集主題總覽\n" in result
+    assert "## 提及標的\n" in result
 
 
 class _FakePage:
