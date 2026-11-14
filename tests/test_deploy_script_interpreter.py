@@ -129,3 +129,25 @@ def test_cmd_deploy_tells_deploy_sh_to_skip_the_rebuild(tmp_path, monkeypatch):
     assert captured["env"].get("SKIP_BUILD") == "1", (
         "cmd_deploy already built the site itself -- deploy.sh must not build it again"
     )
+
+
+def test_deploy_refuses_to_push_existing_commit(tmp_path):
+    project = _make_fake_project(tmp_path, with_venv=False)
+    remote = tmp_path / "remote.git"
+    subprocess.run(["git", "init", "--bare", "-q", str(remote)], check=True)
+    subprocess.run(["git", "remote", "add", "origin", str(remote)], cwd=project, check=True)
+    subprocess.run(["git", "push", "-u", "origin", "HEAD"], cwd=project, check=True, capture_output=True)
+    docs = project / "docs" / "data"
+    docs.mkdir(parents=True)
+    (docs / "episodes.json").write_text("[]")
+    subprocess.run(["git", "add", "docs"], cwd=project, check=True)
+    subprocess.run(["git", "commit", "-q", "-m", "site"], cwd=project, check=True)
+
+    result = subprocess.run(["bash", "deploy.sh"], cwd=project, capture_output=True, text=True,
+                            env={**os.environ, "SKIP_BUILD": "1"})
+
+    assert result.returncode != 0
+    assert "Unpushed commits exist" in result.stderr
+    local = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=project)
+    upstream = subprocess.check_output(["git", "rev-parse", "@{u}"], cwd=project)
+    assert local != upstream

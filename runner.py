@@ -1238,7 +1238,6 @@ def cmd_approve(
 
         _sync_to_wiki(summary_path, channel_id)
         _sync_to_research_data(summary_path, channel_id)
-        _mark_done(conn, video_id)
         print(f"  ✓ 完成")
         results.append({
             "channel_name": channel_name,
@@ -1250,9 +1249,8 @@ def cmd_approve(
             "source_type": meta.get("source_type", "youtube"),
         })
 
-    conn.close()
-
     if not results:
+        conn.close()
         print("\n沒有成功處理的集數")
         return
 
@@ -1278,24 +1276,36 @@ def cmd_approve(
     print(f"\n共完成 {n} 集")
 
     # Auto-deploy: build static site + git commit + push
+    deployment_ok = False
     if no_deploy:
         print("略過自動部署（--no-deploy；累積指定集數後請執行 runner.py deploy）")
     else:
         deploy_script = BASE_DIR / "deploy.sh"
         if deploy_script.exists():
             print("\n自動部署網站...")
-            result = subprocess.run(["bash", str(deploy_script)], cwd=BASE_DIR)
-            if result.returncode != 0:
-                print("❌ 部署失敗，請手動執行 runner.py deploy")
+            try:
+                result = subprocess.run(["bash", str(deploy_script)], cwd=BASE_DIR)
+                deployment_ok = result.returncode == 0
+            except OSError as e:
+                print(f"❌ 無法啟動部署：{e}")
+            if not deployment_ok:
+                print("❌ 部署失敗，集數保留待審閱；請修復後重新執行 runner.py approve")
         else:
-            print("❌ 找不到 deploy.sh，請手動執行 runner.py deploy")
+            print("❌ 找不到 deploy.sh，集數保留待審閱；請修復後重新執行 runner.py approve")
 
-    if send_notifications:
+    if deployment_ok or no_deploy:
+        for result in results:
+            _mark_done(conn, result["video_id"])
+    conn.close()
+
+    if send_notifications and deployment_ok:
         # Send subscriber notifications (non-fatal)
         try:
             _send_subscriber_notifications(results)
         except Exception as e:
             print(f"⚠️ 訂閱通知發送失敗（不影響部署）：{e}")
+    elif send_notifications:
+        print("⚠️ 尚未部署，略過訂閱者通知")
     else:
         print("略過訂閱者通知（歷史重製）")
 

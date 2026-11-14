@@ -21,6 +21,11 @@ if [ ! -f "docs/data/episodes.json" ]; then
 fi
 
 # Step 3: Stage site output and channel config
+unpushed=$(git log '@{upstream}..HEAD' --format=%H)
+if [ -n "$unpushed" ]; then
+  echo "ERROR: Unpushed commits exist; review and push them before deploying." >&2
+  exit 1
+fi
 echo ""
 echo "=== Staging files ==="
 git add docs/
@@ -29,11 +34,10 @@ git add docs/
 if git diff --cached --quiet; then
   echo "Nothing to commit — site is already up to date."
   exit 0
+else
+  TIMESTAMP="$(date '+%Y-%m-%d %H:%M')"
+  git commit -m "chore: deploy static site — ${TIMESTAMP}"
 fi
-
-# Step 5: Commit
-TIMESTAMP="$(date '+%Y-%m-%d %H:%M')"
-git commit -m "chore: deploy static site — ${TIMESTAMP}"
 
 # Step 6: Push
 echo ""
