@@ -3,10 +3,10 @@
     {
       "name": "費城半導體指數",
       "ticker": "^SOX",
-      "count": 248,
+      "count": 249,
       "bullish": 108,
       "bearish": 69,
-      "neutral": 71
+      "neutral": 72
     },
     {
       "name": "NVIDIA",
@@ -19,10 +19,10 @@
     {
       "name": "台積電",
       "ticker": "TSM",
-      "count": 219,
+      "count": 220,
       "bullish": 138,
       "bearish": 1,
-      "neutral": 80
+      "neutral": 81
     },
     {
       "name": "道瓊指數",
@@ -35,8 +35,8 @@
     {
       "name": "S&P 500",
       "ticker": "^GSPC",
-      "count": 190,
-      "bullish": 64,
+      "count": 191,
+      "bullish": 65,
       "bearish": 29,
       "neutral": 97
     },
@@ -179,18 +179,18 @@
     {
       "name": "羅素2000",
       "ticker": "^RUT",
-      "count": 73,
+      "count": 74,
       "bullish": 12,
       "bearish": 23,
-      "neutral": 38
+      "neutral": 39
     },
     {
       "name": "那斯達克",
       "ticker": "^IXIC",
-      "count": 68,
+      "count": 69,
       "bullish": 19,
       "bearish": 17,
-      "neutral": 32
+      "neutral": 33
     },
     {
       "name": "聯發科",
@@ -235,9 +235,9 @@
     {
       "name": "CoreWeave",
       "ticker": "CRWV",
-      "count": 50,
+      "count": 51,
       "bullish": 13,
-      "bearish": 19,
+      "bearish": 20,
       "neutral": 18
     },
     {
@@ -339,10 +339,10 @@
     {
       "name": "道瓊",
       "ticker": "DJI",
-      "count": 34,
+      "count": 35,
       "bullish": 6,
       "bearish": 3,
-      "neutral": 25
+      "neutral": 26
     },
     {
       "name": "Nvidia",
@@ -929,6 +929,14 @@
       "neutral": 3
     },
     {
+      "name": "加權指數",
+      "ticker": "TAIEX",
+      "count": 9,
+      "bullish": 5,
+      "bearish": 1,
+      "neutral": 3
+    },
+    {
       "name": "SOXL",
       "ticker": "SOXL",
       "count": 9,
@@ -985,12 +993,12 @@
       "neutral": 4
     },
     {
-      "name": "加權指數",
-      "ticker": "TAIEX",
+      "name": "VIX",
+      "ticker": "VIX",
       "count": 8,
-      "bullish": 4,
-      "bearish": 1,
-      "neutral": 3
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 8
     },
     {
       "name": "Rocket Lab",
@@ -1145,14 +1153,6 @@
       "neutral": 5
     },
     {
-      "name": "VIX",
-      "ticker": "VIX",
-      "count": 7,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 7
-    },
-    {
       "name": "SK 海力士",
       "ticker": "000660",
       "count": 7,
@@ -1215,6 +1215,14 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 4
+    },
+    {
+      "name": "櫃買指數",
+      "ticker": "TPEx",
+      "count": 6,
+      "bullish": 2,
+      "bearish": 2,
+      "neutral": 2
     },
     {
       "name": "摩根士丹利",
@@ -1415,14 +1423,6 @@
       "bullish": 0,
       "bearish": 0,
       "neutral": 5
-    },
-    {
-      "name": "櫃買指數",
-      "ticker": "TPEx",
-      "count": 5,
-      "bullish": 1,
-      "bearish": 2,
-      "neutral": 2
     },
     {
       "name": "景碩",
@@ -1663,6 +1663,14 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 2
+    },
+    {
+      "name": "日經225",
+      "ticker": "NI225",
+      "count": 4,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 4
     },
     {
       "name": "日本公債",
@@ -2113,14 +2121,6 @@
       "neutral": 3
     },
     {
-      "name": "日經225",
-      "ticker": "NI225",
-      "count": 3,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 3
-    },
-    {
       "name": "日經",
       "ticker": "N225",
       "count": 3,
@@ -2231,6 +2231,22 @@
       "bullish": 2,
       "bearish": 0,
       "neutral": 1
+    },
+    {
+      "name": "南韓股市",
+      "ticker": "KOSPI",
+      "count": 3,
+      "bullish": 1,
+      "bearish": 2,
+      "neutral": 0
+    },
+    {
+      "name": "元大台灣50正2",
+      "ticker": "00631L",
+      "count": 3,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 3
     },
     {
       "name": "健策",
@@ -3185,14 +3201,6 @@
       "neutral": 1
     },
     {
-      "name": "南韓股市",
-      "ticker": null,
-      "count": 2,
-      "bullish": 1,
-      "bearish": 1,
-      "neutral": 0
-    },
-    {
       "name": "南韓KOSPI",
       "ticker": "KOSPI",
       "count": 2,
@@ -3251,14 +3259,6 @@
     {
       "name": "元大高股息",
       "ticker": "0056",
-      "count": 2,
-      "bullish": 0,
-      "bearish": 0,
-      "neutral": 2
-    },
-    {
-      "name": "元大台灣50正2",
-      "ticker": "00631L",
       "count": 2,
       "bullish": 0,
       "bearish": 0,
@@ -5530,6 +5530,14 @@
     },
     {
       "name": "歐洲央行",
+      "ticker": null,
+      "count": 1,
+      "bullish": 0,
+      "bearish": 0,
+      "neutral": 1
+    },
+    {
+      "name": "歐洲Stoxx指數",
       "ticker": null,
       "count": 1,
       "bullish": 0,
@@ -10556,11 +10564,11 @@
   "industries": [
     {
       "name": "AI",
-      "count": 375
+      "count": 376
     },
     {
       "name": "半導體",
-      "count": 345
+      "count": 346
     },
     {
       "name": "美股",
@@ -10568,7 +10576,7 @@
     },
     {
       "name": "台股",
-      "count": 124
+      "count": 125
     },
     {
       "name": "總體經濟",
@@ -20267,6 +20275,29 @@
         "西德州原油"
       ]
     },
+    "s2maZNnHEvg": {
+      "industries": [
+        "台股",
+        "半導體",
+        "AI"
+      ],
+      "mentions": [
+        "台積電",
+        "元大台灣50正2",
+        "CoreWeave",
+        "加權指數",
+        "櫃買指數",
+        "費城半導體指數",
+        "那斯達克",
+        "S&P 500",
+        "道瓊",
+        "羅素2000",
+        "日經225",
+        "南韓股市",
+        "歐洲Stoxx指數",
+        "VIX"
+      ]
+    },
     "sGaRW00JO4M": {
       "industries": [
         "半導體",
@@ -22093,5 +22124,5 @@
       "mentions": []
     }
   },
-  "generated_at": "2026-11-26T17:25:30"
+  "generated_at": "2026-11-27T16:38:33"
 }
