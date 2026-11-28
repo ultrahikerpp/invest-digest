@@ -62,10 +62,9 @@ python3 runner.py weekly-digest   # send the subscriber email directly, without 
 # Preview static site locally
 cd docs && python3 -m http.server 8000
 
-# Crontab (daily 8:30am run, Saturday 9am earnings refresh, Sunday 5:30pm weekly-digest email)
-# 30 8 * * * cd /path/to/investment-digest && ./venv/bin/python runner.py run >> data/runner.log 2>&1
-# 0 9 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1
-# 30 17 * * 0 cd /path/to/investment-digest && ./venv/bin/python runner.py weekly-digest >> data/runner.log 2>&1
+# Crontab (only the Saturday 10am earnings refresh; `run` and `weekly-digest` are run by hand)
+# 0 10 * * 6 cd /path/to/investment-digest && ./venv/bin/python runner.py refresh-earnings --deploy >> data/runner.log 2>&1
+# Cron pushes over SSH with a repo-only deploy key (repo-level core.sshCommand → ~/.ssh/invest_digest_deploy); HTTPS + osxkeychain can't authenticate under cron.
 ```
 
 **Workflow:** `run` fetches + summarises → sends review email → user reviews → `approve` generates hashtags/cards/video + auto-deploys to GitHub Pages.
