@@ -2,26 +2,26 @@
   "ticker": "NBIS",
   "company_name": "Nebius Group N.V.",
   "currency": "USD",
-  "updated_at": "2026-11-14",
-  "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：Unable to get key for cookie decryption\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
+  "updated_at": "2026-11-28",
+  "analysis": "⚠️ Claude 分析失敗：無法從 Chrome 取得登入狀態：[Errno 1] Operation not permitted: '/Users/miroppp/Library/Application Support/Google/Chrome/Local State'\n請確認：\n  1. Chrome 已安裝且曾登入過 claude.ai\n  2. 若 macOS 詢問 Keychain 存取權限，請點選「允許」",
   "charts": {
     "revenue": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "values_m": [
+        980.8,
         582.3,
         399.0,
         227.7,
-        146.1,
-        105.1
+        146.1
       ],
       "yoy_pct": [
-        454.0,
+        571.3,
         null,
         null,
         null,
@@ -30,21 +30,21 @@
     },
     "eps": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "values": [
+        -0.13,
         -0.68,
         2.11,
         -0.99,
-        -0.5,
-        2.38
+        -0.5
       ],
       "yoy_pct": [
-        -128.6,
+        74.0,
         null,
         null,
         null,
@@ -53,48 +53,48 @@
     },
     "margins": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "gross": [
+        77.6,
         77.1,
         74.0,
         69.9,
-        70.6,
-        71.4
+        70.6
       ],
       "operating": [
+        5.1,
         -30.2,
         -32.1,
         -109.8,
-        -89.1,
-        -105.8
+        -89.1
       ],
       "net": [
+        -3.8,
         -32.7,
         155.7,
         -118.1,
-        -81.9,
-        556.0
+        -81.9
       ]
     },
     "fcf": {
       "labels": [
+        "26Q3",
         "26Q2",
         "26Q1",
         "25Q4",
-        "25Q3",
-        "25Q2"
+        "25Q3"
       ],
       "values_m": [
+        -7573.4,
         -3411.3,
         -214.9,
         -1221.7,
-        -1035.9,
-        -682.2
+        -1035.9
       ]
     }
   }
